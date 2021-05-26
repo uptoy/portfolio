@@ -1,0 +1,62 @@
+mkdir server 
+cd server
+pipenv --python 3
+pipenv shell
+pipenv install --python 3.9.4 django == 3.2.3
+django-admin startproject config .
+python manage.py runserver
+python manage.py startapp polls
+python manage.py migrate
+python manage.py runserver
+
+#db 設定後
+python manage.py makemigrations todo
+python manage.py migrate todo
+
+
+管理インターフェースにアクセス
+python manage.py createsuperuser
+サーバーアクセス
+python manage.py runserver
+
+####admin page login
+
+admin
+admin@admin.com
+password
+password
+
+
+
+ALLOWS_HOST = [*]
+どこからでもアクセスできる
+
+###アプリを作ったらadmin-appに登録する
+python manage.py startapp polls
+cd ../
+cd admin-app
+#settings.py
+    INSTALLED_APPS =
+    [
+        '...',
+        'polls'
+    ]
+
+###アプリのなかでコードをいじっていく
+テンプレートフォルダを作る
+polls/templates/index.html
+
+###app/views.py
+
+from django.views.generic import TemplateView
+
+class IndexView(TemplateView):
+    template_name = "index.html"
+
+###app/urls.py
+from django.urls import path
+from .views import IndexView
+
+urlpatterns = [
+    path('',IndexView.as.view()),
+]

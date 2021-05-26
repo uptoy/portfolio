@@ -1,0 +1,43 @@
+"""出力時データの見え方を整形してくれる"""
+from pprint import pprint
+data = [(i,{'hoge':'HOGE','huga':'FUGA'})
+for i in range(3)]
+#print(data)
+#pprint(data)
+#pprint(data,compact=True)
+
+
+"""ファイルの実行時間を測定する"""
+スクリプチの実行時間を計測するためのライブラリ
+import timeit
+print(timeit.timeit('lst = [x for x in range(100)]'))
+#python3 sample.py
+#4.51020秒
+#デフォルトでは指定した処理を100万回実行計測するため、
+#この回数を変更するためには引数numberを使用する
+import timeit
+print(timeit.time('lst = [x for x in range(100)]',setup = 'print("start",number = 100)))
+
+
+"""ログを出力する"""
+#ログ出力
+import logging
+logging.warning('これはログです')
+
+#ログをファイルに出力
+import logging
+logging.basicConfig(filename = 'hoge.log')
+logging.error('これはログです')
+#hoge.logファイルが生成される
+
+
+"""データをグラフ化する"""
+import matplotlib.pyplot as p
+x = [1,2,3,4,5,6]
+y = [9,1,5,8,6,2]
+p.plot(x,y)
+p.show()
+
+#グラフをカスタマイズする
+
+

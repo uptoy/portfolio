@@ -1,0 +1,34 @@
+"""
+インタプリタモード
+python　開始
+print("hello wolrd")
+exit()
+exit 終了
+
+
+環境構築
+mkdir my_project
+cd my_project
+conda create --name env flask sqlalchemy numpy pandas
+source activate env
+pip list
+conda env export > environment.yaml
+cat environment.yaml
+conda env list
+Path表示
+cd Path
+
+mkdir -p etc/conda/activate.d
+mkdir -p etc/conda/dekactivate.d
+
+conda list
+
+
+conda list                          # インストール済パッケージの一覧
+conda install PKGNAME               # バージョンを指定してパッケージをインストール
+conda uninstall PKGNAME             # パッケージのアンインストール
+conda update --all                  # すべてのパッケージを更新
+conda update PKGNAME                # 指定したパッケージを更新
+conda update conda                  # conda の更新
+conda clean --all                   # 不要データの削除
+"""

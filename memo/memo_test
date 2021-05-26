@@ -1,0 +1,32 @@
+""""
+[Add]
+pytest==6.2.3
+pytest-cov==2.11.1
+
+pip install -r requirements.txt
+
+
+
+pytest test.py #ファイルごと表示
+pytest test.py -v 関数ごとの詳細表示
+py.test　フォルダ内テスト
+py.test -v　フォルダ内テスト
+pytest -v -x テストの実行とテスト失敗理由表示
+
+特定関数名のみテスト
+pytest -v -k "add"
+-test_add()
+-test_add_string()
+
+pytest -v -k "add" or "product"
+-test_add()
+-test_add_string()
+-test_product_string()
+
+pytest -v -k "add" and "string"
+-test_add_string()
+
+"""
+
+
+https://qiita.com/okoppe8/items/eb7c3be5b9f6be244549

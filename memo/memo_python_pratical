@@ -1,0 +1,114 @@
+def func_division(a, b):
+   try:
+      ret = a/b
+      return ret
+   except ZeroDivisionError as err:
+      print('0除算の例外が発生しました：', err)
+   except:
+      print("予期せぬ例外が発生しました")
+
+
+      import logging
+
+logger = logging.getLogger(__name__)
+
+# logに入れる値を適当に作成
+total_epoch = 1000
+epoch = 100
+loss_train = 5.44444
+
+# logで記録する内容
+log_list = [total_epoch, epoch, loss_train]
+
+# logに記録
+logger.info(
+    "total_epoch: {0[0]}, epoch: {0[1]}, loss_train: {0[2]:.2f}".format(log_list)
+)
+
+# logに記録した内容を出力して確認（今は確認用。本来は不要）
+print("total_epoch: {0[0]}, epoch: {0[1]}, loss_train: {0[2]:.2f}".format(log_list))
+
+# logに入れる値を適当に作成
+total_epoch = 1000
+epoch = 100
+loss_train = 5.44444
+
+# logに記録
+logger.info(f"{total_epoch=}, {epoch=}, loss_train: {loss_train=:.2f}")
+
+num = 10
+a = "偶数" if num % 2 == 0 else "奇数"
+# a = "偶数" if num % 2 == 0 else a = "奇数"  # これはエラーになる
+
+print(a)
+
+print("偶数") if num % 2 == 0 else print("奇数")
+# より
+print("偶数" if num % 2 == 0 else "奇数")
+# が好ましいと感じます。
+
+class User:
+    def __init__(self, name: str, user_type: str):
+        self.name = name
+        self.__user_type = user_type
+
+    @property
+    def user_type(self):
+        return self.__user_type
+
+taro = User("taro", "admin")
+print(taro.user_type)
+は問題なく実行できて、adminと出力されます。
+
+https://qiita.com/sugulu_Ogawa_ISID/items/c0e8a5e6b177bfe05e99
+
+
+レベル1
+- [ ] 変数、関数、クラス、メソッドの命名規則を守っているか？
+- [ ] 命名方法1：変数名やメソッド名から冗長な部分は除かれているか？
+- [ ] importの記載はルールに従っているか？
+- [ ] 乱数のシードを固定して、再現性を担保しているか？
+- [ ] プログラムは関数化して実行されているか？
+
+レベル2
+- [ ] 命名方法2：reverse notation（逆記法）で命名され、読み取りやすいか？
+- [ ] SOLIDのSを意識し、関数、メソッドが単一責務で短い内容か？
+- [ ] 関数、メソッドには型ヒントをつけているか？
+- [ ] クラス、メソッド、関数にはdocstringが記載されているか？
+- [ ] 学習済みモデルの保存時に、前処理やハイパーパラメータなどの情報を一緒に保存しているか？
+
+レベル3
+- [ ] 命名方法3：適切な英単語と品詞で、責務が分かる名前がつけられているか？
+- [ ] 例外処理が適切に実装されているか？
+- [ ] ログを適切に実装しているか？
+- [ ] 関数、メソッドの引数は3つ以下になっているか？
+- [ ] `*args`、`**kwargs`を適切に使えているか？
+
+レベル4
+- [ ] 三項演算子でif文を短く書いているか？
+- [ ] sklearn準拠で、前処理およびモデルのクラスが実装されているか？
+- [ ] デコレータを適切に活用しているか？
+- [ ] チーム内でエディターの設定が統一されているか？
+- [ ] プルリクエスト用templateを用意、活用しているか？
+
+pip install django-environ #環境変数管理 秘密にしたいkeyなどを隠すため
+pip install django-crispy-forms #いい感じにフォームをつくれるよう
+pip install django-allauth #ソーシャルログイン機能
+pip install django-rest_framework #APIやるなら必須
+pip install django-debug_toolbar #開発やるなら必須
+pip install django-extensions #djangoをいろいろと拡張してくれるらしい
+pip install django[argon2] #ログイン時のパスワード暗号化と思われる
+
+
+import sys 
+
+my_list = [i for i in range(10000)]
+print(sys.getsizeof(my_list), 'bytes') # 87616 bytes
+
+my_gen = (i for i in range(10000))
+print(sys.getsizeof(my_gen), 'bytes') # 128 bytes
+
+
+def_private_function():"""先頭に_が付くので外部からアクセスしてほしくない"""return'Hello,World!'defmain():"""先頭に_が付かないので外部からアクセスしても構わない"""print(_private_function())
+
+momijiame. Smart Python Programming: Python no yoriyoi kakikata wo manabu (Japanese Edition) (Kindle の位置No.806-811). Kindle 版. 

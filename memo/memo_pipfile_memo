@@ -1,0 +1,30 @@
+"""
+https://qiita.com/y-tsutsu/items/54c10e0b2c6b565c887a
+
+Pipfileというファイルが生成されます．
+$ pipenv --python 3    # Python3系で初期化する例です
+
+パッケージのインストール
+$ pipenv install numpy    # numpyをインストールする例です
+
+
+$ pipenv run start    # [scripts]のstartを実行する例です
+$ pipenv shell        # 仮想環境に入る
+
+またプロジェクトのディレクトリに仮想環境を作成したい場合は以下のように環境変数を設定します．
+$ export PIPENV_VENV_IN_PROJECT=true    # Windowsは`set PIPENV_VENV_IN_PROJECT=true`
+$ pipenv --python 3                     # ./.venvディレクトリに仮想環境が生成される
+インストールされているパッケージのバージョンアップをするには次のように行います．
+$ pipenv update
+インストールされているパッケージの一覧を確認するには次のように行います．依存関連が分かるように出力されて便利です．
+$ pipenv graph
+
+
+flake8 = "*"
+
+
+
+pipenv freeze
+server_django ll.
+
+"""

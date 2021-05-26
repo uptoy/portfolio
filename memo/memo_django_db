@@ -1,0 +1,4 @@
+product_data.json
+
+jsonデータをデータベースに入れる
+python manage.py loaddata product_data.json

@@ -1,0 +1,14 @@
+$ pipenv install --dev flake8 autopep8 flake8-import-order
+
+.flake8ファイル
+[flake8]
+exclude = .venv, wsgi.py
+max-line-length = 150
+
+
+[scripts]
+lint = "flake8 --show-source ."
+format = "autopep8 -ivr ."
+
+$ pipenv run lint
+$ pipenv run format

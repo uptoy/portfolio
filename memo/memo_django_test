@@ -1,0 +1,9 @@
+pip install coverage
+アプリケーションにコードを追加するたびに、次のコマンドを実行します。
+coverage run --source='.' manage.py test
+レポートを生成
+coverage html
+コマンドラインでレポートを表示したい場合
+coverage report
+
+何をテストするかが正確にわかります。

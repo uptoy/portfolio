@@ -1,0 +1,83 @@
+"""
+python.analysis.typeCheckingMode
+"""
+"""
+request:	HTTPリクエストオブジェクト methodやフォームデータにアクセスできる
+render_template:
+ 	指定したHTMLテンプレートを使ってレスポンスを返す。
+redirect:	指定したURLにリダイレクトするレスポンスを返す。
+url_for:	指定したエンドポイントに対するURLを返す。
+abort:	指定したHTTPステータスコードのエラーを返す。
+flash:	メッセージを通知するための仕組み
+"""
+
+"""
+pip3 install pipenv
+pipenv shell
+
+pipenv install flask flask-sqlalchemy flask-marshmallow marshmallow-sqlalchemy
+"""
+
+
+"""
+export FLASK_APP = run.py
+flask run --host=0.0.0.0
+http;//0.0.0.0:5000/
+"""
+
+""""
+FLASK_APP = market.py
+FLASK_DEBUG=1
+flask run
+
+
+#terminal
+! pip install pandas_datareader
+
+#code 
+from pandas
+"""
+"""
+------------------------------------
+flask セットアップ仮想環境を作る
+python3 -m venv tutorial-venv
+source tutorial-venv/bin/activate
+
+
+vertualenv -p python3 venv
+ls
+source ./venv/bin/activate
+pip list
+
+
+export FLASK_ENV=develompent
+------------------------------------
+ファイル変更内容が自動でアプリに反映される
+デバッグモードをオンにする
+set Flask_DEBUG = 1
+サーバーを再起動する必要がなくなる
+------------------------------------
+db = SQLAlchemy(app)
+------------------------------------
+
+set FLASK=API server.py
+flask run
+
+    app.run(host='0.0.0.0', port=8000)
+------------------------------------
+.flaskenv
+FLASK_APP=server.py
+FLASK_ENV=development
+pip install python-dotenv
+------------------------------------
+
+Numerai Signalsは世界中の市場における株式銘柄を対象としており、現時点でその総数はおよそ5200銘柄である
+https://docs.numer.ai/numerai-signals/signals-overview
+"""
+"""
+------------------------------------
+FLASK_DEBUG=1
+
+デバッグモードがオンになり自動更新される
+------------------------------------
+"""

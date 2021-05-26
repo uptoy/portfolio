@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+numpy = "*"
+django = "*"
+djangorestframework = "*"
+django-cors-headers = "*"
+coverage = "*"
+python-dotenv = "*"
+autopep8 = "*"
+flake8 = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"

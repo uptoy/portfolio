@@ -1,0 +1,65 @@
+"""
+
+ある環境のパッケージ一覧を保存
+$ pip freeze > requirements.txt
+
+別の環境で復元（パッケージをインストール）
+$ pip install -r requirements.txt
+"""
+
+"""
+仮想環境構築
+$ cd [project dir]
+$ python3 -m venv [newenvname(venv)]
+$ source [newenvname(venv)]/bin/activate
+$ pip install -r requirements.txt
+
+$ ([newenvname(venv)])$ python -V
+$ Python 3.6.1
+パッケージインストール
+([newenvname])$ pip install [package name]
+
+作成した環境にインストールされているパッケージの確認
+([newenvname])$ pip freeze
+[package name1]==x.x.x
+[package name2]==x.x.x
+
+終了
+([newenvname])$ deactivate
+"""
+
+"""
+現在の環境をrequirements.txtファイルに書き込む
+
+"""
+"""
+サーバーを建てた時のWaningを消す
+export FLASK_ENV=develompent
+"""
+
+
+"""
+サーバーをたてる
+set FLASK_APP = app.py
+set FLASK_DEBUG = 1
+flask run
+"""
+
+
+"""
+FLASK_DEBUG=1
+Web上コードの変更内容リアルタイムで反映
+"""
+
+
+"""
+export FLASK_ENV=develompent
+export FLASK_APP=app
+set FLASK_ENV=develompent
+set FLASK_APP=app
+
+
+python app.py
+flask run
+
+"""
