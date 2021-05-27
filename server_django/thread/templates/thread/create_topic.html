@@ -10,9 +10,19 @@
 		<div class="ui segment">
 			<div class="content">
 				<div class="header"><h3>トピック作成</h3></div>
-				<form class="" action="{% url 'thread:create_topic' %}" method="POST">
-					{% csrf_token %} {{form.as_p}}
-					<button type="submit" class="ui button">作成</button>
+				<form
+					class="ui form"
+					action="{% url 'thread:create_topic' %}"
+					method="POST"
+				>
+					{% csrf_token %} {% for field in form %}
+					<div class="field">{{field.label_tag}}{{field}}</div>
+					{% for error in field.errors%}
+					<p style="color: red">{{error}}</p>
+					{% endfor%} {% endfor %}
+					<button type="submit" class="ui button" name="next" value="confirm">
+						作成
+					</button>
 				</form>
 			</div>
 		</div>
