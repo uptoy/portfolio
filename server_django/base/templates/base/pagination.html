@@ -1,0 +1,32 @@
+{% if is_paginated %}
+<div class="ui basic segment center aligned">
+	<div class="ui pagination menu">
+		<!--左矢印-->
+		{% if page_obj.has_previous %}
+		<a class="item" href="?p={{page_obj.previous_page_number}}"
+			><i class="chevron left icon"></i
+		></a>
+		{% else %}
+		<a class="disabled item"><i class="chevron left icon"></i></a>
+		{% endif %}
+		<!--//左矢印-->
+		<!--ページ番号-->
+		{% for link_page in page_obj.paginator.page_range %} {% if link_page ==
+		page_obj.number %}
+		<a class="disabled item">{{link_page}}</a>
+		{% else %}
+		<a class="item" href="?p={{link_page}}">{{link_page}}</a>
+		{% endif %} {% endfor %}
+		<!--//ページ番号-->
+		<!--右矢印-->
+		{% if page_obj.has_next %}
+		<a class="item" href="?p={{page_obj.next_page_number}}"
+			><i class="chevron right icon"></i
+		></a>
+		{% else %}
+		<a class="disabled item"><i class="chevron right icon"></i></a>
+		{% endif %}
+		<!--//右矢印-->
+	</div>
+</div>
+{% endif %}

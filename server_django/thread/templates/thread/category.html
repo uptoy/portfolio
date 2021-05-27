@@ -9,6 +9,7 @@ block.super }}{% endblock %} {% block content %}
 		<div class="ui segment">
 			<div class="content">
 				<div class="header"><h3>{{category.name}}</h3></div>
+				{% include 'base/pagination.html' %}
 				<div class="ui divided items">
 					{% if topic_list %} {% for topic in topic_list %}
 					<div class="item">

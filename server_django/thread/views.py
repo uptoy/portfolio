@@ -4,6 +4,30 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView, CreateView, TemplateView, ListView, FormView
 from django.urls import reverse_lazy
 from . forms import TopicModelForm, CommentModelForm
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
+
+def show_catgegory(request, url_code):
+    if request.method == 'GET':
+        page_num = request.GET.get('p', 1)
+        pagenator = Paginator(
+            Topic.objects.filter(category__url_code=url_code),
+            1  # 1ページに表示するオブジェクト数
+        )
+        try:
+            page = pagenator.page(page_num)
+        except PageNotAnInteger:
+            page = pagenator.page(1)
+        except EmptyPage:
+            page = pagenator.page(pagenator.num_pages)
+
+        ctx = {
+            'category': get_object_or_404(Category, url_code=url_code),
+            'page_obj': page,
+            'topic_list': page.object_list,  # pageでもOK
+            'is_paginated': page.has_other_pages,
+        }
+        return render(request, 'thread/category.html', ctx)
 
 
 class TopicAndCommentView(FormView):
@@ -137,6 +161,8 @@ class TopicTemplateView(TemplateView):
 class CategoryView(ListView):
     template_name = 'thread/category.html'
     context_object_name = 'topic_list'
+    paginate_by = 1  # 1ページに表示するオブジェクト数 サンプルのため1にしています。
+    page_kwarg = 'p'  # GETでページ数を受けるパラメータ名。指定しないと'page'がデフォルト
 
     def get_queryset(self):
         return Topic.objects.filter(category__url_code=self.kwargs['url_code'])
