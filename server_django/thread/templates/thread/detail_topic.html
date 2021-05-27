@@ -6,7 +6,7 @@
         <div class="ui breadcrumb">
             <a href="{% url 'base:top' %}" class="section">TOP</a>
             <i class="right angle icon divider"></i>
-            <a class="section">{{topic.category.name}}</a>
+            <a href="{% url 'thread:category' url_code=topic.category.url_code %}" class="section">{{topic.category.name}}</a>
             <i class="right angle icon divider"></i>
             <a class="active section">{{topic.title}}</a>
         </div>

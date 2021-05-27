@@ -1,7 +1,7 @@
-from . models import Topic
+from . models import Topic, Category
 from django.shortcuts import render, redirect, get_object_or_404
 # from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import DetailView, CreateView, TemplateView
+from django.views.generic import DetailView, CreateView, TemplateView, ListView
 from django.urls import reverse_lazy
 from . forms import TopicModelForm
 
@@ -100,3 +100,15 @@ class TopicTemplateView(TemplateView):
 #         else:
 #             ctx['form'] = topic_form
 #             return render(request, template_name, ctx)
+
+class CategoryView(ListView):
+    template_name = 'thread/category.html'
+    context_object_name = 'topic_list'
+
+    def get_queryset(self):
+        return Topic.objects.filter(category__url_code=self.kwargs['url_code'])
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['category'] = get_object_or_404(Category, url_code=self.kwargs['url_code'])
+        return ctx
