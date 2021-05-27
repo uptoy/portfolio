@@ -34,8 +34,7 @@
 					action="{% url 'thread:create_topic' %}"
 					method="POST"
 				>
-					{% csrf_token %} {% for field in form %} {{field.as_hidden}} {% endfor
-					%}
+					{% csrf_token %} 
 					<button class="ui button grey" type="submit" name="next" value="back">
 						戻る
 					</button>

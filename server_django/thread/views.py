@@ -8,6 +8,49 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.mail import send_mail
 
 
+class TopicCreateViewBySession(FormView):
+    template_name = 'thread/create_topic.html'
+    form_class = TopicModelForm
+
+    def post(self, request, *args, **kwargs):
+        ctx = {}
+        if request.POST.get('next', '') == 'back':
+            if 'input_data' in self.request.session:
+                input_data = self.request.session['input_data']
+                form = TopicModelForm(input_data)
+                ctx['form'] = form
+            return render(request, self.template_name, ctx)
+        elif request.POST.get('next', '') == 'create':
+            if 'input_data' in request.session:
+                form = self.form_class(request.session['input_data'])
+                form.save()
+                # Topic.objects.create_topic(
+                #     title=request.session['input_data']['title'],
+                #     user_name=request.session['input_data']['user_name'],
+                #     category_id=request.session['input_data']['category'],
+                #     message=request.session['input_data']['message']
+                # )
+                request.session.pop('input_data')  # セッションに保管した情報の削除
+                # メール送信処理は省略
+                return redirect(reverse_lazy('base:top'))
+        elif request.POST.get('next', '') == 'confirm':
+            form = TopicModelForm(request.POST)
+            if form.is_valid():
+                ctx = {'form': form}
+                # セッションにデータを保存
+                input_data = {
+                    'title': form.cleaned_data['title'],
+                    'user_name': form.cleaned_data['user_name'],
+                    'message': form.cleaned_data['message'],
+                    'category': form.cleaned_data['category'].id,
+                }
+                request.session['input_data'] = input_data
+                ctx['category'] = form.cleaned_data['category']
+                return render(request, 'thread/confirm_topic.html', ctx)
+            else:
+                return render(request, self.template_name, {'form': form})
+
+
 def show_category(request, url_code):
     if request.method == 'GET':
         page_num = request.GET.get('p', 1)
