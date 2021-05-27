@@ -5,21 +5,22 @@ from django.views.generic import DetailView, CreateView, TemplateView, ListView,
 from django.urls import reverse_lazy
 from . forms import TopicModelForm, CommentModelForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.mail import send_mail
 
 
 def show_category(request, url_code):
     if request.method == 'GET':
         page_num = request.GET.get('p', 1)
-        pagenator = Paginator(
+        paginator = Paginator(
             Topic.objects.filter(category__url_code=url_code),
             1  # 1ページに表示するオブジェクト数
         )
         try:
-            page = pagenator.page(page_num)
+            page = paginator.page(page_num)
         except PageNotAnInteger:
-            page = pagenator.page(1)
+            page = paginator.page(1)
         except EmptyPage:
-            page = pagenator.page(pagenator.num_pages)
+            page = paginator.page(paginator.num_pages)
 
         ctx = {
             'category': get_object_or_404(Category, url_code=url_code),
@@ -73,10 +74,19 @@ class TopicCreateView(CreateView):
     def form_valid(self, form):
         ctx = {'form': form}
         if self.request.POST.get('next', '') == 'confirm':
+            ctx['category'] = form.cleaned_data['category']
             return render(self.request, 'thread/confirm_topic.html', ctx)
-        if self.request.POST.get('next', '') == 'back':
+        elif self.request.POST.get('next', '') == 'back':
             return render(self.request, 'thread/create_topic.html', ctx)
-        if self.request.POST.get('next', '') == 'create':
+        elif self.request.POST.get('next', '') == 'create':
+            send_mail(
+                subject='トピック作成: ' + form.created_data['title'],
+                message='トピックが生成されました。',
+                from_email='hogehoge@example.com',
+                recipient_list=[
+                    'admin@example.com',
+                ]
+            )
             return super().form_valid(form)
         else:
             # 正常動作ではここは通らない。エラーページへの遷移でも良い
