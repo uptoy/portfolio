@@ -19,6 +19,34 @@
                 </div>
             </div>
         </div>
+               <!--コメント表示-->
+        <div class="ui segment">
+            {% if comment_list %}
+            {% for comment in comment_list %}
+            <div class="ui segment secondary">
+                <p>{{comment.no}}. {{comment.user_name}}<br>{{comment.created}}</p>
+                {% if comment.pub_flg %}
+                <p><pre&gt:{{comment.message}}</pre></p>
+                {% else %}
+                <p style="color: #aaa">このコメントは非表示となりました。</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="ui warning message"><p>まだコメントはありません</p></div>
+            {% endif %}
+        </div>
+               <!--//コメント表示-->
+        <!--コメント投稿-->
+        <h4>コメント投稿</h4>
+        <div class="ui segment">
+            <form class="ui form" action="" method="POST">
+                {% csrf_token %}
+                {{form.as_p}}
+                <button class="ui button orange" type="submit">コメント投稿</button>
+            </form>
+        </div>
+        <!--//コメント投稿-->
     </div>
     {% include 'base/sidebar.html' %}
 </div>

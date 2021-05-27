@@ -1,9 +1,33 @@
-from . models import Topic, Category
+from . models import Topic, Category, Comment
 from django.shortcuts import render, redirect, get_object_or_404
 # from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import DetailView, CreateView, TemplateView, ListView
+from django.views.generic import DetailView, CreateView, TemplateView, ListView, FormView
 from django.urls import reverse_lazy
-from . forms import TopicModelForm
+from . forms import TopicModelForm, CommentModelForm
+
+
+class TopicAndCommentView(FormView):
+    template_name = 'thread/detail_topic.html'
+    form_class = CommentModelForm
+
+    def form_valid(self, form):
+        # comment = form.save(commit=False)  # 保存せずオブジェクト生成する
+        # comment.topic = Topic.objects.get(id=self.kwargs['pk'])
+        # comment.no = Comment.objects.filter(topic=self.kwargs['pk']).count() + 1
+        # comment.save()
+        # コメント保存のためsave_with_topicメソッドを呼ぶ
+        form.save_with_topic(self.kwargs.get('pk'))
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('thread:topic', kwargs={'pk': self.kwargs['pk']})
+
+    def get_context_data(self):
+        ctx = super().get_context_data()
+        ctx['topic'] = Topic.objects.get(id=self.kwargs['pk'])
+        ctx['comment_list'] = Comment.objects.filter(
+            topic_id=self.kwargs['pk']).order_by('no')
+        return ctx
 
 
 class TopicCreateView(CreateView):
