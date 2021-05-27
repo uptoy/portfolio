@@ -26,9 +26,18 @@
             <div class="ui segment secondary">
                 <p>{{comment.no}}. {{comment.user_name}}<br>{{comment.created}}</p>
                 {% if comment.pub_flg %}
-                <p><pre&gt:{{comment.message}}</pre></p>
+                <p>{{comment.message | comment_filter | safe}}</p>
+                <div class="ui right aligned vertical segment">
+                <div class="vote_button" style="cursor: pointer;"
+                data-comment-id="{{comment.id}}" data-count="{{comment.vote_count}}">
+                <i class="heart outline icon"></i>
+                <span class="vote_counter">
+                {% if comment.vote_count > 0 %}{{comment.vote_count}}{% endif %}
+                </span>
+                </div>
+                </div>
                 {% else %}
-                <p style="color: #aaa">このコメントは非表示となりました。</p>
+                <p style="color: grey">コメントは非表示とされました</p>
                 {% endif %}
             </div>
             {% endfor %}
@@ -50,4 +59,6 @@
     </div>
     {% include 'base/sidebar.html' %}
 </div>
+{% block js %}
+<script src="{% static 'js/vote.js' %}" type='text/javascript'></script>
 {% endblock %}

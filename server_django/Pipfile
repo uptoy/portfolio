@@ -16,6 +16,8 @@ django-crispy-forms = "*"
 pymysql = "*"
 cryptography = "*"
 django-debug-toolbar = "*"
+install = "*"
+bleach = "*"
 
 [dev-packages]
 

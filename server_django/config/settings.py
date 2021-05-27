@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'thread',
+    'api',
     'todo',
     'base',
     'django.contrib.admin',

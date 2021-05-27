@@ -106,3 +106,34 @@ class Comment(models.Model):
 
     def __str__(self):
         return '{}-{}'.format(self.topic.id, self.no)
+
+
+class VoteManager(models.Manager):
+    def create_vote(self, ip_address, comment_id):
+        vote = self.model(
+            ip_address=ip_address,
+            comment_id=comment_id
+        )
+        try:
+            vote.save()
+        except Vote.DoesNotSave:
+            Exception
+            return False
+        return True
+
+
+class Vote(models.Model):
+    comment = models.ForeignKey(
+        Comment,
+        on_delete=models.CASCADE,
+        null=True,
+    )
+    ip_address = models.CharField(
+        'IPアドレス',
+        max_length=50,
+    )
+
+    objects = VoteManager()
+
+    def __str__(self):
+        return '{}-{}'.format(self.comment.topic.title, self.comment.no)

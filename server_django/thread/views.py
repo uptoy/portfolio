@@ -16,8 +16,15 @@ class TopicAndCommentView(FormView):
         # comment.no = Comment.objects.filter(topic=self.kwargs['pk']).count() + 1
         # comment.save()
         # コメント保存のためsave_with_topicメソッドを呼ぶ
-        form.save_with_topic(self.kwargs.get('pk'))
+        Comment.objects.create_comment(
+            user_name=form.cleaned_data['user_name'],
+            message=form.cleaned_data['message'],
+            topic_id=self.kwargs['pk'],
+        )
         return super().form_valid(form)
+
+        # form.save_with_topic(self.kwargs.get('pk'))
+        # return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('thread:topic', kwargs={'pk': self.kwargs['pk']})
@@ -25,8 +32,10 @@ class TopicAndCommentView(FormView):
     def get_context_data(self):
         ctx = super().get_context_data()
         ctx['topic'] = Topic.objects.get(id=self.kwargs['pk'])
+        # ctx['comment_list'] = Comment.objects.filter(
+        # topic_id=self.kwargs['pk']).order_by('no')
         ctx['comment_list'] = Comment.objects.filter(
-            topic_id=self.kwargs['pk']).order_by('no')
+            topic_id=self.kwargs['pk']).annotate(vote_count=Count('vote')).order_by('no')
         return ctx
 
 

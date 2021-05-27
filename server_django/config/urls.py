@@ -10,7 +10,7 @@ urlpatterns = [
     path('todo/', include('todo.urls')),
     path('', include('base.urls')),
     path('thread/', include('thread.urls')),
-
+    path('api/', include('api.urls')),
 ]
 
 if settings.DEBUG:
