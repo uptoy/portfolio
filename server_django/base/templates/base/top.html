@@ -1,0 +1,33 @@
+{% extends 'base/base.html' %} {% block title %}Trade News -
+{{ block.super }}{% endblock %} {% block content %}
+<div class="ui grid stackable">
+	<div class="eleven wide column">
+		<div class="ui breadcrumb">
+			<a class="active section">TOP</a>
+		</div>
+		<div class="ui segment">
+			<div class="content">
+				<div class="header"><h3>新着トピック</h3></div>
+				<div class="ui divided items">
+					{% for topic in topic_list %}
+					<div class="item">
+						<div class="content">
+							<div class="header">
+								<a href="{% url 'thread:topic' pk=topic.id %}"
+									><h4>{{topic.title}}</h4></a
+								>
+							</div>
+							<div class="meta">
+								<span class="name">{{topic.user_name}}</span>
+								<span class="date">{{topic.created}}</span>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+	{% include 'base/sidebar.html' %}
+</div>
+{% endblock %}

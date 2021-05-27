@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="content-language" content="ja" />
+	<meta
+		name="viewport"
+		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+	/>
+	{% block meta_tag %}{% endblock %}
+	<link href="{% static 'css/semantic.css' %}" rel="stylesheet" />
+	{% block css %}{% endblock %}
+	<title>{% block title %}Analysis{% endblock %}</title>
+</head>
+<body>
+	<div class="ui stackable inverted menu">
+		<div class="header item">Trade Analysis</div>
+		<a class="item"> このサイトはなに？ </a>
+		<div class="right menu">
+			<a class="item"> Log in </a>
+			<a class="item"> Sign up </a>
+		</div>
+	</div>
+
+	<div class="ui container" style="min-height: 100vh">
+		{% block content %} {% endblock %}
+	</div>
+	<div class="ui inverted stackable footer segment">
+		<div class="ui container center aligned">
+			<div class="ui horizontal inverted small divided link list">
+				<a class="item">© 2019 Trade Analysis</a>
+				<a class="item">利用規約</a>
+				<a class="item">プライバシーポリシー</a>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="{% static 'js/semantic.js' %}"></script>
+	{% block js %}{% endblock %}
+</body>

@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %} {% block title %}利用規約 - {{ block.super }}{%
+endblock %} {% block content %}
+
+<div class="ui grid stackable">
+	<div class="eleven wide column">
+		<div class="ui breadcrumb">
+			<a href="{% url 'base:top' %}" class="section">TOP</a>
+			<i class="right angle icon divider"></i>
+			<a class="active section">利用規約</a>
+		</div>
+		<div class="ui segment">
+			<div class="content">
+				<div class="header"><h3>利用規約</h3></div>
+				<p>...............</p>
+				<p>...............</p>
+				<p>...........</p>
+				<p>.......</p>
+			</div>
+		</div>
+	</div>
+	{% include 'base/sidebar.html' %}
+</div>
+{% endblock %}

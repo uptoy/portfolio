@@ -1,0 +1,47 @@
+[
+    {
+        "model" : "thread.category",
+        "pk" : 1,
+        "fields" : {
+            "name" : "WEB技術",
+            "url_code" : "web_app",
+            "sort" : 1
+        }
+    },
+    {
+        "model" : "thread.category",
+        "pk" : 2,
+        "fields" : {
+            "name" : "モバイル",
+            "url_code" : "mobile",
+            "sort" : 2
+        }
+    },
+    {
+        "model" : "thread.category",
+        "pk" : 3,
+        "fields" : {
+            "name" : "プログラミング",
+            "url_code" : "programing",
+            "sort" : 3
+        }
+    },
+    {
+        "model" : "thread.category",
+        "pk" : 4,
+        "fields" : {
+            "name" : "OS関連・インフラ",
+            "url_code" : "os",
+            "sort" : 4
+        }
+    },
+    {
+        "model" : "thread.category",
+        "pk" : 5,
+        "fields" : {
+            "name" : "業界ネタ・憩いの場",
+            "url_code" : "chatter",
+            "sort" : 5
+        }
+    }
+]
