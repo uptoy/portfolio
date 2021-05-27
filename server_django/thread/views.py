@@ -7,7 +7,7 @@ from . forms import TopicModelForm, CommentModelForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
-def show_catgegory(request, url_code):
+def show_category(request, url_code):
     if request.method == 'GET':
         page_num = request.GET.get('p', 1)
         pagenator = Paginator(
