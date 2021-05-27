@@ -33,6 +33,11 @@ class TopicCreateViewBySession(FormView):
                 request.session.pop('input_data')  # セッションに保管した情報の削除
                 # メール送信処理は省略
                 return redirect(reverse_lazy('base:top'))
+                response = redirect(reverse_lazy('base:top'))
+                response.set_cookie('categ_id', request.session['input_data']['category'])
+                request.session.pop('input_data')  # セッションに保管した情報の削除
+                return response
+
         elif request.POST.get('next', '') == 'confirm':
             form = TopicModelForm(request.POST)
             if form.is_valid():
@@ -50,28 +55,35 @@ class TopicCreateViewBySession(FormView):
             else:
                 return render(request, self.template_name, {'form': form})
 
+    def get_context_data(self):
+        ctx = super().get_context_data()
+        if 'categ_id' in self.request.COOKIES:
+            form = ctx['form']
+            form['category'].field.initial = self.request.COOKIES['categ_id']
+            ctx['form'] = form
+            return ctx
 
-def show_category(request, url_code):
-    if request.method == 'GET':
-        page_num = request.GET.get('p', 1)
-        paginator = Paginator(
-            Topic.objects.filter(category__url_code=url_code),
-            1  # 1ページに表示するオブジェクト数
-        )
-        try:
-            page = paginator.page(page_num)
-        except PageNotAnInteger:
-            page = paginator.page(1)
-        except EmptyPage:
-            page = paginator.page(paginator.num_pages)
+    def show_category(request, url_code):
+        if request.method == 'GET':
+            page_num = request.GET.get('p', 1)
+            paginator = Paginator(
+                Topic.objects.filter(category__url_code=url_code),
+                1  # 1ページに表示するオブジェクト数
+            )
+            try:
+                page = paginator.page(page_num)
+            except PageNotAnInteger:
+                page = paginator.page(1)
+            except EmptyPage:
+                page = paginator.page(paginator.num_pages)
 
-        ctx = {
-            'category': get_object_or_404(Category, url_code=url_code),
-            'page_obj': page,
-            'topic_list': page.object_list,  # pageでもOK
-            'is_paginated': page.has_other_pages,
-        }
-        return render(request, 'thread/category.html', ctx)
+            ctx = {
+                'category': get_object_or_404(Category, url_code=url_code),
+                'page_obj': page,
+                'topic_list': page.object_list,  # pageでもOK
+                'is_paginated': page.has_other_pages,
+            }
+            return render(request, 'thread/category.html', ctx)
 
 
 class TopicAndCommentView(FormView):
