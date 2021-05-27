@@ -35,7 +35,7 @@ class TopicAndCommentView(FormView):
         # ctx['comment_list'] = Comment.objects.filter(
         # topic_id=self.kwargs['pk']).order_by('no')
         ctx['comment_list'] = Comment.objects.filter(
-            topic_id=self.kwargs['pk']).annotate(vote_count=Count('vote')).order_by('no')
+            topic_id=self.kwargs['pk']).annotate(vote_count=self.count('vote')).order_by('no')
         return ctx
 
 

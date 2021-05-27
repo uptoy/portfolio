@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %} {% block title %}検索結果 - {{ block.super }}{%
+endblock %} {% block content %}
+<div class="ui grid stackable">
+	<div class="eleven wide column">
+		<div class="ui breadcrumb">
+			<a href="{% url 'base:top' %}" class="section">TOP</a>
+			<i class="right angle icon divider"></i>
+			<a class="active section">検索結果</a>
+		</div>
+		<div class="ui segment">
+			<div class="content">
+				<div class="header"><h3>検索結果</h3></div>
+				<form action="{% url 'search:result' %}" method="GET">
+					<div class="ui action input" style="width: 100%">
+						<input type="text" placeholder="検索" value="{{query}}" name="q" />
+						<button class="ui button"><i class="search icon"></i></button>
+					</div>
+				</form>
+				{% if result_list %} {% for result in result_list %}
+				<div class="ui segment message">
+					<h3>
+						<a href="{% url 'thread:topic' pk=result.id %}">{{result.title}}</a>
+					</h3>
+					<p>{{result.message | truncatewords:30}}</p>
+				</div>
+				{% endfor %} {% else %}
+				<div class="ui segment warning message">
+					<p>検索結果はありません。</p>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	{% include 'base/sidebar.html' %}
+</div>
+{% endblock %}

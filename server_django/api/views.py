@@ -15,7 +15,7 @@ class CreateVoteView(View):
             'message': '処理に失敗しました。'
         }
         # POST値に'comment_id'がなければBAD REQUESTとする
-        if not 'comment_id' in request.POST:
+        if 'comment_id' not in request.POST:
             return JsonResponse(res, status=400)
 
         # コメントIDとIPアドレスの取得
