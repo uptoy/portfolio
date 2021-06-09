@@ -236,3 +236,28 @@ class CategoryView(ListView):
         ctx = super().get_context_data(**kwargs)
         ctx['category'] = get_object_or_404(Category, url_code=self.kwargs['url_code'])
         return ctx
+
+
+class TopicViewAndCommentCreateView(FormView):
+    template_name = 'thread/detail_topic.html'
+    form_class = CommentModelForm
+
+    def form_valid(self, form):
+        Comment.objects.create_comment(
+            user_name=form.cleaned_data['user_name'],
+            message=form.cleaned_data['message'],
+            topic_id=self.kwargs['pk'],
+            image=form.cleaned_data['image']
+        )
+        response = super().form_valid(form)
+        return response
+
+    def get_success_url(self):
+        return reverse_lazy('thread:topic', kwargs={'pk': self.kwargs['pk']})
+
+    def get_context_data(self):
+        ctx = super().get_context_data()
+        ctx['topic'] = Topic.objects.get(id=self.kwargs['pk'])
+        ctx['comment_list'] = Comment.objects.filter(
+            topic_id=self.kwargs['pk']).annotate(vote_count=Count('vote')).order_by('no')
+        return ctx

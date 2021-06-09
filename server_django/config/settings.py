@@ -151,3 +151,6 @@ EMAIL_PORT = 1025
 EMAIL_HOST = '192.168.0.10'
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASS = ''
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

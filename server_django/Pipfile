@@ -18,6 +18,7 @@ cryptography = "*"
 django-debug-toolbar = "*"
 install = "*"
 bleach = "*"
+pillow = "*"
 
 [dev-packages]
 
