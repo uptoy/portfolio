@@ -1,28 +1,35 @@
-{% extends 'base/base.html' %} {% block title %}トピック作成 - {{ block.super
-}}{% endblock %} {% block content %}
+{% extends 'base/base.html' %}
+{% block title %}スレッド作成 - {{ block.super }}{% endblock %}
+{% block content %}
 <div class="ui grid stackable">
 	<div class="eleven wide column">
 		<div class="ui breadcrumb">
 			<a href="{% url 'base:top' %}" class="section">TOP</a>
 			<i class="right angle icon divider"></i>
-			<a class="active section">トピック作成</a>
+			<a class="active section">スレッド作成</a>
 		</div>
 		<div class="ui segment">
 			<div class="content">
-				<div class="header"><h3>トピック作成</h3></div>
-				<form
-					class="ui form"
-					action="{% url 'thread:create_topic' %}"
-					method="POST"
-				>
-					{% csrf_token %} {% for field in form %}
+				<div class="header">
+					<h3>スレッド作成</h3>
+				</div>
+				{% if not user.is_authenticated %}
+				<div class="ui warning message">
+					<p>ゲストユーザーでスレッド作成しますか？ログインする場合は以下のボタンでログインして下さい。</p>
+					<a class="ui button orange"
+						href="/accounts/login?next=/thread/create_topic/">ログイン</a>
+				</div>
+				{% endif %}
+				<form class="ui form" action="{% url 'thread:create_topic' %}" method="POST">
+					{% csrf_token %}
+					<!-- {{form.as_p}} -->
+					{% for field in form %}
 					<div class="field">{{field.label_tag}}{{field}}</div>
 					{% for error in field.errors%}
-					<p style="color: red">{{error}}</p>
-					{% endfor%} {% endfor %}
-					<button type="submit" class="ui button" name="next" value="confirm">
-						作成
-					</button>
+					<p style="color: red;">{{error}}</p>
+					{% endfor%}
+					{% endfor %}
+					<button type="submit" class="ui button" name="next" value="confirm">作成</button>
 				</form>
 			</div>
 		</div>

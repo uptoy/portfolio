@@ -1,75 +1,57 @@
 {% extends 'base/base.html' %}
-{% block title %}トピック作成 - {{ block.super }}{% endblock %}
+{% block title %}スレッド作成 - {{ block.super }}{% endblock %}
 {% block content %}
 <div class="ui grid stackable">
     <div class="eleven wide column">
         <div class="ui breadcrumb">
             <a href="{% url 'base:top' %}" class="section">TOP</a>
             <i class="right angle icon divider"></i>
-            <a href="{% url 'thread:category' url_code=topic.category.url_code %}"
-                class="section">{{topic.category.name}}</a>
-            <i class="right angle icon divider"></i>
-            <a class="active section">{{topic.title}}</a>
+            <a class="active section">スレッド作成</a>
         </div>
         <div class="ui segment">
             <div class="content">
                 <div class="header">
-                    <h3>{{topic.title}}</h3>
+                    <h3>スレッド作成</h3>
                 </div>
-                <p>{{topic.user_name}} - {{topic.created}}</p>
-                <div class="ui secondary segment">
-                    <p>
-                    <pre>{{topic.message}}</pre>
-                    </p>
-                </div>
+                <p>内容を確認してください</p>
+                <table class="ui celled table table table-hover">
+                    <tr>
+                        <td>タイトル</td>
+                        <td>{{form.title.value}}</td>
+                    </tr>
+                    {% if user.is_authenticated %}
+                    <tr>
+                        <td>お名前</td>
+                        <td>{{user.username}}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td>ゲスト名</td>
+                        <td>{{form.cleaned_data.user_name}}</td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <td>カテゴリー</td>
+                        <td>{{form.cleaned_data.category}}</td>
+                    </tr>
+                    <tr>
+                        <td>本文</td>
+                        <td>
+                            <pre>{{form.message.value}}</pre>
+                        </td>
+                    </tr>
+                </table>
+                <form class="ui form" action="{% url 'thread:create_topic' %}" method="POST">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    {{field.as_hidden}}
+                    {% endfor %}
+                    <button class="ui button grey" type="submit" name="next" value="back">戻る</button>
+                    <button class="ui button orange" type="submit" name="next" value="create">作成</button>
+                </form>
             </div>
         </div>
-        <!--コメント表示-->
-        <div class="ui segment">
-            {% if comment_list %}
-            {% for comment in comment_list %}
-            <div class="ui segment secondary">
-                <p>{{comment.no}}. {{comment.user_name}}<br>{{comment.created}}</p>
-                {% if comment.pub_flg %}
-                <p>{{comment.message | comment_filter | safe}}</p>
-                {% if comment.image %}
-                <a href="{{comment.image.url}}" target="_blank" rel="noopener noreferrer"><img
-                        src="{{comment.image.url}}" width=200px></a>
-                {% endif %}
-                <div class="ui right aligned vertical segment">
-                    <div class="vote_button" style="cursor: pointer;" data-comment-id="{{comment.id}}"
-                        data-count="{{comment.vote_count}}">
-                        <i class="heart outline icon"></i>
-                        <span class="vote_counter">
-                            {% if comment.vote_count > 0 %}{{comment.vote_count}}{% endif %}
-                        </span>
-                    </div>
-                </div>
-                {% else %}
-                <p style="color: grey">コメントは非表示とされました</p>
-                {% endif %}
-            </div>
-            {% endfor %}
-            {% else %}
-            <div class="ui warning message">
-                <p>まだコメントはありません</p>
-            </div>
-            {% endif %}
-        </div>
-        <!--//コメント表示-->
-        <!--コメント投稿-->
-        <h4>コメント投稿</h4>
-        <div class="ui segment">
-            <form class="ui form" action="" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{form.as_p}}
-                <button class="ui button orange" type="submit">コメント投稿</button>
-            </form>
-        </div>
-        <!--//コメント投稿-->
     </div>
     {% include 'base/sidebar.html' %}
 </div>
-{% block js %}
-<script src="{% static 'js/vote.js' %}" type='text/javascript'></script>
 {% endblock %}
