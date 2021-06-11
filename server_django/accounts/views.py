@@ -16,7 +16,8 @@ from .forms import (
     UserInfoChangeForm,
     CustomAuthenticationForm, CustomPasswordChangeForm,
     CustomPasswordResetForm, CustomSetPasswordForm,
-    CustomUserCreationForm, EmailChangeForm
+    CustomUserCreationForm, EmailChangeForm, EmailAuthenticationForm
+
 )
 
 # Create your views here.
@@ -102,6 +103,8 @@ class UserChangeView(LoginRequiredMixin, FormView):
 
 class CustomLoginView(LoginView):
     form_class = CustomAuthenticationForm
+    # form_class = CustomAuthenticationForm
+    form_class = EmailAuthenticationForm
 
 
 class CustomLogoutView(LogoutView):
