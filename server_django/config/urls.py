@@ -17,7 +17,8 @@ sitemaps = {
 urlpatterns = [
     path('', include('base.urls')),
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),
+    # path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('accounts.urls')),
     path('todo/', include('todo.urls')),
     path('thread/', include('thread.urls')),
     path('api/', include('api.urls')),

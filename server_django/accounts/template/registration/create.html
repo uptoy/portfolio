@@ -1,0 +1,27 @@
+{% extends 'base/base.html' %}
+{% block title %}ITについて切磋琢磨する掲示板 - {{ block.super }}{% endblock %}
+{% block content %}
+<div class="ui grid stackable">
+	<div class="eleven wide column">
+		<div class="ui breadcrumb">
+			<a href="{% url 'base:top' %}" class="section">TOP</a>
+			<i class="right angle icon divider"></i>
+			<a class="active section">ユーザー作成</a>
+		</div>
+		<div class="ui segment">
+			<div class="content">
+				<div class="header">
+					<h3>ユーザー作成</h3>
+				</div>
+				<form class="ui form" action="" method="POST">
+					{% csrf_token %}
+					{{form.as_p}}
+					<button class="ui orange button" name="next" value="confirm"
+						type="submit">確認</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	{% include 'base/sidebar.html' %}
+</div>
+{% endblock %}

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'todo',
     'base',
     'search',
+    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -1,25 +1,29 @@
 {% load static %}
 <!DOCTYPE html>
+
 <head>
 	<meta charset="UTF-8" />
 	<meta http-equiv="content-language" content="ja" />
-	<meta
-		name="viewport"
-		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-	/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
 	{% block meta_tag %}{% endblock %}
 	<link href="{% static 'css/semantic.css' %}" rel="stylesheet" />
 	{% block css %}{% endblock %}
 	<title>{% block title %}Trade Analysis{% endblock %}</title>
 </head>
+
 <body>
 	<div class="ui stackable inverted menu">
 		<a href="{% url 'base:top' %}" class="header item"> Trade Analysis </a>
 		<a href="{% url 'base:about' %}" class="item"> このサイトはなに？ </a>
 		<a class="item" href="{% url 'thread:create_topic' %}"> トピック作成 </a>
 		<div class="right menu">
-			<a class="item"> Log in </a>
-			<a class="item"> Sign up </a>
+			{% if user.is_authenticated %}
+			<a class="item" href="">ユーザー情報</a>
+			<a class="item" href="">ログアウト</a>
+			{% else %}
+			<a class="item" href="">ログイン</a>
+			<a class="item" href="{% url 'accounts:create' %}">ユーザー登録</a>
+			{% endif %}
 		</div>
 	</div>
 
@@ -29,9 +33,7 @@
 	<div class="ui inverted stackable footer segment">
 		<div class="ui container center aligned">
 			<div class="ui horizontal inverted small divided link list">
-				<a href="{% url 'base:top' %}" class="item"
-					>© 2019 IT学習ちゃんねる(仮)</a
-				>
+				<a href="{% url 'base:top' %}" class="item">© 2019 IT学習ちゃんねる(仮)</a>
 				<a href="{% url 'base:terms' %}" class="item">利用規約</a>
 				<a href="{% url 'base:policy' %}" class="item">プライバシーポリシー</a>
 			</div>
