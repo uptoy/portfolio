@@ -24,7 +24,7 @@
 				</div>
 			</div>
 		</div>
-		<a class="ui button" href="">登録情報変更</a>
+		<a class="ui button" href="{% url 'accounts:change' %}">登録情報変更</a>
 		<a class="ui button" href="{% url 'accounts:password_change' %}">パスワード変更</a>
 	</div>
 	{% include 'base/sidebar.html' %}
