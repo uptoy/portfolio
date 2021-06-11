@@ -13,7 +13,7 @@ from django.contrib.auth import login, authenticate
 class UserCreateView(FormView):
     form_class = UserCreationForm
     template_name = 'registration/create.html'
-    success_url = reverse_lazy('base:top')
+    success_url = reverse_lazy('accounts:profile')
 
     def form_valid(self, form):
         print(self.request.POST['next'])
@@ -34,3 +34,10 @@ class UserCreateView(FormView):
         else:
             # 通常このルートは通らない
             return redirect(reverse_lazy('base:top'))
+
+
+class UserProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'registration/profile.html'
+
+    def get_queryset(self):
+        return User.objects.get(id=self.request.user.id)

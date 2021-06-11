@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+{% block title %}ITについて切磋琢磨する掲示板 - {{ block.super }}{% endblock %}
+{% block content %}
+<div class="ui grid stackable">
+	<div class="eleven wide column">
+		<div class="ui breadcrumb">
+			<a href="{% url 'base:top' %}" class="section">TOP</a>
+			<i class="right angle icon divider"></i>
+			<a class="active section">ユーザー情報</a>
+		</div>
+		<div class="ui segment">
+			<div class="content">
+				<div class="header">
+					<h3>ユーザー情報</h3>
+				</div>
+				<div class="ui divided bulleted list">
+					<div class="item">ログインID：{{user.username}}</div>
+					<div class="item">E-mail：{% if user.email %}{{user.email}}{% else %}未設定{% endif
+						%}</div>
+					<div class="item">名字：{% if user.last_name %}{{user.last_name}}{% else %}未設定{%
+						endif %}</div>
+					<div class="item">名前：{% if user.first_name %}{{user.first_name}}{% else %}未設定{%
+						endif %}</div>
+				</div>
+			</div>
+		</div>
+		<a class="ui button" href="">登録情報変更</a>
+		<a class="ui button" href="">パスワード変更</a>
+	</div>
+	{% include 'base/sidebar.html' %}
+</div>
+{% endblock %}
