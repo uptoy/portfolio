@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+{% block title %}ITについて切磋琢磨する掲示板 - {{ block.super }}{% endblock %}
+{% block content %}
+<div class="ui grid stackable">
+	<div class="eleven wide column">
+		<div class="ui breadcrumb">
+			<a href="{% url 'base:top' %}" class="section">TOP</a>
+			<i class="right angle icon divider"></i>
+			<a class="active section">ログアウト完了</a>
+		</div>
+		<div class="ui segment">
+			<div class="content">
+				<div class="header">
+					<h3>ログアウトしました。</h3>
+				</div>
+				<p><a href="{% url 'base:top' %}">TOPへ戻る</a></p>
+			</div>
+		</div>
+	</div>
+	{% include 'base/sidebar.html' %}
+</div>
+{% endblock %}
