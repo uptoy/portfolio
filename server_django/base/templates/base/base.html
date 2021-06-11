@@ -21,7 +21,7 @@
 			<a class="item" href="{% url 'accounts:profile' %}">ユーザー情報</a>
 			<a class="item" href="">ログアウト</a>
 			{% else %}
-			<a class="item" href="">ログイン</a>
+			<a class="item" href="{% url 'login' %}">ログイン</a>
 			<a class="item" href="{% url 'accounts:create' %}">ユーザー登録</a>
 			{% endif %}
 		</div>
