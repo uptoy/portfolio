@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+{% block title %}ITについて切磋琢磨する掲示板 - {{ block.super }}{% endblock %}
+{% block content %}
+<div class="ui grid stackable">
+	<div class="eleven wide column">
+		<div class="ui breadcrumb">
+			<a href="{% url 'base:top' %}" class="section">TOP</a>
+			<i class="right angle icon divider"></i>
+			<a class="active section">ユーザー作成</a>
+		</div>
+		<div class="ui segment">
+			<div class="content">
+				<div class="header">
+					<h3>ユーザー作成</h3>
+				</div>
+				<table class="ui celled table table table-hover">
+					<tr>
+						<td>お名前</td>
+						<td>{{form.cleaned_data.username}}</td>
+					</tr>
+					<tr>
+						<td>メールアドレス</td>
+						<td>{{form.cleaned_data.email}}</td>
+					</tr>
+					<tr>
+						<td>パスワード</td>
+						<td>********</td>
+					</tr>
+				</table>
+				<form class="ui form" action="" method="POST">
+					{% csrf_token %}
+					{% for field in form %}
+					{{field.as_hidden}}
+					{% endfor %}
+					<button class="ui button" name="next" value="back" type="submit">修正</button>
+					<button class="ui orange button" name="next" value="regist"
+						type="submit">登録</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	{% include 'base/sidebar.html' %}
+</div>
+{% endblock %}
