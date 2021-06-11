@@ -19,9 +19,9 @@
 		<div class="right menu">
 			{% if user.is_authenticated %}
 			<a class="item" href="{% url 'accounts:profile' %}">ユーザー情報</a>
-			<a class="item" href="">ログアウト</a>
+			<a class="item" href="{% url 'accounts:logout' %}">ログアウト</a>
 			{% else %}
-			<a class="item" href="{% url 'login' %}">ログイン</a>
+			<a class="item" href="{% url 'accounts:login' %}">ログイン</a>
 			<a class="item" href="{% url 'accounts:create' %}">ユーザー登録</a>
 			{% endif %}
 		</div>

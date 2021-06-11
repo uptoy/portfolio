@@ -1,13 +1,16 @@
 
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, LoginView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib.auth import login, authenticate
+from .forms import CustomAuthenticationForm
 
-# Create your views here.
+
+class CustomLoginView(LoginView):
+    form_class = CustomAuthenticationForm
 
 
 class UserCreateView(FormView):
