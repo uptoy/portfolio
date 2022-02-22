@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+	"backend/handler"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,11 +19,14 @@ func main() {
 
 	router := gin.Default()
 
-  router.GET("/api", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"hello": "world",
-		})
-	})
+  handler.NewHandler(&handler.Config{
+    R:router,
+  })
+  // router.GET("/api", func(c *gin.Context) {
+	// 	c.JSON(http.StatusOK, gin.H{
+	// 		"hello": "world",
+	// 	})
+	// })
 
 	srv := &http.Server{
 		Addr:    ":8080",
