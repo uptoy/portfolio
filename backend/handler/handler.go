@@ -10,16 +10,20 @@ import (
 
 type Handler struct {
 	UserService model.UserService
+	TokenService model.TokenService
 }
 
 type Config struct {
 	R           *gin.Engine
 	UserService model.UserService
+	TokenService model.TokenService
+
 }
 
 func NewHandler(c *Config) {
 	h := &Handler{
 		UserService: c.UserService,
+		TokenService: c.TokenService,
 	}
 
 	g := c.R.Group(os.Getenv("BACKEND_API_URL"))
