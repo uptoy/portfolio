@@ -31,12 +31,7 @@ func NewHandler(c *Config) {
 	g.POST("/tokens", h.Tokens)
 }
 
-// Signup handler
-func (h *Handler) Signup(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"hello": "it's signup",
-	})
-}
+
 
 // Signin handler
 func (h *Handler) Signin(c *gin.Context) {
