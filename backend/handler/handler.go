@@ -4,17 +4,23 @@ import (
 	"net/http"
 	"os"
 
+	"backend/model"
 	"github.com/gin-gonic/gin"
 )
 
-type Handler struct{}
+type Handler struct {
+	UserService model.UserService
+}
 
 type Config struct {
-	R *gin.Engine
+	R           *gin.Engine
+	UserService model.UserService
 }
 
 func NewHandler(c *Config) {
-	h := &Handler{} // currently has no properties
+	h := &Handler{
+		UserService: c.UserService,
+	}
 
 	g := c.R.Group(os.Getenv("BACKEND_API_URL"))
 
@@ -23,14 +29,6 @@ func NewHandler(c *Config) {
 	g.POST("/signin", h.Signin)
 	g.POST("/signout", h.Signout)
 	g.POST("/tokens", h.Tokens)
-}
-
-// Me handler calls services for getting
-// a user's details
-func (h *Handler) Me(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"hello": "it's me",
-	})
 }
 
 // Signup handler
