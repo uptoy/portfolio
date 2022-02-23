@@ -33,7 +33,7 @@ services:
       context: ./backend
       target: builder
     image: backend
-    env_file: .env.dev
+    env_file: ./backend/.env.dev
     expose:
       - "8080"
     labels:
