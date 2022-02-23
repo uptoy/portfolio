@@ -94,14 +94,19 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	// initialize gin.Engine
 	router := gin.Default()
 
-	// read in ACCOUNT_API_URL
-	baseURL := os.Getenv("ACCOUNT_API_URL")
+	// read in BACKEND_API_URL
+	baseURL := os.Getenv("BACKEND_API_URL")
 
 	// read in HANDLER_TIMEOUT
 	handlerTimeout := os.Getenv("HANDLER_TIMEOUT")
 	ht, err := strconv.ParseInt(handlerTimeout, 0, 64)
 	if err != nil {
 		return nil, fmt.Errorf("could not parse HANDLER_TIMEOUT as int: %w", err)
+	}
+	maxBodyBytes := os.Getenv("MAX_BODY_BYTES")
+	mbb, err := strconv.ParseInt(maxBodyBytes, 0, 64)
+	if err != nil {
+		return nil, fmt.Errorf("could not parse MAX_BODY_BYTES as int: %w", err)
 	}
 
 	handler.NewHandler(&handler.Config{
@@ -110,6 +115,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 		TokenService:    tokenService,
 		BaseURL:         baseURL,
 		TimeoutDuration: time.Duration(time.Duration(ht) * time.Second),
+		MaxBodyBytes:    mbb,
 	})
 
 	return router, nil

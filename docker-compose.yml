@@ -55,6 +55,23 @@ services:
     # have to use $$ (double-dollar) so docker doesn't try to substitute a variable
     command: reflex -r "\.go$$" -s -- sh -c "go run ./"
 
+frontend:
+    build:
+      context: ./frontend
+    image: frontend # if we don't give image name, traefik won't create router 🤷‍♂️
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`malcorp.test`) && PathPrefix(`/`)"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules #avoid overwriting node_modules
+    depends_on:
+      - reverse-proxy
+
 volumes:
   pgdata:
   redisdata:

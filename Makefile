@@ -31,9 +31,9 @@ migrate-force:
 
 
 init:
-	docker-compose up -d postgres-account && \
+	docker-compose up -d postgres && \
 	$(MAKE) create-keypair ENV=dev && \
 	$(MAKE) create-keypair ENV=test && \
-	$(MAKE) migrate-down APPPATH=account N= && \
-	$(MAKE) migrate-up APPPATH=account N= && \
+	$(MAKE) migrate-down APPPATH=backend N= && \
+	$(MAKE) migrate-up APPPATH=backend N= && \
 	docker-compose down

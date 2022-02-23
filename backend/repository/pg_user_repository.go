@@ -94,7 +94,7 @@ func (r *pGUserRepository) Update(ctx context.Context, u *model.User) error {
 }
 
 // UpdateImage is used to separately update a user's image separate from
-// other account details
+// other api details
 func (r *pGUserRepository) UpdateImage(ctx context.Context, uid uuid.UUID, imageURL string) (*model.User, error) {
 	query := `
 		UPDATE users
