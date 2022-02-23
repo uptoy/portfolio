@@ -1,13 +1,13 @@
 package repository
 
 import (
-	"github.com/jmoiron/sqlx"
-	"log"
 	"backend/model"
 	"backend/model/apperrors"
 	"context"
-	"github.com/lib/pq"
 	"github.com/google/uuid"
+	"github.com/jmoiron/sqlx"
+	"github.com/lib/pq"
+	"log"
 )
 
 // PGUserRepository is data/repository implementation
@@ -27,15 +27,16 @@ func NewUserRepository(db *sqlx.DB) model.UserRepository {
 func (r *PGUserRepository) Create(ctx context.Context, u *model.User) error {
 	query := "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *"
 
-	if err := r.DB.Get(u, query, u.Email, u.Password); err != nil {
-			// check unique constraint
-			if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
-					log.Printf("Could not create a user with email: %v. Reason: %v\n", u.Email, err.Code.Name())
-					return apperrors.NewConflict("email", u.Email)
-			}
+	if err := r.DB.GetContext(ctx, u, query, u.Email, u.Password); err != nil {
 
-			log.Printf("Could not create a user with email: %v. Reason: %v\n", u.Email, err)
-			return apperrors.NewInternal()
+		// check unique constraint
+		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
+			log.Printf("Could not create a user with email: %v. Reason: %v\n", u.Email, err.Code.Name())
+			return apperrors.NewConflict("email", u.Email)
+		}
+
+		log.Printf("Could not create a user with email: %v. Reason: %v\n", u.Email, err)
+		return apperrors.NewInternal()
 	}
 	return nil
 }
@@ -47,8 +48,8 @@ func (r *PGUserRepository) FindByID(ctx context.Context, uid uuid.UUID) (*model.
 	query := "SELECT * FROM users WHERE uid=$1"
 
 	// we need to actually check errors as it could be something other than not found
-	if err := r.DB.Get(user, query, uid); err != nil {
-			return user, apperrors.NewNotFound("uid", uid.String())
+	if err := r.DB.GetContext(ctx, user, query, uid); err != nil {
+		return user, apperrors.NewNotFound("uid", uid.String())
 	}
 
 	return user, nil
