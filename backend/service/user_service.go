@@ -15,14 +15,14 @@ import (
 // userService acts as a struct for injecting an implementation of UserRepository
 // for use in service methods
 type userService struct {
-	UserRepository model.UserRepository
+	UserRepository  model.UserRepository
 	ImageRepository model.ImageRepository
 }
 
 // USConfig will hold repositories that will eventually be injected into this
 // this service layer
 type USConfig struct {
-	UserRepository model.UserRepository
+	UserRepository  model.UserRepository
 	ImageRepository model.ImageRepository
 }
 
@@ -30,9 +30,42 @@ type USConfig struct {
 // initializing a UserService with its repository layer dependencies
 func NewUserService(c *USConfig) model.UserService {
 	return &userService{
-		UserRepository: c.UserRepository,
+		UserRepository:  c.UserRepository,
 		ImageRepository: c.ImageRepository,
 	}
+}
+
+func (s *userService) ClearProfileImage(
+	ctx context.Context,
+	uid uuid.UUID,
+) error {
+	user, err := s.UserRepository.FindByID(ctx, uid)
+
+	if err != nil {
+		return err
+	}
+
+	if user.ImageURL == "" {
+		return nil
+	}
+
+	objName, err := objNameFromURL(user.ImageURL)
+	if err != nil {
+		return err
+	}
+
+	err = s.ImageRepository.DeleteProfile(ctx, objName)
+	if err != nil {
+		return err
+	}
+
+	_, err = s.UserRepository.UpdateImage(ctx, uid, "")
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // Get retrieves a user based on their uuid
