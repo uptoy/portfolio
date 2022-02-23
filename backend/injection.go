@@ -94,8 +94,8 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	// initialize gin.Engine
 	router := gin.Default()
 
-	// read in ACCOUNT_API_URL
-	baseURL := os.Getenv("ACCOUNT_API_URL")
+	// read in BACKEND_API_URL
+	baseURL := os.Getenv("BACKEND_API_URL")
 
 	// read in HANDLER_TIMEOUT
 	handlerTimeout := os.Getenv("HANDLER_TIMEOUT")

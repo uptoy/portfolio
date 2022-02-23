@@ -37,7 +37,7 @@ func NewHandler(c *Config) {
 		MaxBodyBytes: c.MaxBodyBytes,
 	} // currently has no properties
 
-	// Create an account group
+	// Create an api group
 	g := c.R.Group(c.BaseURL)
 
 	if gin.Mode() != gin.TestMode {

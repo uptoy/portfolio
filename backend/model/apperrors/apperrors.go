@@ -13,7 +13,7 @@ type Type string
 const (
 	Authorization        Type = "AUTHORIZATION"          // Authentication Failures -
 	BadRequest           Type = "BAD_REQUEST"            // Validation errors / BadInput
-	Conflict             Type = "CONFLICT"               // Already exists (eg, create account with existent email) - 409
+	Conflict             Type = "CONFLICT"               // Already exists (eg, create api with existent email) - 409
 	Internal             Type = "INTERNAL"               // Server (500) and fallback errors
 	NotFound             Type = "NOT_FOUND"              // For not finding resource
 	PayloadTooLarge      Type = "PAYLOAD_TOO_LARGE"      // for uploading tons of JSON, or an image over the limit - 413
