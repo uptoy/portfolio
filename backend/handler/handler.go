@@ -2,63 +2,71 @@ package handler
 
 import (
 	"net/http"
-	"os"
+	"time"
 
+	"backend/handler/middleware"
 	"backend/model"
+	"backend/model/apperrors"
 	"github.com/gin-gonic/gin"
 )
 
+// Handler struct holds required services for handler to function
 type Handler struct {
-	UserService model.UserService
+	UserService  model.UserService
 	TokenService model.TokenService
 }
 
+// Config will hold services that will eventually be injected into this
+// handler layer on handler initialization
 type Config struct {
-	R           *gin.Engine
-	UserService model.UserService
-	TokenService model.TokenService
-
+	R               *gin.Engine
+	UserService     model.UserService
+	TokenService    model.TokenService
+	BaseURL         string
+	TimeoutDuration time.Duration
 }
 
+// NewHandler initializes the handler with required injected services along with http routes
+// Does not return as it deals directly with a reference to the gin Engine
 func NewHandler(c *Config) {
+	// Create a handler (which will later have injected services)
 	h := &Handler{
-		UserService: c.UserService,
+		UserService:  c.UserService,
 		TokenService: c.TokenService,
+	} // currently has no properties
+
+	// Create an account group
+	g := c.R.Group(c.BaseURL)
+
+	if gin.Mode() != gin.TestMode {
+		g.Use(middleware.Timeout(c.TimeoutDuration, apperrors.NewServiceUnavailable()))
+		g.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
+		g.POST("/signout", h.Signout)
+		g.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
+	} else {
+		g.GET("/me", h.Me)
+		g.POST("/signout", h.Signout)
+		g.PUT("/details", h.Details)
 	}
 
-	g := c.R.Group(os.Getenv("BACKEND_API_URL"))
-
-	g.GET("/me", h.Me)
 	g.POST("/signup", h.Signup)
 	g.POST("/signin", h.Signin)
-	g.POST("/signout", h.Signout)
-	g.POST("/tokens", h.Tokens)
+
+	g.POST("/image", h.Image)
+	g.DELETE("/image", h.DeleteImage)
 }
 
 
-
-// Signin handler
-func (h *Handler) Signin(c *gin.Context) {
+// Image handler
+func (h *Handler) Image(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"hello": "it's signin",
+		"hello": "it's image",
 	})
 }
 
-// Signout handler
-func (h *Handler) Signout(c *gin.Context) {
+// DeleteImage handler
+func (h *Handler) DeleteImage(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"hello": "it's signout",
+		"hello": "it's deleteImage",
 	})
 }
-
-// Tokens handler
-func (h *Handler) Tokens(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"hello": "it's tokens",
-	})
-}
-
-// curl -X GET http://malcorp.test/api/account/me
-// {"hello":"it's me"}%
-// curl -X POST http://malcorp.test/api/account/signin
-// {"hello":"it's signin"}%
