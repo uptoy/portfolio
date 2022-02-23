@@ -38,6 +38,17 @@ type UserRepository interface {
 	UpdateImage(ctx context.Context, uid uuid.UUID, imageURL string) (*User, error)
 }
 
+// PostRepository defines methods the service layer expects
+// any repository it interacts with to implement
+type PostRepository interface {
+	Create(ctx context.Context, input *CreatePostInput) (*Post, error)
+	FindByID(ctx context.Context, uid uuid.UUID) (*Post, error)
+	List(ctx context.Context, limit, offset int) ([]*Post, error)
+	ListByUserID(ctx context.Context, uid uuid.UUID, limit, offset int) ([]*Post, error)
+	Update(ctx context.Context, uid uuid.UUID, input *UpdatePostInput) (*Post, error)
+	// Delete(ctx context.Context, uid uuid.UUID) (*Post, error)
+}
+
 // TokenRepository defines methods it expects a repository
 // it interacts with to implement
 type TokenRepository interface {
@@ -45,7 +56,6 @@ type TokenRepository interface {
 	DeleteRefreshToken(ctx context.Context, userID string, prevTokenID string) error
 	DeleteUserRefreshTokens(ctx context.Context, userID string) error
 }
-
 
 // ImageRepository defines methods it expects a repository
 // it interacts with to implement
