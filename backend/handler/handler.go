@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"backend/handler/middleware"
 	"backend/model"
 	"backend/model/apperrors"
+	"github.com/gin-gonic/gin"
 )
 
 // Handler struct holds required services for handler to function
@@ -40,9 +40,11 @@ func NewHandler(c *Config) {
 
 	if gin.Mode() != gin.TestMode {
 		g.Use(middleware.Timeout(c.TimeoutDuration, apperrors.NewServiceUnavailable()))
+		g.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
+	} else {
+		g.GET("/me", h.Me)
 	}
 
-	g.GET("/me", h.Me)
 	g.POST("/signup", h.Signup)
 	g.POST("/signin", h.Signin)
 	g.POST("/signout", h.Signout)
@@ -51,7 +53,6 @@ func NewHandler(c *Config) {
 	g.DELETE("/image", h.DeleteImage)
 	g.PUT("/details", h.Details)
 }
-
 
 // Signout handler
 func (h *Handler) Signout(c *gin.Context) {
