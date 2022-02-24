@@ -31,13 +31,19 @@ type TokenService interface {
 	ValidateRefreshToken(refreshTokenString string) (*RefreshToken, error)
 }
 
-
 type ProductService interface {
 	Create(ctx context.Context, input *Product) (*Product, error)
 	FindByID(ctx context.Context, uid uuid.UUID) (*Product, error)
 	List(ctx context.Context, limit, offset int) ([]*Product, error)
 	Update(ctx context.Context, uid uuid.UUID, input *Product) (*Product, error)
 	Delete(ctx context.Context, uid uuid.UUID) error
+}
+
+type CartService interface {
+	// RemoveCartItem(ctx context.Context, input *Product) (*Product, error)
+	AddCartItem(ctx context.Context, uid uuid.UUID, product *Product) error
+	// GetCartItem(ctx context.Context, uid uuid.UUID) ([]*Cart, error)
+	// UpdateCartItem(ctx context.Context, uid uuid.UUID, input *Product) (*Product, error)
 }
 
 // UserRepository defines methods the service layer expects
@@ -84,5 +90,12 @@ type ProductRepository interface {
 	FindByID(ctx context.Context, uid uuid.UUID) (*Product, error)
 	List(ctx context.Context, limit, offset int) ([]*Product, error)
 	Update(ctx context.Context, uid uuid.UUID, input *Product) (*Product, error)
-	Delete(ctx context.Context, uid uuid.UUID)error
+	Delete(ctx context.Context, uid uuid.UUID) error
+}
+
+type CartRepository interface {
+	RemoveCartItem(ctx context.Context, input *Product)(*Cart, error)
+	AddCartItem(ctx context.Context, uid uuid.UUID, product *Product) (*Cart, error)
+	GetCartItem(ctx context.Context, uid uuid.UUID) (*Cart, error)
+	UpdateCartItem(ctx context.Context, uid uuid.UUID, input *Product) (*Cart, error)
 }

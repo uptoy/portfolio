@@ -1,17 +1,41 @@
 package handler
 
 import (
-// 	"log"
-// 	"net/http"
+	// 	"log"
+	"context"
+	"net/http"
+	"time"
 
-// 	"backend/model"
-// 	"backend/model/apperrors"
-// 	"errors"
+	// 	"backend/model"
+	// 	"backend/model/apperrors"
+	"errors"
+	"log"
 
 	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) AddCartItem(c *gin.Context) {
+	productID := c.Query("id")
+	if productID == "" {
+		log.Println("product id is empty")
+		_ = c.AbortWithError(http.StatusBadRequest, errors.New("product id is empty"))
+		return
+	}
+	userID := c.Query("userID")
+	if userID == "" {
+		log.Println("user id is empty")
+		_ = c.AbortWithError(http.StatusBadRequest, errors.New("user id is empty"))
+		return
+	}
+	var ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	// err = database.AddProductToCart(ctx, app.prodCollection, app.userCollection, productID, userQueryID)
+	// if err != nil {
+	// 	// This error is actually controlled by us so we don't leak any
+	// 	// sensitive information about our mongodb server or what went wrong.
+	// 	c.IndentedJSON(http.StatusInternalServerError, err)
+	// }
+	c.IndentedJSON(http.StatusAccepted, "Successfully Added to the cart")
 }
 func (h *Handler) RemoveCartItem(c *gin.Context) {
 }
@@ -20,6 +44,7 @@ func (h *Handler) GetCartItem(c *gin.Context) {
 
 func (h *Handler) UpdateCartItem(c *gin.Context) {
 }
+
 // 	productId := c.Query("id")
 // 	if productId == "" {
 // 		log.Println("product id is empty")
@@ -111,7 +136,6 @@ func (h *Handler) UpdateCartItem(c *gin.Context) {
 // 	})
 // }
 
-
 // //TODO CART
 // func (h *Handler) GetCartItem(c *gin.Context) {
 // 	fmt.Println("get cart product")
@@ -119,61 +143,61 @@ func (h *Handler) UpdateCartItem(c *gin.Context) {
 
 // func (h *Handler) RemoveCartItem(c *gin.Context) {
 // 	fmt.Println("remove cart product")
-	// productId := c.Query("id")
-	// if productId == "" {
-	// 	log.Panicln("product id is empty")
-	// 	_ = c.AbortWithError(http.StatusBadRequest, errors.New("product id is empty"))
-	// 	return
-	// }
+// productId := c.Query("id")
+// if productId == "" {
+// 	log.Panicln("product id is empty")
+// 	_ = c.AbortWithError(http.StatusBadRequest, errors.New("product id is empty"))
+// 	return
+// }
 
-	// if userId == "" {
-	// 	log.Panicln("user id is empty")
-	// 	_ = c.AbortWithError(http.StatusBadRequest, errors.New("user id is empty"))
-	// 	return
-	// }
-	// // productId,err := getID
-	// if err != nil {
-	// 	log.Println(err)
-	// 	c.AbortWithStatus(http.StatusInternalServerError)
-	// 	return
-	// }
-	// ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
-	// defer cancel()
-	// err := database.RemoveCartItem(ctx, productId, userId)
-	// if err != nil {
-	// 	c.IndentedJSON(http.StatusInternalServerError, err)
-	// }
-	// c.IndentedJSON(200, "Successfully removed item from cart")
+// if userId == "" {
+// 	log.Panicln("user id is empty")
+// 	_ = c.AbortWithError(http.StatusBadRequest, errors.New("user id is empty"))
+// 	return
+// }
+// // productId,err := getID
+// if err != nil {
+// 	log.Println(err)
+// 	c.AbortWithStatus(http.StatusInternalServerError)
+// 	return
+// }
+// ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
+// defer cancel()
+// err := database.RemoveCartItem(ctx, productId, userId)
+// if err != nil {
+// 	c.IndentedJSON(http.StatusInternalServerError, err)
+// }
+// c.IndentedJSON(200, "Successfully removed item from cart")
 
 // }
 
 // func (h *Handler) AddCartItem(c *gin.Context) {
-	// 	fmt.Println("add cart product")
-	// productId := c.Query("id")
-	// if productId == "" {
-	// 	log.Panicln("product id is empty")
-	// 	_ = c.AbortWithError(http.StatusBadRequest, errors.New("product id is empty"))
-	// 	return
-	// }
+// 	fmt.Println("add cart product")
+// productId := c.Query("id")
+// if productId == "" {
+// 	log.Panicln("product id is empty")
+// 	_ = c.AbortWithError(http.StatusBadRequest, errors.New("product id is empty"))
+// 	return
+// }
 
-	// if userId == "" {
-	// 	log.Panicln("user id is empty")
-	// 	_ = c.AbortWithError(http.StatusBadRequest, errors.New("user id is empty"))
-	// 	return
-	// }
-	// // productId,err := getID
-	// if err != nil {
-	// 	log.Println(err)
-	// 	c.AbortWithStatus(http.StatusInternalServerError)
-	// 	return
-	// }
-	// ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
-	// defer cancel()
-	// err := database.RemoveCartItem(ctx, productId, userId)
-	// if err != nil {
-	// 	c.IndentedJSON(http.StatusInternalServerError, err)
-	// }
-	// c.IndentedJSON(200, "Successfully removed item from cart")
+// if userId == "" {
+// 	log.Panicln("user id is empty")
+// 	_ = c.AbortWithError(http.StatusBadRequest, errors.New("user id is empty"))
+// 	return
+// }
+// // productId,err := getID
+// if err != nil {
+// 	log.Println(err)
+// 	c.AbortWithStatus(http.StatusInternalServerError)
+// 	return
+// }
+// ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
+// defer cancel()
+// err := database.RemoveCartItem(ctx, productId, userId)
+// if err != nil {
+// 	c.IndentedJSON(http.StatusInternalServerError, err)
+// }
+// c.IndentedJSON(200, "Successfully removed item from cart")
 
 // }
 
