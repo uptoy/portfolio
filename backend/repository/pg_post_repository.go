@@ -87,7 +87,7 @@ func (r *pGPostRepository) List(ctx context.Context, limit, offset int) ([]*mode
 }
 
 // ListByUserID はリポジトリからユーザーのPostを検索する
-func (r *pGPostRepository) ListByUserID(ctx context.Context, userID uuid.UUID, limit, offset int) ([]*model.Post, error) {
+func (r *pGPostRepository) ListByProductID(ctx context.Context, userID uuid.UUID, limit, offset int) ([]*model.Post, error) {
 	posts := make([]*model.Post, 0, limit)
 	query := `
 	SELECT id, user_id, path, title, description FROM posts

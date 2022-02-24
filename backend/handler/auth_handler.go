@@ -15,8 +15,6 @@ import (
 
 func (h *Handler) PasswordForgot(c *gin.Context) {
 	var data map[string]string
-
-	// Bind incoming json to struct and check for validation errors
 	if ok := bindData(c, &data); !ok {
 		return
 	}
@@ -83,13 +81,10 @@ func (h *Handler) PasswordReset(c *gin.Context) {
 
 func (h *Handler) PasswordUpdate(c *gin.Context) {
 	var req map[string]string
-
-	// Bind incoming json to struct and check for validation errors
 	if ok := bindData(c, &req); !ok {
 		return
 	}
 	if req["password"] != req["password_confirm"] {
-		c.Status(400)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "passwords do not match",
 		})

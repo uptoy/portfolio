@@ -31,6 +31,15 @@ type TokenService interface {
 	ValidateRefreshToken(refreshTokenString string) (*RefreshToken, error)
 }
 
+
+type ProductService interface {
+	Create(ctx context.Context, input *Product) (*Product, error)
+	FindByID(ctx context.Context, uid uuid.UUID) (*Product, error)
+	List(ctx context.Context, limit, offset int) ([]*Product, error)
+	Update(ctx context.Context, uid uuid.UUID, input *Product) (*Product, error)
+	Delete(ctx context.Context, uid uuid.UUID) error
+}
+
 // UserRepository defines methods the service layer expects
 // any repository it interacts with to implement
 type UserRepository interface {
@@ -49,7 +58,6 @@ type PostRepository interface {
 	Create(ctx context.Context, input *CreatePostInput) (*Post, error)
 	FindByID(ctx context.Context, uid uuid.UUID) (*Post, error)
 	List(ctx context.Context, limit, offset int) ([]*Post, error)
-	ListByUserID(ctx context.Context, uid uuid.UUID, limit, offset int) ([]*Post, error)
 	Update(ctx context.Context, uid uuid.UUID, input *UpdatePostInput) (*Post, error)
 	// Delete(ctx context.Context, uid uuid.UUID) (*Post, error)
 }
@@ -67,4 +75,14 @@ type TokenRepository interface {
 type ImageRepository interface {
 	DeleteProfile(ctx context.Context, objName string) error
 	UpdateProfile(ctx context.Context, objName string, imageFile multipart.File) (string, error)
+}
+
+// PostRepository defines methods the service layer expects
+// any repository it interacts with to implement
+type ProductRepository interface {
+	Create(ctx context.Context, input *Product) (*Product, error)
+	FindByID(ctx context.Context, uid uuid.UUID) (*Product, error)
+	List(ctx context.Context, limit, offset int) ([]*Product, error)
+	Update(ctx context.Context, uid uuid.UUID, input *Product) (*Product, error)
+	Delete(ctx context.Context, uid uuid.UUID)error
 }

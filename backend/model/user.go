@@ -11,6 +11,7 @@ type User struct {
 	Email          string        `db:"email" json:"email"`
 	Password       string        `db:"password" json:"-"`
 	Name           string        `db:"name" json:"name"`
+	IsAdmin        bool
 	ImageURL       string        `db:"image_url" json:"imageUrl"`
 	Website        string        `db:"website" json:"website"`
 	Token          string        `db:"token" json:"token"`
@@ -21,11 +22,10 @@ type User struct {
 	UserCart       []ProductUser `db:"user_cart" json:"user_cart"`
 	AddreddDetails []Address     `db:"address" json:"address"`
 	Order_Status   []Order       `db:"orders" json:"orders"`
-	ID             uint          `json:"id"`
 }
 
 type Product struct {
-	Product_ID   uuid.UUID `db:"product_id" json:"product_id"`
+	Product_ID   uuid.UUID `db:"id" json:"id"`
 	Product_Name string    `db:"product_name" json:"product_name"`
 	Price        int       `db:"price" json:"price"`
 	Rating       string    `db:"rating" json:"rating"`

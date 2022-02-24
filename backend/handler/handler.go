@@ -48,8 +48,7 @@ func NewHandler(c *Config) {
 		g.POST("/image", middleware.AuthUser(h.TokenService), h.Image)
 		g.DELETE("/image", middleware.AuthUser(h.TokenService), h.DeleteImage)
 		//TODO user
-		g.PUT("/users/:id", middleware.AuthUser(h.TokenService), h.UserUpdate)
-		g.PUT("/password_update/:id", middleware.AuthUser(h.TokenService), h.PasswordUpdate)
+		g.PUT("/users/password", middleware.AuthUser(h.TokenService), h.PasswordUpdate)
 		//TODO cart
 		// g.POST("/cart", middleware.AuthUser(h.TokenService), h.AddCartItem)
 		// g.GET("/cart/:userId", middleware.AuthUser(h.TokenService), h.GetCartItem)
