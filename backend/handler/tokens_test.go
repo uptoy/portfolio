@@ -213,5 +213,4 @@ func TestTokens(t *testing.T) {
 		// mockTokenService.AssertCalled(t, "NewPairFromUser", newPairArgs...)
 	})
 
-	// TODO - User not found
 }

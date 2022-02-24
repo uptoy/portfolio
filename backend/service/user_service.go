@@ -209,3 +209,31 @@ func objNameFromURL(imageURL string) (string, error) {
 	// then get "base", the last part
 	return path.Base(urlPath.Path), nil
 }
+
+func (s *userService) PasswordUpdate(ctx context.Context, u *model.User)error {
+	pw, err := hashPassword(u.Password)
+	if err != nil {
+		log.Printf("Unable to signup user for email: %v\n", u.Email)
+		return apperrors.NewInternal()
+	}
+	u.Password = pw
+	if err := s.UserRepository.Update(ctx, u); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *userService) PasswordForgot(ctx context.Context, forgot *model.PasswordReset)error {
+	if err := s.UserRepository.PasswordForgot(ctx, forgot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *userService) PasswordReset(ctx context.Context,token string, reset *model.PasswordReset)error {
+	if err := s.UserRepository.PasswordReset(ctx, token,reset); err != nil {
+		return err
+	}
+	return nil
+}

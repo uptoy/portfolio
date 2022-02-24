@@ -4,9 +4,9 @@ import (
 	"context"
 	"log"
 
-	"github.com/google/uuid"
 	"backend/model"
 	"backend/model/apperrors"
+	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
 )
@@ -114,4 +114,38 @@ func (r *pGUserRepository) UpdateImage(ctx context.Context, uid uuid.UUID, image
 	}
 
 	return u, nil
+}
+
+func (r *pGUserRepository) PasswordForgot(ctx context.Context, reset *model.PasswordReset) error {
+	query := "INSERT INTO resets (email, token) VALUES ($1, $2) RETURNING *"
+	// must be instantiated to scan into ref using `GetContext`
+	u := &model.User{}
+	err := r.DB.GetContext(ctx, u, query, reset.Email, reset.Token)
+	if err != nil {
+		log.Printf("Error forgot password: %v\n", err)
+		return apperrors.NewInternal()
+	}
+	return nil
+}
+
+func (r *pGUserRepository) PasswordReset(ctx context.Context, token string, reset *model.PasswordReset)error {
+	query := "SELECT * FROM resets WHERE token=$1"
+	passwordReset := &model.PasswordReset{}
+	err := r.DB.GetContext(ctx, query, token)
+	if err != nil {
+		log.Printf("Error forgot password: %v\n", err)
+		return apperrors.NewInternal()
+	}
+	query2 := `
+	UPDATE users
+	SET =$2
+	WHERE email=$1
+	RETURNING *;
+`
+	err2 := r.DB.GetContext(ctx, query2, reset.Email, passwordReset)
+	if err != nil {
+		log.Printf("Error forgot password: %v\n", err2)
+		return apperrors.NewInternal()
+	}
+	return err2
 }

@@ -21,6 +21,7 @@ type User struct {
 	UserCart       []ProductUser `db:"user_cart" json:"user_cart"`
 	AddreddDetails []Address     `db:"address" json:"address"`
 	Order_Status   []Order       `db:"orders" json:"orders"`
+	ID             uint          `json:"id"`
 }
 
 type Product struct {
@@ -59,4 +60,10 @@ type Order struct {
 type Payment struct {
 	Digital bool
 	Cod     bool
+}
+
+type PasswordReset struct {
+	Id    uint
+	Email string
+	Token string
 }

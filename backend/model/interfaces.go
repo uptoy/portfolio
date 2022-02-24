@@ -17,6 +17,9 @@ type UserService interface {
 	Signin(ctx context.Context, u *User) error
 	UpdateDetails(ctx context.Context, u *User) error
 	SetProfileImage(ctx context.Context, uid uuid.UUID, imageFileHeader *multipart.FileHeader) (*User, error)
+	PasswordReset(ctx context.Context, token string, reset *PasswordReset) error
+	PasswordForgot(ctx context.Context, reset *PasswordReset) error
+	PasswordUpdate(ctx context.Context, u *User) error
 }
 
 // TokenService defines methods the handler layer expects to interact
@@ -36,6 +39,8 @@ type UserRepository interface {
 	FindByID(ctx context.Context, uid uuid.UUID) (*User, error)
 	Update(ctx context.Context, u *User) error
 	UpdateImage(ctx context.Context, uid uuid.UUID, imageURL string) (*User, error)
+	PasswordForgot(ctx context.Context, reset *PasswordReset) error
+	PasswordReset(ctx context.Context, token string, reset *PasswordReset) error
 }
 
 // PostRepository defines methods the service layer expects
