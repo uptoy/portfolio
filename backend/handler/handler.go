@@ -48,24 +48,31 @@ func NewHandler(c *Config) {
 		g.POST("/image", middleware.AuthUser(h.TokenService), h.Image)
 		g.DELETE("/image", middleware.AuthUser(h.TokenService), h.DeleteImage)
 		//TODO user
-		// g.PUT("/users/:id", middleware.AuthUser(h.TokenService), h.UserUpdate)
+		g.PUT("/users/:id", middleware.AuthUser(h.TokenService), h.UserUpdate)
 		g.PUT("/password_update/:id", middleware.AuthUser(h.TokenService), h.PasswordUpdate)
 		//TODO cart
 		// g.POST("/cart", middleware.AuthUser(h.TokenService), h.AddCartItem)
-		// g.GET("/cart:userId", middleware.AuthUser(h.TokenService), h.GetCartItem)
+		// g.GET("/cart/:userId", middleware.AuthUser(h.TokenService), h.GetCartItem)
 		// g.DELETE("/cart/:id", middleware.AuthUser(h.TokenService), h.RemoveCartItem)
 		// g.PUT("/cart/:id", middleware.AuthUser(h.TokenService), h.RemoveCartItem)
 		//TODO address
 		// g.POST("/address", middleware.AuthUser(h.TokenService), h.AddCartItem)
 		// g.GET("/address", middleware.AuthUser(h.TokenService), h.AddCartItem)
 		//TODO order
-		// g.GET("/orders", middleware.AuthUser(h.TokenService), h.GetOrders)
+		// g.GET("/orders", middleware.AuthUser(h.TokenService), h.GetOrderList)
 		// g.GET("/orders/:id", middleware.AuthUser(h.TokenService), h.GetOrder)
 		// g.POST("/order"s, middleware.AuthUser(h.TokenService), h.CreateOrder)
 		//TODO history
 		// g.GET("/history", middleware.AuthUser(h.TokenService), h.GetHistory)
 		//TODO rating
+		// g.POST("/rating/:productId", middleware.AuthUser(h.TokenService), h.CreateRating)
+		// g.PUT("/rating/:productId", middleware.AuthUser(h.TokenService), h.UpdateRating)
+		// g.GET("/rating/:productId", middleware.AuthUser(h.TokenService), h.GetRating)
+		// g.DELETE("/rating/:productId", middleware.AuthUser(h.TokenService), h.DeleteRating)
 		//TODO comment
+		// g.POST("/:productId/comment", middleware.AuthUser(h.TokenService), h.CreateComment)
+		// g.PUT("/product/comment", middleware.AuthUser(h.TokenService), h.UpdateComment)
+		// g.DELETE("/rating/:productId", middleware.AuthUser(h.TokenService), h.DeleteComment)
 
 	} else {
 		g.GET("/me", h.Me)
@@ -73,31 +80,31 @@ func NewHandler(c *Config) {
 		g.PUT("/details", h.Details)
 		g.POST("/image", h.Image)
 		g.DELETE("/image", h.DeleteImage)
-		//TODO user
-		// g.POST("/password_forget", h.PasswordForgot)
-		// g.POST("/password_reset", h.PasswordReset)
+		g.POST("/password_forget", h.PasswordForgot)
+		g.POST("/password_reset", h.PasswordReset)
 		//TODO product
 		// g.GET("/products", h.ProductList)
 		// g.GET("/products/:id", h.ProductDetail)
 		//TODO category
 		// g.GET("/categories", h.CategoryList)
+		//TODO comment
+		// g.GET("/:productId/comment", middleware.AuthUser(h.TokenService), h.GetCommentList)
 	}
 	//admin
 	//TODO user
-	// g.GET("/addmin/users", middleware.AuthAdmin(h.TokenService),h.UserList)
-	// g.GET("/addmin/users/:id",middleware.AuthAdmin(h.TokenService), h.UserDetail)
+	// g.GET("/admin/users", middleware.AuthAdmin(h.TokenService),h.UserList)
+	// g.GET("/admin/users/:id",middleware.AuthAdmin(h.TokenService), h.UserDetail)
 	//TODO product
-	// g.PUT("/addmin/products/:id",middleware.AuthAdmin(h.TokenService), h.ProductUpdate)
-	// g.POST("/addmin/products",middleware.AuthAdmin(h.TokenService), h.ProductCreate)
-	// g.DELETE("/addmin/products/:id", middleware.AuthAdmin(h.TokenService),h.ProductDelete)
+	// g.PUT("/admin/products/:id",middleware.AuthAdmin(h.TokenService), h.ProductUpdate)
+	// g.POST("/admin/products",middleware.AuthAdmin(h.TokenService), h.ProductCreate)
+	// g.DELETE("/admin/products/:id", middleware.AuthAdmin(h.TokenService),h.ProductDelete)
 	//TODO category
-	// g.POST("/addmin/category",middleware.AuthAdmin(h.TokenService), h.CategoryCreate)
-	// g.PUT("/addmin/category/:id", middleware.AuthAdmin(h.TokenService),h.CategoryUpdate)
+	// g.POST("/admin/category",middleware.AuthAdmin(h.TokenService), h.CategoryCreate)
+	// g.PUT("/admin/category/:id", middleware.AuthAdmin(h.TokenService),h.CategoryUpdate)
 	// g.DELETE("/addmin/category/:id",middleware.AuthAdmin(h.TokenService), h.CategoryDelete)
 	//TODO order
-	// g.PUT("/addmin/order/:id", middleware.AuthAdmin(h.TokenService), UpdateOrder)
+	// g.PUT("/admin/order/:id", middleware.AuthAdmin(h.TokenService), UpdateOrder)
 	// g.DELETE("/addmin/order/:id", middleware.AuthAdmin(h.TokenService), DeleteOrder)
-	// g.GET("/addmin/order/user/:id", middleware.AuthAdmin(h.TokenService), GetUsersOrder)
 	//TODO auth
 	// g.POST("/admin/signup", middleware.AuthAdmin(h.TokenService),h.Signup )
 	// g.POST("/admin/signin", middleware.AuthAdmin(h.TokenService),h.Signin )
