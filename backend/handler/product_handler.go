@@ -4,7 +4,40 @@ import (
 	// "errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"backend/model"
 )
+
+
+func (h *Handler) ProductList(c *gin.Context) {
+	fmt.Println("ProductList")
+}
+func (h *Handler) ProductCreate(c *gin.Context) {
+	fmt.Println("CreateProduct")
+	var product model.Product
+	if ok := bindData(c, &product); !ok {
+		return
+	}
+}
+
+func (h *Handler) ProductDetail(c *gin.Context) {
+	fmt.Println("DetailProduct")
+}
+
+func (h *Handler) ProductDelete(c *gin.Context) {
+	fmt.Println("DeleteProductc")
+}
+func (h *Handler) ProductUpdate(c *gin.Context) {
+	fmt.Println("UpdateProduct")
+}
+
+
+
+
+
+func Admin(c *gin.Context) {
+	fmt.Println("admin")
+}
+
 
 func (h *Handler) SearchProduct(c *gin.Context) {
 	// productList := []model.Product{}
@@ -31,33 +64,6 @@ func (h *Handler) SearchProduct(c *gin.Context) {
 
 	// // }
 }
-
-func (h *Handler) ProductList(c *gin.Context) {
-	fmt.Println("ProductList")
-}
-func (h *Handler) ProductCreate(c *gin.Context) {
-	fmt.Println("CreateProduct")
-}
-
-func (h *Handler) ProductDetail(c *gin.Context) {
-	fmt.Println("DetailProduct")
-}
-
-func (h *Handler) ProductDelete(c *gin.Context) {
-	fmt.Println("DeleteProductc")
-}
-func (h *Handler) ProductUpdate(c *gin.Context) {
-	fmt.Println("UpdateProduct")
-}
-
-
-
-
-
-func Admin(c *gin.Context) {
-	fmt.Println("admin")
-}
-
 
 
 //TODO PRODUCT
