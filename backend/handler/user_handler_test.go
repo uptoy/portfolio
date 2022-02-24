@@ -147,3 +147,5 @@ func TestDetails(t *testing.T) {
 		mockUserService.AssertCalled(t, "UpdateDetails", updateArgs...)
 	})
 }
+
+//details_handler
