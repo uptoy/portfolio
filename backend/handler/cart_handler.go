@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"backend/model"
-	// 	"backend/model/apperrors"
+		"backend/model/apperrors"
 	// "errors"
-	// "log"
+	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -55,21 +55,17 @@ func (h *Handler) RemoveCartItem(c *gin.Context) {
 func (h *Handler) GetCartItem(c *gin.Context) {
 	authUser := c.MustGet("user").(*model.User)
 	userId := authUser.UID
-	// if userId == 0 {
-	// 	log.Panicln("user id is empty")
-	// 	_ = c.AbortWithError(http.StatusBadRequest, errors.New("user id is empty"))
-	// 	return
-	// }
 	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
 	defer cancel()
-	cart, err := h.CartService.GetCartItemList(ctx, userId)
+	cartItems, err := h.CartService.GetCartItemList(ctx, userId)
 	if err != nil {
-		c.IndentedJSON(http.StatusInternalServerError, err)
+		log.Printf("Failed to update user: %v\n", err.Error())
+		c.JSON(apperrors.Status(err), gin.H{
+			"error": err,
+		})
+		return
 	}
-	c.IndentedJSON(200, cart)
+	c.JSON(http.StatusAccepted, gin.H{
+		"cartItems": cartItems,
+	})
 }
-
-
-// func (h *Handler) BuyFromCart(c *gin.Context) {
-// 	fmt.Println("buy from cart ")
-// }
