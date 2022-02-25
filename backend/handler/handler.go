@@ -3,23 +3,25 @@ package handler
 import (
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"backend/handler/middleware"
 	"backend/model"
 	"backend/model/apperrors"
+	"github.com/gin-gonic/gin"
 )
 
 // Handler struct holds required services for handler to function
 type Handler struct {
-	UserService  model.UserService
-	TokenService model.TokenService
-	MaxBodyBytes int64
+	ProductService model.ProductService
+	UserService    model.UserService
+	TokenService   model.TokenService
+	MaxBodyBytes   int64
 }
 
 // Config will hold services that will eventually be injected into this
 // handler layer on handler initialization
 type Config struct {
 	R               *gin.Engine
+	ProductService  model.ProductService
 	UserService     model.UserService
 	TokenService    model.TokenService
 	BaseURL         string
@@ -47,6 +49,12 @@ func NewHandler(c *Config) {
 		g.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
 		g.POST("/image", middleware.AuthUser(h.TokenService), h.Image)
 		g.DELETE("/image", middleware.AuthUser(h.TokenService), h.DeleteImage)
+		//TODO product
+		// g.GET("/products", h.ProductList)
+		// g.GET("/products/:id", h.ProductDetail)
+		// g.POST("/admin/products",middleware.AuthAdmin(h.TokenService), h.ProductCreate)
+		// g.PUT("/admin/products/:id",middleware.AuthAdmin(h.TokenService), h.ProductUpdate)
+		// g.DELETE("/admin/products/:id", middleware.AuthAdmin(h.TokenService),h.ProductDelete)
 	} else {
 		g.GET("/me", h.Me)
 		g.POST("/signout", h.Signout)
@@ -59,3 +67,32 @@ func NewHandler(c *Config) {
 	g.POST("/signin", h.Signin)
 	g.POST("/tokens", h.Tokens)
 }
+
+// id := c.Param("id")
+
+
+	// Query string parameters are parsed using the existing underlying request object.
+	// The request responds to a url matching:  /welcome?firstname=Jane&lastname=Doe
+	// router.GET("/welcome", func(c *gin.Context) {
+	// 	firstname := c.DefaultQuery("firstname", "Guest")
+	// 	lastname := c.Query("lastname") // shortcut for c.Request.URL.Query().Get("lastname")
+
+	// 	c.String(http.StatusOK, "Hello %s %s", firstname, lastname)
+	// })
+	// Hello Jane Doe
+
+
+// POST /post?id=1234&page=1 HTTP/1.1
+// Content-Type: application/x-www-form-urlencoded
+// name=manu&message=this_is_great
+
+// router.POST("/", func(c *gin.Context) {
+// 	message := c.PostForm("message")
+// 	nick := c.DefaultPostForm("nick", "anonymous")
+
+// 	c.JSON(200, gin.H{
+// 		"status":  "posted",
+// 		"message": message,
+// 		"nick":    nick,
+// 	})
+// })
