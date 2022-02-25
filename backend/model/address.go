@@ -6,7 +6,7 @@ import (
 
 
 type Address struct {
-	Address_ID uuid.UUID `db:"address_id" json:"address_id"`
+	Address_ID uuid.UUID `db:"addressId" json:"addressId"`
 	House      string    `db:"house" json:"house"`
 	Street     string    `db:"street" json:"street"`
 	City       string    `db:"city" json:"city"`

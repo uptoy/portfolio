@@ -1,11 +1,16 @@
 package model
 
+import (
+	"github.com/google/uuid"
+)
+
 type Cart struct {
-	User      User
-	CartItems []CartItem
+	ID         uuid.UUID  `json:"cartId"`
+	TotalPrice int        `json:"totalPrice"`
+	CartItems  []CartItem `json:"cartItems"`
 }
 
 type CartItem struct {
-	Product  Product
-	Quantity int
+	Product_ID uuid.UUID `json:"productId"`
+	Quantity   int       `json:"quantity"`
 }

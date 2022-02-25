@@ -5,12 +5,27 @@ import (
 	"time"
 )
 
-
 type Order struct {
-	Order_ID       uuid.UUID     `db:"order_id" json:"order_id"`
-	Order_Cart     []ProductUser `db:"order_list" json:"order_list"`
-	Ordered_At     time.Time     `db:"ordered_at" json:"ordered_at"`
-	Price          int           `db:"total_price" json:"total_price"`
-	Discount       int           `db:"discount" json:"discount"`
-	Payment_Method Payment       `db:"payment_method" json:"payment_method"`
+	ID          uuid.UUID   `json:"orderId"`
+	OrderID     string      `json:"orderID"`
+	CreatedAt   time.Time   `json:"createdAt"`
+	DeliveredAt time.Time   `json:"deliveredAt"`
+	TotalPrice  float64     `json:"totalPrice"`
+	OrderItems  []OrderItem `json:"orderItems"`
+	ContactInfo ContactInfo `json:"contactInfo"`
+	UserID      uuid.UUID   `json:"userID"`
+	Status      string      `json:"status"`
+}
+
+type OrderItem struct {
+	ProductID uuid.UUID `json:"productId"`
+	Quantity  int64     `json:"quantity"`
+}
+
+type ContactInfo struct {
+	Name         string `json:"name"`
+	Surname      string `json:"surname"`
+	PhoneNumber  string `json:"phoneNumber"`
+	Address      string `json:"address"`
+	OrderComment string `json:"orderComment"`
 }
