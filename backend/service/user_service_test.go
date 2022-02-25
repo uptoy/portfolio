@@ -25,7 +25,7 @@ func TestGet(t *testing.T) {
 		}
 
 		mockUserRepository := new(mocks.MockUserRepository)
-		us := NewUserService(&USConfig{
+		us := NewUserService(&UserServiceConfig{
 			UserRepository: mockUserRepository,
 		})
 		mockUserRepository.On("FindByID", mock.Anything, uid).Return(mockUserResp, nil)
@@ -42,7 +42,7 @@ func TestGet(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		mockUserRepository := new(mocks.MockUserRepository)
-		us := NewUserService(&USConfig{
+		us := NewUserService(&UserServiceConfig{
 			UserRepository: mockUserRepository,
 		})
 
@@ -67,7 +67,7 @@ func TestSignup(t *testing.T) {
 		}
 
 		mockUserRepository := new(mocks.MockUserRepository)
-		us := NewUserService(&USConfig{
+		us := NewUserService(&UserServiceConfig{
 			UserRepository: mockUserRepository,
 		})
 
@@ -98,7 +98,7 @@ func TestSignup(t *testing.T) {
 		}
 
 		mockUserRepository := new(mocks.MockUserRepository)
-		us := NewUserService(&USConfig{
+		us := NewUserService(&UserServiceConfig{
 			UserRepository: mockUserRepository,
 		})
 
@@ -129,7 +129,7 @@ func TestSignin(t *testing.T) {
 	invalidPW := "howdyhodufus!"
 
 	mockUserRepository := new(mocks.MockUserRepository)
-	us := NewUserService(&USConfig{
+	us := NewUserService(&UserServiceConfig{
 		UserRepository: mockUserRepository,
 	})
 
@@ -199,7 +199,7 @@ func TestSignin(t *testing.T) {
 
 func TestUpdateDetails(t *testing.T) {
 	mockUserRepository := new(mocks.MockUserRepository)
-	us := NewUserService(&USConfig{
+	us := NewUserService(&UserServiceConfig{
 		UserRepository: mockUserRepository,
 	})
 
@@ -261,7 +261,7 @@ func TestSetProfileImage(t *testing.T) {
 	mockUserRepository := new(mocks.MockUserRepository)
 	mockImageRepository := new(mocks.MockImageRepository)
 
-	us := NewUserService(&USConfig{
+	us := NewUserService(&UserServiceConfig{
 		UserRepository:  mockUserRepository,
 		ImageRepository: mockImageRepository,
 	})
@@ -424,7 +424,7 @@ func TestSetProfileImage(t *testing.T) {
 		mockUserRepository := new(mocks.MockUserRepository)
 		mockImageRepository := new(mocks.MockImageRepository)
 
-		us := NewUserService(&USConfig{
+		us := NewUserService(&UserServiceConfig{
 			UserRepository:  mockUserRepository,
 			ImageRepository: mockImageRepository,
 		})

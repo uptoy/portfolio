@@ -21,14 +21,14 @@ type userService struct {
 
 // USConfig will hold repositories that will eventually be injected into this
 // this service layer
-type USConfig struct {
+type UserServiceConfig struct {
 	UserRepository  model.UserRepository
 	ImageRepository model.ImageRepository
 }
 
 // NewUserService is a factory function for
 // initializing a UserService with its repository layer dependencies
-func NewUserService(c *USConfig) model.UserService {
+func NewUserService(c *UserServiceConfig) model.UserService {
 	return &userService{
 		UserRepository:  c.UserRepository,
 		ImageRepository: c.ImageRepository,
