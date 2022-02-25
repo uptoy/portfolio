@@ -30,7 +30,7 @@ func (h *Handler) ProductDelete(c *gin.Context) {
 	fmt.Println("DeleteProductc")
 }
 
-func (h *Handler) SearchProduct(c *gin.Context) {
+func (h *Handler) ProductSearch(c *gin.Context) {
 	// productList := []model.Product{}
 	// ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
 	// defer cancel()
