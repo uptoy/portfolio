@@ -17,7 +17,7 @@ type detailsReq struct {
 }
 
 // Details handler
-func (h *Handler) Details(c *gin.Context) {
+func (h *Handler) UpdateUser(c *gin.Context) {
 	authUser := c.MustGet("user").(*model.User)
 
 	var req detailsReq
