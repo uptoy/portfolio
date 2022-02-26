@@ -11,5 +11,5 @@ type Product struct {
 	Price        int       `db:"price" json:"price"`
 	Rating       int   `db:"rating" json:"rating"`
 	ImageURL     string    `db:"image_url" json:"imageUrl"`
-	// Categories   []Category `json:"categories"`
+	Categories   []Category `json:"categories"`
 }
