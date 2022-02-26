@@ -11,5 +11,5 @@ type Product struct {
 	Price        int        `db:"price" json:"price"`
 	Rating       float64    `db:"rating" json:"rating"`
 	Image        string     `db:"image" json:"image"`
-	Categories   []Category `json:"categories"`
+	// Categories   []Category `json:"categories"`
 }
