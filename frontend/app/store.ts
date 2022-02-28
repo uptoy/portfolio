@@ -1,13 +1,35 @@
-import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from '../features/counter/counterSlice'
+import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 
-export const store = configureStore({
-  reducer: {
-    counter: counterReducer,
-  },
+import counterReducer from 'features/counter/counterSlice'
+import authReducer from 'features/auth/authSlice'
+import blogReducer from 'features/blog/blogSlice'
+
+
+export function makeStore() {
+  return configureStore({
+    reducer: {
+      counter: counterReducer,
+      auth: authReducer,
+      blog: blogReducer
+    },
+  })
+}
+const store = makeStore()
+
+store.subscribe(() => {
+  const { user } = store.getState().auth
+  window.localStorage.setItem("currentUser", JSON.stringify(user))
 })
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  AppState,
+  unknown,
+  Action<string>
+>
+
+export default store
+
