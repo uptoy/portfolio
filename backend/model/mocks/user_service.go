@@ -4,8 +4,8 @@ import (
 	"context"
 	"mime/multipart"
 
-	"github.com/google/uuid"
 	"backend/model"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -105,4 +105,37 @@ func (m *MockUserService) SetProfileImage(
 	}
 
 	return r0, r1
+}
+
+func (m *MockUserService) PasswordUpdate(ctx context.Context, u *model.User) error {
+	ret := m.Called(ctx, u)
+
+	var r0 error
+	if ret.Get(0) != nil {
+		r0 = ret.Get(0).(error)
+	}
+
+	return r0
+}
+
+func (m *MockUserService) PasswordReset(ctx context.Context, token string, reset *model.PasswordReset) error {
+	ret := m.Called(ctx, reset)
+
+	var r0 error
+	if ret.Get(0) != nil {
+		r0 = ret.Get(0).(error)
+	}
+
+	return r0
+}
+
+func (m *MockUserService) PasswordForgot(ctx context.Context, reset *model.PasswordReset) error {
+	ret := m.Called(ctx, reset)
+
+	var r0 error
+	if ret.Get(0) != nil {
+		r0 = ret.Get(0).(error)
+	}
+
+	return r0
 }

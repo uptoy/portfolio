@@ -151,3 +151,19 @@ func validateRefreshToken(tokenString string, key string) (*refreshTokenCustomCl
 
 	return claims, nil
 }
+
+const SecretKey = "secret"
+
+func ParseJwt(cookie string) (string, error) {
+	token, err := jwt.ParseWithClaims(cookie, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(SecretKey), nil
+	})
+
+	if err != nil || !token.Valid {
+		return "", err
+	}
+
+	claims := token.Claims.(*jwt.StandardClaims)
+
+	return claims.Issuer, nil
+}
