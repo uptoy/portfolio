@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { Counter } from '../features/counter/Counter'
+import { VFC } from 'react'
+import { Layout } from 'components/common/organisms/Layout'
+import type { NextPage } from 'next'
 
-export default function Home() {
+import Link from 'next/link'
+import Head from 'next/head'
+
+import Counter from '../features/counter/Counter'
+
+const Home: VFC = () => {
   return (
     <>
-    <p>counter</p>
+      <Head>
+        <title>Redux Toolkit</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Counter />
+
+      <p>counter</p>
       <Link href="/auth/signin">
         <a>ログイン</a>
       </Link>
@@ -25,3 +36,5 @@ export default function Home() {
     </>
   )
 }
+
+export default Home

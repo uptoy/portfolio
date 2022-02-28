@@ -1,16 +1,38 @@
-import React from 'react'
-import Link from 'next/link'
+import { ChangeEvent, FormEvent, useState, VFC } from "react"
+import { useForm } from "react-hook-form"
+import Link from "next/link"
+import { Layout } from "components/common/organisms"
+import { Input } from "components/common/atom/Input"
+import { Button } from "components/common/atom/Button"
+import { Form } from "components/common/atom/Form"
 
-export default function ForgotPassword() {
+const ForgotPassword: VFC = () => {
+  console.log("ForgotPassword page")
+  const [email, setEmail] = useState("")
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    console.log(email)
+  }
   return (
-    <>
-      <p>forgot password</p>
+    <Layout title="ForgetPassword">
+      <Form onSubmit={handleSubmit}>
+        <Input
+          label="Email:"
+          type="email"
+          name="email"
+          value={email}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            setEmail(e.target.value)
+          }}
+          placeholder="Enter Email"
+        />
+        <Button disabled={!email} label="Submit" />
+      </Form>
       <Link href="/">
-        <a>ホームに戻る</a>
+        <a>Back to Top Page</a>
       </Link>
-      <Link href="/">
-        <a>パスワードを忘れた場合</a>
-      </Link>
-    </>
+    </Layout>
   )
 }
+
+export default ForgotPassword
