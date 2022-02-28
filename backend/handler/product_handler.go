@@ -1,10 +1,10 @@
 package handler
 
 import (
-	// "errors"
 	"backend/model"
 	"backend/model/apperrors"
 	"log"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -33,46 +33,65 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 		Categories:   req.Categories,
 	}
 	ctx := c.Request.Context()
-	p, err := h.ProductService.ProductCreate(ctx, p)
+	product, err := h.ProductService.ProductCreate(ctx, p)
 	if err != nil {
-		log.Printf("Failed to create in product: %v\n", err.Error())
+		log.Printf("Failed to create in product handler: %v\n", err.Error())
 		c.JSON(apperrors.Status(err), gin.H{
 			"error": err,
 		})
+		return
 	}
-	return
+	c.JSON(http.StatusOK, gin.H{
+		"product": product,
+	})
 }
 
 func (h *Handler) ProductList(c *gin.Context) {
 	ctx := c.Request.Context()
-	_,err := h.ProductService.ProductList(ctx)
+	_, err := h.ProductService.ProductList(ctx)
 	if err != nil {
-		log.Printf("Failed to create in product: %v\n", err.Error())
+		log.Printf("Failed to list in product handler: %v\n", err.Error())
 		c.JSON(apperrors.Status(err), gin.H{
 			"error": err,
 		})
+		return
 	}
-	return
+
 }
 
 func (h *Handler) ProductDetail(c *gin.Context) {
 	id := c.Param("prodctId")
 	uid, err := uuid.Parse(id)
-	ctx := c.Request.Context()
-	_,err = h.ProductService.ProductFindByID(ctx, uid)
 	if err != nil {
-		log.Printf("Failed to create in product: %v\n", err.Error())
+		log.Printf("Failed get uid with produt detail: %v\n", err.Error())
 		c.JSON(apperrors.Status(err), gin.H{
 			"error": err,
 		})
+		return
 	}
-	return
+	ctx := c.Request.Context()
+	_, err = h.ProductService.ProductFindByID(ctx, uid)
+	if err != nil {
+		log.Printf("Failed to detail in product handler: %v\n", err.Error())
+		c.JSON(apperrors.Status(err), gin.H{
+			"error": err,
+		})
+		return
+	}
+
 }
 
 func (h *Handler) ProductUpdate(c *gin.Context) {
 	var req productReq
 	id := c.Param("prodctId")
 	uid, err := uuid.Parse(id)
+	if err != nil {
+		log.Printf("Failed get uid with produt update: %v\n", err.Error())
+		c.JSON(apperrors.Status(err), gin.H{
+			"error": err,
+		})
+		return
+	}
 	if ok := bindData(c, &req); !ok {
 		return
 	}
@@ -85,34 +104,56 @@ func (h *Handler) ProductUpdate(c *gin.Context) {
 		Categories:   req.Categories,
 	}
 	ctx := c.Request.Context()
-	_,err = h.ProductService.ProductUpdate(ctx, uid, p)
+	product, err := h.ProductService.ProductUpdate(ctx, uid, p)
 	if err != nil {
-		log.Printf("Failed to create in product: %v\n", err.Error())
+		log.Printf("Failed to update in product handler: %v\n", err.Error())
 		c.JSON(apperrors.Status(err), gin.H{
 			"error": err,
 		})
+		return
 	}
-	return
+	c.JSON(http.StatusOK, gin.H{
+		"product": product,
+	})
 }
 func (h *Handler) ProductDelete(c *gin.Context) {
 	id := c.Param("prodctId")
 	uid, err := uuid.Parse(id)
-	ctx := c.Request.Context()
-	_,err = h.ProductService.ProductDelete(ctx, uid)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("Failed get uid with produt delete: %v\n", err.Error())
+		c.JSON(apperrors.Status(err), gin.H{
+			"error": err,
+		})
+		return
 	}
-	return
+	ctx := c.Request.Context()
+	product, err := h.ProductService.ProductDelete(ctx, uid)
+	if err != nil {
+		log.Printf("Failed to delete in product handler: %v\n", err.Error())
+		c.JSON(apperrors.Status(err), gin.H{
+			"error": err,
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"product": product,
+	})
 }
 
 func (h *Handler) ProductSearch(c *gin.Context) {
 	name := c.Param("prodctName")
 	ctx := c.Request.Context()
-	_,err := h.ProductService.ProductFindByName(ctx, name)
+	product, err := h.ProductService.ProductFindByName(ctx, name)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("Failed to delete in product handler: %v\n", err.Error())
+		c.JSON(apperrors.Status(err), gin.H{
+			"error": err,
+		})
+		return
 	}
-	return
+	c.JSON(http.StatusOK, gin.H{
+		"product": product,
+	})
 }
 
 // 	// // 検索条件となるprimitive.ObjectID型の変数を指定
