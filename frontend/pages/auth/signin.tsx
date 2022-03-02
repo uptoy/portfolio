@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { useCallback, useEffect } from "react"
+import { useEffect } from "react"
 import { useRouter } from "next/router"
 import Router from "next/router"
 import Link from "next/link"
@@ -19,8 +19,8 @@ interface SignInData {
 }
 
 const defaultValues = {
-  email: "",
-  password: ""
+  email: 'email@email.com',
+  password: 'password',
 }
 
 const SignInPage = () => {

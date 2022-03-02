@@ -31,22 +31,22 @@ export interface Category {
   user_id: string
 }
 
-export interface IBlog {
-  _id?: string
-  username: string | IUser
-  title: string
-  content: string
-  description: string
-  thumbnail: string | File
-  category: string
-  createdAt: string
-}
+// export interface IBlog {
+//   _id?: string
+//   username: string | IUser
+//   title: string
+//   content: string
+//   description: string
+//   thumbnail: string | File
+//   category: string
+//   createdAt: string
+// }
 
-export interface IUser {
-  _id?: string
-  username: string
-  email: string
-}
+// export interface IUser {
+//   _id?: string
+//   username: string
+//   email: string
+// }
 
 export interface IUserSignIn {
   email: string
@@ -59,16 +59,16 @@ export interface IUserSignUp {
   password_confirm: string
 }
 
-export interface IBlog {
-  _id?: string
-  user: string | IUser
-  title: string
-  content: string
-  description: string
-  thumbnail: string | File
-  category: string
-  createdAt: string
-}
+// export interface IBlog {
+//   _id?: string
+//   user: string | IUser
+//   title: string
+//   content: string
+//   description: string
+//   thumbnail: string | File
+//   category: string
+//   createdAt: string
+// }
 
 export interface IParams {
   page: string

@@ -19,10 +19,10 @@ interface SignUpData {
 }
 
 const defaultValues = {
-  email: '',
-  username: '',
-  password: '',
-  password_confirm: '',
+  email: 'email@email.com',
+  username: 'username',
+  password: 'password',
+  password_confirm: 'password',
 }
 
 const SignUpPage = () => {

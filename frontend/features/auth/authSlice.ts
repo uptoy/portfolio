@@ -15,7 +15,7 @@ interface InitialState {
   error: string | null | undefined
 }
 
-const baseURL = "http://localhost:4000/api"
+const baseURL = "http://localhost:8080/api"
 
 const localStorageCurrentUser = localStorage.getItem("currentUser")
 
