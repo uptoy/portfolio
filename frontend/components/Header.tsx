@@ -10,8 +10,9 @@ import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
+import { Link } from 'components'
 
-const pages = ['Products', 'Pricing', 'Blog']
+const pages = ['Products', 'Pricing', 'aaa']
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
 const ResponsiveAppBar = () => {
@@ -35,16 +36,19 @@ const ResponsiveAppBar = () => {
 
   return (
     <AppBar position="static">
-      <Container>
+      <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, justifyContent: { md: 'end' } }}
-          >
-            LOGO
-          </Typography>
+          <Link href="/">
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              color="text.secondary"
+              sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+            >
+              LOGO
+            </Typography>
+          </Link>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -54,9 +58,7 @@ const ResponsiveAppBar = () => {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
-            >
-              {/* <MenuIcon /> */}
-            </IconButton>
+            ></IconButton>
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -90,7 +92,9 @@ const ResponsiveAppBar = () => {
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box
+            sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: { md: 'end' } }}
+          >
             {pages.map((page) => (
               <Button
                 key={page}
