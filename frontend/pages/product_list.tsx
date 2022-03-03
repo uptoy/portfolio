@@ -14,8 +14,6 @@ import { Layout } from 'components/organisms'
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-const theme = createTheme()
-
 export default function ProductList() {
   return (
     <>
@@ -49,7 +47,6 @@ export default function ProductList() {
           </Container>
         </Box>
         <Container sx={{ py: 8 }} maxWidth="md">
-          {/* End hero unit */}
           <Grid container spacing={4}>
             {cards.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4}>
