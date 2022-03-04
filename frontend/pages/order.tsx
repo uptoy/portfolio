@@ -25,7 +25,7 @@ function getStepContent(step: number) {
       throw new Error('Unknown step')
   }
 }
-export default function Checkout() {
+export default function Order() {
   const [activeStep, setActiveStep] = React.useState(0)
 
   const handleNext = () => {
