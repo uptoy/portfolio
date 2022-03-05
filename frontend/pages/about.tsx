@@ -1,37 +1,22 @@
-import * as React from 'react'
-import type { NextPage } from 'next'
-import Container from '@mui/material/Container'
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import { Link } from 'components'
-import { Layout } from 'components/organisms'
+import React from 'react';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import ProTip from '../components/ProTip';
+import Link from '../components/Link';
+import Copyright from '../components/Copyright';
 
-const About: NextPage = () => {
+export default function About() {
   return (
-    <Layout>
-      <Container maxWidth="lg">
-        <Box
-          sx={{
-            my: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Typography variant="h4" component="h1" gutterBottom>
-            MUI v5 + Next.js with TypeScript example
-          </Typography>
-          <Box maxWidth="sm">
-            <Button variant="contained" component={Link} noLinkStyle href="/">
-              Go to the home page
-            </Button>
-          </Box>
-        </Box>
-      </Container>
-    </Layout>
-  )
+    <Container maxWidth="sm">
+      <Box my={4}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Next.js with TypeScript example
+        </Typography>
+        <Link href="/">Go to the main page</Link>
+        <ProTip />
+        <Copyright />
+      </Box>
+    </Container>
+  );
 }
-
-export default About
