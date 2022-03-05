@@ -1,29 +1,30 @@
 import React from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import {Avatar,Button,Container,Box,TextField,Typography} from "@material-ui/core"
+import { Avatar, Button, Container, Box, TextField, Typography } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import { Theme } from '@material-ui/core/styles'
+import { createTheme } from '@material-ui/core/styles'
 import { makeStyles } from '@material-ui/styles'
 import Copyright from 'components/Copyright'
 
-const useStyles: any = makeStyles((theme: Theme) => ({
+const theme = createTheme()
+
+const useStyles: any = makeStyles(() => ({
   paper: {
-    marginTop: 50,
+    marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
   avatar: {
-    margin: 'auto',
-    marginBottom: 20,
-    backgroundColor: '#19857b',
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: 1,
+    marginTop: theme.spacing(1),
   },
   submit: {
-    margin: 3,
+    margin: theme.spacing(3, 0, 2),
   },
 }))
 

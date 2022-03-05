@@ -6,25 +6,27 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Copyright from 'components/Copyright'
 import { Theme } from '@material-ui/core/styles'
 import { makeStyles } from '@material-ui/styles'
+import { createTheme } from '@material-ui/core/styles'
 
-const useStyles: any = makeStyles((theme: Theme) => ({
+
+const theme = createTheme()
+const useStyles: any = makeStyles(() => ({
   paper: {
-    marginTop: 50,
+    marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
   avatar: {
-    margin: 'auto',
-    marginBottom: 20,
-    backgroundColor: '#19857b',
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: 10,
+    marginTop: theme.spacing(1),
   },
   submit: {
-    margin: 3,
+    margin: theme.spacing(3, 0, 2),
   },
 }))
 
