@@ -1,16 +1,16 @@
-import * as React from 'react'
-import Typography from '@mui/material/Typography'
-import MuiLink from '@mui/material/Link'
-import Link from './Link'
+import React from 'react';
+import Typography from '@material-ui/core/Typography';
+import MuiLink from '@material-ui/core/Link';
 
-export default function Copyright(props: any) {
+export default function Copyright() {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <MuiLink color="inherit" href="/">
         Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}.
+      </MuiLink>{' '}
+      {new Date().getFullYear()}
+      {'.'}
     </Typography>
-  )
+  );
 }
