@@ -1,14 +1,22 @@
 import * as React from 'react'
-import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import CardActions from '@mui/material/CardActions'
-import CardContent from '@mui/material/CardContent'
-import CardMedia from '@mui/material/CardMedia'
-import Grid from '@mui/material/Grid'
-import Stack from '@mui/material/Stack'
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
+import {
+  CardActions,
+  Divider,
+  IconButton,
+  Button,
+  Toolbar,
+  CardMedia,
+  CardContent,
+  Grid,
+  List,
+  ListItem,
+  Typography,
+  Card,
+  Container,
+  Box,
+  Paper,
+} from '@material-ui/core'
+import Stack from '@material-ui/core/Stack';
 import { Layout } from 'components/organisms'
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9]

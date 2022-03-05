@@ -1,14 +1,14 @@
-import { Typography } from '@material-ui/core';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
-import React from 'react';
+import { Typography } from '@material-ui/core'
+import { makeStyles, createStyles } from '@material-ui/core/styles'
+import React from 'react'
 
-import Modal from '../Modal';
+import Modal from '../Modal'
 
-import { DateRange } from '@/types';
-import formatDate from '@/utils/formatDate';
-import getDateRanges from '@/utils/getDateRanges';
+import { DateRange } from 'types'
+import formatDate from 'utils/formatDate'
+import getDateRanges from 'utils/getDateRanges'
 
-const useStyles = makeStyles(() =>
+const useStyles: any = makeStyles(() =>
   createStyles({
     listItem: {
       padding: '15px 10px',
@@ -20,22 +20,22 @@ const useStyles = makeStyles(() =>
       width: '100%  ',
     },
   })
-);
+)
 
 interface Props {
-  show: boolean;
-  onClose(): void;
-  onSelectDateRange(range: DateRange): void;
+  show: boolean
+  onClose(): void
+  onSelectDateRange(range: DateRange): void
 }
 
 const SelectDateRangeModal: React.FC<Props> = ({ show, onClose, onSelectDateRange }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const dateRanges = getDateRanges();
+  const dateRanges = getDateRanges()
 
   const handleSelectDateRange = (range: DateRange) => {
-    onSelectDateRange(range);
-  };
+    onSelectDateRange(range)
+  }
 
   return (
     <Modal title="Select Date Range" isVisible={show} onClose={onClose}>
@@ -55,7 +55,7 @@ const SelectDateRangeModal: React.FC<Props> = ({ show, onClose, onSelectDateRang
         ))}
       </div>
     </Modal>
-  );
-};
+  )
+}
 
-export default SelectDateRangeModal;
+export default SelectDateRangeModal

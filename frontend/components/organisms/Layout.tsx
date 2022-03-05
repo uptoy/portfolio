@@ -1,11 +1,11 @@
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import React, { useState } from 'react';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
+import React, { useState } from 'react'
 
-import Header from './Header';
-import Sidebar from './Sidebar';
+import Header from './Header'
+import Sidebar from './Sidebar'
 // import VerifyEmailAlert from '@/features/auth/components/VerifyEmailAlert';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles: any = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
@@ -29,15 +29,15 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     toolbar: theme.mixins.toolbar,
   })
-);
+)
 
 const Layout: React.FC = ({ children }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
 
   function handleToggleMobileSidebar() {
-    setIsMobileSidebarOpen(!isMobileSidebarOpen);
+    setIsMobileSidebarOpen(!isMobileSidebarOpen)
   }
 
   return (
@@ -53,7 +53,7 @@ const Layout: React.FC = ({ children }) => {
         <div className={classes.main}>{children}</div>
       </main>
     </div>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

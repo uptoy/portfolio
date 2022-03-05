@@ -1,8 +1,8 @@
-import { Button, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router';
+import { Button, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { useRouter } from 'next/router'
 
-const useStyles = makeStyles({
+const useStyles: any = makeStyles({
   root: {
     height: '100vh',
     display: 'flex',
@@ -16,24 +16,24 @@ const useStyles = makeStyles({
   title: {
     marginBottom: 10,
   },
-});
+})
 
 interface Props {
-  message?: string;
-  title?: string;
+  message?: string
+  title?: string
 }
 
 const PageError: React.FC<Props> = ({
   message = 'Something went wrong.',
   title = "This page is'nt available",
 }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const history = useHistory();
+  const router = useRouter()
 
   const handleBackToHome = () => {
-    history.push('/');
-  };
+    router.push('/')
+  }
 
   return (
     <div className={classes.root}>
@@ -47,7 +47,7 @@ const PageError: React.FC<Props> = ({
         Back to home
       </Button>
     </div>
-  );
-};
+  )
+}
 
-export default PageError;
+export default PageError

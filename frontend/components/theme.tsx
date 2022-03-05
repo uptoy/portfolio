@@ -5,8 +5,6 @@ import {
 import CssBaseline from '@material-ui/core/CssBaseline'
 import React from 'react'
 
-// import { useAppSelector } from '../hooks';
-
 const Theme: React.FC = ({ children }) => {
   // const { user } = useAppSelector((state) => state.auth);
   const user = {
@@ -20,7 +18,6 @@ const Theme: React.FC = ({ children }) => {
       primary: {
         main: '#3498db',
       },
-      type: palletType,
     },
   })
 

@@ -1,20 +1,20 @@
-import { Typography } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { makeStyles } from '@material-ui/core/styles'
 
-import Modal from '@/components/Modal';
+import Modal from 'components/Modal'
 
 interface Props {
-  title: string;
-  message: string;
-  isVisible: boolean;
-  onClose(): void;
-  onConfirm(): void;
-  isConfirming: boolean;
+  title: string
+  message: string
+  isVisible: boolean
+  onClose(): void
+  onConfirm(): void
+  isConfirming: boolean
 }
 
-const useStyles = makeStyles({
+const useStyles: any = makeStyles({
   buttonsContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   message: {
     marginTop: 20,
   },
-});
+})
 
 const ConfirmDialog: React.FC<Props> = ({
   title,
@@ -33,7 +33,7 @@ const ConfirmDialog: React.FC<Props> = ({
   onConfirm,
   isConfirming,
 }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <Modal title={title} isVisible={isVisible} onClose={onClose} withClose={false}>
@@ -55,7 +55,7 @@ const ConfirmDialog: React.FC<Props> = ({
         </Button>
       </div>
     </Modal>
-  );
-};
+  )
+}
 
-export default ConfirmDialog;
+export default ConfirmDialog

@@ -1,32 +1,35 @@
-import {
-  unstable_createMuiStrictModeTheme as createMuiTheme,
-  ThemeProvider,
-} from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import React from 'react';
+// import {
+//   unstable_createMuiStrictModeTheme as createMuiTheme,
+//   ThemeProvider,
+// } from '@material-ui/core';
+// import CssBaseline from '@material-ui/core/CssBaseline';
+// import React from 'react';
 
-import { useAppSelector } from '../hooks';
+// // import { useAppSelector } from '../hooks';
 
-const Theme: React.FC = ({ children }) => {
-  const { user } = useAppSelector((state) => state.auth);
+// const Theme: React.FC = ({ children }) => {
+//   // const { user } = useAppSelector((state) => state.auth);
+//   const user ={
+//     theme:"theme"
+//   }
 
-  const palletType = user?.theme === 'dark' ? 'dark' : 'light';
+//   const palletType = user?.theme === 'dark' ? 'dark' : 'light';
 
-  const theme = createMuiTheme({
-    palette: {
-      primary: {
-        main: '#3498db',
-      },
-      type: palletType,
-    },
-  });
+//   const theme = createMuiTheme({
+//     palette: {
+//       primary: {
+//         main: '#3498db',
+//       },
+//       type: palletType,
+//     },
+//   });
 
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {children}
-    </ThemeProvider>
-  );
-};
+//   return (
+//     <ThemeProvider theme={theme}>
+//       <CssBaseline />
+//       {children}
+//     </ThemeProvider>
+//   );
+// };
 
-export default Theme;
+// export default Theme;

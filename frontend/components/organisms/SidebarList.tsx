@@ -1,31 +1,31 @@
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import { makeStyles } from '@material-ui/core/styles';
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import CategoryIcon from '@material-ui/icons/Category';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import EqualizerIcon from '@material-ui/icons/Equalizer';
-import PaymentIcon from '@material-ui/icons/Payment';
-import PersonIcon from '@material-ui/icons/Person';
-import SettingsIcon from '@material-ui/icons/Settings';
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import { Theme, makeStyles } from '@material-ui/core/styles'
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance'
+import CategoryIcon from '@material-ui/icons/Category'
+import DashboardIcon from '@material-ui/icons/Dashboard'
+import EqualizerIcon from '@material-ui/icons/Equalizer'
+import PaymentIcon from '@material-ui/icons/Payment'
+import PersonIcon from '@material-ui/icons/Person'
+import SettingsIcon from '@material-ui/icons/Settings'
+import { useRouter } from 'next/router'
+import React from 'react'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles: any = makeStyles((theme: Theme) => ({
   list: {
     color: theme.palette.common.white,
   },
   listItem: {
     color: '#fff',
   },
-}));
+}))
 
 interface Links {
-  href: string;
-  icon: React.ReactElement;
-  title: string;
+  href: string
+  icon: React.ReactElement
+  title: string
 }
 
 const LINKS: Links[] = [
@@ -64,25 +64,22 @@ const LINKS: Links[] = [
     icon: <PersonIcon />,
     title: 'Account',
   },
-];
+]
 
 const SidebarList = () => {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const location = useLocation();
+  const router = useRouter()
 
   const getIsActive = (path: string) => {
-    return path === location.pathname;
-  };
+    return path === location.pathname
+  }
 
   return (
     <List className={classes.list}>
       {LINKS.map((link, index) => (
         <ListItem
           key={index}
-          button
-          component={Link}
-          to={link.href}
           selected={getIsActive(link.href)}
         >
           <ListItemIcon className={classes.listItem}>{link.icon}</ListItemIcon>
@@ -90,7 +87,7 @@ const SidebarList = () => {
         </ListItem>
       ))}
     </List>
-  );
-};
+  )
+}
 
-export default SidebarList;
+export default SidebarList

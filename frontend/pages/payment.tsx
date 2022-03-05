@@ -1,9 +1,11 @@
 import * as React from 'react'
 import type { NextPage } from 'next'
-import Container from '@mui/material/Container'
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
-import { Link } from 'components'
+import Link from 'components/Link'
+import {
+  Typography,
+  Container,
+  Box,
+} from '@material-ui/core'
 import { Layout } from 'components/organisms'
 
 const Payment: NextPage = () => {

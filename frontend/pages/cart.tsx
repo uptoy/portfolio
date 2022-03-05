@@ -1,38 +1,40 @@
 import * as React from 'react'
 import type { NextPage } from 'next'
-import Container from '@mui/material/Container'
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
-import Link from '@mui/material/Link'
+import Link from '@material-ui/core/Link'
+
+import {
+  Button,
+  CardContent,
+  TableCell,
+  TableRow,
+  TableContainer,
+  TableHead,
+  CircularProgress,
+  Table,
+  TableBody,
+  Grid,
+  MenuItem,
+  Select,
+  List,
+  ListItem,
+  Typography,
+  Card,
+  Container,
+  Box,
+  Paper,
+} from '@material-ui/core'
 import Image from 'next/image'
-import Grid from '@mui/material/Grid'
 import { Layout } from 'components/organisms'
-import { TableContainer } from '@mui/material'
-import { TableHead } from '@mui/material'
-import { TableRow } from '@mui/material'
-import { Table } from '@mui/material'
-import TableCell from '@mui/material/TableCell'
-import TableBody from '@mui/material/TableBody'
 import { useRouter } from 'next/router'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import Select from '@mui/material/Select'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-
-import Button from '@mui/material/Button'
-
-import { MenuItem } from '@mui/material'
-
 import NextLink from 'next/link'
 
 interface IProduct {
-  quantity?: number
+  quantity: number
   name?: string
   slug?: string
   category?: string
   image?: string
-  price?: number
+  price: number
   brand?: string
   rating?: number
   countInStock?: number

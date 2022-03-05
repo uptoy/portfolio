@@ -1,9 +1,9 @@
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { makeStyles, createStyles } from '@material-ui/core/styles'
 
-import logo from '@/assets/images/logo.svg';
+import logo from '@/assets/images/logo.svg'
 
-const useStyles = makeStyles(() =>
+const useStyles: any = makeStyles(() =>
   createStyles({
     container: {
       position: 'fixed',
@@ -25,10 +25,10 @@ const useStyles = makeStyles(() =>
       marginBottom: 20,
     },
   })
-);
+)
 
 const PageLoader = () => {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <div className={classes.container}>
       <div className={classes.loading}>
@@ -36,7 +36,7 @@ const PageLoader = () => {
         <CircularProgress />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PageLoader;
+export default PageLoader

@@ -1,16 +1,16 @@
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider'
+import Drawer from '@material-ui/core/Drawer'
+import Hidden from '@material-ui/core/Hidden'
+import { makeStyles, useTheme, Theme } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
 
-import SidebarList from './SidebarList';
+import SidebarList from './SidebarList'
 
-import logo from '@/assets/images/logo-white.svg';
+import logo from '@/assets/images/logo-white.svg'
 
-const drawerWidth = 240;
+const drawerWidth = 240
 
-const useStyles = makeStyles((theme) => ({
+const useStyles: any = makeStyles((theme: Theme) => ({
   drawer: {
     [theme.breakpoints.up('sm')]: {
       width: drawerWidth,
@@ -38,19 +38,19 @@ const useStyles = makeStyles((theme) => ({
     width: 30,
     marginRight: 10,
   },
-}));
+}))
 
 interface Props {
-  window?: () => Window;
-  isMobileSidebarOpen: boolean;
-  toggleMobileSidebar(): void;
+  window?: () => Window
+  isMobileSidebarOpen: boolean
+  toggleMobileSidebar(): void
 }
 
 const Sidebar: React.FC<Props> = ({ isMobileSidebarOpen, toggleMobileSidebar, window }) => {
-  const classes = useStyles();
-  const theme = useTheme();
+  const classes = useStyles()
+  const theme = useTheme()
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined ? () => window().document.body : undefined
 
   return (
     <nav className={classes.drawer} aria-label="menu">
@@ -96,7 +96,7 @@ const Sidebar: React.FC<Props> = ({ isMobileSidebarOpen, toggleMobileSidebar, wi
         </Drawer>
       </Hidden>
     </nav>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

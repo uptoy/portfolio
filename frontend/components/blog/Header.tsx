@@ -1,21 +1,23 @@
-import * as React from 'react';
-import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
+import * as React from 'react'
+import SearchIcon from '@material-ui/icons/Search'
+import Link from 'components/Link'
+import {
+  IconButton,
+  Button,
+  Toolbar,
+  Typography,
+} from '@material-ui/core'
 
 interface HeaderProps {
   sections: ReadonlyArray<{
-    title: string;
-    url: string;
-  }>;
-  title: string;
+    title: string
+    url: string
+  }>
+  title: string
 }
 
 export default function Header(props: HeaderProps) {
-  const { sections, title } = props;
+  const { sections, title } = props
 
   return (
     <React.Fragment>
@@ -57,5 +59,5 @@ export default function Header(props: HeaderProps) {
         ))}
       </Toolbar>
     </React.Fragment>
-  );
+  )
 }

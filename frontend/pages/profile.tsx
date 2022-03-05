@@ -1,15 +1,17 @@
 import * as React from 'react'
-import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import Grid from '@mui/material/Grid'
+import {
+  TextField,
+  Button,
+  Grid,
+  List,
+  ListItem,
+  Typography,
+  Card,
+  ListItemText,
+} from '@material-ui/core'
 import { Layout } from 'components/organisms'
-import Typography from '@mui/material/Typography'
 import { Controller, useForm } from 'react-hook-form'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import TextField from '@mui/material/TextField'
 import NextLink from 'next/link'
-import ListItemText from '@mui/material/ListItemText'
 
 export default function Profile() {
   const {

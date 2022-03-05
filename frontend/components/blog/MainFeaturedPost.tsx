@@ -1,22 +1,24 @@
-import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import Box from '@mui/material/Box';
+import * as React from 'react'
+import Link from 'components/Link'
+import {
+  Grid,
+  Typography,
+  Box,
+  Paper
+} from '@material-ui/core'
 
 interface MainFeaturedPostProps {
   post: {
-    description: string;
-    image: string;
-    imageText: string;
-    linkText: string;
-    title: string;
-  };
+    description: string
+    image: string
+    imageText: string
+    linkText: string
+    title: string
+  }
 }
 
 export default function MainFeaturedPost(props: MainFeaturedPostProps) {
-  const { post } = props;
+  const { post } = props
 
   return (
     <Paper
@@ -65,5 +67,5 @@ export default function MainFeaturedPost(props: MainFeaturedPostProps) {
         </Grid>
       </Grid>
     </Paper>
-  );
+  )
 }

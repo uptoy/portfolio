@@ -1,19 +1,21 @@
 import { useRouter } from 'next/router'
-import Grid from '@mui/material/Grid'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import Typography from '@mui/material/Typography'
-import Card from '@mui/material/Card'
+import {
+  TableBody,
+  TableCell,
+  Table,
+  TableRow,
+  TableContainer,
+  TableHead,
+  CircularProgress,
+  Grid,
+  List,
+  ListItem,
+  Typography,
+  Card,
+} from '@material-ui/core'
 import Image from 'next/image'
-import { CircularProgress } from '@mui/material'
 import * as React from 'react'
 import { Layout } from 'components/organisms'
-import { TableContainer } from '@mui/material'
-import { TableHead } from '@mui/material'
-import { TableRow } from '@mui/material'
-import { Table } from '@mui/material'
-import TableCell from '@mui/material/TableCell'
-import TableBody from '@mui/material/TableBody'
 
 export interface IOrderItems {
   name: string
@@ -42,7 +44,24 @@ const OrderDetail = () => {
   const paymentMethod = 'credit'
   const isPaid = true
   const paidAt = ''
-  const orderItems = []
+  const item1 = {
+    _id: '',
+    iamge: '',
+    name: '',
+    quantity: '',
+    price: '',
+    image: '',
+  }
+  const item2 = {
+    _id: '',
+    iamge: '',
+    name: '',
+    quantity: '',
+    price: '',
+    image: '',
+  }
+  const orderItems = [item1, item2]
+
   const shippingAddress = {
     fullName: 'fullName',
     address: 'address',
@@ -110,7 +129,7 @@ const OrderDetail = () => {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {(orderItems as Array<IOrderItems>).map((item) => (
+                        {orderItems.map((item) => (
                           <TableRow key={item._id}>
                             <TableCell>
                               <Image

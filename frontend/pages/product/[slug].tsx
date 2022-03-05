@@ -1,11 +1,13 @@
 import { useRouter } from 'next/router'
-import { Link } from 'components'
-import Grid from '@mui/material/Grid'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
+import Link from 'components/Link'
+import {
+  Button,
+  Grid,
+  List,
+  ListItem,
+  Typography,
+  Card,
+} from '@material-ui/core'
 import Image from "next/image";
 
 const ProductDetail = () => {

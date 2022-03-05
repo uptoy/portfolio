@@ -1,127 +1,130 @@
 import * as React from 'react'
 import type { NextPage } from 'next'
-import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import Grid from '@mui/material/Grid'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
 import NextLink from 'next/link'
-import { TableContainer } from '@mui/material'
-import { TableHead } from '@mui/material'
-import { TableRow } from '@mui/material'
-import { Table } from '@mui/material'
-import TableCell from '@mui/material/TableCell'
-import { CircularProgress } from '@mui/material'
-import TableBody from '@mui/material/TableBody'
 import { Layout } from 'components/organisms'
-import ListItemText from '@mui/material/ListItemText'
+import {
+  ListItemText,
+  Button,
+  TableBody,
+  TableCell,
+  Table,
+  TableRow,
+  TableContainer,
+  TableHead,
+  CircularProgress,
+  Grid,
+  List,
+  ListItem,
+  Typography,
+  Card,
+} from '@material-ui/core'
 
 export type ShippingAddressType = {
-  fullName: string;
-  address: string;
-  city: string;
-  postalCode: string;
-  country: string;
-};
+  fullName: string
+  address: string
+  city: string
+  postalCode: string
+  country: string
+}
 
 export interface IUser {
-  name: string;
-  email: string;
-  password?: string;
-  isAdmin: boolean;
-  _id?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  name: string
+  email: string
+  password?: string
+  isAdmin: boolean
+  _id?: string
+  createdAt?: string
+  updatedAt?: string
 }
 
 export interface IOrderItems {
-  name: string;
-  quantity: number;
-  image: string;
-  price: number;
-  _id?: string;
+  name: string
+  quantity: number
+  image: string
+  price: number
+  _id?: string
 }
 export interface IPaymentResult {
-  id:string;
-  email_address:string;
-  status:string;
+  id: string
+  email_address: string
+  status: string
 }
 
 export interface IOrder {
-  user: IUser;
-  orderItems: Array<IOrderItems>;
-  shippingAddress: ShippingAddressType;
-  paymentMethod: string;
-  paymentResult?: IPaymentResult;
-  itemsPrice: number;
-  shippingPrice: number;
-  taxPrice: number;
-  totalPrice: number;
-  isPaid: boolean;
-  isDelivered: boolean;
-  paidAt?: string;
-  deliveredAt?: string;
-  _id?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  user: IUser
+  orderItems: Array<IOrderItems>
+  shippingAddress: ShippingAddressType
+  paymentMethod: string
+  paymentResult?: IPaymentResult
+  itemsPrice: number
+  shippingPrice: number
+  taxPrice: number
+  totalPrice: number
+  isPaid: boolean
+  isDelivered: boolean
+  paidAt?: string
+  deliveredAt?: string
+  _id?: string
+  createdAt?: string
+  updatedAt?: string
 }
-
 
 const paymentResult = {
-  id:"id",
-  email_address:"email_address",
-  status:"status"
-
+  id: 'id',
+  email_address: 'email_address',
+  status: 'status',
 }
 const shippingAddress = {
-  fullName: "fullName",
-  address: "address",
-  city: "city",
-  postalCode: "postalCode",
-  country: "country"
-};
+  fullName: 'fullName',
+  address: 'address',
+  city: 'city',
+  postalCode: 'postalCode',
+  country: 'country',
+}
 
 const user1 = {
-  name: "name",
-  email: "email",
-  password: "password",
+  name: 'name',
+  email: 'email',
+  password: 'password',
   isAdmin: true,
-  _id: "_id",
-  createdAt: "createdAt",
-  updatedAt: "updatedAt",
+  _id: '_id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
 }
-const orderItems = [{
-  name: "name",
-  quantity: 1,
-  image: "image",
-  price: 1,
-  _id:"_id"
-},{
-  name: "name2",
-  quantity: 2,
-  image: "image2",
-  price: 2,
-  _id:"_id2"
-}]
+const orderItems = [
+  {
+    name: 'name',
+    quantity: 1,
+    image: 'image',
+    price: 1,
+    _id: '_id',
+  },
+  {
+    name: 'name2',
+    quantity: 2,
+    image: 'image2',
+    price: 2,
+    _id: '_id2',
+  },
+]
 const OrderHistory: NextPage = () => {
   const order1 = {
     user: user1,
     orderItems: orderItems,
     shippingAddress: shippingAddress,
-    paymentMethod: "paymentMethod",
+    paymentMethod: 'paymentMethod',
     paymentResult: paymentResult,
     itemsPrice: 1,
     _id: '_id',
     createdAt: 'createdAt',
-    shippingPrice:1,
+    shippingPrice: 1,
     taxPrice: 1,
     totalPrice: 1,
     isPaid: true,
     paidAt: 'paidAt',
     isDelivered: true,
     deliveredAt: 'deliveredAt',
-    updatedAt: "updatedAt"
+    updatedAt: 'updatedAt',
   }
   const orders = [order1]
   const loading = false

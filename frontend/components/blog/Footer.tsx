@@ -1,9 +1,10 @@
 import * as React from 'react'
-import Box from '@mui/material/Box'
-import Container from '@mui/material/Container'
-import Typography from '@mui/material/Typography'
-import Link from '@mui/material/Link'
-import { Copyright } from 'components'
+import {
+  Typography,
+  Container,
+  Box,
+} from '@material-ui/core'
+import Copyright from 'components/Copyright'
 
 interface FooterProps {
   description: string
@@ -19,7 +20,7 @@ export default function Footer(props: FooterProps) {
         <Typography variant="h6" align="center" gutterBottom>
           {title}
         </Typography>
-        <Typography variant="subtitle1" align="center" color="text.secondary" component="p">
+        <Typography variant="subtitle1" align="center" component="p">
           {description}
         </Typography>
         <Copyright />

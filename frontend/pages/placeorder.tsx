@@ -1,26 +1,46 @@
 import * as React from 'react'
 import type { NextPage } from 'next'
-import Typography from '@mui/material/Typography'
-import { Link } from 'components'
+import Link from 'components/Link'
+import {
+  Button,
+  TableBody,
+  TableCell,
+  Table,
+  TableRow,
+  TableContainer,
+  TableHead,
+  CircularProgress,
+  Grid,
+  List,
+  ListItem,
+  Typography,
+  Card,
+} from '@material-ui/core'
 import { Layout } from 'components/organisms'
-import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import Grid from '@mui/material/Grid'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
 import NextLink from 'next/link'
 import CheckoutWizard from 'components/CheckoutWizard'
 import Image from 'next/image'
-import { TableContainer } from '@mui/material'
-import { TableHead } from '@mui/material'
-import { TableRow } from '@mui/material'
-import { Table } from '@mui/material'
-import TableCell from '@mui/material/TableCell'
-import { CircularProgress } from '@mui/material'
-import TableBody from '@mui/material/TableBody'
 
 const PlaceOrder: NextPage = () => {
-  const cartItems = []
+  const item1 = {
+    _id: '',
+    iamge: '',
+    name: '',
+    quantity: '',
+    price: '',
+    image: '',
+    slug: '',
+  }
+  const item2 = {
+    _id: '',
+    iamge: '',
+    name: '',
+    quantity: '',
+    price: '',
+    image: '',
+    slug: '',
+  }
+  const cartItems = [item1, item2]
   const placeOrderHandler = () => {}
   const shippingPrice = 100
   const taxPrice = 100
@@ -33,6 +53,7 @@ const PlaceOrder: NextPage = () => {
     address: 'address',
     postalCode: 'postalCode',
     country: 'country',
+    city: 'city',
   }
   return (
     <Layout>
