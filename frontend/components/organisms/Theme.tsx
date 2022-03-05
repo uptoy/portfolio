@@ -1,19 +1,16 @@
 import {
   unstable_createMuiStrictModeTheme as createMuiTheme,
   ThemeProvider,
-} from '@material-ui/core'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import React from 'react'
+} from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import React from 'react';
 
-// import { useAppSelector } from '../hooks';
+import { useAppSelector } from '../hooks';
 
 const Theme: React.FC = ({ children }) => {
-  // const { user } = useAppSelector((state) => state.auth);
-  const user = {
-    theme: 'theme',
-  }
+  const { user } = useAppSelector((state) => state.auth);
 
-  const palletType = user?.theme === 'dark' ? 'dark' : 'light'
+  const palletType = user?.theme === 'dark' ? 'dark' : 'light';
 
   const theme = createMuiTheme({
     palette: {
@@ -22,14 +19,14 @@ const Theme: React.FC = ({ children }) => {
       },
       type: palletType,
     },
-  })
+  });
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       {children}
     </ThemeProvider>
-  )
-}
+  );
+};
 
-export default Theme
+export default Theme;

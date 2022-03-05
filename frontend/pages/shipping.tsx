@@ -14,37 +14,37 @@ const Shipping: React.ReactNode = () => {
     setValue,
   } = useForm()
   const router = useRouter()
-  useEffect(() => {
-    if (!userInfo) {
-      router.push('/login?redirect=/shipping')
-    }
-    setValue('fullName', shippingAddress?.fullName)
-    setValue('address', shippingAddress?.address)
-    setValue('city', shippingAddress?.city)
-    setValue('postalCode', shippingAddress?.postalCode)
-    setValue('country', shippingAddress?.country)
-  }, [])
+  // useEffect(() => {
+  //   if (!userInfo) {
+  //     router.push('/login?redirect=/shipping')
+  //   }
+  //   setValue('fullName', shippingAddress?.fullName)
+  //   setValue('address', shippingAddress?.address)
+  //   setValue('city', shippingAddress?.city)
+  //   setValue('postalCode', shippingAddress?.postalCode)
+  //   setValue('country', shippingAddress?.country)
+  // }, [])
 
   const classes = useStyles()
-  const submitHandler = ({ fullName, address, city, postalCode, country }: ShippingAddressType) => {
-    dispatch({
-      type: actionTypes.SAVE_SHIPPING_ADDRESS,
-      payload: { fullName, address, city, postalCode, country },
-    })
-    Cookies.set(
-      'shippingAddress',
-      JSON.stringify({
-        fullName,
-        address,
-        city,
-        postalCode,
-        country,
-      })
-    )
-    router.push('/payment')
-  }
+  // const submitHandler = ({ fullName, address, city, postalCode, country }: ShippingAddressType) => {
+  //   dispatch({
+  //     type: actionTypes.SAVE_SHIPPING_ADDRESS,
+  //     payload: { fullName, address, city, postalCode, country },
+  //   })
+  //   Cookies.set(
+  //     'shippingAddress',
+  //     JSON.stringify({
+  //       fullName,
+  //       address,
+  //       city,
+  //       postalCode,
+  //       country,
+  //     })
+  //   )
+  //   router.push('/payment')
+  // }
   return (
-    <Layout title="Shipping Address">
+    <Layout>
       <CheckoutWizard activeStep={1} />
       {/* <form onSubmit={handleSubmit(submitHandler)} className={classes.form}> */}
       <form onSubmit={() => {}} className={classes.form}>

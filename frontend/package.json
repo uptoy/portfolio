@@ -33,7 +33,6 @@
     "@mui/styled-engine-sc": "^5.4.2",
     "@mui/styles": "^5.4.4",
     "@reduxjs/toolkit": "^1.7.1",
-    "@tailwindcss/postcss7-compat": "^2.2.17",
     "@testing-library/react": "^12.1.2",
     "@types/jest": "^27.4.0",
     "@types/redux-logger": "^3.0.9",
@@ -57,10 +56,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",
-    "@storybook/addon-actions": "^6.4.13",
-    "@storybook/addon-essentials": "^6.4.13",
-    "@storybook/addon-links": "^6.4.13",
-    "@storybook/react": "^6.4.13",
     "@testing-library/dom": "^8.11.2",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/user-event": "^13.5.0",
