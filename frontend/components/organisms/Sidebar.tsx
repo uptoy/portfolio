@@ -1,7 +1,8 @@
 import Divider from '@material-ui/core/Divider'
 import Drawer from '@material-ui/core/Drawer'
 import Hidden from '@material-ui/core/Hidden'
-import { makeStyles, useTheme, Theme } from '@material-ui/core/styles'
+import {  useTheme, Theme } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/styles'
 import Typography from '@material-ui/core/Typography'
 
 import SidebarList from './SidebarList'
@@ -10,35 +11,7 @@ import logo from '@/assets/images/logo-white.svg'
 
 const drawerWidth = 240
 
-const useStyles: any = makeStyles((theme: Theme) => ({
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-  },
-  drawerPaper: {
-    width: drawerWidth,
-    background: theme.palette.primary.main,
-  },
-  toolbar: theme.mixins.toolbar,
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: 'center',
-    color: '#fff',
-  },
-  icon: {
-    color: '#fff',
-  },
-  logo: {
-    width: 30,
-    marginRight: 10,
-  },
-}))
+const useStyles: any = makeStyles((theme: Theme) => ({}))
 
 interface Props {
   window?: () => Window

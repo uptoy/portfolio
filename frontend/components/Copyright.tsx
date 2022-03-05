@@ -27,6 +27,18 @@ export default function Copyright() {
       >
         TOP
       </MuiLink>{' '}
+      <MuiLink
+        color="inherit"
+        href="/auth/signin"
+      >
+        signin
+      </MuiLink>{' '}
+      <MuiLink
+        color="inherit"
+        href="/auth/signup"
+      >
+        signup
+      </MuiLink>{' '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>

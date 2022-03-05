@@ -11,27 +11,28 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 import Link from '../../components/Link'
-import { makeStyles, Theme } from '@material-ui/core/styles'
+import { Theme } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/styles'
 import Copyright from 'components/Copyright'
-
 
 const useStyles: any = makeStyles((theme: Theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: 50,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
   avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    margin: 'auto',
+    marginBottom: 20,
+    backgroundColor: '#19857b',
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
+    marginTop: 10,
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: 3,
   },
 }))
 

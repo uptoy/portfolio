@@ -1,5 +1,6 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
-import { makeStyles, createStyles } from '@material-ui/core/styles'
+import { createStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/styles'
 
 import logo from '@/assets/images/logo.svg'
 

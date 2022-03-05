@@ -1,5 +1,6 @@
 import { Typography } from '@material-ui/core'
-import { makeStyles, createStyles } from '@material-ui/core/styles'
+import { createStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/styles'
 import React from 'react'
 
 import Modal from '../Modal'

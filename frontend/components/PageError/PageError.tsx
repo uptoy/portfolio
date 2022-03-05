@@ -1,5 +1,5 @@
 import { Button, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/styles'
 import { useRouter } from 'next/router'
 
 const useStyles: any = makeStyles({
