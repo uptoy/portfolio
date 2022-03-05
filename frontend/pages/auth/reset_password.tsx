@@ -2,11 +2,9 @@ import React from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { Avatar, Button, Container, Box, TextField, Typography } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import { createTheme } from '@material-ui/core/styles'
+import theme from 'theme'
 import { makeStyles } from '@material-ui/styles'
 import Copyright from 'components/Copyright'
-
-const theme = createTheme()
 
 const useStyles: any = makeStyles(() => ({
   paper: {

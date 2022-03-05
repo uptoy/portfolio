@@ -1,13 +1,11 @@
 import Divider from '@material-ui/core/Divider'
 import Drawer from '@material-ui/core/Drawer'
 import Hidden from '@material-ui/core/Hidden'
-import {  useTheme, Theme } from '@material-ui/core/styles'
+import { useTheme, Theme } from '@material-ui/core/styles'
 import { makeStyles } from '@material-ui/styles'
 import Typography from '@material-ui/core/Typography'
 
 import SidebarList from './SidebarList'
-
-import logo from '@/assets/images/logo-white.svg'
 
 const drawerWidth = 240
 
@@ -42,7 +40,11 @@ const Sidebar: React.FC<Props> = ({ isMobileSidebarOpen, toggleMobileSidebar, wi
           }}
         >
           <div className={classes.drawerHeader}>
-            <img src={logo} alt="Budgetpal logo" className={classes.logo} />
+            <img
+              src="http://placehold.jp/150x150.png"
+              alt="Budgetpal logo"
+              className={classes.logo}
+            />
             <Typography variant="h6" color="inherit">
               Budgetpal
             </Typography>
@@ -59,7 +61,7 @@ const Sidebar: React.FC<Props> = ({ isMobileSidebarOpen, toggleMobileSidebar, wi
           open
         >
           <div className={classes.drawerHeader}>
-            <img src={logo} alt="Budgetpal logo" className={classes.logo} />
+            <img src="http://placehold.jp/150x150.png" alt="Budgetpal logo" className={classes.logo} />
             <Typography variant="h6" color="inherit">
               Budgetpal
             </Typography>

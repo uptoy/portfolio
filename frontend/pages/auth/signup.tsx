@@ -11,14 +11,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 import Link from '../../components/Link'
-import { Theme } from '@material-ui/core/styles'
 import { makeStyles } from '@material-ui/styles'
 import Copyright from 'components/Copyright'
-import { createTheme } from '@material-ui/core/styles'
-
-
-const theme = createTheme()
-
+import theme from 'theme'
 const useStyles: any = makeStyles(() => ({
   paper: {
     marginTop: theme.spacing(8),

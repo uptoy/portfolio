@@ -1,10 +1,10 @@
 import { List, ListItem, Typography, TextField, Button } from '@material-ui/core'
 import React, { useContext, useEffect } from 'react'
 import Layout from 'components/organisms/Layout'
-import useStyles from '../utils/styles'
 import { Controller, useForm } from 'react-hook-form'
 import CheckoutWizard from '../components/CheckoutWizard'
 import { useRouter } from 'next/router'
+import useStyles from '../utils/styles'
 
 const Shipping: React.ReactNode = () => {
   const {
@@ -18,10 +18,9 @@ const Shipping: React.ReactNode = () => {
   const classes = useStyles()
   const submitHandler = () => {}
   return (
-    <Layout>
+    <>
       <CheckoutWizard activeStep={1} />
-      {/* <form onSubmit={handleSubmit(submitHandler)} className={classes.form}> */}
-      <form onSubmit={() => {}} className={classes.form}>
+      <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
         <Typography component="h1" variant="h1">
           Shipping Address
         </Typography>
@@ -173,7 +172,7 @@ const Shipping: React.ReactNode = () => {
           </ListItem>
         </List>
       </form>
-    </Layout>
+    </>
   )
 }
 

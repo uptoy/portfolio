@@ -1,14 +1,12 @@
 import * as React from 'react'
-import { createTheme ,ThemeProvider} from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles'
+import theme from 'theme'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import {
-  Grid,
-  Container,
-} from '@material-ui/core'
+import { Grid, Container } from '@material-ui/core'
 import { Header, MainFeaturedPost, FeaturedPost, Main, Sidebar, Footer } from 'components/blog'
-import GitHubIcon from '@material-ui/icons/GitHub';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import TwitterIcon from '@material-ui/icons/Twitter';
+import GitHubIcon from '@material-ui/icons/GitHub'
+import FacebookIcon from '@material-ui/icons/Facebook'
+import TwitterIcon from '@material-ui/icons/Twitter'
 
 const sections = [
   { title: 'Technology', url: '#' },
@@ -76,8 +74,6 @@ const sidebar = {
     { name: 'Facebook', icon: FacebookIcon },
   ],
 }
-
-const theme = createTheme()
 
 export default function Blog() {
   return (

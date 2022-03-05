@@ -27,22 +27,7 @@ import Image from 'next/image'
 import { Layout } from 'components/organisms'
 import { useRouter } from 'next/router'
 import NextLink from 'next/link'
-
-interface IProduct {
-  quantity: number
-  name?: string
-  slug?: string
-  category?: string
-  image?: string
-  price: number
-  brand?: string
-  rating?: number
-  countInStock?: number
-  description?: string
-  _id?: string
-  createdAt?: string
-  updatedAt?: string
-}
+import { IProduct } from 'types'
 
 const item1: IProduct = {
   _id: '1',
@@ -86,7 +71,7 @@ const Cart: NextPage = () => {
     router.push('/shipping')
   }
   return (
-    <Layout>
+    <>
       <Typography component="h4" variant="h4">
         Shopping Cart
       </Typography>
@@ -118,7 +103,12 @@ const Cart: NextPage = () => {
                         <TableCell>
                           <NextLink href={`/product/${item.slug}`} passHref>
                             <Link>
-                              {/* <Image src={item.image} alt={item.name} width={50} height={50}></Image> */}
+                              <Image
+                                src={item.image}
+                                alt={item.name}
+                                width={50}
+                                height={50}
+                              ></Image>
                             </Link>
                           </NextLink>
                         </TableCell>
@@ -138,11 +128,11 @@ const Cart: NextPage = () => {
                             value={item.quantity}
                             onChange={(e) => updateCartHandler(item, e.target.value as number)}
                           >
-                            {/* {[...Array(item.countInStock).keys()].map((x) => ( */}
-                            {/* <MenuItem key={x + 1} value={x + 1}>
-                            {x + 1}
-                          </MenuItem>
-                        ))} */}
+                            {[...Array(item.countInStock).keys()].map((x) => (
+                              <MenuItem key={x + 1} value={x + 1}>
+                                {x + 1}
+                              </MenuItem>
+                            ))}
                             <MenuItem value={1}>1</MenuItem>
                             <MenuItem value={2}>2</MenuItem>
                             <MenuItem value={3}>3</MenuItem>
@@ -185,7 +175,7 @@ const Cart: NextPage = () => {
           </Grid>
         </Grid>
       )}
-    </Layout>
+    </>
   )
 }
 

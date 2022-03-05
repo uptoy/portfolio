@@ -22,7 +22,7 @@ export default function Profile() {
   } = useForm()
   return (
     <>
-      <Layout>
+      <>
         <Grid container spacing={1}>
           <Grid item md={3} xs={12}>
             <Card>
@@ -172,7 +172,7 @@ export default function Profile() {
             </Card>
           </Grid>
         </Grid>
-      </Layout>
+      </>
     </>
   )
 }

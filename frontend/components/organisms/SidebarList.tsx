@@ -2,7 +2,6 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import { Theme} from '@material-ui/core/styles'
 import { makeStyles } from '@material-ui/styles'
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance'
 import CategoryIcon from '@material-ui/icons/Category'
@@ -13,8 +12,9 @@ import PersonIcon from '@material-ui/icons/Person'
 import SettingsIcon from '@material-ui/icons/Settings'
 import { useRouter } from 'next/router'
 import React from 'react'
+import theme from 'theme'
 
-const useStyles: any = makeStyles((theme: Theme) => ({
+const useStyles: any = makeStyles(() => ({
   list: {
     color: theme.palette.common.white,
   },
@@ -73,16 +73,13 @@ const SidebarList = () => {
   const router = useRouter()
 
   const getIsActive = (path: string) => {
-    return path === location.pathname
+    return path === router.pathname
   }
 
   return (
     <List className={classes.list}>
       {LINKS.map((link, index) => (
-        <ListItem
-          key={index}
-          selected={getIsActive(link.href)}
-        >
+        <ListItem key={index} selected={getIsActive(link.href)}>
           <ListItemIcon className={classes.listItem}>{link.icon}</ListItemIcon>
           <ListItemText primary={link.title} />
         </ListItem>

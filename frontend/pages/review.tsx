@@ -5,7 +5,7 @@ import { Layout } from 'components/organisms'
 export default function Review() {
   return (
     <>
-      <Layout>Review</Layout>
+      <>Review</>
     </>
   )
 }

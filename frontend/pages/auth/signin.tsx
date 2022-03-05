@@ -12,10 +12,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 import Copyright from 'components/Copyright'
-import { createTheme } from '@material-ui/core/styles'
 import { makeStyles } from '@material-ui/styles'
 
-const theme = createTheme()
+import theme from 'theme'
 
 const useStyles = makeStyles(() => ({
   paper: {

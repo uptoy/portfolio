@@ -4,12 +4,10 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Link from '@material-ui/core/Link'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Copyright from 'components/Copyright'
-import { Theme } from '@material-ui/core/styles'
 import { makeStyles } from '@material-ui/styles'
-import { createTheme } from '@material-ui/core/styles'
+import theme from 'theme'
 
 
-const theme = createTheme()
 const useStyles: any = makeStyles(() => ({
   paper: {
     marginTop: theme.spacing(8),

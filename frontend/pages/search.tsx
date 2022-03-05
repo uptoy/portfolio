@@ -4,7 +4,7 @@ import { Layout } from 'components/organisms'
 export default function Search() {
   return (
     <>
-      <Layout>Search</Layout>
+      <>Search</>
     </>
   )
 }
