@@ -1,12 +1,13 @@
 // import React from 'react'
 // import CircularProgress from '@material-ui/core/CircularProgress'
-// import { makeStyles } from '@material-ui/styles'
+// import { makeStyles } from '@material-ui/core/styles'
 // import Divider from '@material-ui/core/Divider'
-// // import SearchFilters from './components/search-filters'
-// // import ProfilesGrid from '../shared/profiles-grid'
+// import SuggestionsFilters from './components/suggestions-filters'
+// import ProfilesGrid from '../shared/profiles-grid'
+// import SuggestionsContainer from './suggestions-container'
 // import theme from 'theme'
 
-// const useStyles = makeStyles(() => ({
+// const useStyles: any = makeStyles(() => ({
 //   wrapper: {
 //     display: 'flex',
 //     flexDirection: 'row',
@@ -60,48 +61,47 @@
 //   },
 // }))
 
-// const Search = () => {
-//   // const {
-//   //   currentUserProfile,
-//   //   loaded,
-//   //   searchResult,
-//   //   searchOptions,
-//   //   handleChangeSlider,
-//   //   fetchSearch,
-//   //   handleLike,
-//   //   handleSort,
-//   // } = SearchContainer()
+// const Suggestions = () => {
+//   const {
+//     currentUserProfile,
+//     loaded,
+//     suggestionsResult,
+//     suggestionsOptions,
+//     handleChangeSlider,
+//     fetchSuggestions,
+//     handleLike,
+//     handleSort,
+//   } = SuggestionsContainer()
 //   const classes = useStyles()
 
-//   // if (loaded === false) {
-//   //   return (
-//   //     <div className={classes.progress}>
-//   //       <CircularProgress color="secondary" />
-//   //     </div>
-//   //   )
-//   // }
+//   if (loaded === false) {
+//     return (
+//       <div className={classes.progress}>
+//         <CircularProgress color="secondary" />
+//       </div>
+//     )
+//   }
 
 //   return (
 //     <>
-//       {/* <sitle textTitle="Search" /> */}
-//       <SearchFilters
+//       <SuggestionsFilters
 //         classes={classes}
-//         searchOptions={searchOptions}
+//         suggestionsOptions={suggestionsOptions}
 //         handleChangeSlider={handleChangeSlider}
 //         currentUserProfile={currentUserProfile}
-//         fetchSearch={fetchSearch}
+//         fetchSuggestions={fetchSuggestions}
 //         handleSort={handleSort}
 //       />
 //       <Divider light />
 //       <ProfilesGrid
 //         classes={classes}
-//         profiles={searchResult}
+//         profiles={suggestionsResult}
 //         currentUserProfile={currentUserProfile}
 //         handleLike={handleLike}
-//         type="search"
+//         type="suggestion"
 //       />
 //     </>
 //   )
 // }
 
-// export default Search
+// export default Suggestions

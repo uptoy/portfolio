@@ -16,14 +16,7 @@ import {
 import Image from 'next/image'
 import * as React from 'react'
 import { Layout } from 'components/organisms'
-
-export interface IOrderItems {
-  name: string
-  quantity: number
-  image: string
-  price: number
-  _id?: string
-}
+import { orderItems, shippingAddress } from 'utils/seed'
 
 const OrderDetail = () => {
   const isPending = true
@@ -44,31 +37,6 @@ const OrderDetail = () => {
   const paymentMethod = 'credit'
   const isPaid = true
   const paidAt = ''
-  const item1 = {
-    _id: '',
-    iamge: '',
-    name: '',
-    quantity: '',
-    price: '',
-    image: '',
-  }
-  const item2 = {
-    _id: '',
-    iamge: '',
-    name: '',
-    quantity: '',
-    price: '',
-    image: '',
-  }
-  const orderItems = [item1, item2]
-
-  const shippingAddress = {
-    fullName: 'fullName',
-    address: 'address',
-    city: 'city',
-    country: 'country',
-    postalCode: 'postalCode',
-  }
 
   return (
     <Layout>
@@ -139,7 +107,6 @@ const OrderDetail = () => {
                                 height={50}
                               ></Image>
                             </TableCell>
-
                             <TableCell>
                               <Typography>{item.name}</Typography>
                             </TableCell>

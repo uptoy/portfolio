@@ -32,7 +32,7 @@ export default function Profile() {
                     <ListItemText primary="User Profile"></ListItemText>
                   </ListItem>
                 </NextLink>
-                <NextLink href="/order-history" passHref>
+                <NextLink href="/order/order-history" passHref>
                   <ListItem button component="a">
                     <ListItemText primary="Order History"></ListItemText>
                   </ListItem>

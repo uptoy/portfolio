@@ -1,12 +1,15 @@
-import React, { useContext } from 'react'
-import { InferGetServerSidePropsType } from 'next'
-import NextLink from 'next/link'
-import Image from 'next/image'
-import { Grid, Link, List, ListItem, Typography, Card, Button } from '@material-ui/core'
-import Layout from 'components/organisms/Layout'
-import useStyles from 'utils/styles'
-import { useRouter } from 'next/router'
-import { product } from 'utils/seed'
+import React, { useContext } from "react"
+import { InferGetServerSidePropsType } from "next"
+import NextLink from "next/link"
+import { ErrorMessage } from "components/Message/ErrorMessage"
+import Image from "next/image"
+import { Grid, Link, List, ListItem, Typography, Card, Button } from "@material-ui/core"
+import Layout from "components/organisms/Layout"
+import useStyles from "utils/styles"
+import { useRouter } from "next/router"
+import { product } from "utils/seed"
+import Rating from "components/Rating"
+import ProductReview from "components/ProductReview"
 
 const ProductDetail: React.ReactNode = () => {
   const router = useRouter()
@@ -28,6 +31,7 @@ const ProductDetail: React.ReactNode = () => {
     // dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } })
     // router.push('/cart')
   }
+  const productId = "1"
 
   return (
     <Layout>
@@ -54,6 +58,12 @@ const ProductDetail: React.ReactNode = () => {
               <Typography component="h1" variant="h1">
                 {product.name}
               </Typography>
+            </ListItem>
+            <ListItem>
+              <Rating
+                value={product.averageRating}
+                text={`${product.Reviews ? product.Reviews.length : 0} reviews`}
+              />
             </ListItem>
             <ListItem>
               <Typography>Category: {product.category}</Typography>
@@ -90,7 +100,7 @@ const ProductDetail: React.ReactNode = () => {
                     <Typography>Status</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography>{product.countInStock > 0 ? 'In stock' : 'Unavailable'}</Typography>
+                    <Typography>{product.countInStock > 0 ? "In stock" : "Unavailable"}</Typography>
                   </Grid>
                 </Grid>
               </ListItem>
@@ -103,6 +113,7 @@ const ProductDetail: React.ReactNode = () => {
           </Card>
         </Grid>
       </Grid>
+      <ProductReview productId={productId} />
     </Layout>
   )
 }

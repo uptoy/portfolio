@@ -19,6 +19,7 @@ export interface IProduct {
   countInStock: number
   description: string
   numReviews?: 1
+  averageRating: 1,
 
   createdAt: string
   updatedAt?: string
@@ -65,7 +66,6 @@ export type ShippingAddressType = {
   country: string
 }
 
-
 //user
 export type UserSubmitForm = {
   name: string;
@@ -94,4 +94,54 @@ export interface IUser {
 
 export interface IAuthUser extends IUser {
   token: string;
+}
+
+export interface IOrderItems {
+  name: string
+  quantity: number
+  image: string
+  price: number
+  _id?: string
+}
+
+export interface IUser {
+  name: string
+  email: string
+  password?: string
+  isAdmin: boolean
+  _id?: string
+  createdAt?: string
+  updatedAt?: string
+}
+
+export interface IOrderItems {
+  name: string
+  quantity: number
+  image: string
+  price: number
+  _id?: string
+}
+export interface IPaymentResult {
+  id: string
+  email_address: string
+  status: string
+}
+
+export interface IOrder {
+  user: IUser
+  orderItems: Array<IOrderItems>
+  shippingAddress: ShippingAddressType
+  paymentMethod: string
+  paymentResult?: IPaymentResult
+  itemsPrice: number
+  shippingPrice: number
+  taxPrice: number
+  totalPrice: number
+  isPaid: boolean
+  isDelivered: boolean
+  paidAt?: string
+  deliveredAt?: string
+  _id?: string
+  createdAt?: string
+  updatedAt?: string
 }
