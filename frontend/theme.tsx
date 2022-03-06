@@ -4,6 +4,7 @@ import { purple, red, common } from '@material-ui/core/colors'
 
 // Create a theme instance.
 const theme: Theme = createTheme({
+  spacing: 8,
   palette: {
     primary: {
       main: '#2196f3',

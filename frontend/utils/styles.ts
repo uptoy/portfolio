@@ -66,9 +66,9 @@ const useStyles: any = makeStyles((theme: Theme) => ({
   // search
   searchSection: {
     display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
+    // [theme.breakpoints.up('md')]: {
+    //   display: 'flex',
+    // },
   },
   searchForm: {
     border: '1px solid #ffffff',

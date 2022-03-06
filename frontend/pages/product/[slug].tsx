@@ -1,54 +1,57 @@
+import React, { useContext } from 'react'
+import { InferGetServerSidePropsType } from 'next'
+import NextLink from 'next/link'
+import Image from 'next/image'
+import { Grid, Link, List, ListItem, Typography, Card, Button } from '@material-ui/core'
+import Layout from 'components/organisms/Layout'
+import useStyles from 'utils/styles'
 import { useRouter } from 'next/router'
-import Link from 'components/Link'
-import {
-  Button,
-  Grid,
-  List,
-  ListItem,
-  Typography,
-  Card,
-} from '@material-ui/core'
-import Image from "next/image";
+import { product } from 'utils/seed'
 
-const ProductDetail = () => {
+const ProductDetail: React.ReactNode = () => {
   const router = useRouter()
-  const { slug } = router.query
-  const product = {
-    name: 'name',
-    category: 'category',
-    brand: 'brand',
-    rating: 'rating',
-    numReviews: 1,
-    description: 'description',
-    price: 100,
-    countInStock: 1,
-    image:"http://placehold.jp/150x150.png"
+  // const { state, dispatch } = useContext(StoreContext)
+  const classes = useStyles()
+
+  if (!product) {
+    return <div>Product Not Found</div>
   }
-  // if (!product) {
-  //   return <>Product Not Found</>
-  // }
-  const addToCartHandler = () => {}
+
+  const addToCartHandler = async () => {
+    // const existItem = state.cart.cartItems.find((x) => x._id === product._id)
+    // const quantity = existItem ? existItem.quantity + 1 : 1
+    // const { data } = await axios.get(`/api/products/${product._id}`)
+    // if (data.countInStock < quantity) {
+    //   window.alert('Sorry. Product is out of stock')
+    //   return
+    // }
+    // dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } })
+    // router.push('/cart')
+  }
 
   return (
-    <>
-      <Link href="/about" color="secondary">
-        back to products
-      </Link>
-      <p>ProductDetail: {slug}</p>
+    <Layout>
+      <div className={classes.section}>
+        <NextLink href="/" passHref>
+          <Link>
+            <Typography>back to products</Typography>
+          </Link>
+        </NextLink>
+      </div>
       <Grid container spacing={1}>
         <Grid item md={6} xs={12}>
           <Image
             src={product.image}
             alt={product.name}
-            width={640}
-            height={640}
+            width={300}
+            height={300}
             layout="responsive"
           ></Image>
         </Grid>
         <Grid item md={3} xs={12}>
           <List>
             <ListItem>
-              <Typography component="h6" variant="h1">
+              <Typography component="h1" variant="h1">
                 {product.name}
               </Typography>
             </ListItem>
@@ -100,8 +103,21 @@ const ProductDetail = () => {
           </Card>
         </Grid>
       </Grid>
-    </>
+    </Layout>
   )
 }
 
 export default ProductDetail
+
+// export const getServerSideProps = async (context: any) => {
+//   const { params } = context
+//   const { slug } = params
+//   await db.connect()
+//   const product = await Product.findOne({ slug }).lean()
+//   await db.disconnect()
+//   return {
+//     props: {
+//       product: db.convertDocToObj(product),
+//     },
+//   }
+// }

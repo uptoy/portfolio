@@ -9,7 +9,6 @@ import {
   TableRow,
   TableContainer,
   TableHead,
-  CircularProgress,
   Table,
   TableBody,
   Grid,
@@ -19,12 +18,8 @@ import {
   ListItem,
   Typography,
   Card,
-  Container,
-  Box,
-  Paper,
 } from '@material-ui/core'
 import Image from 'next/image'
-import { Layout } from 'components/organisms'
 import { useRouter } from 'next/router'
 import NextLink from 'next/link'
 import { IProduct } from 'types'
@@ -35,7 +30,7 @@ const item1: IProduct = {
   name: 'name1',
   slug: 'slug1',
   category: 'category',
-  image: 'image',
+  image: 'http://placehold.jp/150x150.png',
   price: 1,
   brand: 'brand',
   rating: 1,
@@ -50,7 +45,7 @@ const item2: IProduct = {
   name: 'name2',
   slug: 'slug2',
   category: 'category2',
-  image: 'image2',
+  image: 'http://placehold.jp/150x150.png',
   price: 1,
   brand: 'brand2',
   rating: 1,
