@@ -1,5 +1,6 @@
 {
   "name": "frontend",
+  "proxy": "http://127.0.0.1:8080",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -51,6 +52,7 @@
     "react-hooks-form": "^2.0.1",
     "react-hot-toast": "^2.2.0",
     "react-redux": "^7.2.6",
+    "react-toastify": "^8.2.0",
     "recharts": "^2.1.9",
     "redux-logger": "^3.0.6",
     "styled-components": "^5.3.3",
