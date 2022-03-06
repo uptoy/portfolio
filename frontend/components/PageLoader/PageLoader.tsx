@@ -2,7 +2,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import { createStyles } from '@material-ui/core/styles'
 import { makeStyles } from '@material-ui/styles'
 
-import logo from '@/assets/images/logo.svg'
+import logo from 'http://placehold.jp/150x150.png'
 
 const useStyles: any = makeStyles(() =>
   createStyles({
@@ -33,7 +33,7 @@ const PageLoader = () => {
   return (
     <div className={classes.container}>
       <div className={classes.loading}>
-        <img src={logo} alt="Budgetpal logo" className={classes.logo} />
+        <img src='http://placehold.jp/150x150.png' alt="Budgetpal logo" className={classes.logo} />
         <CircularProgress />
       </div>
     </div>
