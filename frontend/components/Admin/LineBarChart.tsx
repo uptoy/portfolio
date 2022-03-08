@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -10,45 +10,50 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-} from "recharts";
-import Paper from "@material-ui/core/Paper";
+} from "recharts"
+import Paper from "@material-ui/core/Paper"
+import { makeStyles } from "@material-ui/styles"
+import { createStyles } from "@material-ui/core/styles"
 
 interface LineBarChartProps {
-  data: any;
+  data: any
 }
 
 const LineBarChart = (props: LineBarChartProps) => {
-  const styles = {
-    paper: {
-      minHeight: 344,
-      padding: 10,
-    },
-    legend: {
-      paddingTop: 20,
-    },
-    pieChartDiv: {
-      height: 290,
-      textAlign: "center" as any,
-    },
-    title: {
-      fontSize: 24,
-      fontWeight: 500, //  TypographyStyle.fontWeightLight,
-      marginBottom: 20,
-    },
-    clear: {
-      clear: "both" as any,
-    },
-  };
+  const useStyles: any = makeStyles(() =>
+    createStyles({
+      paper: {
+        minHeight: 344,
+        padding: 10,
+      },
+      legend: {
+        paddingTop: 20,
+      },
+      pieChartDiv: {
+        height: 290,
+        textAlign: "center" as any,
+      },
+      title: {
+        fontSize: 24,
+        fontWeight: 500, //  TypographyStyle.fontWeightLight,
+        marginBottom: 20,
+      },
+      clear: {
+        clear: "both" as any,
+      },
+    })
+  )
+  const classes = useStyles()
 
   return (
-    <Paper style={styles.paper}>
-      <span style={styles.title}>Website Analysis</span>
+    <Paper className={classes.paper}>
+      <span className={classes.title}>Website Analysis</span>
 
-      <div style={styles.clear} />
+      <div className={classes.clear} />
 
       <div className="row">
         <div className="col-xs-12">
-          <div style={styles.pieChartDiv}>
+          <div className={classes.pieChartDiv}>
             <ResponsiveContainer>
               <ComposedChart
                 layout="vertical"
@@ -71,7 +76,7 @@ const LineBarChart = (props: LineBarChartProps) => {
         </div>
       </div>
     </Paper>
-  );
-};
+  )
+}
 
-export default LineBarChart;
+export default LineBarChart
