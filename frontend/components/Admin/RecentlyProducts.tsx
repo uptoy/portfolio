@@ -7,18 +7,23 @@ import Menu from "@material-ui/core/Menu"
 
 import { cyan, common } from "@material-ui/core/colors"
 import { ListItemText } from "@material-ui/core"
+import { makeStyles } from "@material-ui/styles"
+import { createStyles } from "@material-ui/core/styles"
 
 const cyan600 = cyan["600"]
 const white = common.white
 const RecentlyProducts = (props: any) => {
-  const styles = {
-    ListSubheader: {
-      fontSize: 24,
-      fontWeight: 500,
-      backgroundColor: cyan600,
-      color: white,
-    },
-  }
+  const useStyles: any = makeStyles(() =>
+    createStyles({
+      ListSubheader: {
+        fontSize: 24,
+        fontWeight: 500,
+        backgroundColor: cyan600,
+        color: white,
+      },
+    })
+  )
+  const classes = useStyles()
 
   const rightIconMenu = (
     <Menu open={true}>
@@ -29,7 +34,7 @@ const RecentlyProducts = (props: any) => {
   return (
     <Paper>
       <List>
-        <ListSubheader style={styles.ListSubheader}>Recent Products</ListSubheader>
+        <ListSubheader className={classes.ListSubheader}>Recent Products</ListSubheader>
         {props.data.map((item: any) => (
           <div key={item.title}>
             <ListItemText primary={item.title} secondary={item.text} />

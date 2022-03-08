@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { ErrorMessage } from "components/Message/ErrorMessage"
+// import { ErrorMessage } from "components/Message/ErrorMessage"
 import Rating from "components/Rating"
 import {
   Link,
@@ -109,7 +109,8 @@ const ProductReview = ({ productId }: any) => {
   return loading ? (
     <p>Loding....</p>
   ) : error ? (
-    <ErrorMessage header={"Something went wrong"} message={error} />
+    // <ErrorMessage header={"Something went wrong"} message={error} />
+    <>err</>
   ) : (
     <>
       <h2>Reviews({count})</h2>
