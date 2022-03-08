@@ -1,4 +1,4 @@
-export type Status = 'idle' | 'loading' | 'succeed' | 'failed'
+export type Status = "idle" | "loading" | "succeed" | "failed"
 
 export interface DateRange {
   label: string
@@ -18,10 +18,8 @@ export interface IProduct {
   rating: number
   countInStock: number
   description: string
-  numReviews?: 1
-  averageRating: 1,
-
-  createdAt: string
+  numReviews?: number
+  createdAt?: string
   updatedAt?: string
 }
 
@@ -68,11 +66,11 @@ export type ShippingAddressType = {
 
 //user
 export type UserSubmitForm = {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
+  name: string
+  email: string
+  password: string
+  confirmPassword: string
+}
 // export interface IUser {
 //   id: string
 //   name: string
@@ -83,17 +81,17 @@ export type UserSubmitForm = {
 //   is_email_verified: boolean
 // }
 export interface IUser {
-  name: string;
-  email: string;
-  password?: string;
-  isAdmin: boolean;
-  _id?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  name: string
+  email: string
+  password?: string
+  isAdmin: boolean
+  _id?: string
+  createdAt?: string
+  updatedAt?: string
 }
 
 export interface IAuthUser extends IUser {
-  token: string;
+  token: string
 }
 
 export interface IOrderItems {

@@ -16,23 +16,64 @@ import {
 } from "@material-ui/core"
 import AddIcon from "@material-ui/icons/Add"
 import SearchIcon from "@material-ui/icons/Search"
-import { grey, pink } from "@material-ui/core/colors"
+import { pink } from "@material-ui/core/colors"
 import CreateIcon from "@material-ui/icons/Create"
 import DeleteIcon from "@material-ui/icons/Delete"
-import Pagination from '@material-ui/lab/Pagination';
 
 const pink500 = pink["500"]
 
-function createData(name: string, category: string, price: number, totalInStock: number) {
-  return { name, category, price, totalInStock }
+function createData(
+  id: string,
+  profileImage: string,
+  firstName: string,
+  lastName: string,
+  email: string,
+  phone: string
+) {
+  return { id, profileImage, firstName, lastName, email, phone }
 }
 
 const rows = [
-  createData("product1", "category1", 6.0, 24),
-  createData("product2", "category2", 9.0, 37),
-  createData("product3", "category3", 16.0, 24),
-  createData("product4", "category4", 3.7, 67),
-  createData("product5", "category5", 16.0, 49),
+  createData(
+    "id1",
+    "http://placehold.jp/150x150.png",
+    "firstName1",
+    "lastName1",
+    "email1@email.com",
+    "010-0101-0101"
+  ),
+  createData(
+    "id2",
+    "http://placehold.jp/150x150.png",
+    "firstName2",
+    "lastName2",
+    "email2@email.com",
+    "010-0101-0102"
+  ),
+  createData(
+    "id3",
+    "http://placehold.jp/150x150.png",
+    "firstName3",
+    "lastName3",
+    "email3@email.com",
+    "010-0101-0103"
+  ),
+  createData(
+    "id4",
+    "http://placehold.jp/150x150.png",
+    "firstName4",
+    "lastName4",
+    "email4@email.com",
+    "010-0101-0104"
+  ),
+  createData(
+    "id5",
+    "http://placehold.jp/150x150.png",
+    "firstName5",
+    "lastName5",
+    "email5@email.com",
+    "010-0101-0105"
+  ),
 ]
 
 const useStyles: any = makeStyles(() => ({
@@ -99,22 +140,24 @@ export default function AdminCustomerList() {
         <Table className={classes.table} aria-label="product table">
           <TableHead>
             <TableRow>
-              <TableCell>Product Name </TableCell>
-              <TableCell align="center">Category Name </TableCell>
-              <TableCell align="center">Price</TableCell>
-              <TableCell align="center">Total In Stock </TableCell>
-              <TableCell align="center">Actions</TableCell>
+              <TableCell>Profile Image</TableCell>
+              <TableCell align="center">First Name</TableCell>
+              <TableCell align="center">Last Name</TableCell>
+              <TableCell align="center">Email</TableCell>
+              <TableCell align="center">Phone</TableCell>
+              <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map((row) => (
-              <TableRow key={row.name}>
+              <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  <img src={row.profileImage} alt="profile_image1" />
                 </TableCell>
-                <TableCell align="center">{row.category}</TableCell>
-                <TableCell align="center">{row.price}</TableCell>
-                <TableCell align="center">{row.totalInStock}</TableCell>
+                <TableCell align="center">{row.firstName}</TableCell>
+                <TableCell align="center">{row.lastName}</TableCell>
+                <TableCell align="center">{row.email}</TableCell>
+                <TableCell align="center">{row.phone}</TableCell>
                 <TableCell align="center">
                   <Button variant="contained" className={classes.button}>
                     <CreateIcon />
@@ -128,7 +171,6 @@ export default function AdminCustomerList() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Pagination count={10} color="primary" />
     </AdminDashboardLayout>
   )
 }

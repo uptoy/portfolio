@@ -19,7 +19,6 @@ import SearchIcon from "@material-ui/icons/Search"
 import { grey, pink } from "@material-ui/core/colors"
 import CreateIcon from "@material-ui/icons/Create"
 import DeleteIcon from "@material-ui/icons/Delete"
-import Pagination from '@material-ui/lab/Pagination';
 
 const pink500 = pink["500"]
 
@@ -128,7 +127,6 @@ export default function AdminOrderList() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Pagination count={10} color="primary" />
     </AdminDashboardLayout>
   )
 }

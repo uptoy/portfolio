@@ -38,6 +38,7 @@ const item1: IProduct = {
   description: 'desc',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  numReviews:10
 }
 const item2: IProduct = {
   _id: '2',
@@ -51,8 +52,7 @@ const item2: IProduct = {
   rating: 1,
   countInStock: 1,
   description: 'desc2',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
+  numReviews:10
 }
 
 const Cart: NextPage = () => {
