@@ -13,7 +13,7 @@ import Cancel from "@material-ui/icons/Cancel"
 import { grey, green, common } from "@material-ui/core/colors"
 import { Container, Tooltip } from "@material-ui/core"
 import { makeStyles } from "@material-ui/styles"
-import { createStyles } from "@material-ui/core/styles"
+import { createStyles } from "@material-ui/core"
 
 const grey500 = grey["500"]
 const green400 = green["400"]

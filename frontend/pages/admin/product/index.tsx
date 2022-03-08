@@ -70,14 +70,14 @@ const useStyles: any = makeStyles(() => ({
     backgroundColor: "lightblue",
   },
   button: {
-    minWidth:40,
+    minWidth: 40,
     borderRadius: "50%",
-    padding:5,
+    padding: 5,
     marginRight: 10,
   },
 }))
 
-export default function Dashboard() {
+export default function AdminProductList() {
   const classes = useStyles()
   const [open, setOpen] = React.useState(true)
   const handleDrawerOpen = () => {
@@ -118,7 +118,7 @@ export default function Dashboard() {
                     <CreateIcon />
                   </Button>
                   <Button variant="contained" className={classes.button}>
-                    <DeleteIcon/>
+                    <DeleteIcon />
                   </Button>
                 </TableCell>
               </TableRow>
