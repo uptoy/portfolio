@@ -41,7 +41,6 @@ const useStyles: any = makeStyles(() => ({
 }))
 
 const DashboardHeader = (props: any) => {
-  console.log(props)
   const classes = useStyles()
   return (
     <AppBar position="absolute" className={clsx(classes.appBar, props.open && classes.appBarShift)}>

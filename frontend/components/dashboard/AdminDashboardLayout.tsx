@@ -2,13 +2,18 @@ import React from "react"
 import clsx from "clsx"
 import { makeStyles } from "@material-ui/styles"
 import CssBaseline from "@material-ui/core/CssBaseline"
-import { Chart, Deposits, Orders, DashboardSidebar, DashboardHeader } from "components/dashboard"
-import { Copyright } from "components"
+import { DashboardSidebar, DashboardHeader } from "components/dashboard"
 import theme from "theme"
+import Container from "@material-ui/core/Container"
 
 const useStyles: any = makeStyles(() => ({
   root: {
     display: "flex",
+  },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+    // marginTop: "3em",
   },
   content: {
     flexGrow: 1,
@@ -33,10 +38,12 @@ export default function AdminDashboardLayout({ children }: any) {
       <CssBaseline />
       <DashboardHeader open={open} onClick={handleDrawerOpen} />
       <DashboardSidebar open={open} onClick={handleDrawerClose} />
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        {children}
-      </main>
+      <Container maxWidth="xl" className={classes.container}>
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
+          {children}
+        </main>
+      </Container>
     </div>
   )
 }
