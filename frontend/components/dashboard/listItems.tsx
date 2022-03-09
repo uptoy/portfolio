@@ -47,7 +47,7 @@ export const mainListItems = (
       <ListItemIcon>
         <LayersIcon />
       </ListItemIcon>
-      <Link href="/admin/dashboard">UserDashboard</Link>
+      <Link href="/admin/dashboard">Chart</Link>
     </ListItem>
     <ListItem button>
       <ListItemIcon>

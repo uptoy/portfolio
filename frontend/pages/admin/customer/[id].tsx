@@ -27,7 +27,7 @@ const useStyles: any = makeStyles(() =>
   })
 )
 
-export default function AdminCustomerList() {
+export default function AdminCustomerDetail() {
   const classes = useStyles()
   return (
     <AdminLayout>
@@ -121,66 +121,6 @@ export default function AdminCustomerList() {
           </Grid>
         </Grid>
       </Grid>
-      {/* <form className={classes.form} noValidate>
-        <Grid item xs={4}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="last_name"
-            label="Last Name"
-            name="last_name"
-            autoFocus
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="first_name"
-            label="First Name"
-            name="first_name"
-            autoFocus
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="first_name"
-            label="First Name"
-            name="first_name"
-            autoFocus
-          />
-        </Grid>
-
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-        >
-          Submit
-        </Button>
-        <Grid container>
-          <Grid item xs>
-            <Link href="/auth/signin" variant="body2">
-              Already have an account?
-            </Link>
-          </Grid>
-          <Grid item>
-            <Link href="/auth/signup" variant="body2">
-              {"Don't have an account? Sign Up"}
-            </Link>
-          </Grid>
-        </Grid>
-      </form> */}
     </AdminLayout>
   )
 }
