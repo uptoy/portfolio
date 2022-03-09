@@ -45,7 +45,7 @@ const Cart: NextPage = () => {
   const removeItemHandler = (item: IProduct) => {}
 
   const checkoutHandler = () => {
-    router.push("/shipping")
+    router.push("/checkout")
   }
   return (
     <>
@@ -100,7 +100,6 @@ const Cart: NextPage = () => {
                         <TableCell align="right">
                           <Select
                             labelId="item-quantity"
-                            label="Quantity"
                             id="item-quantity"
                             value={item.quantity}
                             onChange={(e) => updateCartHandler(item, e.target.value as number)}

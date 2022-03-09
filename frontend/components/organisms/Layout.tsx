@@ -2,7 +2,7 @@ import { createStyles } from "@material-ui/core/styles"
 import { useTheme, Theme } from "@material-ui/core/styles"
 import { makeStyles } from "@material-ui/styles"
 import React, { useState } from "react"
-
+import { Container } from "@material-ui/core"
 import Header from "./Header"
 // import Sidebar from './Sidebar'
 // // import VerifyEmailAlert from '@/features/auth/components/VerifyEmailAlert';
@@ -39,6 +39,18 @@ import Header from "./Header"
 //   toolbar: '',
 //   main: '',
 // }
+const sections = [
+  { title: "Technology", url: "#" },
+  { title: "Design", url: "#" },
+  { title: "Culture", url: "#" },
+  { title: "Business", url: "#" },
+  { title: "Politics", url: "#" },
+  { title: "Opinion", url: "#" },
+  { title: "Science", url: "#" },
+  { title: "Health", url: "#" },
+  { title: "Style", url: "#" },
+  { title: "Travel", url: "#" },
+]
 
 const Layout: React.FC = ({ children }) => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
@@ -49,17 +61,12 @@ const Layout: React.FC = ({ children }) => {
 
   return (
     <div className="">
-      {/* <Header toggleMobileSidebar={handleToggleMobileSidebar} /> */}
       <Header />
-      {/* <Sidebar
-        isMobileSidebarOpen={isMobileSidebarOpen}
-        toggleMobileSidebar={handleToggleMobileSidebar}
-      /> */}
-      <main className="">
-        <div className="" />
-        {/* <VerifyEmailAlert /> */}
-        <div className="">{children}</div>
-      </main>
+      {/* <Header title="Portfolio" sections={sections} /> */}
+      <Container maxWidth="lg">
+        {" "}
+        <main>{children}</main>
+      </Container>
     </div>
   )
 }

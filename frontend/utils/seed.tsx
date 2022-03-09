@@ -169,3 +169,48 @@ export const order2: IOrder = {
   updatedAt: "updatedAt",
 }
 export const orders: IOrder[] = [order1, order2]
+
+
+
+export const mainFeaturedPost = {
+  title: "Welcome to my Portfolio",
+  description:
+    "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
+  image: "https://source.unsplash.com/random",
+  imageText: "main image description",
+}
+
+export const featuredPosts = [
+  {
+    title: "Featured post",
+    date: "Nov 12",
+    description:
+      "This is a wider card with supporting text below as a natural lead-in to additional content.",
+    image: "https://source.unsplash.com/random",
+    imageLabel: "Image Text",
+  },
+  {
+    title: "Post title",
+    date: "Nov 11",
+    description:
+      "This is a wider card with supporting text below as a natural lead-in to additional content.",
+    image: "https://source.unsplash.com/random",
+    imageLabel: "Image Text",
+  },
+  {
+    title: "Post title",
+    date: "Nov 11",
+    description:
+      "This is a wider card with supporting text below as a natural lead-in to additional content.",
+    image: "https://source.unsplash.com/random",
+    imageLabel: "Image Text",
+  },
+  {
+    title: "Post title",
+    date: "Nov 11",
+    description:
+      "This is a wider card with supporting text below as a natural lead-in to additional content.",
+    image: "https://source.unsplash.com/random",
+    imageLabel: "Image Text",
+  },
+]

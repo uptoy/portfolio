@@ -1,14 +1,17 @@
 import React from "react"
 import { alpha } from "@material-ui/core/styles"
 import { makeStyles } from "@material-ui/styles"
-import AppBar from "@material-ui/core/AppBar"
-import Toolbar from "@material-ui/core/Toolbar"
-import IconButton from "@material-ui/core/IconButton"
-import Typography from "@material-ui/core/Typography"
-import InputBase from "@material-ui/core/InputBase"
-import Badge from "@material-ui/core/Badge"
-import MenuItem from "@material-ui/core/MenuItem"
-import Menu from "@material-ui/core/Menu"
+import Link from "components/Link"
+import {
+  Menu,
+  MenuItem,
+  Badge,
+  InputBase,
+  Typography,
+  AppBar,
+  Toolbar,
+  IconButton,
+} from "@material-ui/core"
 import MenuIcon from "@material-ui/icons/Menu"
 import SearchIcon from "@material-ui/icons/Search"
 import AccountCircle from "@material-ui/icons/AccountCircle"
@@ -16,6 +19,27 @@ import MailIcon from "@material-ui/icons/Mail"
 import NotificationsIcon from "@material-ui/icons/Notifications"
 import MoreIcon from "@material-ui/icons/MoreVert"
 import theme from "theme"
+
+interface HeaderProps {
+  sections: ReadonlyArray<{
+    title: string
+    url: string
+  }>
+  title: string
+}
+
+const sections = [
+  { title: "Technology", url: "#" },
+  { title: "Design", url: "#" },
+  { title: "Culture", url: "#" },
+  { title: "Business", url: "#" },
+  { title: "Politics", url: "#" },
+  { title: "Opinion", url: "#" },
+  { title: "Science", url: "#" },
+  { title: "Health", url: "#" },
+  { title: "Style", url: "#" },
+  { title: "Travel", url: "#" },
+]
 
 const useStyles: any = makeStyles(() => ({
   grow: {
@@ -81,7 +105,9 @@ const useStyles: any = makeStyles(() => ({
   },
 }))
 
-export default function PrimarySearchAppBar() {
+// export default function PrimarySearchAppBar(props: HeaderProps) {
+export default function Header() {
+  // const { sections, title } = props
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
@@ -227,6 +253,24 @@ export default function PrimarySearchAppBar() {
           </div>
         </Toolbar>
       </AppBar>
+      <Toolbar
+        component="nav"
+        variant="dense"
+        sx={{ justifyContent: "space-between", overflowX: "auto" }}
+      >
+        {sections.map((section) => (
+          <Link
+            color="inherit"
+            noWrap
+            key={section.title}
+            variant="body2"
+            href={section.url}
+            sx={{ p: 1, flexShrink: 0 }}
+          >
+            {section.title}
+          </Link>
+        ))}
+      </Toolbar>
       {renderMobileMenu}
       {renderMenu}
     </div>

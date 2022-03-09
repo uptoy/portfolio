@@ -1,6 +1,6 @@
-import { useRouter } from 'next/router';
-const Pagination = () => {
-  return <>Pagination</>
-}
+// import { useRouter } from 'next/router';
+// const Pagination = () => {
+//   return <>Pagination</>
+// }
 
-export default Pagination
+// export default Pagination

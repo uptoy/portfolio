@@ -144,7 +144,6 @@ const ProductReview = ({ productId }: any) => {
                 labelId="demo-simple-select-outlined-label"
                 id="demo-simple-select-outlined"
                 onChange={(e) => setRating(e.target.value)}
-                label="Rating"
                 autoWidth
                 value={rating}
               >
