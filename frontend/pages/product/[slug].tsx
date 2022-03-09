@@ -25,6 +25,10 @@ const useStyles: any = makeStyles(() => ({
     display: "block",
     marginTop: theme.spacing(2),
   },
+  section: {
+    maxHeight: 300,
+    maxWidth: 500,
+  },
   root: {
     display: "flex",
     flexDirection: "column",
@@ -63,7 +67,7 @@ const ProductDetail: React.ReactNode = () => {
   return (
     <Layout>
       <Container maxWidth="xl" className={classes.container}>
-        <div className={classes.section}>
+        <div>
           <NextLink href="/" passHref>
             <Link>
               <Typography>back to products</Typography>
@@ -75,9 +79,9 @@ const ProductDetail: React.ReactNode = () => {
             <Image
               src={product.image}
               alt={product.name}
-              width={300}
+              width={500}
               height={300}
-              layout="responsive"
+              className={classes.section}
             ></Image>
           </Grid>
           {/* Center */}
@@ -115,7 +119,7 @@ const ProductDetail: React.ReactNode = () => {
                       <Typography>Price</Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <Typography>${product.price}</Typography>
+                      <Typography>{product.price}</Typography>
                     </Grid>
                   </Grid>
                 </ListItem>

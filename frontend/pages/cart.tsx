@@ -1,6 +1,6 @@
-import * as React from 'react'
-import type { NextPage } from 'next'
-import Link from '@material-ui/core/Link'
+import * as React from "react"
+import type { NextPage } from "next"
+import Link from "@material-ui/core/Link"
 
 import {
   Button,
@@ -18,52 +18,34 @@ import {
   ListItem,
   Typography,
   Card,
-} from '@material-ui/core'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
-import NextLink from 'next/link'
-import { IProduct } from 'types'
+} from "@material-ui/core"
+import Image from "next/image"
+import { useRouter } from "next/router"
+import NextLink from "next/link"
+import { IProduct } from "types"
+import { makeStyles } from "@material-ui/styles"
+import theme from "theme"
+import { products } from "utils/seed"
 
-const item1: IProduct = {
-  _id: '1',
-  quantity: 1,
-  name: 'name1',
-  slug: 'slug1',
-  category: 'category',
-  image: 'http://placehold.jp/150x150.png',
-  price: 1,
-  brand: 'brand',
-  rating: 1,
-  countInStock: 1,
-  description: 'desc',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  numReviews:10
-}
-const item2: IProduct = {
-  _id: '2',
-  quantity: 1,
-  name: 'name2',
-  slug: 'slug2',
-  category: 'category2',
-  image: 'http://placehold.jp/150x150.png',
-  price: 1,
-  brand: 'brand2',
-  rating: 1,
-  countInStock: 1,
-  description: 'desc2',
-  numReviews:10
-}
+const useStyles: any = makeStyles(() => ({
+  checkout: {
+    width: "100%",
+    [theme.breakpoints.down("md")]: {
+      width: "10em",
+    },
+  },
+}))
 
 const Cart: NextPage = () => {
+  const classes = useStyles()
   const router = useRouter()
-  const cartItems = [item1, item2]
+  const cartItems = products
   const updateCartHandler = async (item: IProduct, quantity: number) => {}
 
   const removeItemHandler = (item: IProduct) => {}
 
   const checkoutHandler = () => {
-    router.push('/shipping')
+    router.push("/shipping")
   }
   return (
     <>
@@ -72,7 +54,7 @@ const Cart: NextPage = () => {
       </Typography>
       {cartItems.length === 0 ? (
         <div>
-          Cart is empty.{' '}
+          Cart is empty.{" "}
           <NextLink href="/" passHref>
             <Link>Go shopping</Link>
           </NextLink>
@@ -153,15 +135,20 @@ const Cart: NextPage = () => {
           <Grid item md={3} xs={12}>
             <Card>
               <List>
-                <ListItem>
+                <ListItem style={{ justifyContent: "center" }}>
                   <Typography variant="h6">
-                    Subtotal ({(cartItems as Array<IProduct>).reduce((a, c) => a + c.quantity, 0)}{' '}
+                    Subtotal ({(cartItems as Array<IProduct>).reduce((a, c) => a + c.quantity, 0)}{" "}
                     items) : $
                     {(cartItems as Array<IProduct>).reduce((a, c) => a + c.quantity * c.price, 0)}
                   </Typography>
                 </ListItem>
-                <ListItem>
-                  <Button variant="contained" color="primary" fullWidth onClick={checkoutHandler}>
+                <ListItem style={{ justifyContent: "center" }}>
+                  <Button
+                    variant="contained"
+                    className={classes.checkout}
+                    color="primary"
+                    onClick={checkoutHandler}
+                  >
                     Check Out
                   </Button>
                 </ListItem>
