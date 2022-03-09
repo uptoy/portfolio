@@ -18,13 +18,6 @@ const useStyles: any = makeStyles(() => ({
   typography: {
     padding: theme.spacing(2),
   },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
   select: {
     border: "2px solid #14141545",
   },
@@ -145,7 +138,7 @@ const ProductDetail: React.ReactNode = () => {
                     </Grid>
                     {product.countInStock > 0 && (
                       <Grid item xs={6}>
-                        <FormControl className={classes.formControl}>
+                        <FormControl>
                           <Select
                             value={qty}
                             onChange={handleChange}

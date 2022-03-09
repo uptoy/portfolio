@@ -1,9 +1,9 @@
-import { createStyles } from '@material-ui/core/styles'
-import { useTheme, Theme } from '@material-ui/core/styles'
-import { makeStyles } from '@material-ui/styles'
-import React, { useState } from 'react'
+import { createStyles } from "@material-ui/core/styles"
+import { useTheme, Theme } from "@material-ui/core/styles"
+import { makeStyles } from "@material-ui/styles"
+import React, { useState } from "react"
 
-import Header from './Header'
+import Header from "./Header"
 // import Sidebar from './Sidebar'
 // // import VerifyEmailAlert from '@/features/auth/components/VerifyEmailAlert';
 // const theme = useTheme()
@@ -50,6 +50,7 @@ const Layout: React.FC = ({ children }) => {
   return (
     <div className="">
       {/* <Header toggleMobileSidebar={handleToggleMobileSidebar} /> */}
+      <Header />
       {/* <Sidebar
         isMobileSidebarOpen={isMobileSidebarOpen}
         toggleMobileSidebar={handleToggleMobileSidebar}
