@@ -1,25 +1,26 @@
-import { Typography } from '@material-ui/core'
-import Backdrop from '@material-ui/core/Backdrop'
-import Fade from '@material-ui/core/Fade'
-import IconButton from '@material-ui/core/IconButton'
-import MaterialModal from '@material-ui/core/Modal'
-import {  Theme } from '@material-ui/core/styles'
-import { makeStyles } from '@material-ui/styles'
+import { Typography } from "@material-ui/core"
+import Backdrop from "@material-ui/core/Backdrop"
+import Fade from "@material-ui/core/Fade"
+import IconButton from "@material-ui/core/IconButton"
+import MaterialModal from "@material-ui/core/Modal"
+import { Theme } from "@material-ui/core/styles"
+import { makeStyles } from "@material-ui/styles"
 
-import CloseIcon from '@material-ui/icons/Close'
-import React from 'react'
-import ReactDOM from 'react-dom'
+import CloseIcon from "@material-ui/icons/Close"
+import React from "react"
+import ReactDOM from "react-dom"
+import theme from "theme"
 
-const useStyles: any = makeStyles((theme: Theme) => ({
+const useStyles: any = makeStyles(() => ({
   modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   modalHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 10,
   },
   paper: {
@@ -27,14 +28,14 @@ const useStyles: any = makeStyles((theme: Theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     borderRadius: 6,
-    width: '90%',
-    [theme.breakpoints.up('md')]: {
+    width: "90%",
+    [theme.breakpoints.up("md")]: {
       width: 600,
     },
   },
   closeContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
+    display: "flex",
+    justifyContent: "flex-end",
   },
 }))
 

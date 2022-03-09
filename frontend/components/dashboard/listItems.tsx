@@ -9,7 +9,9 @@ import PeopleIcon from "@material-ui/icons/People"
 import BarChartIcon from "@material-ui/icons/BarChart"
 import LayersIcon from "@material-ui/icons/Layers"
 import AssignmentIcon from "@material-ui/icons/Assignment"
+import CategoryIcon from '@material-ui/icons/Category';
 import Link from "components/Link"
+import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 
 export const mainListItems = (
   <div>
@@ -33,6 +35,18 @@ export const mainListItems = (
     </ListItem>
     <ListItem button>
       <ListItemIcon>
+        <CardGiftcardIcon />
+      </ListItemIcon>
+      <Link href="/admin/product">Products</Link>
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <CategoryIcon />
+      </ListItemIcon>
+      <Link href="/admin/category">Categories</Link>
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
       <Link href="/admin/report">Reports</Link>
@@ -48,12 +62,6 @@ export const mainListItems = (
         <LayersIcon />
       </ListItemIcon>
       <Link href="/admin/dashboard">Chart</Link>
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <Link href="/admin/product">Products</Link>
     </ListItem>
   </div>
 )

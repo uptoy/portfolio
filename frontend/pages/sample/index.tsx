@@ -1,6 +1,4 @@
 import React from "react"
-import AppBar from "@material-ui/core/AppBar"
-import Toolbar from "@material-ui/core/Toolbar"
 import { ChatErrors, ChatHistory, ChatInput } from "components/Chat2"
 import { makeStyles } from "@material-ui/styles"
 import theme from "theme"

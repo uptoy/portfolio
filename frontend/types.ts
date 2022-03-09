@@ -143,3 +143,9 @@ export interface IOrder {
   createdAt?: string
   updatedAt?: string
 }
+
+export interface ICategory {
+  id: string;
+  title: string;
+  user_id: string;
+}
