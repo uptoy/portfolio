@@ -1,8 +1,7 @@
-import { Theme } from '@material-ui/core/styles'
-import { makeStyles } from '@material-ui/styles'
-import Typography from '@material-ui/core/Typography'
-import theme from 'theme'
-import { Copyright } from 'components'
+import { makeStyles } from "@material-ui/styles"
+import theme from "theme"
+import { Copyright } from "components"
+import { Box } from "@material-ui/core"
 
 const useStyles: any = makeStyles(() => ({
   footer: {
@@ -15,10 +14,9 @@ const Footer = () => {
   return (
     <>
       <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Copyright />
+        <Box component="footer" sx={{ bgcolor: "background.paper", py: 6 }}>
+          <Copyright />
+        </Box>
       </footer>
     </>
   )
