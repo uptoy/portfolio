@@ -1,17 +1,49 @@
-import React, { useContext } from "react"
-import { InferGetServerSidePropsType } from "next"
+import React, { useState, useContext } from "react"
 import NextLink from "next/link"
-// import { ErrorMessage } from "components/Message/ErrorMessage"
 import Image from "next/image"
 import { Grid, Link, List, ListItem, Typography, Card, Button } from "@material-ui/core"
 import Layout from "components/organisms/Layout"
-import useStyles from "utils/styles"
 import { useRouter } from "next/router"
-import { product } from "utils/seed"
+import { products } from "utils/seed"
 import Rating from "components/Rating"
 import ProductReview from "components/ProductReview"
+import theme from "theme"
+import { makeStyles } from "@material-ui/styles"
+import { Select, FormControl, MenuItem } from "@material-ui/core"
+import Container from "@material-ui/core/Container"
+// import { ErrorMessage } from "components/Message/ErrorMessage"
+// import useStyles from "utils/styles"
+
+const useStyles: any = makeStyles(() => ({
+  typography: {
+    padding: theme.spacing(2),
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+  select: {
+    border: "2px solid #14141545",
+  },
+  button: {
+    display: "block",
+    marginTop: theme.spacing(2),
+  },
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    "& > * + *": {
+      marginTop: theme.spacing(1),
+    },
+  },
+}))
 
 const ProductDetail: React.ReactNode = () => {
+  const product = products[0]
+  const [qty, setQty] = useState(1)
   const router = useRouter()
   // const { state, dispatch } = useContext(StoreContext)
   const classes = useStyles()
@@ -32,88 +64,118 @@ const ProductDetail: React.ReactNode = () => {
     // router.push('/cart')
   }
   const productId = "1"
-
+  const handleChange = (event: any) => {
+    setQty(event.target.value)
+  }
   return (
     <Layout>
-      <div className={classes.section}>
-        <NextLink href="/" passHref>
-          <Link>
-            <Typography>back to products</Typography>
-          </Link>
-        </NextLink>
-      </div>
-      <Grid container spacing={1}>
-        <Grid item md={6} xs={12}>
-          <Image
-            src={product.image}
-            alt={product.name}
-            width={300}
-            height={300}
-            layout="responsive"
-          ></Image>
-        </Grid>
-        <Grid item md={3} xs={12}>
-          <List>
-            <ListItem>
-              <Typography component="h1" variant="h1">
-                {product.name}
-              </Typography>
-            </ListItem>
-            <ListItem>
-              <Rating
-                value={product.averageRating}
-                text={`${product.Reviews ? product.Reviews.length : 0} reviews`}
-              />
-            </ListItem>
-            <ListItem>
-              <Typography>Category: {product.category}</Typography>
-            </ListItem>
-            <ListItem>
-              <Typography>Brand: {product.brand}</Typography>
-            </ListItem>
-            <ListItem>
-              <Typography>
-                Rating: {product.rating} stars ({product.numReviews} reviews)
-              </Typography>
-            </ListItem>
-            <ListItem>
-              <Typography> Description: {product.description}</Typography>
-            </ListItem>
-          </List>
-        </Grid>
-        <Grid item md={3} xs={12}>
-          <Card>
+      <Container maxWidth="xl" className={classes.container}>
+        <div className={classes.section}>
+          <NextLink href="/" passHref>
+            <Link>
+              <Typography>back to products</Typography>
+            </Link>
+          </NextLink>
+        </div>
+        <Grid container spacing={3}>
+          <Grid item xs>
+            <Image
+              src={product.image}
+              alt={product.name}
+              width={300}
+              height={300}
+              layout="responsive"
+            ></Image>
+          </Grid>
+          {/* Center */}
+          <Grid item xs={4}>
             <List>
               <ListItem>
-                <Grid container>
-                  <Grid item xs={6}>
-                    <Typography>Price</Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography>${product.price}</Typography>
-                  </Grid>
-                </Grid>
+                <Typography component="h6" variant="h6">
+                  {product.name}
+                </Typography>
               </ListItem>
               <ListItem>
-                <Grid container>
-                  <Grid item xs={6}>
-                    <Typography>Status</Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography>{product.countInStock > 0 ? "In stock" : "Unavailable"}</Typography>
-                  </Grid>
-                </Grid>
+                <Rating
+                  value={product.rating}
+                  text={`${product.reviews ? product.reviews.length : 0} reviews`}
+                />
               </ListItem>
               <ListItem>
-                <Button fullWidth variant="contained" color="primary" onClick={addToCartHandler}>
-                  Add to cart
-                </Button>
+                <Typography>Category: {product.category}</Typography>
+              </ListItem>
+              <ListItem>
+                <Typography>Brand: {product.brand}</Typography>
+              </ListItem>
+              <ListItem>
+                <Typography> Description: {product.description}</Typography>
               </ListItem>
             </List>
-          </Card>
+          </Grid>
+          {/* Right */}
+          <Grid item xs={3}>
+            <Card>
+              <List>
+                <ListItem>
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <Typography>Price</Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography>${product.price}</Typography>
+                    </Grid>
+                  </Grid>
+                </ListItem>
+                <ListItem>
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <Typography>Status</Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography>
+                        {product.countInStock > 0 ? "In stock" : "Unavailable"}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </ListItem>
+                <ListItem>
+                  <Grid container style={{ alignItems: "center" }}>
+                    <Grid item xs={6}>
+                      <Typography>Quantity</Typography>
+                    </Grid>
+                    {product.countInStock > 0 && (
+                      <Grid item xs={6}>
+                        <FormControl className={classes.formControl}>
+                          <Select
+                            value={qty}
+                            onChange={handleChange}
+                            displayEmpty
+                            className={classes.selectEmpty}
+                            inputProps={{ "aria-label": "Without label" }}
+                          >
+                            <MenuItem value="">
+                              <em>Num</em>
+                            </MenuItem>
+                            <MenuItem value={1}>1</MenuItem>
+                            <MenuItem value={2}>2</MenuItem>
+                            <MenuItem value={3}>3</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    )}
+                  </Grid>
+                </ListItem>
+                <ListItem>
+                  <Button fullWidth variant="contained" color="primary" onClick={addToCartHandler}>
+                    Add to cart
+                  </Button>
+                </ListItem>
+              </List>
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
-      <ProductReview productId={productId} />
+        <ProductReview productId={productId} />
+      </Container>
     </Layout>
   )
 }

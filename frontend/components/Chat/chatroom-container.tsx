@@ -20,7 +20,7 @@ const ChatroomContainer = (matchId: any) => {
   //   window.location = `/?message=${msg}`
   // })
 
-  const handleMessage = (event: any) => {
+  const handleMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value)
   }
 

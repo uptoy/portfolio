@@ -1,15 +1,16 @@
-import Divider from '@material-ui/core/Divider'
-import Drawer from '@material-ui/core/Drawer'
-import Hidden from '@material-ui/core/Hidden'
-import { useTheme, Theme } from '@material-ui/core/styles'
-import { makeStyles } from '@material-ui/styles'
-import Typography from '@material-ui/core/Typography'
+import Divider from "@material-ui/core/Divider"
+import Drawer from "@material-ui/core/Drawer"
+import Hidden from "@material-ui/core/Hidden"
+import { useTheme, Theme } from "@material-ui/core/styles"
+import { makeStyles } from "@material-ui/styles"
+import Typography from "@material-ui/core/Typography"
 
-import SidebarList from './SidebarList'
+import SidebarList from "./SidebarList"
+import theme from "theme"
 
 const drawerWidth = 240
 
-const useStyles: any = makeStyles((theme: Theme) => ({}))
+const useStyles: any = makeStyles(() => ({}))
 
 interface Props {
   window?: () => Window
@@ -29,7 +30,7 @@ const Sidebar: React.FC<Props> = ({ isMobileSidebarOpen, toggleMobileSidebar, wi
         <Drawer
           container={container}
           variant="temporary"
-          anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+          anchor={theme.direction === "rtl" ? "right" : "left"}
           open={isMobileSidebarOpen}
           onClose={toggleMobileSidebar}
           classes={{
@@ -40,11 +41,7 @@ const Sidebar: React.FC<Props> = ({ isMobileSidebarOpen, toggleMobileSidebar, wi
           }}
         >
           <div className={classes.drawerHeader}>
-            <img
-              src="http://placehold.jp/150x150.png"
-              alt="logo"
-              className={classes.logo}
-            />
+            <img src="http://placehold.jp/150x150.png" alt="logo" className={classes.logo} />
             <Typography variant="h6" color="inherit">
               Budgetpal
             </Typography>
@@ -61,7 +58,11 @@ const Sidebar: React.FC<Props> = ({ isMobileSidebarOpen, toggleMobileSidebar, wi
           open
         >
           <div className={classes.drawerHeader}>
-            <img src="http://placehold.jp/150x150.png" alt="Budgetpal logo" className={classes.logo} />
+            <img
+              src="http://placehold.jp/150x150.png"
+              alt="Budgetpal logo"
+              className={classes.logo}
+            />
             <Typography variant="h6" color="inherit">
               Budgetpal
             </Typography>

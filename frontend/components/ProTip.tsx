@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/styles'
 import Link from '@material-ui/core/Link'
 import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon'
 import Typography from '@material-ui/core/Typography'
+import theme from "theme"
 
 function LightBulbIcon(props: SvgIconProps) {
   return (
@@ -13,7 +14,7 @@ function LightBulbIcon(props: SvgIconProps) {
   )
 }
 
-const useStyles: any = makeStyles((theme: Theme) =>
+const useStyles: any = makeStyles(() =>
   createStyles({
     root: {
       spacing: 6,

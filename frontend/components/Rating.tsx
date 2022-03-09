@@ -1,61 +1,77 @@
 import React from "react"
+import StarIcon from "@material-ui/icons/Star"
+import StarBorderIcon from "@material-ui/icons/StarBorder" //empty
+import StarHalfIcon from "@material-ui/icons/StarHalf"
+import theme from "theme"
+import { makeStyles } from "@material-ui/styles"
+import { CircularProgress } from "@material-ui/core/"
 
 interface IRating {
   value: number
-  color: string
-  text: string
+  text?: string
 }
+const useStyles: any = makeStyles(() => ({
+  icon: {
+    fontSize: "2em",
+    color: "#ffa000",
+  },
+}))
 
-const Rating = ({ value, color, text }: IRating) => {
+const Rating = ({ value, text }: IRating) => {
+  const classes = useStyles()
+  const iconStyle: React.CSSProperties = { padding: 10, fontSize: 50 }
+  const loading = false
+
   return (
     <div className="rating">
       <span>
-        <i
-          style={{ color }}
-          className={
-            value >= 1 ? "fas fa-star" : value >= 0.5 ? "fas fa-star-half-alt" : "far fa-star"
-          }
-        ></i>
+        {value >= 1 ? (
+          <StarIcon className={classes.icon} />
+        ) : value >= 0.5 ? (
+          <StarBorderIcon className={classes.icon} />
+        ) : (
+          <StarBorderIcon className={classes.icon} />
+        )}
       </span>
       <span>
-        <i
-          style={{ color }}
-          className={
-            value >= 2 ? "fas fa-star" : value >= 1.5 ? "fas fa-star-half-alt" : "far fa-star"
-          }
-        ></i>
+        {value >= 2 ? (
+          <StarIcon className={classes.icon} />
+        ) : value >= 1.5 ? (
+          <StarBorderIcon className={classes.icon} />
+        ) : (
+          <StarBorderIcon className={classes.icon} />
+        )}
       </span>
       <span>
-        <i
-          style={{ color }}
-          className={
-            value >= 3 ? "fas fa-star" : value >= 2.5 ? "fas fa-star-half-alt" : "far fa-star"
-          }
-        ></i>
+        {value >= 3 ? (
+          <StarIcon className={classes.icon} />
+        ) : value >= 2.5 ? (
+          <StarBorderIcon className={classes.icon} />
+        ) : (
+          <StarBorderIcon className={classes.icon} />
+        )}
       </span>
       <span>
-        <i
-          style={{ color }}
-          className={
-            value >= 4 ? "fas fa-star" : value >= 3.5 ? "fas fa-star-half-alt" : "far fa-star"
-          }
-        ></i>
+        {value >= 4 ? (
+          <StarIcon className={classes.icon} />
+        ) : value >= 3.5 ? (
+          <StarBorderIcon className={classes.icon} />
+        ) : (
+          <StarBorderIcon className={classes.icon} />
+        )}
       </span>
       <span>
-        <i
-          style={{ color }}
-          className={
-            value >= 5 ? "fas fa-star" : value >= 4.5 ? "fas fa-star-half-alt" : "far fa-star"
-          }
-        ></i>
+        {value >= 5 ? (
+          <StarIcon className={classes.icon} />
+        ) : value >= 4.5 ? (
+          <StarBorderIcon className={classes.icon} />
+        ) : (
+          <StarBorderIcon className={classes.icon} />
+        )}
       </span>
       <span>{text && text}</span>
     </div>
   )
-}
-
-Rating.defaultProps = {
-  color: "#f8e825",
 }
 
 export default Rating

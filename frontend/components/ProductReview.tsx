@@ -6,20 +6,22 @@ import {
   Select,
   Button,
   FormControl,
-  makeStyles,
   MenuItem,
   InputLabel,
   TextField,
   CircularProgress,
   Typography,
 } from "@material-ui/core"
+import { makeStyles } from "@material-ui/styles"
 import theme from "theme"
+import { products } from "utils/seed"
+
 const useStyles: any = makeStyles(() => ({
   typography: {
     padding: theme.spacing(2),
   },
   formControl: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(1, 0),
     minWidth: 200,
   },
   selectEmpty: {
@@ -27,6 +29,9 @@ const useStyles: any = makeStyles(() => ({
   },
   prgressColor: {
     color: "#fff",
+  },
+  button: {
+    marginBottom: theme.spacing(10),
   },
 }))
 
@@ -76,35 +81,13 @@ const ProductReview = ({ productId }: any) => {
 
   //   dispatch(productAction.createReview(productId, title, text, rating))
   // }
-  const loading = true
-  const error = true
+  const loading = false
+  const error = false
   const count = 1
 
-  const user1 = {
-    _id: "_id",
-    name: "name",
-  }
-  const review1 = {
-    _id: "_id",
-    userId: user1,
-    rating: 4,
-    createdAt: "createdAt",
-    text: "text",
-  }
-  const review2 = {
-    _id: "_id",
-    userId: user1,
-    rating: 4,
-    createdAt: "createdAt",
-    text: "text",
-  }
-  const productReviews = [review1, review2]
-  const product = {
-    averageRating: 1,
-    Reviews: productReviews,
-  }
-  const createReviewLoading = true
+  const createReviewLoading = false
   const userInfo = true
+  console.log("loading", loading)
 
   return loading ? (
     <p>Loding....</p>
@@ -113,24 +96,18 @@ const ProductReview = ({ productId }: any) => {
     <>error</>
   ) : (
     <>
-      <h2>Reviews({count})</h2>
-      {!productReviews.length && <h4>No Reviews</h4>}
+      <h2>Reviews({products[0].reviews.length})</h2>
+      {!products[0].reviews.length && <h4>No Reviews</h4>}
       <div>
-        {productReviews.map((review) => (
+        {products[0].reviews.map((review) => (
           <div key={review._id}>
-            <strong>{review.userId.name}</strong>
-
-            <Rating
-              color={"primary"}
-              value={product.averageRating}
-              text={`${product.Reviews ? product.Reviews.length : 0} reviews`}
-            />
-            <p>{review.createdAt.substring(0, 10)}</p>
-            <p>{review.text}</p>
+            <strong>{review.username}</strong>
+            <Rating value={products[0].rating} />
+            <p>{review.createdAt}</p>
+            <p>{review.comment}</p>
           </div>
         ))}
         <h2>Write a Customer Review</h2>
-
         {userInfo ? (
           <form>
             <TextField
@@ -161,7 +138,6 @@ const ProductReview = ({ productId }: any) => {
               value={text}
               onChange={(e) => setText(e.target.value)}
             />
-
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel id="demo-simple-select-outlined-label">Rating</InputLabel>
               <Select
@@ -182,12 +158,13 @@ const ProductReview = ({ productId }: any) => {
                 <MenuItem value="5">5 - Excellent</MenuItem>
               </Select>
             </FormControl>
-            <div className="my-3">
+            <div>
               <Button
                 variant="contained"
                 color="primary"
                 type="submit"
                 disabled={createReviewLoading}
+                className={classes.button}
               >
                 {createReviewLoading ? (
                   <CircularProgress color="inherit" className={classes.prgressColor} />

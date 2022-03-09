@@ -6,6 +6,14 @@ export interface DateRange {
   end_date: string
 }
 
+export interface IReview {
+  _id: string
+  username: string
+  rating: number
+  createdAt: string
+  comment: string
+}
+
 export interface IProduct {
   _id: string
   quantity: number
@@ -18,10 +26,16 @@ export interface IProduct {
   rating: number
   countInStock: number
   description: string
-  numReviews?: number
+  numReviews: number
   createdAt?: string
-  updatedAt?: string
+  updatedAt: string
+  reviews: IReview[]
 }
+
+// export interface IReviews {
+//   name: string
+//   comment: string
+// }
 
 export interface IOrderItems {
   name: string
@@ -80,15 +94,15 @@ export type UserSubmitForm = {
 //   currency: string
 //   is_email_verified: boolean
 // }
-export interface IUser {
-  name: string
-  email: string
-  password?: string
-  isAdmin: boolean
-  _id?: string
-  createdAt?: string
-  updatedAt?: string
-}
+// export interface IUser {
+//   name: string
+//   email: string
+//   password: string
+//   isAdmin: boolean
+//   _id: string
+//   createdAt: string
+//   updatedAt?: string
+// }
 
 export interface IAuthUser extends IUser {
   token: string
@@ -105,11 +119,11 @@ export interface IOrderItems {
 export interface IUser {
   name: string
   email: string
-  password?: string
+  password: string
   isAdmin: boolean
-  _id?: string
-  createdAt?: string
-  updatedAt?: string
+  _id: string
+  createdAt: string
+  updatedAt: string
 }
 
 export interface IOrderItems {
@@ -145,7 +159,7 @@ export interface IOrder {
 }
 
 export interface ICategory {
-  id: string;
-  title: string;
-  user_id: string;
+  id: string
+  title: string
+  user_id: string
 }

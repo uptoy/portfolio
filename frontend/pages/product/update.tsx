@@ -40,7 +40,7 @@ export default function EditProduct() {
   const classes = useStyles()
   const [age, setAge] = React.useState("")
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAge(event.target.value as string)
   }
 

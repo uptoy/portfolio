@@ -1,7 +1,8 @@
 import { Theme } from "@material-ui/core"
 import { makeStyles } from "@material-ui/styles"
+import theme from "theme"
 
-const useStyles: any = makeStyles((theme: Theme) => ({
+const useStyles: any = makeStyles(() => ({
   parent: {
     minHeight: "100vh",
     display: "flex",
