@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { InferGetServerSidePropsType } from "next"
 import NextLink from "next/link"
-import { ErrorMessage } from "components/Message/ErrorMessage"
+// import { ErrorMessage } from "components/Message/ErrorMessage"
 import Image from "next/image"
 import { Grid, Link, List, ListItem, Typography, Card, Button } from "@material-ui/core"
 import Layout from "components/organisms/Layout"

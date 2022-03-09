@@ -5,7 +5,7 @@ import Box from "@material-ui/core/Box"
 
 import Grid from "@material-ui/core/Grid"
 import Paper from "@material-ui/core/Paper"
-import { Chart, Deposits, Orders, AdminDashboardLayout } from "components/dashboard"
+import { Chart, Deposits, Orders, AdminLayout } from "components/dashboard"
 import { Copyright } from "components"
 import theme from "theme"
 
@@ -35,7 +35,7 @@ export default function Dashboard() {
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight)
 
   return (
-    <AdminDashboardLayout open={open} onClick={handleDrawerOpen}>
+    <AdminLayout open={open} onClick={handleDrawerOpen}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={8} lg={9}>
           <Paper className={fixedHeightPaper}>
@@ -56,6 +56,6 @@ export default function Dashboard() {
       <Box pt={4}>
         <Copyright />
       </Box>
-    </AdminDashboardLayout>
+    </AdminLayout>
   )
 }

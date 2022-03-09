@@ -1,5 +1,4 @@
 import React from "react"
-import clsx from "clsx"
 import { makeStyles } from "@material-ui/styles"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import { DashboardSidebar, DashboardHeader } from "components/dashboard"
@@ -23,7 +22,7 @@ const useStyles: any = makeStyles(() => ({
   appBarSpacer: theme.mixins.toolbar as any,
 }))
 
-export default function AdminDashboardLayout({ children }: any) {
+export default function AdminLayout({ children }: any) {
   const classes = useStyles()
   const [open, setOpen] = React.useState(true)
   const handleDrawerOpen = () => {

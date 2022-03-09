@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/styles"
 import { Grid, Container } from "@material-ui/core"
 import { LineBarChart, BrowserUsage, InfoBox, NewOrders, MonthlySales } from "components/Admin"
 import { cyan, pink, purple, orange, grey } from "@material-ui/core/colors"
-import { AdminDashboardLayout } from "components/dashboard"
+import { AdminLayout } from "components/dashboard"
 import Data from "data"
 
 const cyan600 = cyan["600"]
@@ -35,7 +35,7 @@ const useStyles: any = makeStyles(() => ({
 const AdminDashboard = () => {
   const classes = useStyles()
   return (
-    <AdminDashboardLayout>
+    <AdminLayout>
       <div className={classes.content}>
         <Grid container  spacing={3}>
           <Grid item className={classes.cell} xs={12} md={3}>
@@ -64,7 +64,7 @@ const AdminDashboard = () => {
           </Grid>
         </Grid>
       </div>
-    </AdminDashboardLayout>
+    </AdminLayout>
   )
 }
 

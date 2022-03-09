@@ -1,7 +1,7 @@
 import React from "react"
 import clsx from "clsx"
 import { makeStyles } from "@material-ui/styles"
-import { AdminDashboardLayout } from "components/dashboard"
+import { AdminLayout } from "components/dashboard"
 import theme from "theme"
 import { Button, TextField, Grid } from "@material-ui/core"
 import { createStyles } from "@material-ui/core/styles"
@@ -30,7 +30,7 @@ const useStyles: any = makeStyles(() =>
 export default function AdminCustomerList() {
   const classes = useStyles()
   return (
-    <AdminDashboardLayout>
+    <AdminLayout>
       <Grid container spacing={4}>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={4}>
@@ -181,6 +181,6 @@ export default function AdminCustomerList() {
           </Grid>
         </Grid>
       </form> */}
-    </AdminDashboardLayout>
+    </AdminLayout>
   )
 }

@@ -1,7 +1,6 @@
 import React from "react"
-import clsx from "clsx"
 import { makeStyles } from "@material-ui/styles"
-import { AdminDashboardLayout } from "components/dashboard"
+import { AdminLayout } from "components/dashboard"
 import theme from "theme"
 import {
   Paper,
@@ -13,6 +12,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Drawer,
+  Grid,
+  TextField,
 } from "@material-ui/core"
 import AddIcon from "@material-ui/icons/Add"
 import SearchIcon from "@material-ui/icons/Search"
@@ -118,22 +120,42 @@ const useStyles: any = makeStyles(() => ({
     padding: 5,
     marginRight: 10,
   },
+  searchButton: {
+    marginRight: 20,
+  },
+  searchField: {
+    margin: 10,
+  },
+  searchDrawer: {
+    overflow: "hidden",
+    width: 280,
+  },
+  list: {
+    width: 250,
+  },
+  fullList: {
+    width: "auto",
+  },
 }))
 
 export default function AdminCustomerList() {
   const classes = useStyles()
-  const [open, setOpen] = React.useState(true)
-  const handleDrawerOpen = () => {
-    setOpen(true)
+  const [state, setState] = React.useState({
+    right: false,
+  })
+  const toggleDrawer = (anchor: string, open: boolean) => (event: any) => {
+    if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
+      return
+    }
+    setState({ ...state, [anchor]: open })
   }
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight)
 
   return (
-    <AdminDashboardLayout open={open} onClick={handleDrawerOpen}>
+    <AdminLayout>
       <Fab size="small" color="secondary" className={classes.fab} onClick={() => {}}>
         <AddIcon />
       </Fab>
-      <Fab size="small" className={classes.fabSearch} onClick={() => {}}>
+      <Fab size="small" className={classes.fabSearch} onClick={toggleDrawer("right", true)}>
         <SearchIcon />
       </Fab>
       <TableContainer component={Paper}>
@@ -171,6 +193,41 @@ export default function AdminCustomerList() {
           </TableBody>
         </Table>
       </TableContainer>
-    </AdminDashboardLayout>
+      <Drawer anchor="right" open={state["right"]} onClose={toggleDrawer("right", false)}>
+        <Grid container className={classes.searchDrawer} spacing={1}>
+          <Grid item xs={12} className={classes.searchField}>
+            <h5>Search</h5>
+          </Grid>
+          <Grid item xs={12} className={classes.searchField}>
+            <TextField
+              placeholder="Product Name"
+              label="Product Name"
+              name="name"
+              fullWidth={true}
+              value={"name"}
+              onChange={() => {}}
+            />
+          </Grid>
+          <Grid item xs={12} className={classes.searchField}>
+            <Button
+              variant="contained"
+              className={classes.searchButton}
+              onClick={() => {}}
+              color="secondary"
+            >
+              Search
+            </Button>
+            <Button
+              variant="contained"
+              className={classes.searchButton}
+              onClick={() => {}}
+              color="secondary"
+            >
+              Cancel
+            </Button>
+          </Grid>
+        </Grid>
+      </Drawer>
+    </AdminLayout>
   )
 }
