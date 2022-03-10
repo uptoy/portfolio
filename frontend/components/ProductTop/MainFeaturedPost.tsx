@@ -49,7 +49,7 @@ export default function MainFeaturedPost(props: MainFeaturedPostProps) {
           <Box
             sx={{
               position: 'relative',
-              p: { xs: 3, md: 6 },
+              m: { xs: 3, md: 7 },
               pr: { md: 0 },
             }}
           >

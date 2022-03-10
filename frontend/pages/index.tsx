@@ -13,7 +13,12 @@ import {
 } from "@material-ui/core"
 import { makeStyles } from "@material-ui/styles"
 import { Layout } from "components/organisms"
+import { Rating } from "components"
 import { mainFeaturedPost } from "utils/seed"
+import { products } from "utils/seed"
+import FavoriteIcon from "@material-ui/icons/Favorite"
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"
+import { red, common } from "@material-ui/core/colors"
 
 const useStyles: any = makeStyles(() => ({
   cardGrid: {
@@ -25,14 +30,26 @@ const useStyles: any = makeStyles(() => ({
     flexDirection: "column",
   },
   cardMedia: {
-    paddingTop: "56.25%", // 16:9
+    paddingTop: "80%", // 16:9
   },
   cardContent: {
     flexGrow: 1,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(0.25),
+  },
+  cardActions: {
+    justifyContent: "space-between",
+  },
+  favorite: {
+    minWidth: 30,
+    color: red[500],
+    marginRight: theme.spacing(1),
+  },
+  numReviews: {
+    marginLeft: theme.spacing(1),
+    color: common.black,
   },
 }))
-
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 export default function Index() {
   const classes = useStyles()
@@ -42,8 +59,8 @@ export default function Index() {
       <Container className={classes.cardGrid} maxWidth="xl">
         {/* End hero unit */}
         <Grid container spacing={4}>
-          {cards.map((card) => (
-            <Grid item key={card} xs={12} sm={6} md={4}>
+          {products.map((product) => (
+            <Grid item key={product._id} xs={12} sm={6} md={4}>
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.cardMedia}
@@ -51,19 +68,20 @@ export default function Index() {
                   title="Image title"
                 />
                 <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    Heading
+                  <Typography gutterBottom variant="h5" component="h6">
+                    {product.name}
                   </Typography>
-                  <Typography>
-                    This is a media card. You can use this section to describe the content.
+                  <Typography gutterBottom variant="h5" component="h6">
+                    {"$ "}{product.price}
                   </Typography>
                 </CardContent>
-                <CardActions>
+                <CardActions className={classes.cardActions}>
                   <Button size="small" color="primary">
-                    View
+                    <Rating value={product.rating} />
+                    <Typography className={classes.numReviews}>({product.numReviews})</Typography>
                   </Button>
-                  <Button size="small" color="primary">
-                    Edit
+                  <Button size="small" color="primary" className={classes.favorite}>
+                    <FavoriteBorderIcon />
                   </Button>
                 </CardActions>
               </Card>

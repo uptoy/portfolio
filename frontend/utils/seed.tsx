@@ -70,11 +70,11 @@ export const product1: IProduct = {
   slug: "slug1",
   category: "category",
   image: "http://placehold.jp/150x150.png",
-  price: 1,
+  price: 10000,
   brand: "brand",
   rating: 3,
   countInStock: 1,
-  numReviews: 1,
+  numReviews: reviews1.length,
   description: "desc",
   createdAt: "createdAt",
   updatedAt: "updatedAt",
@@ -91,13 +91,85 @@ export const product2: IProduct = {
   brand: "brand2",
   rating: 2,
   countInStock: 2,
-  numReviews: 2,
+  numReviews: reviews2.length,
   description: "desc2",
   createdAt: "createdAt2",
   updatedAt: "updatedAt2",
   reviews: reviews2,
 }
-export const products: IProduct[] = [product1, product2]
+
+export const product3: IProduct = {
+  _id: "3",
+  quantity: 3,
+  name: "name3",
+  slug: "slug3",
+  category: "category3",
+  image: "http://placehold.jp/150x150.png",
+  price: 30,
+  brand: "brand3",
+  rating: 5,
+  countInStock: 3,
+  numReviews: reviews2.length,
+  description: "desc3",
+  createdAt: "createdAt3",
+  updatedAt: "updatedAt3",
+  reviews: reviews2,
+}
+
+export const product4: IProduct = {
+  _id: "4",
+  quantity: 4,
+  name: "name4",
+  slug: "slug4",
+  category: "category4",
+  image: "http://placehold.jp/150x150.png",
+  price: 4,
+  brand: "brand4",
+  rating: 4000,
+  countInStock: 4,
+  numReviews: reviews1.length,
+  description: "desc4",
+  createdAt: "createdAt4",
+  updatedAt: "updatedAt4",
+  reviews: reviews1,
+}
+
+export const product5: IProduct = {
+  _id: "5",
+  quantity: 5,
+  name: "name5",
+  slug: "slug5",
+  category: "category5",
+  image: "http://placehold.jp/150x150.png",
+  price: 50,
+  brand: "brand5",
+  rating: 5,
+  countInStock: 5,
+  numReviews: reviews2.length,
+  description: "desc5",
+  createdAt: "createdAt5",
+  updatedAt: "updatedAt5",
+  reviews: reviews2,
+}
+
+export const product6: IProduct = {
+  _id: "6",
+  quantity: 6,
+  name: "name6",
+  slug: "slug6",
+  category: "category6",
+  image: "http://placehold.jp/150x150.png",
+  price: 600,
+  brand: "brand6",
+  rating: 1,
+  countInStock: 6,
+  numReviews: reviews1.length,
+  description: "desc6",
+  createdAt: "createdAt6",
+  updatedAt: "updatedAt6",
+  reviews: reviews1,
+}
+export const products: IProduct[] = [product1, product2,product3, product4,product5, product6,product1, product2,product3, product4,product5, product6]
 
 //Payment
 export const paymentResult: IPaymentResult = {
