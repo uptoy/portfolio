@@ -20,13 +20,13 @@ import NotificationsIcon from "@material-ui/icons/Notifications"
 import MoreIcon from "@material-ui/icons/MoreVert"
 import theme from "theme"
 
-interface HeaderProps {
-  sections: ReadonlyArray<{
-    title: string
-    url: string
-  }>
-  title: string
-}
+// interface HeaderProps {
+//   sections: ReadonlyArray<{
+//     title: string
+//     url: string
+//   }>
+//   title: string
+// }
 
 const sections = [
   { title: "Technology", url: "#" },

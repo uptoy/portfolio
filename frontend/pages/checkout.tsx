@@ -9,7 +9,7 @@ import {
   Step,
   StepLabel,
 } from '@material-ui/core'
-import { AddressForm, PaymentForm, Review } from 'components/order'
+import { AddressForm, PaymentForm, Review } from 'components/Order'
 import { Layout } from 'components/organisms'
 
 const steps = ['Shipping address', 'Payment details', 'Review your order']

@@ -2,9 +2,7 @@ import React from "react"
 import StarIcon from "@material-ui/icons/Star"
 import StarBorderIcon from "@material-ui/icons/StarBorder" //empty
 import StarHalfIcon from "@material-ui/icons/StarHalf"
-import theme from "theme"
 import { makeStyles } from "@material-ui/styles"
-import { CircularProgress } from "@material-ui/core/"
 
 interface IRating {
   value: number
@@ -28,7 +26,7 @@ const Rating = ({ value, text }: IRating) => {
         {value >= 1 ? (
           <StarIcon className={classes.icon} />
         ) : value >= 0.5 ? (
-          <StarBorderIcon className={classes.icon} />
+          <StarHalfIcon className={classes.icon} />
         ) : (
           <StarBorderIcon className={classes.icon} />
         )}
@@ -37,7 +35,7 @@ const Rating = ({ value, text }: IRating) => {
         {value >= 2 ? (
           <StarIcon className={classes.icon} />
         ) : value >= 1.5 ? (
-          <StarBorderIcon className={classes.icon} />
+          <StarHalfIcon className={classes.icon} />
         ) : (
           <StarBorderIcon className={classes.icon} />
         )}
@@ -46,7 +44,7 @@ const Rating = ({ value, text }: IRating) => {
         {value >= 3 ? (
           <StarIcon className={classes.icon} />
         ) : value >= 2.5 ? (
-          <StarBorderIcon className={classes.icon} />
+          <StarHalfIcon className={classes.icon} />
         ) : (
           <StarBorderIcon className={classes.icon} />
         )}
@@ -55,7 +53,7 @@ const Rating = ({ value, text }: IRating) => {
         {value >= 4 ? (
           <StarIcon className={classes.icon} />
         ) : value >= 3.5 ? (
-          <StarBorderIcon className={classes.icon} />
+          <StarHalfIcon className={classes.icon} />
         ) : (
           <StarBorderIcon className={classes.icon} />
         )}
@@ -64,7 +62,7 @@ const Rating = ({ value, text }: IRating) => {
         {value >= 5 ? (
           <StarIcon className={classes.icon} />
         ) : value >= 4.5 ? (
-          <StarBorderIcon className={classes.icon} />
+          <StarHalfIcon className={classes.icon} />
         ) : (
           <StarBorderIcon className={classes.icon} />
         )}

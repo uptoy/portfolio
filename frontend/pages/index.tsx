@@ -1,6 +1,6 @@
 import * as React from "react"
 import theme from "theme"
-import { MainFeaturedPost } from "components/blog"
+import { MainFeaturedPost } from "components/ProductTop"
 import {
   Typography,
   Grid,

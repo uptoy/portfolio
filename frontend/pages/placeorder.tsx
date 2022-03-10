@@ -1,6 +1,7 @@
-import * as React from 'react'
-import type { NextPage } from 'next'
-import Link from 'components/Link'
+//checkoutに統合する
+import * as React from "react"
+import type { NextPage } from "next"
+import Link from "components/Link"
 import {
   Button,
   TableBody,
@@ -15,64 +16,36 @@ import {
   ListItem,
   Typography,
   Card,
-} from '@material-ui/core'
-import { Layout } from 'components/organisms'
-import NextLink from 'next/link'
-import CheckoutWizard from 'components/CheckoutWizard'
-import Image from 'next/image'
+} from "@material-ui/core"
+import { Layout } from "components/organisms"
+import NextLink from "next/link"
+import { CheckoutWizard } from "components"
+import Image from "next/image"
+import { products, shippingAddress } from "utils/seed"
 
 const PlaceOrder: NextPage = () => {
-  const item1 = {
-    _id: '',
-    iamge: '',
-    name: '',
-    quantity: '',
-    price: '',
-    image: '',
-    slug: '',
-  }
-  const item2 = {
-    _id: '',
-    iamge: '',
-    name: '',
-    quantity: '',
-    price: '',
-    image: '',
-    slug: '',
-  }
-  const cartItems = [item1, item2]
+  const cartItems = products
   const placeOrderHandler = () => {}
   const shippingPrice = 100
   const taxPrice = 100
   const totalPrice = 100
-  const paymentMethod = 'credit'
+  const paymentMethod = "credit"
   const loading = false
   const itemsPrice = 100
-  const shippingAddress = {
-    fullName: 'fullname',
-    address: 'address',
-    postalCode: 'postalCode',
-    country: 'country',
-    city: 'city',
-  }
   return (
     <Layout>
       <CheckoutWizard activeStep={3}></CheckoutWizard>
-      <Typography component="h1" variant="h1">
-        Place Order
-      </Typography>
+      <Typography>Place Order</Typography>
 
       <Grid container spacing={1}>
         <Grid item md={9} xs={12}>
           <Card>
             <List>
               <ListItem>
-                <Typography component="h2" variant="h2">
-                  Shipping Address
-                </Typography>
+                <Typography>Shipping Address</Typography>
               </ListItem>
               <ListItem>
-                {shippingAddress?.fullName}, {shippingAddress?.address}, {shippingAddress?.city},{' '}
+                {shippingAddress?.fullName}, {shippingAddress?.address}, {shippingAddress?.city},{" "}
                 {shippingAddress?.postalCode}, {shippingAddress?.country}
               </ListItem>
             </List>
@@ -80,9 +53,7 @@ const PlaceOrder: NextPage = () => {
           <Card>
             <List>
               <ListItem>
-                <Typography component="h2" variant="h2">
-                  Payment Method
-                </Typography>
+                <Typography>Payment Method</Typography>
               </ListItem>
               <ListItem>{paymentMethod}</ListItem>
             </List>
@@ -90,9 +61,7 @@ const PlaceOrder: NextPage = () => {
           <Card>
             <List>
               <ListItem>
-                <Typography component="h2" variant="h2">
-                  Order Items
-                </Typography>
+                <Typography>Order Items</Typography>
               </ListItem>
               <ListItem>
                 <TableContainer>
@@ -143,7 +112,7 @@ const PlaceOrder: NextPage = () => {
           <Card>
             <List>
               <ListItem>
-                <Typography variant="h2">Order Summary</Typography>
+                <Typography>Order Summary</Typography>
               </ListItem>
               <ListItem>
                 <Grid container>

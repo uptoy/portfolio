@@ -1,7 +1,7 @@
 import React from "react"
 import { makeStyles } from "@material-ui/styles"
 import CssBaseline from "@material-ui/core/CssBaseline"
-import { DashboardSidebar, DashboardHeader } from "components/dashboard"
+import { DashboardSidebar, DashboardHeader } from "components/Dashboard"
 import theme from "theme"
 import Container from "@material-ui/core/Container"
 

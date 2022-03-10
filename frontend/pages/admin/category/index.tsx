@@ -1,17 +1,10 @@
 import React from "react"
 import { makeStyles } from "@material-ui/styles"
-import { AdminLayout } from "components/dashboard"
+import { AdminLayout } from "components/Dashboard"
 import theme from "theme"
 import {
-  Paper,
   Button,
   Fab,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Drawer,
   Grid,
   TextField,
@@ -21,8 +14,7 @@ import SearchIcon from "@material-ui/icons/Search"
 import { pink } from "@material-ui/core/colors"
 import CreateIcon from "@material-ui/icons/Create"
 import DeleteIcon from "@material-ui/icons/Delete"
-import CategoryList from "components/category/CategoryList"
-import CategoryManageModal from "components/category/CategoryManageModal"
+import {CategoryList,CategoryManageModal} from "components/Category"
 // import { setSelectedModal } from '../slice';
 
 const pink500 = pink["500"]

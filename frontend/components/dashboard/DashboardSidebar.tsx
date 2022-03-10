@@ -7,7 +7,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import { makeStyles } from "@material-ui/styles"
 import theme from "theme"
 import clsx from "clsx"
-import { mainListItems, secondaryListItems } from "components/dashboard/listItems"
+import { mainListItems, secondaryListItems } from "components/Dashboard/listItems"
 
 const drawerWidth = 240
 

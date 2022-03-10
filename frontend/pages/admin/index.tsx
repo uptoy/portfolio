@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/styles"
 import { Grid, Container } from "@material-ui/core"
 import { LineBarChart, BrowserUsage, InfoBox, NewOrders, MonthlySales } from "components/Admin"
 import { cyan, pink, purple, orange, grey } from "@material-ui/core/colors"
-import { AdminLayout } from "components/dashboard"
+import { AdminLayout } from "components/Dashboard"
 import Data from "data"
 
 const cyan600 = cyan["600"]

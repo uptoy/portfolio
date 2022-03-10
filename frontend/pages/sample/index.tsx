@@ -1,3 +1,4 @@
+//SAMPLE CHAT
 import React from "react"
 import { ChatErrors, ChatHistory, ChatInput } from "components/Chat2"
 import { makeStyles } from "@material-ui/styles"
