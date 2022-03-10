@@ -1,8 +1,6 @@
 import React from "react"
 import Paper from "@material-ui/core/Paper"
-
 import { BarChart, Bar, ResponsiveContainer, XAxis } from "recharts"
-
 import { common, pink } from "@material-ui/core/colors"
 
 const white = common.white

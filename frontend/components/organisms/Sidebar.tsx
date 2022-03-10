@@ -1,12 +1,10 @@
 import Divider from "@material-ui/core/Divider"
 import Drawer from "@material-ui/core/Drawer"
 import Hidden from "@material-ui/core/Hidden"
-import { useTheme, Theme } from "@material-ui/core/styles"
+import { useTheme } from "@material-ui/core/styles"
 import { makeStyles } from "@material-ui/styles"
 import Typography from "@material-ui/core/Typography"
-
 import SidebarList from "./SidebarList"
-import theme from "theme"
 
 const drawerWidth = 240
 

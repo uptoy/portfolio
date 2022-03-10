@@ -1,7 +1,7 @@
-import Chart from './Chart'
-import Deposits from './Deposits'
-import Orders from './Orders'
-import DashboardHeader from './DashboardHeader'
-import DashboardSidebar from './DashboardSidebar'
-import AdminLayout from './AdminLayout'
-export { Chart, Deposits, Orders,DashboardHeader,DashboardSidebar,AdminLayout }
+import Chart from "./Chart"
+import Deposits from "./Deposits"
+import Orders from "./Orders"
+import AdminHeader from "./AdminHeader"
+import AdminSidebar from "./AdminSidebar"
+import AdminLayout from "./AdminLayout"
+export { Chart, Deposits, Orders, AdminHeader, AdminSidebar, AdminLayout }

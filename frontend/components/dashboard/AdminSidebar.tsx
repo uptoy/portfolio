@@ -41,7 +41,7 @@ const useStyles: any = makeStyles(() => ({
   },
 }))
 
-const DashboardSidebar = (props: any) => {
+const AdminSidebar = (props: any) => {
   const classes = useStyles()
   return (
     <Drawer
@@ -64,4 +64,4 @@ const DashboardSidebar = (props: any) => {
   )
 }
 
-export default DashboardSidebar
+export default AdminSidebar

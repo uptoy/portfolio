@@ -40,7 +40,7 @@ const useStyles: any = makeStyles(() => ({
   },
 }))
 
-const DashboardHeader = (props: any) => {
+const AdminHeader = (props: any) => {
   const classes = useStyles()
   return (
     <AppBar position="absolute" className={clsx(classes.appBar, props.open && classes.appBarShift)}>
@@ -67,4 +67,4 @@ const DashboardHeader = (props: any) => {
   )
 }
 
-export default DashboardHeader
+export default AdminHeader

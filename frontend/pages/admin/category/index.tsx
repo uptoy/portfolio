@@ -14,7 +14,7 @@ import SearchIcon from "@material-ui/icons/Search"
 import { pink } from "@material-ui/core/colors"
 import CreateIcon from "@material-ui/icons/Create"
 import DeleteIcon from "@material-ui/icons/Delete"
-import {CategoryList,CategoryManageModal} from "components/Category"
+import {CategoryList} from "components/Category"
 // import { setSelectedModal } from '../slice';
 
 const pink500 = pink["500"]

@@ -6,6 +6,7 @@ import {
   IUser,
   IPaymentResult,
   ShippingAddressType,
+  ICategory,
 } from "types"
 
 //User
@@ -170,8 +171,20 @@ export const order2: IOrder = {
 }
 export const orders: IOrder[] = [order1, order2]
 
+//Product
+const category1: ICategory = {
+  id: "id1",
+  title: "title1",
+  user_id: "user_id1",
+}
+const category2: ICategory = {
+  id: "id2",
+  title: "title2",
+  user_id: "user_id2",
+}
+export const categories: ICategory[] = [category1, category2]
 
-
+//ProductTop
 export const mainFeaturedPost = {
   title: "Welcome to my Portfolio",
   description:

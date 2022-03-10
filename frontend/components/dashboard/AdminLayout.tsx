@@ -1,7 +1,7 @@
 import React from "react"
 import { makeStyles } from "@material-ui/styles"
 import CssBaseline from "@material-ui/core/CssBaseline"
-import { DashboardSidebar, DashboardHeader } from "components/Dashboard"
+import { AdminSidebar, AdminHeader } from "components/Dashboard"
 import theme from "theme"
 import Container from "@material-ui/core/Container"
 
@@ -35,8 +35,8 @@ export default function AdminLayout({ children }: any) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <DashboardHeader open={open} onClick={handleDrawerOpen} />
-      <DashboardSidebar open={open} onClick={handleDrawerClose} />
+      <AdminHeader open={open} onClick={handleDrawerOpen} />
+      <AdminSidebar open={open} onClick={handleDrawerClose} />
       <Container maxWidth="xl" className={classes.container}>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
