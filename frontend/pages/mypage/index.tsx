@@ -1,111 +1,155 @@
-// import React from 'react'
-// import clsx from 'clsx'
+import * as React from "react"
+import { TextField, Button, List, ListItem, Typography, Card } from "@material-ui/core"
+import { MypageLayout } from "components/organisms/mypage"
+import { Controller, useForm } from "react-hook-form"
+import { makeStyles } from "@material-ui/styles"
+import theme from "theme"
 
-// import CssBaseline from '@material-ui/core/CssBaseline'
-// import Drawer from '@material-ui/core/Drawer'
-// import Box from '@material-ui/core/Box'
-// import AppBar from '@material-ui/core/AppBar'
-// import Toolbar from '@material-ui/core/Toolbar'
-// import List from '@material-ui/core/List'
-// import Typography from '@material-ui/core/Typography'
-// import Divider from '@material-ui/core/Divider'
-// import IconButton from '@material-ui/core/IconButton'
-// import Badge from '@material-ui/core/Badge'
-// import Container from '@material-ui/core/Container'
-// import Grid from '@material-ui/core/Grid'
-// import Paper from '@material-ui/core/Paper'
-// import MenuIcon from '@material-ui/icons/Menu'
-// import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
-// import NotificationsIcon from '@material-ui/icons/Notifications'
-// import { mainListItems, secondaryListItems } from 'components/dashboard/listItems'
-// import { Chart, Deposits, Orders } from 'components/dashboard'
-// import { Theme } from '@material-ui/core/styles'
-// import { makeStyles } from '@material-ui/styles'
-// import Copyright from 'components/Copyright'
-// const drawerWidth = 240
+{
+  /* <ListItem selected button component="a"></ListItem> */
+}
 
-// const useStyles: any = makeStyles((theme: Theme) => ({}))
+const useStyles: any = makeStyles(() => ({
+  container: {
+    marginTop: theme.spacing(2),
+  },
+}))
 
-// export default function Dashboard() {
-//   const classes = useStyles()
-//   const [open, setOpen] = React.useState(true)
-//   const handleDrawerOpen = () => {
-//     setOpen(true)
-//   }
-//   const handleDrawerClose = () => {
-//     setOpen(false)
-//   }
-//   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight)
+export default function MypageIndex() {
+  const classes = useStyles()
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    setValue,
+  } = useForm()
 
-//   return (
-//     <div className={classes.root}>
-//       <CssBaseline />
-//       <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-//         <Toolbar className={classes.toolbar}>
-//           <IconButton
-//             edge="start"
-//             color="inherit"
-//             aria-label="open drawer"
-//             onClick={handleDrawerOpen}
-//             className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-//           >
-//             <MenuIcon />
-//           </IconButton>
-//           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-//             Dashboard
-//           </Typography>
-//           <IconButton color="inherit">
-//             <Badge badgeContent={4} color="secondary">
-//               <NotificationsIcon />
-//             </Badge>
-//           </IconButton>
-//         </Toolbar>
-//       </AppBar>
-//       <Drawer
-//         variant="permanent"
-//         classes={{
-//           paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-//         }}
-//         open={open}
-//       >
-//         <div className={classes.toolbarIcon}>
-//           <IconButton onClick={handleDrawerClose}>
-//             <ChevronLeftIcon />
-//           </IconButton>
-//         </div>
-//         <Divider />
-//         <List>{mainListItems}</List>
-//         <Divider />
-//         <List>{secondaryListItems}</List>
-//       </Drawer>
-//       <main className={classes.content}>
-//         <div className={classes.appBarSpacer} />
-//         <Container maxWidth="lg" className={classes.container}>
-//           <Grid container spacing={3}>
-//             {/* Chart */}
-//             <Grid item xs={12} md={8} lg={9}>
-//               <Paper className={fixedHeightPaper}>
-//                 <Chart />
-//               </Paper>
-//             </Grid>
-//             {/* Recent Deposits */}
-//             <Grid item xs={12} md={4} lg={3}>
-//               <Paper className={fixedHeightPaper}>
-//                 <Deposits />
-//               </Paper>
-//             </Grid>
-//             {/* Recent Orders */}
-//             <Grid item xs={12}>
-//               <Paper className={classes.paper}>
-//                 <Orders />
-//               </Paper>
-//             </Grid>
-//           </Grid>
-//           <Box pt={4}>
-//             <Copyright />
-//           </Box>
-//         </Container>
-//       </main>
-//     </div>
-//   )
-// }
+  return (
+    <MypageLayout>
+      <Card>
+        <List>
+          <ListItem>
+            <Typography>MypageTop</Typography>
+          </ListItem>
+          <ListItem>
+            <form onSubmit={() => {}}>
+              <List>
+                <ListItem>
+                  <Controller
+                    name="name"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      minLength: 2,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="name"
+                        label="Name"
+                        inputProps={{ type: "name" }}
+                        error={Boolean(errors.name)}
+                        helperText={
+                          errors.name
+                            ? errors.name.type === "minLength"
+                              ? "Name length is more than 1"
+                              : "Name is required"
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Controller
+                    name="email"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="email"
+                        label="Email"
+                        inputProps={{ type: "email" }}
+                        error={Boolean(errors.email)}
+                        helperText={
+                          errors.email
+                            ? errors.email.type === "pattern"
+                              ? "Email is not valid"
+                              : "Email is required"
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Controller
+                    name="password"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      validate: (value) =>
+                        value === "" || value.length > 5 || "Password length is more than 5",
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="password"
+                        label="Password"
+                        inputProps={{ type: "password" }}
+                        error={Boolean(errors.password)}
+                        helperText={errors.password ? "Password length is more than 5" : ""}
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Controller
+                    name="confirmPassword"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      validate: (value) =>
+                        value === "" ||
+                        value.length > 5 ||
+                        "Confirm Password length is more than 5",
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="confirmPassword"
+                        label="Confirm Password"
+                        inputProps={{ type: "password" }}
+                        error={Boolean(errors.confirmPassword)}
+                        helperText={errors.password ? "Confirm Password length is more than 5" : ""}
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Button variant="contained" type="submit" fullWidth color="primary">
+                    Update
+                  </Button>
+                </ListItem>
+              </List>
+            </form>
+          </ListItem>
+        </List>
+      </Card>
+    </MypageLayout>
+  )
+}
