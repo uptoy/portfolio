@@ -1,7 +1,7 @@
 import * as React from "react"
 import type { NextPage } from "next"
 import Link from "@material-ui/core/Link"
-
+import { Layout } from "components/organisms"
 import {
   Button,
   CardContent,
@@ -48,8 +48,8 @@ const Cart: NextPage = () => {
     router.push("/checkout")
   }
   return (
-    <>
-      <Typography component="h4" variant="h4">
+    <Layout>
+      <Typography>
         Shopping Cart
       </Typography>
       {cartItems.length === 0 ? (
@@ -156,7 +156,7 @@ const Cart: NextPage = () => {
           </Grid>
         </Grid>
       )}
-    </>
+    </Layout>
   )
 }
 

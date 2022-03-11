@@ -1,4 +1,5 @@
-import * as React from 'react'
+//address noting patern
+import * as React from "react"
 import {
   Button,
   Typography,
@@ -8,11 +9,12 @@ import {
   Stepper,
   Step,
   StepLabel,
-} from '@material-ui/core'
-import { AddressForm, PaymentForm, Review } from 'components/Order'
-import { Layout } from 'components/organisms'
+} from "@material-ui/core"
+import { AddressForm, PaymentForm, Review } from "components/Order"
+import { Layout } from "components/organisms"
+import { Link } from "components"
 
-const steps = ['Shipping address', 'Payment details', 'Review your order']
+const steps = ["Shipping address", "Payment details", "Review your order"]
 
 function getStepContent(step: number) {
   switch (step) {
@@ -23,7 +25,7 @@ function getStepContent(step: number) {
     case 2:
       return <Review />
     default:
-      throw new Error('Unknown step')
+      throw new Error("Unknown step")
   }
 }
 export default function Order() {
@@ -40,7 +42,10 @@ export default function Order() {
   return (
     <Layout>
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+        <Paper
+          variant="outlined"
+          sx={{ my: { xs: 3, md: 6 }, py: { xs: 2, md: 5 }, px: { xs: 2, md: 2 } }}
+        >
           <Typography component="h1" variant="h4" align="center">
             Checkout
           </Typography>
@@ -61,18 +66,21 @@ export default function Order() {
                   Your order number is #2001539. We have emailed your order confirmation, and will
                   send you an update when your order has shipped.
                 </Typography>
+                <Box style={{ textAlign: "center", marginTop: "1em" }}>
+                  <Link href="/">Back to Top</Link>
+                </Box>
               </React.Fragment>
             ) : (
               <React.Fragment>
                 {getStepContent(activeStep)}
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                   {activeStep !== 0 && (
                     <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
                       Back
                     </Button>
                   )}
                   <Button variant="contained" onClick={handleNext} sx={{ mt: 3, ml: 1 }}>
-                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                    {activeStep === steps.length - 1 ? "Place order" : "Next"}
                   </Button>
                 </Box>
               </React.Fragment>

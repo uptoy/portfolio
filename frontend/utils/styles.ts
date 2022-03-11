@@ -1,4 +1,3 @@
-import { Theme } from "@material-ui/core"
 import { makeStyles } from "@material-ui/styles"
 import theme from "theme"
 
@@ -67,9 +66,6 @@ const useStyles: any = makeStyles(() => ({
   // search
   searchSection: {
     display: "none",
-    // [theme.breakpoints.up('md')]: {
-    //   display: 'flex',
-    // },
   },
   searchForm: {
     border: "1px solid #ffffff",

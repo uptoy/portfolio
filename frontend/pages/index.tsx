@@ -19,6 +19,7 @@ import { products } from "utils/seed"
 import FavoriteIcon from "@material-ui/icons/Favorite"
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"
 import { red, common } from "@material-ui/core/colors"
+import Link from "components/Link"
 
 const useStyles: any = makeStyles(() => ({
   cardGrid: {
@@ -62,17 +63,18 @@ export default function Index() {
           {products.map((product) => (
             <Grid item key={product._id} xs={12} sm={6} md={4}>
               <Card className={classes.card}>
-                <CardMedia
-                  className={classes.cardMedia}
-                  image="https://source.unsplash.com/random"
-                  title="Image title"
-                />
+                <Link href={`/product/${product._id}`}>
+                  <CardMedia
+                    className={classes.cardMedia}
+                    image="https://source.unsplash.com/random"
+                    title="Image title"
+                  />
+                </Link>
                 <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h6">
-                    {product.name}
-                  </Typography>
-                  <Typography gutterBottom variant="h5" component="h6">
-                    {"$ "}{product.price}
+                  <Typography>{product.name}</Typography>
+                  <Typography>
+                    {"$ "}
+                    {product.price}
                   </Typography>
                 </CardContent>
                 <CardActions className={classes.cardActions}>

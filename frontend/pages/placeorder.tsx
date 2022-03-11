@@ -1,4 +1,4 @@
-//checkoutに統合する
+//address payment info have patern
 import * as React from "react"
 import type { NextPage } from "next"
 import Link from "components/Link"

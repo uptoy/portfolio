@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react"
-import NextLink from "next/link"
+import React, { useState } from "react"
 import Image from "next/image"
-import { Grid, Link, List, ListItem, Typography, Card, Button } from "@material-ui/core"
+import { Grid, List, ListItem, Typography, Card, Button } from "@material-ui/core"
+import { Link } from "components"
 import Layout from "components/organisms/Layout"
 import { useRouter } from "next/router"
 import { products } from "utils/seed"
@@ -11,8 +11,6 @@ import theme from "theme"
 import { makeStyles } from "@material-ui/styles"
 import { Select, FormControl, MenuItem } from "@material-ui/core"
 import Container from "@material-ui/core/Container"
-// import { ErrorMessage } from "components/Message/ErrorMessage"
-// import useStyles from "utils/styles"
 
 const useStyles: any = makeStyles(() => ({
   typography: {
@@ -25,16 +23,15 @@ const useStyles: any = makeStyles(() => ({
     display: "block",
     marginTop: theme.spacing(2),
   },
-  section: {
-    maxHeight: 300,
-    maxWidth: 500,
-  },
   root: {
     display: "flex",
     flexDirection: "column",
     "& > * + *": {
       marginTop: theme.spacing(1),
     },
+  },
+  container: {
+    marginTop: theme.spacing(3),
   },
 }))
 
@@ -67,21 +64,14 @@ const ProductDetail: React.ReactNode = () => {
   return (
     <Layout>
       <Container maxWidth="xl" className={classes.container}>
-        <div>
-          <NextLink href="/" passHref>
-            <Link>
-              <Typography>back to products</Typography>
-            </Link>
-          </NextLink>
-        </div>
-        <Grid container spacing={3}>
+        <Grid container spacing={2} my={6}>
           <Grid item xs>
             <Image
               src={product.image}
               alt={product.name}
               width={500}
               height={300}
-              className={classes.section}
+              objectFit={"cover"}
             ></Image>
           </Grid>
           {/* Center */}
@@ -150,9 +140,6 @@ const ProductDetail: React.ReactNode = () => {
                             className={classes.selectEmpty}
                             inputProps={{ "aria-label": "Without label" }}
                           >
-                            <MenuItem value="">
-                              <em>Num</em>
-                            </MenuItem>
                             <MenuItem value={1}>1</MenuItem>
                             <MenuItem value={2}>2</MenuItem>
                             <MenuItem value={3}>3</MenuItem>
@@ -163,9 +150,16 @@ const ProductDetail: React.ReactNode = () => {
                   </Grid>
                 </ListItem>
                 <ListItem>
-                  <Button fullWidth variant="contained" color="primary" onClick={addToCartHandler}>
-                    Add to cart
-                  </Button>
+                  <Link href="/cart">
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      onClick={addToCartHandler}
+                    >
+                      Add to cart
+                    </Button>
+                  </Link>
                 </ListItem>
               </List>
             </Card>
