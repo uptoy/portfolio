@@ -1,7 +1,6 @@
 import React, { useState } from "react"
-import Image from "next/image"
 import { Grid, List, ListItem, Typography, Card, Button } from "@material-ui/core"
-import { Link, Rating, Carousel, ProductReview } from "components"
+import { Link, Rating, CarouselThumbs, ProductReview, Carousel } from "components"
 import Layout from "components/organisms/Layout"
 import { useRouter } from "next/router"
 import { products } from "utils/seed"
@@ -67,7 +66,7 @@ const ProductDetail: React.ReactNode = () => {
       <Container maxWidth="xl" className={classes.container}>
         <Grid container my={6} className={classes.gridContainer}>
           <Grid item xs>
-            <Carousel />
+            <CarouselThumbs />
           </Grid>
           {/* Center */}
           <Grid item xs={4}>
@@ -161,6 +160,8 @@ const ProductDetail: React.ReactNode = () => {
           </Grid>
         </Grid>
         <ProductReview productId={productId} />
+        <Carousel title="Ralated Product" />
+        <Carousel title="Popular products" />
       </Container>
     </Layout>
   )

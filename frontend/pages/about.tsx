@@ -17,9 +17,11 @@ const useStyles: any = makeStyles(() => ({
 }))
 
 export default function About() {
+  const text = "Ralated"
   return (
-    <Container maxWidth="sm">
-      <Carousel />
+    <Container maxWidth="lg">
+      {/* <Carousel title="Ralated Product" />
+      <Carousel title="Popular products" /> */}
       <PlayGround />
     </Container>
   )

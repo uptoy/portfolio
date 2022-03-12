@@ -16,6 +16,10 @@ a {
   box-sizing: border-box;
 }
 
+.mySwiper {
+  margin-top: 0.5rem;
+}
+
 .mySwiper .swiper-slide {
   width: 25%;
   height: 100%;

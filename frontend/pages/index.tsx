@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import theme from "theme"
+import {Rating, Carousel } from "components"
 import { MainFeaturedPost } from "components/ProductTop"
 import {
   Typography,
@@ -13,7 +14,6 @@ import {
 } from "@material-ui/core"
 import { makeStyles } from "@material-ui/styles"
 import { Layout } from "components/organisms"
-import { Rating } from "components"
 import { mainFeaturedPost } from "utils/seed"
 import { products } from "utils/seed"
 import { red, common } from "@material-ui/core/colors"
@@ -103,6 +103,8 @@ export default function Index() {
             </Grid>
           ))}
         </Grid>
+        <Carousel title="Ralated Product" />
+        <Carousel title="Popular products" />
       </Container>
     </Layout>
   )
