@@ -1,18 +1,19 @@
 import React, { useState } from "react"
 import Image from "next/image"
 import { Grid, List, ListItem, Typography, Card, Button } from "@material-ui/core"
-import { Link } from "components"
+import { Link, Rating, Carousel, ProductReview } from "components"
 import Layout from "components/organisms/Layout"
 import { useRouter } from "next/router"
 import { products } from "utils/seed"
-import Rating from "components/Rating"
-import ProductReview from "components/ProductReview"
 import theme from "theme"
 import { makeStyles } from "@material-ui/styles"
 import { Select, FormControl, MenuItem } from "@material-ui/core"
 import Container from "@material-ui/core/Container"
 
 const useStyles: any = makeStyles(() => ({
+  gridContainer: {
+    justifyContent: "space-around",
+  },
   typography: {
     padding: theme.spacing(2),
   },
@@ -64,15 +65,9 @@ const ProductDetail: React.ReactNode = () => {
   return (
     <Layout>
       <Container maxWidth="xl" className={classes.container}>
-        <Grid container spacing={2} my={6}>
+        <Grid container my={6} className={classes.gridContainer}>
           <Grid item xs>
-            <Image
-              src={product.image}
-              alt={product.name}
-              width={500}
-              height={300}
-              objectFit={"cover"}
-            ></Image>
+            <Carousel />
           </Grid>
           {/* Center */}
           <Grid item xs={4}>

@@ -49,9 +49,7 @@ const Cart: NextPage = () => {
   }
   return (
     <Layout>
-      <Typography>
-        Shopping Cart
-      </Typography>
+      <Typography>Shopping Cart</Typography>
       {cartItems.length === 0 ? (
         <div>
           Cart is empty.{" "}
@@ -71,7 +69,7 @@ const Cart: NextPage = () => {
                       <TableCell>Name</TableCell>
                       <TableCell align="right">Quantity</TableCell>
                       <TableCell align="right">Price</TableCell>
-                      <TableCell align="right">Action</TableCell>
+                      <TableCell align="center">Action</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -115,7 +113,7 @@ const Cart: NextPage = () => {
                           </Select>
                         </TableCell>
                         <TableCell align="right">${item.price}</TableCell>
-                        <TableCell align="right">
+                        <TableCell align="center">
                           <Button
                             variant="contained"
                             color="secondary"

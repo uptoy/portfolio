@@ -169,7 +169,20 @@ export const product6: IProduct = {
   updatedAt: "updatedAt6",
   reviews: reviews1,
 }
-export const products: IProduct[] = [product1, product2,product3, product4,product5, product6,product1, product2,product3, product4,product5, product6]
+export const products: IProduct[] = [
+  product1,
+  product2,
+  product3,
+  product4,
+  product5,
+  product6,
+  product1,
+  product2,
+  product3,
+  product4,
+  product5,
+  product6,
+]
 
 //Payment
 export const paymentResult: IPaymentResult = {
@@ -260,7 +273,7 @@ export const categories: ICategory[] = [category1, category2]
 export const mainFeaturedPost = {
   title: "Welcome to my Portfolio",
   description:
-    "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
+    "This is DEMO site. So. You can't buy product. This site's technology stack Next.js & Golang",
   image: "https://source.unsplash.com/random",
   imageText: "main image description",
 }

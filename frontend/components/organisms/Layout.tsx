@@ -1,12 +1,12 @@
 import React from "react"
 import { Container } from "@material-ui/core"
-import Header from "./Header"
+import ProductHeader from "./ProductHeader"
 import Footer from "./Footer"
 
 const Layout: React.FC = ({ children }) => {
   return (
     <>
-      <Header />
+      <ProductHeader />
       <Container maxWidth="lg">
         <main>{children}</main>
       </Container>

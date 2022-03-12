@@ -1,5 +1,5 @@
 module.exports = {
   images: {
-    domains: ['placehold.jp'],
+    domains: ['placehold.jp','swiperjs.com'],
   },
 }

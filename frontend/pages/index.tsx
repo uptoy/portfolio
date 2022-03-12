@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { useState } from "react"
 import theme from "theme"
 import { MainFeaturedPost } from "components/ProductTop"
 import {
@@ -16,10 +16,10 @@ import { Layout } from "components/organisms"
 import { Rating } from "components"
 import { mainFeaturedPost } from "utils/seed"
 import { products } from "utils/seed"
-import FavoriteIcon from "@material-ui/icons/Favorite"
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"
 import { red, common } from "@material-ui/core/colors"
 import Link from "components/Link"
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"
+import FavoriteIcon from "@material-ui/icons/Favorite"
 
 const useStyles: any = makeStyles(() => ({
   cardGrid: {
@@ -41,19 +41,25 @@ const useStyles: any = makeStyles(() => ({
   cardActions: {
     justifyContent: "space-between",
   },
+  numReviews: {
+    marginLeft: theme.spacing(1),
+    color: common.black,
+  },
   favorite: {
     minWidth: 30,
     color: red[500],
     marginRight: theme.spacing(1),
-  },
-  numReviews: {
-    marginLeft: theme.spacing(1),
-    color: common.black,
+    fontSize: "2em",
   },
 }))
 
 export default function Index() {
   const classes = useStyles()
+  const [state, setState] = useState(false)
+  const handleClick = () => {
+    setState(!state)
+  }
+
   return (
     <Layout>
       <MainFeaturedPost post={mainFeaturedPost} />
@@ -82,9 +88,16 @@ export default function Index() {
                     <Rating value={product.rating} />
                     <Typography className={classes.numReviews}>({product.numReviews})</Typography>
                   </Button>
-                  <Button size="small" color="primary" className={classes.favorite}>
+                  <div onClick={handleClick}>
+                    {state ? (
+                      <FavoriteIcon className={classes.favorite} />
+                    ) : (
+                      <FavoriteBorderIcon className={classes.favorite} />
+                    )}
+                  </div>
+                  {/* <Button size="small" color="primary" className={classes.favorite}>
                     <FavoriteBorderIcon />
-                  </Button>
+                  </Button> */}
                 </CardActions>
               </Card>
             </Grid>

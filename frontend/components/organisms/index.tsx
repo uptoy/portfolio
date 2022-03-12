@@ -1,5 +1,6 @@
-import Layout from './Layout'
-import Header from './Header'
-import Footer from './Footer'
+import Layout from "./Layout"
+import ProductHeader from "./ProductHeader"
+import Footer from "./Footer"
+import CommonHeader from "./CommonHeader"
 
-export { Layout,Header,Footer }
+export { Layout, ProductHeader, Footer, CommonHeader }

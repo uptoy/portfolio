@@ -56,6 +56,7 @@ export default function SignUp() {
           variant="contained"
           color="primary"
           className={classes.submit}
+          href="/"
         >
           Back to Top
         </Button>

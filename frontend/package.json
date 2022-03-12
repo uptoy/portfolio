@@ -57,6 +57,7 @@
     "recharts": "^2.1.9",
     "redux-logger": "^3.0.6",
     "styled-components": "^5.3.3",
+    "swiper": "^8.0.7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
   },
   "devDependencies": {

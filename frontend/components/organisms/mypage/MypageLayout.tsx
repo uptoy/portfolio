@@ -1,6 +1,6 @@
 import React from "react"
 import { Container } from "@material-ui/core"
-import MypageHeader from ".//MypageHeader"
+import { CommonHeader } from "components/organisms"
 import MypageFooter from "./MypageFooter"
 import { makeStyles } from "@material-ui/styles"
 import theme from "theme"
@@ -17,7 +17,7 @@ const DashboardLayout: React.FC = ({ children }) => {
   const classes = useStyles()
   return (
     <>
-      <MypageHeader />
+      <CommonHeader />
       <Container maxWidth="lg">
         <main>
           <Grid container spacing={3} className={classes.container}>

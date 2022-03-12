@@ -41,7 +41,7 @@ const Sidebar: React.FC<Props> = ({ isMobileSidebarOpen, toggleMobileSidebar, wi
           <div className={classes.drawerHeader}>
             <img src="http://placehold.jp/150x150.png" alt="logo" className={classes.logo} />
             <Typography variant="h6" color="inherit">
-              Budgetpal
+              Portfolio
             </Typography>
           </div>
           <SidebarList />
@@ -62,7 +62,7 @@ const Sidebar: React.FC<Props> = ({ isMobileSidebarOpen, toggleMobileSidebar, wi
               className={classes.logo}
             />
             <Typography variant="h6" color="inherit">
-              Budgetpal
+              Portfolio
             </Typography>
           </div>
           <Divider />
