@@ -1,7 +1,7 @@
-import React, { useState } from "react"
-import type { NextPage } from "next"
+import React, {useState} from "react"
+import type {NextPage} from "next"
 import Link from "@material-ui/core/Link"
-import { Layout } from "components/organisms"
+import {Layout} from "components/organisms"
 import {
   Button,
   CardContent,
@@ -11,26 +11,16 @@ import {
   TableHead,
   Table,
   TableBody,
-  MenuItem,
-  Select,
   Typography,
+  Paper
 } from "@material-ui/core"
 import Image from "next/image"
-import { useRouter } from "next/router"
+import {useRouter} from "next/router"
 import NextLink from "next/link"
-import { IProduct } from "types"
-import { makeStyles } from "@material-ui/styles"
+import {IProduct} from "types"
+import {makeStyles} from "@material-ui/styles"
 import theme from "theme"
-import { products } from "utils/seed"
-import {
-  Paper,
-  Avatar,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
-  Grid,
-} from "@material-ui/core"
+import {products} from "utils/seed"
 
 const useStyles: any = makeStyles(() => ({
   checkout: {
@@ -58,8 +48,8 @@ const Favorite: NextPage = () => {
   }
   return (
     <Layout>
-      <Paper style={{ padding: 30 }}>
-        <Typography>wishList</Typography>
+      <Paper style={{padding: 30, marginTop: 50}}>
+        <Typography>favorite</Typography>
         {cartItems.length === 0 ? (
           <div>
             wishList is empty.{" "}
@@ -99,13 +89,13 @@ const Favorite: NextPage = () => {
                       </TableCell>
                       <TableCell align="right">${item.price}</TableCell>
                       <TableCell align="center">
-                        <div style={{ display: "flex", justifyContent: "center" }}>
+                        <div style={{display: "flex", justifyContent: "center"}}>
                           {state ? (
                             <Button
                               variant="contained"
                               color="info"
                               href="/checkout"
-                              style={{ margin: 15, display: "block" }}
+                              style={{margin: 15, display: "block"}}
                             >
                               <Typography>Proceed to</Typography>
                               <Typography>Checkout</Typography>
@@ -114,7 +104,7 @@ const Favorite: NextPage = () => {
                             <Button
                               variant="contained"
                               color="info"
-                              style={{ margin: 15, padding: 18 }}
+                              style={{margin: 15, padding: 18}}
                               onClick={addCartItemHandler}
                             >
                               Add to Cart
@@ -124,7 +114,7 @@ const Favorite: NextPage = () => {
                             variant="contained"
                             color="secondary"
                             onClick={() => removeItemHandler(item)}
-                            style={{ margin: 15 }}
+                            style={{margin: 15}}
                           >
                             x
                           </Button>

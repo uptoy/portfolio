@@ -1,11 +1,6 @@
 import * as React from "react"
-import {
-  List,
-  ListItem,
-  Card,
-  ListItemText,
-} from "@material-ui/core"
-import { makeStyles } from "@material-ui/styles"
+import {List, ListItem, Card, ListItemText} from "@material-ui/core"
+import {makeStyles} from "@material-ui/styles"
 import theme from "theme"
 import NextLink from "next/link"
 
@@ -38,6 +33,11 @@ const MypageSidebar: React.FC = () => {
         <NextLink href="/mypage/setting" passHref>
           <ListItem button component="a">
             <ListItemText primary="Setting"></ListItemText>
+          </ListItem>
+        </NextLink>
+        <NextLink href="/mypage/contact" passHref>
+          <ListItem button component="a">
+            <ListItemText primary="Contact"></ListItemText>
           </ListItem>
         </NextLink>
         <NextLink href="/cart" passHref>

@@ -11,6 +11,7 @@ import LayersIcon from "@material-ui/icons/Layers"
 import AssignmentIcon from "@material-ui/icons/Assignment"
 import CategoryIcon from '@material-ui/icons/Category';
 import Link from "components/Link"
+import ChatIcon from '@material-ui/icons/Chat';
 import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 
 export const mainListItems = (
@@ -53,9 +54,9 @@ export const mainListItems = (
     </ListItem>
     <ListItem button>
       <ListItemIcon>
-        <LayersIcon />
+        <ChatIcon />
       </ListItemIcon>
-      <Link href="/admin/integrations">Integrations</Link>
+      <Link href="/chat">Contact us via chat</Link>
     </ListItem>
     <ListItem button>
       <ListItemIcon>
