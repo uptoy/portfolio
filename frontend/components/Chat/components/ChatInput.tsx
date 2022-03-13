@@ -1,18 +1,12 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from "react"
-import CloudDownloadIcon from "@material-ui/icons/CloudDownload"
-import ErrorIcon from "@material-ui/icons/Error"
-import Tooltip from "@material-ui/core/Tooltip"
-import Button from "@material-ui/core/Button"
-import { Hidden, TextField, Typography} from "@material-ui/core"
-import { makeStyles } from "@material-ui/styles"
+import React, {ChangeEvent, KeyboardEvent, useState} from "react"
+import {TextField} from "@material-ui/core"
+import {makeStyles} from "@material-ui/styles"
 import theme from "theme"
 
 const useStyles: any = makeStyles(() => ({
-  root: {
-    display: "grid",
-    gridTemplateColumns: "50% auto",
-    gridColumnGap: theme.spacing(1),
-    alignItems: "center",
+  textField: {
+    backgroundColor: "#ffffff",
+    width: "100%",
   },
   buttons: {
     display: "grid",
@@ -48,11 +42,8 @@ const useStyles: any = makeStyles(() => ({
 
 export interface Props {
   readonly onAddMessage: (text: string) => void
-  readonly onFetchAsyncMessage: () => void
-  readonly onDemoError: () => void
 }
-
-export const ChatInput = ({ onAddMessage, onFetchAsyncMessage, onDemoError }: Props) => {
+export const ChatInput = ({onAddMessage}: Props) => {
   const classes = useStyles()
   const [message, setMessage] = useState<string>("")
 
@@ -72,6 +63,7 @@ export const ChatInput = ({ onAddMessage, onFetchAsyncMessage, onDemoError }: Pr
         size={"small"}
         onChange={onChange}
         onKeyPress={onKeyPress}
+        className={classes.textField}
       />
     </div>
   )

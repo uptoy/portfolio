@@ -1,10 +1,10 @@
 //SAMPLE CHAT
 import React from "react"
-import { ChatErrors, ChatHistory, ChatInput } from "components/Chat2"
-import { makeStyles } from "@material-ui/styles"
+import {ChatErrors, ChatHistory, ChatInput} from "components/Chat"
+import {makeStyles} from "@material-ui/styles"
 import theme from "theme"
-import { Provider } from "react-redux"
-import { store } from "components/Chat2/store"
+import {Provider} from "react-redux"
+import {store} from "components/Chat/store"
 
 const useStyles: any = makeStyles(() => ({
   toolbar: {

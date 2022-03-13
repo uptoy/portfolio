@@ -9,7 +9,6 @@ import Box from "@material-ui/core/Box"
 import ListItemText from "@material-ui/core/ListItemText"
 import ListItemAvatar from "@material-ui/core/ListItemAvatar"
 import _ from "lodash"
-import ChatContainer from "./chat-container"
 import theme from "theme"
 
 const useStyles: any = makeStyles(() => ({
@@ -35,7 +34,7 @@ const useStyles: any = makeStyles(() => ({
 
 const Chat = () => {
   const classes = useStyles()
-  const {matchList} = ChatContainer()
+  // const {matchList} = ChatContainer()
   interface IMatch {
     matchid: string
     read: boolean
@@ -74,7 +73,7 @@ const Chat = () => {
   return (
     <List className={classes.root}>
       {_.map(matchListSeed, (matchedProfile) => {
-        const redirectLink = `chatroom/${matchedProfile.matchid}`
+        const redirectLink = `chat/chatroom/${matchedProfile.matchid}`
         return (
           <Fragment key={matchedProfile.matchid}>
             <Button className={classes.buttonChatroom} variant="text" href={redirectLink}>

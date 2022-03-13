@@ -1,20 +1,12 @@
 import React from "react"
-import Box from "@material-ui/core/Box"
-import Button from "@material-ui/core/Button"
-import Avatar from "@material-ui/core/Avatar"
-import TextField from "@material-ui/core/TextField"
-import Grid from "@material-ui/core/Grid"
-import Typography from "@material-ui/core/Typography"
+import {CircularProgress, Box, Button, Avatar, Typography} from "@material-ui/core"
 import Link from "@material-ui/core/Link"
 import {makeStyles} from "@material-ui/styles"
-import CircularProgress from "@material-ui/core/CircularProgress"
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos"
 import {useRouter} from "next/router"
-import _ from "lodash"
-import {ChatErrors, ChatHistory, ChatInput} from "components/Chat2"
+import {ChatHistory, ChatInput} from "components/Chat"
 import {Provider} from "react-redux"
-import {store} from "components/Chat2/store"
-// import ChatroomContainer from "./chatroom-container"
+import {store} from "components/Chat/store"
 import theme from "theme"
 
 const useStyles: any = makeStyles(() => ({
@@ -66,7 +58,8 @@ const useStyles: any = makeStyles(() => ({
     height: "80vh",
     overflowY: "auto",
     display: "flex",
-    flexDirection: "column",
+    // flexDirection: "column",
+    justifyContent: "end",
   },
   boxMessageOther: {
     display: "flex",
@@ -141,68 +134,13 @@ const useStyles: any = makeStyles(() => ({
 
 const ChatRoom = () => {
   const classes = useStyles()
-  // let { matchId } = useParams()
   const router = useRouter()
-
-  let matchId = router.pathname
-  const aaa = parseInt(matchId, 10) // 123（10進数の整数）
-
-  // const {
-  //   chatroomInfo,
-  //   chatroomMessages,
-  //   loaded,
-  //   currentUser,
-  //   handleMessage,
-  //   sendMessage,
-  //   message,
-  // } = ChatroomContainer("matchid1")
-  const currentUser = "currentUser"
-  const handleMessage = () => {}
   const sendMessage = () => {}
-  const message = "message"
-  const message1 = {
-    id: "id1",
-    author: "author1",
-    profilePicture: "profilePicture1",
-    content: "content1",
-  }
-  const message2 = {
-    id: "id2",
-    author: "author2",
-    profilePicture: "profilePicture2",
-    content: "content2",
-  }
-  const chatroomMessagesSeed = [message1, message2]
-  const loaded = true
   const chatroomInfo = {
     username: "username",
     profilePicture: "profilePicture",
     firstname: "firstname",
   }
-  // } = ChatroomContainer(matchId)
-  let scrolled = false
-  // const element = document.getElementById("chat")
-  // make sure the chat scrolls down to last message
-  // const updateScroll = () => {
-  //   if (!scrolled && element) {
-  //     element.scrollTop = element.scrollHeight
-  //   }
-  // }
-  // // doesn't prevent to scroll up when the user started to scroll
-  // if (element) {
-  //   element.addEventListener("scroll", () => {
-  //     scrolled = true
-  //   })
-  // }
-  // updateScroll()
-
-  // if (loaded === false) {
-  //   return (
-  //     <div className={classes.progress}>
-  //       <CircularProgress color="secondary" />
-  //     </div>
-  //   )
-  // }
   const profileLink = `/profile/${chatroomInfo.username}`
   return (
     <>
@@ -227,34 +165,11 @@ const ChatRoom = () => {
             <Box></Box>
           </Box>
           <Box className={classes.chatContent} id="chat">
-            {/* {_.map(chatroomMessages, (message) => { */}
-            {_.map(chatroomMessagesSeed, (message) => {
-              if (currentUser !== message.author) {
-                return (
-                  <Box key={message.id} className={classes.boxMessageOther}>
-                    <Avatar alt="Avatar" src={message.profilePicture} />
-                    <div className={classes.textBubbleOther}>
-                      <span>{message.content}</span>
-                    </div>
-                  </Box>
-                )
-              }
-              return (
-                <Box key={message.id} className={classes.boxMessageMe}>
-                  <div className={classes.textBubbleMe}>
-                    <span>{message.content}</span>
-                  </div>
-                </Box>
-              )
-            })}
+            <ChatHistory />
           </Box>
         </Box>
-        <Box>
-          <div className={classes.main}>
-            <ChatInput />
-            <ChatHistory />
-          </div>
-          <ChatErrors />
+        <Box className={classes.messageInput}>
+          <ChatInput />
         </Box>
       </Provider>
     </>
@@ -262,58 +177,3 @@ const ChatRoom = () => {
 }
 
 export default ChatRoom
-
-//SAMPLE CHAT
-
-// const useStyles: any = makeStyles(() => ({
-//   toolbar: {
-//     display: "grid",
-//     gridTemplateColumns: "auto auto",
-//     justifyItems: "end",
-//     [theme.breakpoints.down("md")]: {
-//       paddingLeft: theme.spacing(1),
-//       paddingRight: theme.spacing(1),
-//     },
-//   },
-//   title: {
-//     [theme.breakpoints.down("md")]: {
-//       fontSize: theme.typography.caption.fontSize,
-//     },
-//   },
-//   main: {
-//     display: "grid",
-//     height: "100vh",
-//     width: "100vw",
-//     gridTemplateRows: "auto 1fr",
-//     gridRowGap: 8,
-//     paddingTop: 100,
-//     paddingLeft: "20vw",
-//     paddingRight: "20vw",
-//     [theme.breakpoints.down("md")]: {
-//       paddingLeft: theme.spacing(1),
-//       paddingRight: theme.spacing(1),
-//     },
-//   },
-// }))
-
-{
-  /* <Box className={classes.messageInput}>
-        <Grid container spacing={2}>
-          <Grid item sm={10} xs={12}>
-            <TextField
-              onChange={handleMessage}
-              value={message}
-              fullWidth
-              type="text"
-              name="message"
-              variant="outlined"
-              className={classes.textField}
-            />
-          </Grid>
-          <Grid item sm={2} xs={12}>
-            <Button onClick={sendMessage} variant="contained" color="secondary">
-              Send message
-            </Button>
-          </Grid>
-        </Grid> */
-}
