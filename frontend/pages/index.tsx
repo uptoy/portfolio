@@ -95,9 +95,6 @@ export default function Index() {
                       <FavoriteBorderIcon className={classes.favorite} />
                     )}
                   </div>
-                  {/* <Button size="small" color="primary" className={classes.favorite}>
-                    <FavoriteBorderIcon />
-                  </Button> */}
                 </CardActions>
               </Card>
             </Grid>

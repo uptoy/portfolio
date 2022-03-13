@@ -1,6 +1,6 @@
 import React from "react"
-import { makeStyles } from "@material-ui/styles"
-import { AdminLayout } from "components/Dashboard"
+import {makeStyles} from "@material-ui/styles"
+import {AdminLayout} from "components/Dashboard"
 import theme from "theme"
 import {
   Paper,
@@ -18,14 +18,15 @@ import {
 } from "@material-ui/core"
 import AddIcon from "@material-ui/icons/Add"
 import SearchIcon from "@material-ui/icons/Search"
-import { pink } from "@material-ui/core/colors"
+import {pink} from "@material-ui/core/colors"
 import CreateIcon from "@material-ui/icons/Create"
 import DeleteIcon from "@material-ui/icons/Delete"
+import {CategoryManageModal} from "components/Category"
 
 const pink500 = pink["500"]
 
 function createData(name: string, category: string, price: number, totalInStock: number) {
-  return { name, category, price, totalInStock }
+  return {name, category, price, totalInStock}
 }
 
 const rows = [
@@ -105,11 +106,21 @@ export default function AdminOrderList() {
     if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
       return
     }
-    setState({ ...state, [anchor]: open })
+    setState({...state, [anchor]: open})
   }
+
+  // Modal
+  const [open, setOpen] = React.useState(false)
+  const handleOpen = () => {
+    setOpen(true)
+  }
+  const handleClose = () => {
+    setOpen(false)
+  }
+  // Modal
   return (
     <AdminLayout>
-      <Fab size="small" color="secondary" className={classes.fab} onClick={() => {}}>
+      <Fab size="small" color="secondary" className={classes.fab} onClick={handleOpen}>
         <AddIcon />
       </Fab>
       <Fab size="small" className={classes.fabSearch} onClick={toggleDrawer("right", true)}>
@@ -183,6 +194,7 @@ export default function AdminOrderList() {
           </Grid>
         </Grid>
       </Drawer>
+      <CategoryManageModal open={open} handleClose={handleClose}/>
     </AdminLayout>
   )
 }

@@ -35,7 +35,7 @@ const MypageSidebar: React.FC = () => {
             <ListItemText primary="Setting"></ListItemText>
           </ListItem>
         </NextLink>
-        <NextLink href="/mypage/contact" passHref>
+        <NextLink href="/chat/chatroom/matchid1" passHref>
           <ListItem button component="a">
             <ListItemText primary="Contact"></ListItemText>
           </ListItem>

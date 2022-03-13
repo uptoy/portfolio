@@ -1,6 +1,6 @@
-import React from "react"
-import { makeStyles } from "@material-ui/styles"
-import { AdminLayout } from "components/Dashboard"
+import React, {useState} from "react"
+import {makeStyles} from "@material-ui/styles"
+import {AdminLayout} from "components/Dashboard"
 import theme from "theme"
 import {
   Paper,
@@ -18,9 +18,11 @@ import {
 } from "@material-ui/core"
 import AddIcon from "@material-ui/icons/Add"
 import SearchIcon from "@material-ui/icons/Search"
-import { pink } from "@material-ui/core/colors"
+import {pink} from "@material-ui/core/colors"
 import CreateIcon from "@material-ui/icons/Create"
 import DeleteIcon from "@material-ui/icons/Delete"
+import {CustomerManageModal} from "components/Customer"
+import DeleteModal from "components/Modal/DeleteModal"
 
 const pink500 = pink["500"]
 
@@ -32,7 +34,7 @@ function createData(
   email: string,
   phone: string
 ) {
-  return { id, profileImage, firstName, lastName, email, phone }
+  return {id, profileImage, firstName, lastName, email, phone}
 }
 
 const rows = [
@@ -147,12 +149,29 @@ export default function AdminCustomerList() {
     if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
       return
     }
-    setState({ ...state, [anchor]: open })
+    setState({...state, [anchor]: open})
   }
+  // Modal
+  const [open, setOpen] = React.useState(false)
+  const handleOpen = () => {
+    setOpen(true)
+  }
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  const [open1, setOpen1] = useState(false)
+  const handleDeleteOpen = () => {
+    setOpen1(true)
+  }
+  const handleDeleteClose = () => {
+    setOpen1(false)
+  }
+  // Modal
 
   return (
     <AdminLayout>
-      <Fab size="small" color="secondary" className={classes.fab} onClick={() => {}}>
+      <Fab size="small" color="secondary" className={classes.fab} onClick={handleOpen}>
         <AddIcon />
       </Fab>
       <Fab size="small" className={classes.fabSearch} onClick={toggleDrawer("right", true)}>
@@ -181,10 +200,10 @@ export default function AdminCustomerList() {
                 <TableCell align="center">{row.email}</TableCell>
                 <TableCell align="center">{row.phone}</TableCell>
                 <TableCell align="center">
-                  <Button variant="contained" className={classes.button}>
+                  <Button variant="contained" className={classes.button} onClick={handleOpen}>
                     <CreateIcon />
                   </Button>
-                  <Button variant="contained" className={classes.button}>
+                  <Button variant="contained" className={classes.button} onClick={handleDeleteOpen}>
                     <DeleteIcon />
                   </Button>
                 </TableCell>
@@ -228,6 +247,8 @@ export default function AdminCustomerList() {
           </Grid>
         </Grid>
       </Drawer>
+      <CustomerManageModal open={open} handleClose={handleClose} />
+      <DeleteModal open={open1} handleClose={handleDeleteClose} />
     </AdminLayout>
   )
 }

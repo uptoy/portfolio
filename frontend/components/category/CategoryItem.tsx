@@ -3,19 +3,28 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
-import { makeStyles } from "@material-ui/styles"
+import {makeStyles} from "@material-ui/styles"
 import MoreVertIcon from "@material-ui/icons/MoreVert"
+import CreateIcon from "@material-ui/icons/Create"
+import DeleteIcon from "@material-ui/icons/Delete"
+import {CustomerManageModal} from "components/Customer"
+import DeleteModal from "components/Modal/DeleteModal"
+import {Button} from "@material-ui/core"
 // import { unwrapResult } from "@reduxjs/toolkit"
-import { useState } from "react"
+import {useState} from "react"
 import toast from "react-hot-toast"
 
 // import { deleteCategory, setSelectedCategory, setSelectedModal } from '../../slice';
-import { ICategory } from "types"
+import {ICategory} from "types"
 
 // import { useAppDispatch, useAppSelector } from 'app/hooks';
 
-interface Props {
+interface IProps {
   category: ICategory
+  open: boolean
+  open1: boolean
+  handleOpen(): void
+  handleDeleteOpen(): void
 }
 
 const useStyles: any = makeStyles(() => ({
@@ -28,7 +37,7 @@ const useStyles: any = makeStyles(() => ({
   },
 }))
 
-const CategoryItem: React.FC<Props> = ({ category }) => {
+const CategoryItem = (props: IProps) => {
   const classes = useStyles()
 
   // const { user } = useAppSelector((state) => state.auth)
@@ -74,21 +83,20 @@ const CategoryItem: React.FC<Props> = ({ category }) => {
 
   return (
     <ListItem className={classes.categoryItem} disabled={isCategoryDeleting}>
-      <ListItemText primary={category.title} />
+      <ListItemText primary={props.category.title} />
+
       <div className={classes.actionContainer}>
-        <IconButton onClick={handleOpenMenu}>
-          <MoreVertIcon />
-        </IconButton>
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleCloseMenu}
+        <Button
+          variant="contained"
+          className={classes.button}
+          onClick={props.handleOpen}
+          style={{marginRight: "1em"}}
         >
-          <MenuItem onClick={handleEdit}>Edit</MenuItem>
-          <MenuItem onClick={handleDelete}>Delete</MenuItem>
-        </Menu>
+          <CreateIcon />
+        </Button>
+        <Button variant="contained" className={classes.button} onClick={props.handleDeleteOpen}>
+          <DeleteIcon />
+        </Button>
       </div>
     </ListItem>
   )
