@@ -56,14 +56,14 @@ const LINKS: Links[] = [
     title: 'Report',
   },
   {
-    href: '/settings',
-    icon: <SettingsIcon />,
-    title: 'Settings',
-  },
-  {
     href: '/account',
     icon: <PersonIcon />,
     title: 'Account',
+  },
+  {
+    href: '/settings',
+    icon: <SettingsIcon />,
+    title: 'Settings',
   },
 ]
 

@@ -30,11 +30,6 @@ const MypageSidebar: React.FC = () => {
             <ListItemText primary="Order History"></ListItemText>
           </ListItem>
         </NextLink>
-        <NextLink href="/mypage/setting" passHref>
-          <ListItem button component="a">
-            <ListItemText primary="Setting"></ListItemText>
-          </ListItem>
-        </NextLink>
         <NextLink href="/chat/chatroom/matchid1" passHref>
           <ListItem button component="a">
             <ListItemText primary="Contact"></ListItemText>
@@ -43,6 +38,11 @@ const MypageSidebar: React.FC = () => {
         <NextLink href="/cart" passHref>
           <ListItem button component="a">
             <ListItemText primary="Cart"></ListItemText>
+          </ListItem>
+        </NextLink>
+        <NextLink href="/mypage/setting" passHref>
+          <ListItem button component="a">
+            <ListItemText primary="Setting"></ListItemText>
           </ListItem>
         </NextLink>
       </List>
