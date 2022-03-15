@@ -3,6 +3,7 @@ package handler
 import (
 	"log"
 	"net/http"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"backend/model"
@@ -49,4 +50,14 @@ func (h *Handler) Details(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"user": u,
 	})
+}
+
+
+
+
+func (h *Handler) UserList(c *gin.Context) {
+	fmt.Println("UserUpdate")
+}
+func (h *Handler) UserDetail(c *gin.Context) {
+	fmt.Println("UserUpdate")
 }

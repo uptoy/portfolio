@@ -4,32 +4,38 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"backend/model"
 	"backend/model/apperrors"
+	"github.com/gin-gonic/gin"
 )
 
-// signupReq is not exported, hence the lowercase name
-// it is used for validation and json marshalling
-type signupReq struct {
-	Email    string `json:"email" binding:"required,email"`
-	Password string `json:"password" binding:"required,gte=6,lte=30"`
-}
+// type signupReq struct {
+// 	Email           string `json:"email" binding:"required,email"`
+// 	Password        string `json:"password" binding:"required,gte=6,lte=30"`
+// 	PasswordConfirm string `json:"password_confirm" binding:"required,gte=6,lte=30"`
+// }
 
 // Signup handler
 func (h *Handler) Signup(c *gin.Context) {
 	// define a variable to which we'll bind incoming
 	// json body, {email, password}
-	var req signupReq
+	var data map[string]string
 
 	// Bind incoming json to struct and check for validation errors
-	if ok := bindData(c, &req); !ok {
+	if ok := bindData(c, &data); !ok {
 		return
 	}
 
+	if data["password"] != data["password_confirm"] {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "password do not match",
+		})
+	}
+
 	u := &model.User{
-		Email:    req.Email,
-		Password: req.Password,
+		Email:    data["email"],
+		Password: data["password"],
+		IsAdmin:  false,
 	}
 
 	ctx := c.Request.Context()

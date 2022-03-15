@@ -95,3 +95,25 @@ func (m *MockUserRepository) UpdateImage(
 
 	return r0, r1
 }
+
+func (m *MockUserRepository) PasswordReset(
+	ctx context.Context,
+    token string,
+	reset *model.PasswordReset,
+) error {
+	ret := m.Called(ctx, reset)
+	var r1 error
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
+	}
+	return r1
+}
+
+func (m *MockUserRepository) PasswordForgot(ctx context.Context, reset *model.PasswordReset) error {
+	ret := m.Called(ctx, reset)
+	var r0 error
+	if ret.Get(0) != nil {
+		r0 = ret.Get(0).(error)
+	}
+	return r0
+}

@@ -33,7 +33,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	/*
 	 * service layer
 	 */
-	userService := service.NewUserService(&service.USConfig{
+	userService := service.NewUserService(&service.UserServiceConfig{
 		UserRepository: userRepository,
 		ImageRepository: imageRepository,
 	})

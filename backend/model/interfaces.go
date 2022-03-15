@@ -17,15 +17,9 @@ type UserService interface {
 	Signin(ctx context.Context, u *User) error
 	UpdateDetails(ctx context.Context, u *User) error
 	SetProfileImage(ctx context.Context, uid uuid.UUID, imageFileHeader *multipart.FileHeader) (*User, error)
-}
-
-// TokenService defines methods the handler layer expects to interact
-// with in regards to producing JWTs as string
-type TokenService interface {
-	NewPairFromUser(ctx context.Context, u *User, prevTokenID string) (*TokenPair, error)
-	Signout(ctx context.Context, uid uuid.UUID) error
-	ValidateIDToken(tokenString string) (*User, error)
-	ValidateRefreshToken(refreshTokenString string) (*RefreshToken, error)
+	PasswordReset(ctx context.Context, token string, reset *PasswordReset) error
+	PasswordForgot(ctx context.Context, reset *PasswordReset) error
+	PasswordUpdate(ctx context.Context, u *User) error
 }
 
 // UserRepository defines methods the service layer expects
@@ -36,6 +30,18 @@ type UserRepository interface {
 	FindByID(ctx context.Context, uid uuid.UUID) (*User, error)
 	Update(ctx context.Context, u *User) error
 	UpdateImage(ctx context.Context, uid uuid.UUID, imageURL string) (*User, error)
+	PasswordForgot(ctx context.Context, reset *PasswordReset) error
+	PasswordReset(ctx context.Context, token string, reset *PasswordReset) error
+}
+
+
+// TokenService defines methods the handler layer expects to interact
+// with in regards to producing JWTs as string
+type TokenService interface {
+	NewPairFromUser(ctx context.Context, u *User, prevTokenID string) (*TokenPair, error)
+	Signout(ctx context.Context, uid uuid.UUID) error
+	ValidateIDToken(tokenString string) (*User, error)
+	ValidateRefreshToken(refreshTokenString string) (*RefreshToken, error)
 }
 
 // TokenRepository defines methods it expects a repository
@@ -47,9 +53,52 @@ type TokenRepository interface {
 }
 
 
+// PostRepository defines methods the service layer expects
+// any repository it interacts with to implement
+// type PostRepository interface {
+// 	Create(ctx context.Context, input *CreatePostInput) (*Post, error)
+// 	FindByID(ctx context.Context, uid uuid.UUID) (*Post, error)
+// 	List(ctx context.Context, limit, offset int) ([]*Post, error)
+// 	Update(ctx context.Context, uid uuid.UUID, input *UpdatePostInput) (*Post, error)
+// 	// Delete(ctx context.Context, uid uuid.UUID) (*Post, error)
+// }
+
 // ImageRepository defines methods it expects a repository
 // it interacts with to implement
 type ImageRepository interface {
 	DeleteProfile(ctx context.Context, objName string) error
 	UpdateProfile(ctx context.Context, objName string, imageFile multipart.File) (string, error)
+}
+
+
+// type ProductService interface {
+// 	Create(ctx context.Context, input *Product) (*Product, error)
+// 	FindByID(ctx context.Context, uid uuid.UUID) (*Product, error)
+// 	List(ctx context.Context, limit, offset int) ([]*Product, error)
+// 	Update(ctx context.Context, uid uuid.UUID, input *Product) (*Product, error)
+// 	Delete(ctx context.Context, uid uuid.UUID) error
+// }
+
+// PostRepository defines methods the service layer expects
+// any repository it interacts with to implement
+// type ProductRepository interface {
+// 	Create(ctx context.Context, input *Product) (*Product, error)
+// 	FindByID(ctx context.Context, uid uuid.UUID) (*Product, error)
+// 	List(ctx context.Context, limit, offset int) ([]*Product, error)
+// 	Update(ctx context.Context, uid uuid.UUID, input *Product) (*Product, error)
+// 	Delete(ctx context.Context, uid uuid.UUID) error
+// }
+
+type CartService interface {
+	AddCartItem(ctx context.Context, userId uuid.UUID, cartItem *CartItem) (*Cart, error)
+	RemoveCartItem(ctx context.Context,userId uuid.UUID, productId uuid.UUID) (*Cart, error)
+	GetCartItemList(ctx context.Context, userId uuid.UUID) (*Cart, error)
+	// UpdateCartItem(ctx context.Context, userId uuid.UUID, input *Product) (*Cart, error)
+}
+
+type CartRepository interface {
+	RemoveCartItem(ctx context.Context,userId uuid.UUID, productId uuid.UUID) (*Cart, error)
+	AddCartItem(ctx context.Context, userId uuid.UUID, cartItem *CartItem) (*Cart, error)
+	GetCartItemList(ctx context.Context, userId uuid.UUID) (*Cart, error)
+	// UpdateCartItem(ctx context.Context, uid uuid.UUID, input *Product) (*Cart, error)
 }
