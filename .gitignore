@@ -1,6 +1,7 @@
 .env.dev
 *.pem
 backend/serviceAccount.json
+README.md
 
 workspace.code-workspace
 
