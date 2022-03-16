@@ -51,7 +51,7 @@ func NewHandler(c *Config) {
 		g.DELETE("/image", middleware.AuthUser(h.TokenService), h.DeleteImage)
 		//TODO product
 		g.GET("/products", h.ProductList)
-		g.GET("/products/:productId", h.ProductDetail)
+		// g.GET("/products/:productId", h.ProductDetail)
 		g.GET("/products/:productName", h.ProductSearch)
 		// g.POST("/admin/products",middleware.AuthAdmin(h.TokenService), h.ProductCreate)
 		// g.PUT("/admin/products/:id",middleware.AuthAdmin(h.TokenService), h.ProductUpdate)
