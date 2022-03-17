@@ -1,2 +1,0 @@
-DROP TABLE IF EXISTS reviews;
-DROP EXTENSION IF EXISTS "uuid-ossp";
