@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS orders (
-  uid uuid PRIMARY KEY,
+  order_id uuid PRIMARY KEY,
   items_prices INTEGER NOT NULL,
   tax_price INTEGER NOT NULL,
   price INTEGER NOT NULL,
@@ -15,8 +15,8 @@ CREATE TABLE IF NOT EXISTS orders (
   payment_id uuid NOT NULL
 );
 
-ALTER TABLE "orders" ADD FOREIGN KEY ("order_item_id") REFERENCES "order_items" ("uid");
-ALTER TABLE "orders" ADD FOREIGN KEY ("shipping_id") REFERENCES "shippings" ("uid");
-ALTER TABLE "orders" ADD FOREIGN KEY ("payment_id") REFERENCES "payments" ("uid");
-ALTER TABLE "orders" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("uid");
+ALTER TABLE "orders" ADD FOREIGN KEY ("order_item_id") REFERENCES "order_items" ("order_item_id");
+ALTER TABLE "orders" ADD FOREIGN KEY ("shipping_id") REFERENCES "shippings" ("shipping_id");
+ALTER TABLE "orders" ADD FOREIGN KEY ("payment_id") REFERENCES "payments" ("payment_id");
+ALTER TABLE "orders" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("user_id");
 

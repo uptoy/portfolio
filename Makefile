@@ -16,8 +16,8 @@ POSTGRESQL_URL='postgres://postgres:password@localhost:5432/portfolio_db?sslmode
 # 	openssl genpkey -algorithm RSA -out $(ACCTPATH)/rsa_private_$(ENV).pem -pkeyopt rsa_keygen_bits:2048
 # 	openssl rsa -in $(ACCTPATH)/rsa_private_$(ENV).pem -pubout -out $(ACCTPATH)/rsa_public_$(ENV).pem
 
-# test:
-# 	$(POSTGRESQL_URL)
+test:
+	$(CURSOR)
 
 down:
 	docker-compose down

@@ -2,10 +2,12 @@ package model
 
 import (
 	"github.com/google/uuid"
+	"time"
 )
 
 type Category struct {
-	ID            uuid.UUID `db:"categoryId" json:"categoryId"`
-	Category_Name string    `db:"category_name" json:"category_name"`
-	Description   string    `db:"description" json:"description"`
+	CategoryId   uuid.UUID `db:"category_id" json:"category_id"`
+	CategoryName string    `db:"category_name" json:"category_name"`
+	CreatedAt    time.Time `db:"created_at" json:"created_at"`
+	UpdatedAt  time.Time `db:"updated_at" json:"updated_at"`
 }
