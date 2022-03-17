@@ -5,5 +5,5 @@ CREATE TABLE IF NOT EXISTS users (
   name VARCHAR NOT NULL DEFAULT '',
   email VARCHAR NOT NULL UNIQUE,
   password VARCHAR NOT NULL,
-  image_url VARCHAR NOT NULL DEFAULT ''
+  image_url VARCHAR NOT NULL DEFAULT 'http://placehold.jp/150x150.png'
 );
