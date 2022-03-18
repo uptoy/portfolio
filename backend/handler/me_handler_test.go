@@ -24,7 +24,7 @@ func TestMe(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		mockUserResp := &model.User{
-			UID:   uid,
+			UserId:   uid,
 			Email: "bob@bob.com",
 			Name:  "Bobby Bobson",
 		}
@@ -41,7 +41,7 @@ func TestMe(t *testing.T) {
 		router := gin.Default()
 		router.Use(func(c *gin.Context) {
 			c.Set("user", &model.User{
-				UID: uid,
+				UserId: uid,
 			},
 			)
 		})
@@ -100,7 +100,7 @@ func TestMe(t *testing.T) {
 		router := gin.Default()
 		router.Use(func(c *gin.Context) {
 			c.Set("user", &model.User{
-				UID: uid,
+				UserId: uid,
 			},
 			)
 		})

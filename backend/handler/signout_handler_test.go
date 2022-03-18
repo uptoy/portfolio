@@ -24,7 +24,7 @@ func TestSignout(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		ctxUser := &model.User{
-			UID:   uid,
+			UserId:   uid,
 			Email: "bob1@bob.com",
 		}
 
@@ -38,7 +38,7 @@ func TestSignout(t *testing.T) {
 		})
 
 		mockTokenService := new(mocks.MockTokenService)
-		mockTokenService.On("Signout", mock.AnythingOfType("*context.emptyCtx"), ctxUser.UID).Return(nil)
+		mockTokenService.On("Signout", mock.AnythingOfType("*context.emptyCtx"), ctxUser.UserId).Return(nil)
 
 		NewHandler(&Config{
 			R:            router,
@@ -60,7 +60,7 @@ func TestSignout(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		ctxUser := &model.User{
-			UID:   uid,
+			UserId:   uid,
 			Email: "bob2@bob.com",
 		}
 
@@ -75,7 +75,7 @@ func TestSignout(t *testing.T) {
 
 		mockTokenService := new(mocks.MockTokenService)
 		mockTokenService.
-			On("Signout", mock.AnythingOfType("*context.emptyCtx"), ctxUser.UID).
+			On("Signout", mock.AnythingOfType("*context.emptyCtx"), ctxUser.UserId).
 			Return(apperrors.NewInternal())
 
 		NewHandler(&Config{

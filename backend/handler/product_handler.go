@@ -10,14 +10,37 @@ import (
 	"github.com/google/uuid"
 )
 
+// type productReq struct {
+// ProductName string           `json:"product_name" binding:"required,product_name"`
+// Description string           `json:"description" binding:"required,description"`
+// Price       int              `json:"price" binding:"required,price"`
+// AverageRating      int              `json:"rating" binding:"required,rating"`
+// ImageURL    string           `json:"image_url" binding:"required,image_url"`
+// Categories  []model.Category `json:"categories" binding:"required,categories"`
+// }
+
 type productReq struct {
-	Product_Name string           `json:"product_name" binding:"required,product_name"`
-	Description  string           `json:"description" binding:"required,description"`
-	Price        int              `json:"price" binding:"required,price"`
-	Rating       int              `json:"rating" binding:"required,rating"`
-	ImageURL     string           `json:"image_url" binding:"required,image_url"`
-	Categories   []model.Category `json:"categories" binding:"required,categories"`
+	ProductName   string `db:"product_name" json:"product_name"`
+	Description   string `db:"description" json:"description"`
+	Price         int    `db:"price" json:"price"`
+	AverageRating string `db:"average_rating" json:"average_rating"`
+	ProductImage  string `db:"product_image" json:"product_image"`
+	CategoryName  string `db:"category_name" json:"category_name"`
 }
+
+// 	ProductId     uuid.UUID `db:"product_id" json:"product_id"`
+// 	ProductName   string    `db:"product_name" json:"product_name"`
+// 	Slug          string    `db:"slug" json:"slug"`
+// 	ProductImage  string    `db:"product_image" json:"product_image"`
+// 	Brand         string    `db:"brand" json:"brand"`
+// 	Price         int       `db:"price" json:"price"`
+// 	CategoryName  string    `db:"category_name" json:"category_name"`
+// 	CountInStock  int       `db:"count_in_stock" json:"count_in_stock"`
+// 	Description   string    `db:"description" json:"description"`
+// 	AverageRating string    `db:"average_rating" json:"average_rating"`
+// 	CreatedAt     time.Time `db:"created_at" json:"created_at"`
+// 	UpdatedAt     time.Time `db:"updated_at" json:"updated_at"`
+// }
 
 func (h *Handler) ProductCreate(c *gin.Context) {
 	var req productReq
@@ -25,12 +48,12 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 		return
 	}
 	p := &model.Product{
-		Product_Name: req.Product_Name,
-		Description:  req.Description,
-		Price:        req.Price,
-		Rating:       req.Rating,
-		ImageURL:     req.ImageURL,
-		Categories:   req.Categories,
+		ProductName:   req.ProductName,
+		Description:   req.Description,
+		Price:         req.Price,
+		AverageRating: req.AverageRating,
+		ProductImage:  req.ProductImage,
+		CategoryName:  req.CategoryName,
 	}
 	ctx := c.Request.Context()
 	product, err := h.ProductService.ProductCreate(ctx, p)
@@ -96,12 +119,12 @@ func (h *Handler) ProductUpdate(c *gin.Context) {
 		return
 	}
 	p := &model.Product{
-		Product_Name: req.Product_Name,
-		Description:  req.Description,
-		Price:        req.Price,
-		Rating:       req.Rating,
-		ImageURL:     req.ImageURL,
-		Categories:   req.Categories,
+		ProductName:   req.ProductName,
+		Description:   req.Description,
+		Price:         req.Price,
+		AverageRating: req.AverageRating,
+		ProductImage:  req.ProductImage,
+		CategoryName:    req.CategoryName,
 	}
 	ctx := c.Request.Context()
 	product, err := h.ProductService.ProductUpdate(ctx, uid, p)

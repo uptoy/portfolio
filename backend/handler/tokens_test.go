@@ -97,7 +97,7 @@ func TestTokens(t *testing.T) {
 			Return(mockRefreshTokenResp, nil)
 
 		mockUserResp := &model.User{
-			UID: mockUserID,
+			UserId : mockUserID,
 		}
 		getArgs := mock.Arguments{
 			mock.AnythingOfType("*context.emptyCtx"),
@@ -158,7 +158,7 @@ func TestTokens(t *testing.T) {
 			Return(mockRefreshTokenResp, nil)
 
 		mockUserResp := &model.User{
-			UID: mockUserID,
+			UserId : mockUserID,
 		}
 		getArgs := mock.Arguments{
 			mock.AnythingOfType("*context.emptyCtx"),

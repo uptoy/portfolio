@@ -59,7 +59,7 @@ func (h *Handler) Image(c *gin.Context) {
 
 	ctx := c.Request.Context()
 
-	updatedUser, err := h.UserService.SetProfileImage(ctx, authUser.UID, imageFileHeader)
+	updatedUser, err := h.UserService.SetProfileImage(ctx, authUser.UserId, imageFileHeader)
 	if err != nil {
 		c.JSON(apperrors.Status(err), gin.H{
 			"error": err,
@@ -68,7 +68,7 @@ func (h *Handler) Image(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"imageUrl": updatedUser.ImageURL,
+		"imageUrl": updatedUser.ProfileUrl,
 		"message":  "success",
 	})
 }

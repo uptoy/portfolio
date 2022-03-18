@@ -22,7 +22,7 @@ func TestDeleteImage(t *testing.T) {
 	// authorized middleware user
 	uid, _ := uuid.NewRandom()
 	ctxUser := &model.User{
-		UID: uid,
+		UserId: uid,
 	}
 
 	router := gin.Default()
@@ -43,7 +43,7 @@ func TestDeleteImage(t *testing.T) {
 
 		clearProfileImageArgs := mock.Arguments{
 			mock.AnythingOfType("*context.emptyCtx"),
-			ctxUser.UID,
+			ctxUser.UserId,
 		}
 
 		errorResp := apperrors.NewInternal()
@@ -67,7 +67,7 @@ func TestDeleteImage(t *testing.T) {
 		// authorized middleware user - overwriting for unique mock arguments
 		uid, _ := uuid.NewRandom()
 		ctxUser := &model.User{
-			UID: uid,
+			UserId: uid,
 		}
 
 		router := gin.Default()
@@ -85,7 +85,7 @@ func TestDeleteImage(t *testing.T) {
 
 		clearProfileImageArgs := mock.Arguments{
 			mock.AnythingOfType("*context.emptyCtx"),
-			ctxUser.UID,
+			ctxUser.UserId,
 		}
 
 		mockUserService.On("ClearProfileImage", clearProfileImageArgs...).Return(nil)
