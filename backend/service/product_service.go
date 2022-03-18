@@ -19,34 +19,47 @@ func NewProductService(c *ProductServiceConfig) model.ProductService {
 }
 
 func (s *productService) ProductCreate(ctx context.Context, product *model.Product) (*model.Product, error) {
-	product = &model.Product{}
-	var err error
-	return product, err
+	product, err := s.ProductRepository.ProductCreate(ctx, product)
+	if err != nil {
+		return nil, err
+	}
+	return product, nil
 }
 
 func (s *productService) ProductList(ctx context.Context) ([]*model.Product, error) {
-	products := []*model.Product{}
-	var err error
-	return products, err
+	products, err := s.ProductRepository.ProductList(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return products, nil
 }
 func (s *productService) ProductFindByID(ctx context.Context, productId uuid.UUID) (*model.Product, error) {
-	product := model.Product{}
-	var err error
-	return &product, err
+	product, err := s.ProductRepository.ProductFindByID(ctx, productId)
+	if err != nil {
+		return nil, err
+	}
+	return product, nil
 }
 func (s *productService) ProductFindByName(ctx context.Context, productName string) (*model.Product, error) {
-	product := model.Product{}
-	var err error
-	return &product, err
+	product, err := s.ProductRepository.ProductFindByName(ctx, productName)
+	if err != nil {
+		return nil, err
+	}
+	return product, nil
 }
 
 func (s *productService) ProductUpdate(ctx context.Context, productId uuid.UUID, product *model.Product) (*model.Product, error) {
-	var err error
-	return product, err
+	product, err := s.ProductRepository.ProductUpdate(ctx, productId, product)
+	if err != nil {
+		return nil, err
+	}
+	return product, nil
 }
 
 func (s *productService) ProductDelete(ctx context.Context, productId uuid.UUID) (*model.Product, error) {
-	product := model.Product{}
-	var err error
-	return &product, err
+	product, err := s.ProductRepository.ProductDelete(ctx, productId)
+	if err != nil {
+		return nil, err
+	}
+	return product, nil
 }
