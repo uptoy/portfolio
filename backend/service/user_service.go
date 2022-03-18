@@ -7,9 +7,9 @@ import (
 	"net/url"
 	"path"
 
-	"github.com/google/uuid"
 	"backend/model"
 	"backend/model/apperrors"
+	"github.com/google/uuid"
 )
 
 // userService acts as a struct for injecting an implementation of UserRepository
@@ -45,11 +45,11 @@ func (s *userService) ClearProfileImage(
 		return err
 	}
 
-	if user.ImageURL == "" {
+	if user.ProfileUrl == "" {
 		return nil
 	}
 
-	objName, err := objNameFromURL(user.ImageURL)
+	objName, err := objNameFromURL(user.ProfileUrl)
 	if err != nil {
 		return err
 	}
@@ -158,7 +158,7 @@ func (s *userService) SetProfileImage(
 		return nil, err
 	}
 
-	objName, err := objNameFromURL(u.ImageURL)
+	objName, err := objNameFromURL(u.ProfileUrl)
 
 	if err != nil {
 		return nil, err
@@ -179,7 +179,7 @@ func (s *userService) SetProfileImage(
 		return nil, err
 	}
 
-	updatedUser, err := s.UserRepository.UpdateImage(ctx, u.UID, imageURL)
+	updatedUser, err := s.UserRepository.UpdateImage(ctx, u.UserId, imageURL)
 
 	if err != nil {
 		log.Printf("Unable to update imageURL: %v\n", err)
