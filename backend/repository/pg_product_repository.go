@@ -23,8 +23,8 @@ func NewPostRepository(db *sqlx.DB) model.ProductRepository {
 
 func (r *pGProductRepository) ProductCreate(ctx context.Context, p *model.Product) (*model.Product, error) {
 	product := &model.Product{}
-	query := `INSERT INTO products (product_name, description,price,rating,image_url) VALUES ($1, $2,$3, $4,$5) RETURNING *`
-	if err := r.DB.GetContext(ctx, p, query, p.ProductName, p.Description, p.Price, p.AverageRating, p.ProductImage); err != nil {
+	query := `INSERT INTO products (product_name, p.slug, p.product_image, p.brand, p.price, p.category_name, p.count_in_stock, p.description, p.average_rating) VALUES ($1, $2,$3, $4,$5,$6, $7,$8, $9) RETURNING *`
+	if err := r.DB.GetContext(ctx, p, query, p.ProductName, p.Slug, p.ProductImage, p.Brand, p.Price, p.CategoryName, p.CountInStock, p.Description, p.AverageRating); err != nil {
 		// check unique constraint
 		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
 			log.Printf("Could not create a user proct: %v. Reason: %v\n", p.ProductName, err.Code.Name())
@@ -66,17 +66,18 @@ func (r *pGProductRepository) ProductFindByName(ctx context.Context, productName
 	return &product, nil
 }
 
-func (r *pGProductRepository) ProductUpdate(ctx context.Context, productId uuid.UUID, product *model.Product) (*model.Product, error) {
+// query := `INSERT INTO products (product_name, p.slug, p.product_image, p.brand, p.price, p.category_name, p.count_in_stock, p.description, p.average_rating) VALUES ($1, $2,$3, $4,$5,$6, $7,$8, $9) RETURNING *`
+func (r *pGProductRepository) ProductUpdate(ctx context.Context, productId uuid.UUID, p *model.Product) (*model.Product, error) {
 	query := `
 	UPDATE products
-	SET product_name = $2,description = $3,price = $4,rating = $5, image_url = $6
+	SET product_name = $2,slug = $3,product_image = $4,brand = $5, price = $6,category_name = $7,count_in_stock = $8,description = $9,average_rating = $10
 	WHERE productId=$1
 	RETURNING *;`
-	if err := r.DB.GetContext(ctx, product, query, productId, product.ProductName, product.Description, product.Price, product.AverageRating, product.ProductImage); err != nil {
-		log.Printf("Unable to update product: %v. Err: %v\n", product.ProductName, err)
-		return product, apperrors.NewNotFound("product", product.ProductName)
+	if err := r.DB.GetContext(ctx, p, query, productId,p.ProductName, p.Slug, p.ProductImage, p.Brand, p.Price, p.CategoryName, p.CountInStock, p.Description, p.AverageRating); err != nil {
+		log.Printf("Unable to update product: %v. Err: %v\n", p.ProductName, err)
+		return p, apperrors.NewNotFound("product", p.ProductName)
 	}
-	return product, nil
+	return p, nil
 }
 func (r *pGProductRepository) ProductDelete(ctx context.Context, productId uuid.UUID) (*model.Product, error) {
 	product := model.Product{}

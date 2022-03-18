@@ -15,7 +15,7 @@ type Product struct {
 	CategoryName  string    `db:"category_name" json:"category_name"`
 	CountInStock  int       `db:"count_in_stock" json:"count_in_stock"`
 	Description   string    `db:"description" json:"description"`
-	AverageRating string    `db:"average_rating" json:"average_rating"`
+	AverageRating int    `db:"average_rating" json:"average_rating"`
 	CreatedAt     time.Time `db:"created_at" json:"created_at"`
 	UpdatedAt     time.Time `db:"updated_at" json:"updated_at"`
 }
