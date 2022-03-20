@@ -12,8 +12,7 @@ type MockProductRepository struct {
 	mock.Mock
 }
 
-
-func (m *MockProductRepository) FindByID(ctx context.Context, uid uuid.UUID) (*model.Product, error) {
+func (m *MockProductRepository) ProductFindByID(ctx context.Context, uid uuid.UUID) (*model.Product, error) {
 	ret := m.Called(ctx, uid)
 
 	var r0 *model.Product
@@ -30,24 +29,26 @@ func (m *MockProductRepository) FindByID(ctx context.Context, uid uuid.UUID) (*m
 	return r0, r1
 }
 
-func (m *MockProductRepository) Create(ctx context.Context, u *model.Product) error {
-	ret := m.Called(ctx, u)
-
-	var r0 error
+func (m *MockProductRepository) ProductCreate(ctx context.Context, p *model.Product) (*model.Product, error) {
+	ret := m.Called(ctx, p)
+	var r0 *model.Product
 	if ret.Get(0) != nil {
-		r0 = ret.Get(0).(error)
+		r0 = ret.Get(0).(*model.Product)
 	}
-	return r0
+	var r1 error
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
+	}
+	return r0, r1
 }
 
-// func (r *pGProductRepository) ProductFindByID(ctx context.Context, productId uuid.UUID) (*model.Product, error) {
-// func (r *pGProductRepository) ProductCreate(ctx context.Context, p *model.Product) (*model.Product, error) {
-// func (r *pGProductRepository) ProductList(ctx context.Context) ([]*model.Product, error) {
+func (m *MockProductRepository) ProductList(ctx context.Context) ([]*model.Product, error) {
+	rets := m.Called(ctx)
+	result := rets.Get(0)
+	return result.([]*model.Product), rets.Error(1)
+}
 
-// func (r *pGProductRepository) ProductFindByName(ctx context.Context, productName string) (*model.Product, error) {
-// func (r *pGProductRepository) ProductUpdate(ctx context.Context, productId uuid.UUID, p *model.Product) (*model.Product, error) {
-
-func (m *MockProductRepository) FindByName(ctx context.Context, product_name string) (*model.Product, error) {
+func (m *MockProductRepository) ProductFindByName(ctx context.Context, product_name string) (*model.Product, error) {
 	ret := m.Called(ctx, product_name)
 
 	var r0 *model.Product
@@ -64,14 +65,30 @@ func (m *MockProductRepository) FindByName(ctx context.Context, product_name str
 	return r0, r1
 }
 
-// Update is mock of UserRepository.Update
-func (m *MockProductRepository) Update(ctx context.Context, u *model.Product) error {
-	ret := m.Called(ctx, u)
+func (m *MockProductRepository) ProductUpdate(ctx context.Context, uid uuid.UUID, p *model.Product) (*model.Product, error) {
+	ret := m.Called(ctx, uid, p)
 
-	var r0 error
+	var r0 *model.Product
 	if ret.Get(0) != nil {
-		r0 = ret.Get(0).(error)
+		r0 = ret.Get(0).(*model.Product)
 	}
 
-	return r0
+	var r1 error
+
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
+	}
+
+	return r0, r1
+}
+
+func (m *MockProductRepository) ProductDelete(ctx context.Context, uid uuid.UUID) (*model.Product, error) {
+	ret := m.Called(ctx, uid)
+
+	var r0 *model.Product
+	var r1 error
+	if ret.Get(0) != nil {
+		r1 = ret.Get(0).(error)
+	}
+	return r0, r1
 }

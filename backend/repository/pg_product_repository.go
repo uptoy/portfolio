@@ -15,7 +15,7 @@ type pGProductRepository struct {
 	DB *sqlx.DB
 }
 
-func NewPostRepository(db *sqlx.DB) model.ProductRepository {
+func NewProductRepository(db *sqlx.DB) model.ProductRepository {
 	return &pGProductRepository{
 		DB: db,
 	}
@@ -27,10 +27,10 @@ func (r *pGProductRepository) ProductCreate(ctx context.Context, p *model.Produc
 	if err := r.DB.GetContext(ctx, p, query, p.ProductName, p.Slug, p.ProductImage, p.Brand, p.Price, p.CategoryName, p.CountInStock, p.Description, p.AverageRating); err != nil {
 		// check unique constraint
 		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
-			log.Printf("Could not create a user proct: %v. Reason: %v\n", p.ProductName, err.Code.Name())
+			log.Printf("Could not create a product: %v. Reason: %v\n", p.ProductName, err.Code.Name())
 			return nil, apperrors.NewConflict("product", p.ProductName)
 		}
-		log.Printf("Could not create a product with name: %v. Reason: %v\n", p.ProductName, err)
+		log.Printf("Could not create a product : %v. Reason: %v\n", p.ProductName, err)
 		return nil, apperrors.NewInternal()
 	}
 	return product, nil
@@ -40,7 +40,7 @@ func (r *pGProductRepository) ProductList(ctx context.Context) ([]*model.Product
 	products := []*model.Product{}
 	query := "SELECT * FROM products"
 	if err := r.DB.GetContext(ctx, products, query); err != nil {
-		log.Printf("Unable to get uproducts: %v. Err: %v\n", products, err)
+		log.Printf("Unable to get products: %v. Err: %v\n", products, err)
 		return products, apperrors.NewNotFound("products", "err")
 	}
 	return products, nil
@@ -73,7 +73,7 @@ func (r *pGProductRepository) ProductUpdate(ctx context.Context, productId uuid.
 	SET product_name = $2,slug = $3,product_image = $4,brand = $5, price = $6,category_name = $7,count_in_stock = $8,description = $9,average_rating = $10
 	WHERE productId=$1
 	RETURNING *;`
-	if err := r.DB.GetContext(ctx, p, query, productId,p.ProductName, p.Slug, p.ProductImage, p.Brand, p.Price, p.CategoryName, p.CountInStock, p.Description, p.AverageRating); err != nil {
+	if err := r.DB.GetContext(ctx, p, query, productId, p.ProductName, p.Slug, p.ProductImage, p.Brand, p.Price, p.CategoryName, p.CountInStock, p.Description, p.AverageRating); err != nil {
 		log.Printf("Unable to update product: %v. Err: %v\n", p.ProductName, err)
 		return p, apperrors.NewNotFound("product", p.ProductName)
 	}

@@ -10,12 +10,14 @@ type productService struct {
 	ProductRepository model.ProductRepository
 }
 
-type ProductServiceConfig struct {
+type PSConfig struct {
 	ProductRepository model.ProductRepository
 }
 
-func NewProductService(c *ProductServiceConfig) model.ProductService {
-	return &productService{}
+func NewProductService(c *PSConfig) model.ProductService {
+	return &productService{
+		ProductRepository:  c.ProductRepository,
+	}
 }
 
 func (s *productService) ProductCreate(ctx context.Context, product *model.Product) (*model.Product, error) {
@@ -27,11 +29,11 @@ func (s *productService) ProductCreate(ctx context.Context, product *model.Produ
 }
 
 func (s *productService) ProductList(ctx context.Context) ([]*model.Product, error) {
-	products, err := s.ProductRepository.ProductList(ctx)
+	productList, err := s.ProductRepository.ProductList(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return products, nil
+	return productList, nil
 }
 func (s *productService) ProductFindByID(ctx context.Context, productId uuid.UUID) (*model.Product, error) {
 	product, err := s.ProductRepository.ProductFindByID(ctx, productId)
