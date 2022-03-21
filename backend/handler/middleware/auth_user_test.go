@@ -21,7 +21,7 @@ func TestAuthUser(t *testing.T) {
 
 	uid, _ := uuid.NewRandom()
 	u := &model.User{
-		UID:   uid,
+		UserId:   uid,
 		Email: "bob@bob.com",
 	}
 

@@ -17,7 +17,7 @@ type detailsReq struct {
 }
 
 // Details handler
-func (h *Handler) Details(c *gin.Context) {
+func (h *Handler) UpdateUser(c *gin.Context) {
 	authUser := c.MustGet("user").(*model.User)
 
 	var req detailsReq
@@ -28,10 +28,9 @@ func (h *Handler) Details(c *gin.Context) {
 
 	// Should be returned with current imageURL
 	u := &model.User{
-		UID:     authUser.UID,
+		UserId:     authUser.UserId,
 		Name:    req.Name,
 		Email:   req.Email,
-		Website: req.Website,
 	}
 
 	ctx := c.Request.Context()

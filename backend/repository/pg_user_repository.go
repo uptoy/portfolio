@@ -102,7 +102,6 @@ func (r *pGUserRepository) UpdateImage(ctx context.Context, uid uuid.UUID, image
 		WHERE uid=$1
 		RETURNING *;
 	`
-
 	// must be instantiated to scan into ref using `GetContext`
 	u := &model.User{}
 

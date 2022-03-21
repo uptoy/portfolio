@@ -22,7 +22,7 @@ func TestDetails(t *testing.T) {
 
 	uid, _ := uuid.NewRandom()
 	ctxUser := &model.User{
-		UID: uid,
+		UserId: uid,
 	}
 
 	router := gin.Default()
@@ -69,10 +69,9 @@ func TestDetails(t *testing.T) {
 		request.Header.Set("Content-Type", "application/json")
 
 		userToUpdate := &model.User{
-			UID:     ctxUser.UID,
+			UserId:     ctxUser.UserId,
 			Name:    newName,
 			Email:   newEmail,
-			Website: newWebsite,
 		}
 
 		updateArgs := mock.Arguments{
@@ -86,13 +85,13 @@ func TestDetails(t *testing.T) {
 			On("UpdateDetails", updateArgs...).
 			Run(func(args mock.Arguments) {
 				userArg := args.Get(1).(*model.User) // arg 0 is context, arg 1 is *User
-				userArg.ImageURL = dbImageURL
+				userArg.ProfileUrl = dbImageURL
 			}).
 			Return(nil)
 
 		router.ServeHTTP(rr, request)
 
-		userToUpdate.ImageURL = dbImageURL
+		userToUpdate.ProfileUrl = dbImageURL
 		respBody, _ := json.Marshal(gin.H{
 			"user": userToUpdate,
 		})
@@ -119,10 +118,9 @@ func TestDetails(t *testing.T) {
 		request.Header.Set("Content-Type", "application/json")
 
 		userToUpdate := &model.User{
-			UID:     ctxUser.UID,
+			UserId:     ctxUser.UserId,
 			Name:    newName,
 			Email:   newEmail,
-			Website: newWebsite,
 		}
 
 		updateArgs := mock.Arguments{

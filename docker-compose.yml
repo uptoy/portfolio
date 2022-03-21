@@ -1,78 +1,49 @@
-version: "3.8"
+version: '3.1'
+
 services:
-  reverse-proxy:
-    # The official v2 Traefik docker image
-    image: traefik:v2.2
-    # Enables the web UI and tells Traefik to listen to docker
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker"
-      - "--providers.docker.exposedByDefault=false"
-    ports:
-      # The HTTP port
-      - "80:80"
-      # The Web UI (enabled by --api.insecure=true)
-      - "8080:8080"
+
+  db:
+    container_name: postgresql_db
+    image: postgres
+    # automatically restarts the container - Docker daemon on restart or
+    # the container itself is manually restarted
+    restart: always
+
     volumes:
-      # So that Traefik can listen to the Docker events
-      - /var/run/docker.sock:/var/run/docker.sock
-  postgres:
-    image: "postgres:alpine"
+      - ./data/db:/var/lib/postgresql/data
+
     environment:
-      - POSTGRES_PASSWORD=password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: portfolio_db
     ports:
       - "5432:5432"
-    #   Set a volume for data and initial sql script
-    #   May configure initial db for future demo
+    networks:
+      app_net:
+        ipv4_address: 192.168.0.2
+
+  pgadmin:
+    container_name: pgadmin4
+    image: dpage/pgadmin4
+    restart: always
+
     volumes:
-      - "pgdata:/var/lib/postgresql/data"
-      # - ./init:/docker-entrypoint-initdb.d/
-    command: ["postgres", "-c", "log_statement=all"]
-  redis:
-      image: "redis:alpine"
-      ports:
-        - "6379:6379"
-      volumes:
-        - "redisdata:/data"
-  backend:
-    build:
-      context: ./backend
-      target: builder
-    image: backend
-    env_file: ./backend/.env.dev
-    expose:
-      - "8080"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`malcorp.test`) && PathPrefix(`/api`)"
+      - ./data/pgadmin-data:/var/lib/pgadmin
+
     environment:
-      - ENV=dev
-    volumes:
-      - ./backend:/go/src/app
-    depends_on:
-      - postgres
-      - redis
-    # have to use $$ (double-dollar) so docker doesn't try to substitute a variable
-    command: reflex -r "\.go$$" -s -- sh -c "go run ./"
-
-frontend:
-    build:
-      context: ./frontend
-    image: frontend # if we don't give image name, traefik won't create router 🤷‍♂️
-    expose:
-      - "3000"
+      PGADMIN_DEFAULT_EMAIL: root@root.com
+      PGADMIN_DEFAULT_PASSWORD: root
+      # PGADMIN_LISTEN_PORT = 80
     ports:
-      - "3000:3000"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`malcorp.test`) && PathPrefix(`/`)"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules #avoid overwriting node_modules
-    depends_on:
-      - reverse-proxy
+      - "5050:80"
+    networks:
+      app_net:
+        ipv4_address: 192.168.0.3
 
-volumes:
-  pgdata:
-  redisdata:
-
+networks:
+  app_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "192.168.0.0/24"
+          gateway: 192.168.0.1

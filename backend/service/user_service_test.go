@@ -19,7 +19,7 @@ func TestGet(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		mockUserResp := &model.User{
-			UID:   uid,
+			UserId:   uid,
 			Email: "bob@bob.com",
 			Name:  "Bobby Bobson",
 		}
@@ -77,7 +77,7 @@ func TestSignup(t *testing.T) {
 			On("Create", mock.AnythingOfType("*context.emptyCtx"), mockUser).
 			Run(func(args mock.Arguments) {
 				userArg := args.Get(1).(*model.User) // arg 0 is context, arg 1 is *User
-				userArg.UID = uid
+				userArg.UserId = uid
 			}).Return(nil)
 
 		ctx := context.TODO()
@@ -86,7 +86,7 @@ func TestSignup(t *testing.T) {
 		assert.NoError(t, err)
 
 		// assert user now has a userID
-		assert.Equal(t, uid, mockUser.UID)
+		assert.Equal(t, uid, mockUser.UserId)
 
 		mockUserRepository.AssertExpectations(t)
 	})
@@ -142,7 +142,7 @@ func TestSignin(t *testing.T) {
 		}
 
 		mockUserResp := &model.User{
-			UID:      uid,
+			UserId:      uid,
 			Email:    email,
 			Password: hashedValidPW,
 		}
@@ -173,7 +173,7 @@ func TestSignin(t *testing.T) {
 		}
 
 		mockUserResp := &model.User{
-			UID:      uid,
+			UserId:      uid,
 			Email:    email,
 			Password: hashedValidPW,
 		}
@@ -207,9 +207,8 @@ func TestUpdateDetails(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		mockUser := &model.User{
-			UID:     uid,
+			UserId:     uid,
 			Email:   "new@bob.com",
-			Website: "https://jacobgoodwin.me",
 			Name:    "A New Bob!",
 		}
 
@@ -232,7 +231,7 @@ func TestUpdateDetails(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		mockUser := &model.User{
-			UID: uid,
+			UserId: uid,
 		}
 
 		mockArgs := mock.Arguments{
@@ -271,9 +270,8 @@ func TestSetProfileImage(t *testing.T) {
 
 		// does not have have imageURL
 		mockUser := &model.User{
-			UID:     uid,
+			UserId:     uid,
 			Email:   "new@bob.com",
-			Website: "https://jacobgoodwin.me",
 			Name:    "A New Bob!",
 		}
 
@@ -302,16 +300,15 @@ func TestSetProfileImage(t *testing.T) {
 
 		updateImageArgs := mock.Arguments{
 			mock.AnythingOfType("*context.emptyCtx"),
-			mockUser.UID,
+			mockUser.UserId,
 			imageURL,
 		}
 
 		mockUpdatedUser := &model.User{
-			UID:      uid,
+			UserId:      uid,
 			Email:    "new@bob.com",
-			Website:  "https://jacobgoodwin.me",
 			Name:     "A New Bob!",
-			ImageURL: imageURL,
+			ProfileUrl: imageURL,
 		}
 
 		mockUserRepository.
@@ -320,7 +317,7 @@ func TestSetProfileImage(t *testing.T) {
 
 		ctx := context.TODO()
 
-		updatedUser, err := us.SetProfileImage(ctx, mockUser.UID, imageFileHeader)
+		updatedUser, err := us.SetProfileImage(ctx, mockUser.UserId , imageFileHeader)
 
 		assert.NoError(t, err)
 		assert.Equal(t, mockUpdatedUser, updatedUser)
@@ -335,11 +332,10 @@ func TestSetProfileImage(t *testing.T) {
 
 		// has imageURL
 		mockUser := &model.User{
-			UID:      uid,
+			UserId :      uid,
 			Email:    "new@bob.com",
-			Website:  "https://jacobgoodwin.me",
 			Name:     "A New Bob!",
-			ImageURL: imageURL,
+			ProfileUrl: imageURL,
 		}
 
 		findByIDArgs := mock.Arguments{
@@ -365,16 +361,15 @@ func TestSetProfileImage(t *testing.T) {
 
 		updateImageArgs := mock.Arguments{
 			mock.AnythingOfType("*context.emptyCtx"),
-			mockUser.UID,
+			mockUser.UserId,
 			imageURL,
 		}
 
 		mockUpdatedUser := &model.User{
-			UID:      uid,
+			UserId:      uid,
 			Email:    "new@bob.com",
-			Website:  "https://jacobgoodwin.me",
 			Name:     "A New Bob!",
-			ImageURL: imageURL,
+			ProfileUrl: imageURL,
 		}
 
 		mockUserRepository.
@@ -434,11 +429,10 @@ func TestSetProfileImage(t *testing.T) {
 
 		// has imageURL
 		mockUser := &model.User{
-			UID:      uid,
+			UserId:      uid,
 			Email:    "new@bob.com",
-			Website:  "https://jacobgoodwin.me",
 			Name:     "A New Bob!",
-			ImageURL: imageURL,
+			ProfileUrl: imageURL,
 		}
 
 		findByIDArgs := mock.Arguments{
@@ -479,11 +473,10 @@ func TestSetProfileImage(t *testing.T) {
 
 		// has imageURL
 		mockUser := &model.User{
-			UID:      uid,
+			UserId:      uid,
 			Email:    "new@bob.com",
-			Website:  "https://jacobgoodwin.me",
 			Name:     "A New Bob!",
-			ImageURL: imageURL,
+			ProfileUrl: imageURL,
 		}
 
 		findByIDArgs := mock.Arguments{
@@ -509,7 +502,7 @@ func TestSetProfileImage(t *testing.T) {
 
 		updateImageArgs := mock.Arguments{
 			mock.AnythingOfType("*context.emptyCtx"),
-			mockUser.UID,
+			mockUser.UserId,
 			imageURL,
 		}
 

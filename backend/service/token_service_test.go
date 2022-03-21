@@ -42,7 +42,7 @@ func TestNewPairFromUser(t *testing.T) {
 	// since json tag is "-"
 	uid, _ := uuid.NewRandom()
 	u := &model.User{
-		UID:      uid,
+		UserId:      uid,
 		Email:    "bob@bob.com",
 		Password: "blarghedymcblarghface",
 	}
@@ -50,7 +50,7 @@ func TestNewPairFromUser(t *testing.T) {
 	// Setup mock call responses in setup before t.Run statements
 	uidErrorCase, _ := uuid.NewRandom()
 	uErrorCase := &model.User{
-		UID:      uidErrorCase,
+		UserId:      uidErrorCase,
 		Email:    "failure@failure.com",
 		Password: "blarghedymcblarghface",
 	}
@@ -58,7 +58,7 @@ func TestNewPairFromUser(t *testing.T) {
 
 	setSuccessArguments := mock.Arguments{
 		mock.AnythingOfType("*context.emptyCtx"),
-		u.UID.String(),
+		u.UserId.String(),
 		mock.AnythingOfType("string"),
 		mock.AnythingOfType("time.Duration"),
 	}
@@ -72,7 +72,7 @@ func TestNewPairFromUser(t *testing.T) {
 
 	deleteWithPrevIDArguments := mock.Arguments{
 		mock.AnythingOfType("*context.emptyCtx"),
-		u.UID.String(),
+		u.UserId.String(),
 		prevID,
 	}
 
@@ -106,18 +106,16 @@ func TestNewPairFromUser(t *testing.T) {
 
 		// assert claims on idToken
 		expectedClaims := []interface{}{
-			u.UID,
+			u.UserId,
 			u.Email,
 			u.Name,
-			u.ImageURL,
-			u.Website,
+			u.ProfileUrl,
 		}
 		actualIDClaims := []interface{}{
-			idTokenClaims.User.UID,
+			idTokenClaims.User.UserId,
 			idTokenClaims.User.Email,
 			idTokenClaims.User.Name,
-			idTokenClaims.User.ImageURL,
-			idTokenClaims.User.Website,
+			idTokenClaims.User.ProfileUrl,
 		}
 
 		assert.ElementsMatch(t, expectedClaims, actualIDClaims)
@@ -136,7 +134,7 @@ func TestNewPairFromUser(t *testing.T) {
 
 		// assert claims on refresh token
 		assert.NoError(t, err)
-		assert.Equal(t, u.UID, refreshTokenClaims.UID)
+		assert.Equal(t, u.UserId, refreshTokenClaims.UID)
 
 		expiresAt = time.Unix(refreshTokenClaims.StandardClaims.ExpiresAt, 0)
 		expectedExpiresAt = time.Now().Add(time.Duration(refreshExp) * time.Second)
@@ -169,14 +167,14 @@ func TestNewPairFromUser(t *testing.T) {
 		ctx := context.Background()
 		uid, _ := uuid.NewRandom()
 		u := &model.User{
-			UID: uid,
+			UserId: uid,
 		}
 
 		tokenIDNotInRepo := "not_in_token_repo"
 
 		deleteArgs := mock.Arguments{
 			ctx,
-			u.UID.String(),
+			u.UserId.String(),
 			tokenIDNotInRepo,
 		}
 
@@ -250,7 +248,7 @@ func TestValidateIDToken(t *testing.T) {
 	// since json tag is "-"
 	uid, _ := uuid.NewRandom()
 	u := &model.User{
-		UID:      uid,
+		UserId:      uid,
 		Email:    "bob@bob.com",
 		Password: "blarghedymcblarghface",
 	}
@@ -265,8 +263,8 @@ func TestValidateIDToken(t *testing.T) {
 
 		assert.ElementsMatch(
 			t,
-			[]interface{}{u.Email, u.Name, u.UID, u.Website, u.ImageURL},
-			[]interface{}{uFromToken.Email, uFromToken.Name, uFromToken.UID, uFromToken.Website, uFromToken.ImageURL},
+			[]interface{}{u.Email, u.Name, u.UserId, u.ProfileUrl},
+			[]interface{}{uFromToken.Email, uFromToken.Name, uFromToken.UserId, uFromToken.ProfileUrl},
 		)
 	})
 
@@ -306,24 +304,24 @@ func TestValidateRefreshToken(t *testing.T) {
 
 	uid, _ := uuid.NewRandom()
 	u := &model.User{
-		UID:      uid,
+		UserId:      uid,
 		Email:    "bob@bob.com",
 		Password: "blarghedymcblarghface",
 	}
 
 	t.Run("Valid token", func(t *testing.T) {
-		testRefreshToken, _ := generateRefreshToken(u.UID, secret, refreshExp)
+		testRefreshToken, _ := generateRefreshToken(u.UserId, secret, refreshExp)
 
 		validatedRefreshToken, err := tokenService.ValidateRefreshToken(testRefreshToken.SS)
 		assert.NoError(t, err)
 
-		assert.Equal(t, u.UID, validatedRefreshToken.UID)
+		assert.Equal(t, u.UserId, validatedRefreshToken.UID)
 		assert.Equal(t, testRefreshToken.SS, validatedRefreshToken.SS)
-		assert.Equal(t, u.UID, validatedRefreshToken.UID)
+		assert.Equal(t, u.UserId, validatedRefreshToken.UID)
 	})
 
 	t.Run("Expired token", func(t *testing.T) {
-		testRefreshToken, _ := generateRefreshToken(u.UID, secret, -1)
+		testRefreshToken, _ := generateRefreshToken(u.UserId, secret, -1)
 
 		expectedErr := apperrors.NewAuthorization("Unable to verify user from refresh token")
 

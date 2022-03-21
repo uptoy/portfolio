@@ -22,7 +22,7 @@ func TestImage(t *testing.T) {
 
 	uid, _ := uuid.NewRandom()
 	ctxUser := model.User{
-		UID: uid,
+		UserId: uid,
 	}
 
 	router := gin.Default()
@@ -48,12 +48,12 @@ func TestImage(t *testing.T) {
 
 		setProfileImageArgs := mock.Arguments{
 			mock.AnythingOfType("*context.emptyCtx"),
-			ctxUser.UID,
+			ctxUser.UserId,
 			mock.AnythingOfType("*multipart.FileHeader"),
 		}
 
 		updatedUser := ctxUser
-		updatedUser.ImageURL = imageURL
+		updatedUser.ProfileUrl = imageURL
 
 		mockUserService.On("SetProfileImage", setProfileImageArgs...).Return(&updatedUser, nil)
 
@@ -106,7 +106,7 @@ func TestImage(t *testing.T) {
 		// create unique context user for this test
 		uid, _ := uuid.NewRandom()
 		ctxUser := model.User{
-			UID: uid,
+			UserId: uid,
 		}
 
 		router := gin.Default()
@@ -129,7 +129,7 @@ func TestImage(t *testing.T) {
 
 		setProfileImageArgs := mock.Arguments{
 			mock.AnythingOfType("*context.emptyCtx"),
-			ctxUser.UID,
+			ctxUser.UserId,
 			mock.AnythingOfType("*multipart.FileHeader"),
 		}
 

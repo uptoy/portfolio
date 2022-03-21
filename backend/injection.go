@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	// "io/ioutil"
 	"log"
 	"os"
 	"strconv"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	// "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"backend/handler"
 	"backend/repository"
@@ -27,43 +27,43 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	 */
 	userRepository := repository.NewUserRepository(d.DB)
 	tokenRepository := repository.NewTokenRepository(d.RedisClient)
-	bucketName := os.Getenv("GC_IMAGE_BUCKET")
-	imageRepository := repository.NewImageRepository(d.StorageClient, bucketName)
+	// bucketName := os.Getenv("GC_IMAGE_BUCKET")
+	// imageRepository := repository.NewImageRepository(d.StorageClient, bucketName)
 
 	/*
 	 * service layer
 	 */
 	userService := service.NewUserService(&service.USConfig{
 		UserRepository: userRepository,
-		ImageRepository: imageRepository,
+		// ImageRepository: imageRepository,
 	})
 
 	// load rsa keys
-	privKeyFile := os.Getenv("PRIV_KEY_FILE")
-	priv, err := ioutil.ReadFile(privKeyFile)
+	// privKeyFile := os.Getenv("PRIV_KEY_FILE")
+	// priv, err := ioutil.ReadFile(privKeyFile)
 
-	if err != nil {
-		return nil, fmt.Errorf("could not read private key pem file: %w", err)
-	}
+	// if err != nil {
+	// 	return nil, fmt.Errorf("could not read private key pem file: %w", err)
+	// }
 
-	privKey, err := jwt.ParseRSAPrivateKeyFromPEM(priv)
+	// privKey, err := jwt.ParseRSAPrivateKeyFromPEM(priv)
 
-	if err != nil {
-		return nil, fmt.Errorf("could not parse private key: %w", err)
-	}
+	// if err != nil {
+	// 	return nil, fmt.Errorf("could not parse private key: %w", err)
+	// }
 
-	pubKeyFile := os.Getenv("PUB_KEY_FILE")
-	pub, err := ioutil.ReadFile(pubKeyFile)
+	// pubKeyFile := os.Getenv("PUB_KEY_FILE")
+	// pub, err := ioutil.ReadFile(pubKeyFile)
 
-	if err != nil {
-		return nil, fmt.Errorf("could not read public key pem file: %w", err)
-	}
+	// if err != nil {
+	// 	return nil, fmt.Errorf("could not read public key pem file: %w", err)
+	// }
 
-	pubKey, err := jwt.ParseRSAPublicKeyFromPEM(pub)
+	// pubKey, err := jwt.ParseRSAPublicKeyFromPEM(pub)
 
-	if err != nil {
-		return nil, fmt.Errorf("could not parse public key: %w", err)
-	}
+	// if err != nil {
+	// 	return nil, fmt.Errorf("could not parse public key: %w", err)
+	// }
 
 	// load refresh token secret from env variable
 	refreshSecret := os.Getenv("REFRESH_SECRET")
@@ -84,8 +84,8 @@ func inject(d *dataSources) (*gin.Engine, error) {
 
 	tokenService := service.NewTokenService(&service.TSConfig{
 		TokenRepository:       tokenRepository,
-		PrivKey:               privKey,
-		PubKey:                pubKey,
+		// PrivKey:               privKey,
+		// PubKey:                pubKey,
 		RefreshSecret:         refreshSecret,
 		IDExpirationSecs:      idExp,
 		RefreshExpirationSecs: refreshExp,
