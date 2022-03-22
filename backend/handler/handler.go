@@ -52,9 +52,9 @@ func NewHandler(c *Config) {
 		g.POST("/products", h.ProductCreate)
 		g.GET("/products", h.ProductList)
 		g.GET("/products/:productId", h.ProductFindByID)
-		g.GET("/products/:productName", h.ProductFindByName)
-		g.PUT("/products/:productName", h.ProductUpdate)
-		g.DELETE("/products/:productName", h.ProductDelete)
+		g.GET("/search/:productName", h.ProductFindByName)
+		g.PUT("/products/:productId", h.ProductUpdate)
+		g.DELETE("/products/:productId", h.ProductDelete)
 	} else {
 		g.GET("/me", h.Me)
 		g.POST("/signout", h.Signout)

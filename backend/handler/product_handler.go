@@ -7,19 +7,20 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
+	// "github.com/google/uuid"
+	"strconv"
 )
 
 type productReq struct {
-	ProductName   string `db:"product_name" json:"product_name"`
-	Slug          string `db:"slug" json:"slug"`
-	ProductImage  string `db:"product_image" json:"product_image"`
-	Brand         string `db:"brand" json:"brand"`
-	Price         int    `db:"price" json:"price"`
-	CategoryName  string `db:"category_name" json:"category_name"`
-	CountInStock  int    `db:"count_in_stock" json:"count_in_stock"`
-	Description   string `db:"description" json:"description"`
-	AverageRating int    `db:"average_rating" json:"average_rating"`
+	ProductName   string `json:"product_name"`
+	Slug          string `json:"slug"`
+	ProductImage  string `json:"product_image"`
+	Brand         string `json:"brand"`
+	Price         int    `json:"price"`
+	CategoryName  string `json:"category_name"`
+	CountInStock  int    `json:"count_in_stock"`
+	Description   string `json:"description"`
+	AverageRating int    `json:"average_rating"`
 }
 
 func (h *Handler) ProductCreate(c *gin.Context) {
@@ -69,16 +70,16 @@ func (h *Handler) ProductList(c *gin.Context) {
 
 func (h *Handler) ProductFindByID(c *gin.Context) {
 	id := c.Param("prodctId")
-	uid, err := uuid.Parse(id)
+	uid, err := strconv.Atoi(id)
 	if err != nil {
-		log.Printf("Failed get uid with produt detail: %v\n", err.Error())
+		log.Printf("Failed get uid with produt update: %v\n", err.Error())
 		c.JSON(apperrors.Status(err), gin.H{
 			"error": err,
 		})
 		return
 	}
 	ctx := c.Request.Context()
-	product, err := h.ProductService.ProductFindByID(ctx, uid)
+	product, err := h.ProductService.ProductFindByID(ctx, int64(uid))
 	if err != nil {
 		log.Printf("Failed to detail in product handler: %v\n", err.Error())
 		c.JSON(apperrors.Status(err), gin.H{
@@ -110,7 +111,7 @@ func (h *Handler) ProductFindByName(c *gin.Context) {
 func (h *Handler) ProductUpdate(c *gin.Context) {
 	var req productReq
 	id := c.Param("prodctId")
-	uid, err := uuid.Parse(id)
+	uid, err := strconv.Atoi(id)
 	if err != nil {
 		log.Printf("Failed get uid with produt update: %v\n", err.Error())
 		c.JSON(apperrors.Status(err), gin.H{
@@ -133,7 +134,7 @@ func (h *Handler) ProductUpdate(c *gin.Context) {
 		AverageRating: req.AverageRating,
 	}
 	ctx := c.Request.Context()
-	product, err := h.ProductService.ProductUpdate(ctx, uid, p)
+	product, err := h.ProductService.ProductUpdate(ctx, int64(uid), p)
 	if err != nil {
 		log.Printf("Failed to update in product handler: %v\n", err.Error())
 		c.JSON(apperrors.Status(err), gin.H{
@@ -148,7 +149,7 @@ func (h *Handler) ProductUpdate(c *gin.Context) {
 
 func (h *Handler) ProductDelete(c *gin.Context) {
 	id := c.Param("prodctId")
-	uid, err := uuid.Parse(id)
+	uid, err := strconv.Atoi(id)
 	if err != nil {
 		log.Printf("Failed get uid with produt delete: %v\n", err.Error())
 		c.JSON(apperrors.Status(err), gin.H{
@@ -157,7 +158,7 @@ func (h *Handler) ProductDelete(c *gin.Context) {
 		return
 	}
 	ctx := c.Request.Context()
-	product, err := h.ProductService.ProductDelete(ctx, uid)
+	product, err := h.ProductService.ProductDelete(ctx, int64(uid))
 	if err != nil {
 		log.Printf("Failed to delete in product handler: %v\n", err.Error())
 		c.JSON(apperrors.Status(err), gin.H{
