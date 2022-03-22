@@ -1,24 +1,19 @@
 package service
 
-// skipTest(t)
+// // skipTest(t)
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	"backend/model"
-	"backend/model/apperrors"
 	"backend/model/mocks"
-	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
 
 func TestProductCreate(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
-		uid, _ := uuid.NewRandom()
 		mockProduct := &model.Product{
-			ProductId:     uid,
 			ProductName:   "product_name",
 			Slug:          "slug",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -33,47 +28,20 @@ func TestProductCreate(t *testing.T) {
 		ps := NewProductService(&PSConfig{
 			ProductRepository: mockProductRepository,
 		})
-		mockProductRepository.On("ProductCreate", mock.Anything, mockProduct).Return(mockProduct, nil)
+		mockProductRepository.On("ProductCreate", mock.AnythingOfType("*context.emptyCtx"), mockProduct).Return(mockProduct, nil)
 		ctx := context.TODO()
-		p, err := ps.ProductCreate(ctx, mockProduct)
+		product, err := ps.ProductCreate(ctx, mockProduct)
 		assert.NoError(t, err)
-		assert.Equal(t, p, mockProduct)
-		mockProductRepository.AssertExpectations(t)
-	})
-	t.Run("Error", func(t *testing.T) {
-		uid, _ := uuid.NewRandom()
-		mockProduct := &model.Product{
-			ProductId:     uid,
-			ProductName:   "product_name",
-			Slug:          "slug",
-			ProductImage:  "http://placehold.jp/150x150.png",
-			Brand:         "brand",
-			Price:         1,
-			CategoryName:  "category_name",
-			CountInStock:  1,
-			Description:   "description",
-			AverageRating: 5,
-		}
-		mockProductRepository := new(mocks.MockProductRepository)
-		ps := NewProductService(&PSConfig{
-			ProductRepository: mockProductRepository,
-		})
-		mockErr := apperrors.NewConflict("product_name", mockProduct.ProductName)
-		mockProductRepository.
-			On("ProductCreate", mock.AnythingOfType("*context.emptyCtx"), mockProduct).
-			Return(mockErr)
-		ctx := context.TODO()
-		_, err := ps.ProductCreate(ctx, mockProduct)
-		assert.Error(t, err)
+		assert.Equal(t, int64(0), product.ProductId)
+		assert.NotNil(t, product.ProductId)
 		mockProductRepository.AssertExpectations(t)
 	})
 }
 
 func TestProductList(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
-		uid, _ := uuid.NewRandom()
-		mockProduct := &model.Product{
-			ProductId:     uid,
+		mockProduct0 := &model.Product{
+			ProductId:     0,
 			ProductName:   "product_name",
 			Slug:          "slug",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -84,36 +52,39 @@ func TestProductList(t *testing.T) {
 			Description:   "description",
 			AverageRating: 5,
 		}
+		mockProduct2 := &model.Product{
+			ProductId:     1,
+			ProductName:   "product_name1",
+			Slug:          "slug1",
+			ProductImage:  "http://placehold.jp/150x150.png",
+			Brand:         "brand1",
+			Price:         1,
+			CategoryName:  "category_name1",
+			CountInStock:  1,
+			Description:   "description1",
+			AverageRating: 5,
+		}
+		mockProductList := []*model.Product{mockProduct0, mockProduct2}
 		mockProductRepository := new(mocks.MockProductRepository)
 		ps := NewProductService(&PSConfig{
 			ProductRepository: mockProductRepository,
 		})
-		mockProductRepository.On("ProductList", mock.Anything).Return(mockProduct, nil)
+		mockProductRepository.On("ProductList", mock.AnythingOfType("*context.emptyCtx")).Return(mockProductList, nil)
 		ctx := context.TODO()
-		p, err := ps.ProductList(ctx)
+		productList, err := ps.ProductList(ctx)
 		assert.NoError(t, err)
-		assert.Equal(t, p, mockProduct)
-		mockProductRepository.AssertExpectations(t)
-	})
-	t.Run("Error", func(t *testing.T) {
-		mockProductRepository := new(mocks.MockProductRepository)
-		ps := NewProductService(&PSConfig{
-			ProductRepository: mockProductRepository,
-		})
-		mockProductRepository.On("ProductList", mock.Anything).Return(nil, fmt.Errorf("Some error down the call chain"))
-		ctx := context.TODO()
-		p, err := ps.ProductList(ctx)
-		assert.Nil(t, p)
-		assert.Error(t, err)
+		assert.Equal(t, mockProductList[0].ProductName, productList[0].ProductName)
+		assert.Equal(t, mockProductList[1].ProductName, productList[1].ProductName)
+		assert.Equal(t, mockProductList[0].ProductId, productList[0].ProductId)
+		assert.Equal(t, mockProductList[1].ProductId, productList[1].ProductId)
 		mockProductRepository.AssertExpectations(t)
 	})
 }
 
-func TestProductFindById(t *testing.T) {
+func TestProductFindByID(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
-		uid, _ := uuid.NewRandom()
 		mockProduct := &model.Product{
-			ProductId:     uid,
+			ProductId:     0,
 			ProductName:   "product_name",
 			Slug:          "slug",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -128,35 +99,20 @@ func TestProductFindById(t *testing.T) {
 		ps := NewProductService(&PSConfig{
 			ProductRepository: mockProductRepository,
 		})
-		mockProductRepository.On("ProductFindById", mock.Anything, uid).Return(mockProduct, nil)
+		mockProductRepository.On("ProductFindByID", mock.AnythingOfType("*context.emptyCtx"), mockProduct.ProductId).Return(mockProduct, nil)
 		ctx := context.TODO()
-		p, err := ps.ProductList(ctx)
+		product, err := ps.ProductFindByID(ctx, mockProduct.ProductId)
 		assert.NoError(t, err)
-		assert.Equal(t, p, mockProduct)
-		mockProductRepository.AssertExpectations(t)
-	})
-	t.Run("Error", func(t *testing.T) {
-		uid, _ := uuid.NewRandom()
-		mockProductRepository := new(mocks.MockProductRepository)
-		ps := NewProductService(&PSConfig{
-			ProductRepository: mockProductRepository,
-		})
-		mockProductRepository.
-			On("ProductFindById", mock.Anything).
-			Return(nil, fmt.Errorf("Some error down the call chain"))
-		ctx := context.TODO()
-		p, err := ps.ProductFindByID(ctx, uid)
-		assert.Nil(t, p)
-		assert.Error(t, err)
+		assert.Equal(t, mockProduct, product)
+		assert.Equal(t, mockProduct.ProductName, product.ProductName)
 		mockProductRepository.AssertExpectations(t)
 	})
 }
 
 func TestProductFindByName(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
-		uid, _ := uuid.NewRandom()
 		mockProduct := &model.Product{
-			ProductId:     uid,
+			ProductId:     0,
 			ProductName:   "product_name",
 			Slug:          "slug",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -171,47 +127,20 @@ func TestProductFindByName(t *testing.T) {
 		ps := NewProductService(&PSConfig{
 			ProductRepository: mockProductRepository,
 		})
-		mockProductRepository.On("ProductFindByName", mock.Anything, mockProduct.ProductName).Return(mockProduct, nil)
+		mockProductRepository.On("ProductFindByName", mock.AnythingOfType("*context.emptyCtx"), mockProduct.ProductName).Return(mockProduct, nil)
 		ctx := context.TODO()
-		p, err := ps.ProductFindByName(ctx, mockProduct.ProductName)
+		product, err := ps.ProductFindByName(ctx, mockProduct.ProductName)
 		assert.NoError(t, err)
-		assert.Equal(t, p, mockProduct)
-		mockProductRepository.AssertExpectations(t)
-	})
-	t.Run("Error", func(t *testing.T) {
-		uid, _ := uuid.NewRandom()
-		mockProduct := &model.Product{
-			ProductId:     uid,
-			ProductName:   "product_name",
-			Slug:          "slug",
-			ProductImage:  "http://placehold.jp/150x150.png",
-			Brand:         "brand",
-			Price:         1,
-			CategoryName:  "category_name",
-			CountInStock:  1,
-			Description:   "description",
-			AverageRating: 5,
-		}
-		mockProductRepository := new(mocks.MockProductRepository)
-		ps := NewProductService(&PSConfig{
-			ProductRepository: mockProductRepository,
-		})
-		mockProductRepository.
-			On("ProductFindByName", mock.Anything).
-			Return(nil, fmt.Errorf("Some error down the call chain"))
-		ctx := context.TODO()
-		p, err := ps.ProductFindByName(ctx, mockProduct.ProductName)
-		assert.Nil(t, p)
-		assert.Error(t, err)
+		assert.Equal(t, mockProduct, product)
+		assert.Equal(t, mockProduct.ProductId, product.ProductId)
 		mockProductRepository.AssertExpectations(t)
 	})
 }
 
 func TestProductUpdate(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
-		uid, _ := uuid.NewRandom()
 		mockProduct := &model.Product{
-			ProductId:     uid,
+			ProductId:     0,
 			ProductName:   "product_name",
 			Slug:          "slug",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -226,47 +155,20 @@ func TestProductUpdate(t *testing.T) {
 		ps := NewProductService(&PSConfig{
 			ProductRepository: mockProductRepository,
 		})
-		mockProductRepository.On("ProductUpdate", mock.Anything, uid, mockProduct).Return(mockProduct, nil)
+		mockProductRepository.On("ProductUpdate", mock.AnythingOfType("*context.emptyCtx"), mockProduct.ProductId, mockProduct).Return(mockProduct, nil)
 		ctx := context.TODO()
-		p, err := ps.ProductUpdate(ctx, uid, mockProduct)
+		product, err := ps.ProductUpdate(ctx, mockProduct.ProductId, mockProduct)
 		assert.NoError(t, err)
-		assert.Equal(t, p, mockProduct)
-		mockProductRepository.AssertExpectations(t)
-	})
-	t.Run("Error", func(t *testing.T) {
-		uid, _ := uuid.NewRandom()
-		mockProduct := &model.Product{
-			ProductId:     uid,
-			ProductName:   "product_name",
-			Slug:          "slug",
-			ProductImage:  "http://placehold.jp/150x150.png",
-			Brand:         "brand",
-			Price:         1,
-			CategoryName:  "category_name",
-			CountInStock:  1,
-			Description:   "description",
-			AverageRating: 5,
-		}
-		mockProductRepository := new(mocks.MockProductRepository)
-		ps := NewProductService(&PSConfig{
-			ProductRepository: mockProductRepository,
-		})
-		mockProductRepository.
-			On("ProductUpdate", mock.Anything).
-			Return(nil, fmt.Errorf("Some error down the call chain"))
-		ctx := context.TODO()
-		p, err := ps.ProductUpdate(ctx, uid, mockProduct)
-		assert.Nil(t, p)
-		assert.Error(t, err)
+		assert.Equal(t, mockProduct, product)
+		assert.Equal(t, mockProduct.ProductId, product.ProductId)
 		mockProductRepository.AssertExpectations(t)
 	})
 }
 
 func TestProductDelete(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
-		uid, _ := uuid.NewRandom()
 		mockProduct := &model.Product{
-			ProductId:     uid,
+			ProductId:     0,
 			ProductName:   "product_name",
 			Slug:          "slug",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -281,26 +183,12 @@ func TestProductDelete(t *testing.T) {
 		ps := NewProductService(&PSConfig{
 			ProductRepository: mockProductRepository,
 		})
-		mockProductRepository.On("ProductUpdate", mock.Anything, uid).Return(mockProduct, nil)
+		mockProductRepository.On("ProductDelete", mock.AnythingOfType("*context.emptyCtx"), mockProduct.ProductId).Return(mockProduct, nil)
 		ctx := context.TODO()
-		p, err := ps.ProductDelete(ctx, uid)
+		product, err := ps.ProductDelete(ctx, mockProduct.ProductId)
 		assert.NoError(t, err)
-		assert.Equal(t, p, mockProduct)
-		mockProductRepository.AssertExpectations(t)
-	})
-	t.Run("Error", func(t *testing.T) {
-		uid, _ := uuid.NewRandom()
-		mockProductRepository := new(mocks.MockProductRepository)
-		ps := NewProductService(&PSConfig{
-			ProductRepository: mockProductRepository,
-		})
-		mockProductRepository.
-			On("ProductDelete", mock.Anything).
-			Return(nil, fmt.Errorf("Some error down the call chain"))
-		ctx := context.TODO()
-		p, err := ps.ProductDelete(ctx, uid)
-		assert.Nil(t, p)
-		assert.Error(t, err)
+		assert.Equal(t, mockProduct, product)
+		assert.Equal(t, mockProduct.ProductName, product.ProductName)
 		mockProductRepository.AssertExpectations(t)
 	})
 }

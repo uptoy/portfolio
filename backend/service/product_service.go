@@ -3,7 +3,7 @@ package service
 import (
 	"backend/model"
 	"context"
-	"github.com/google/uuid"
+	// "github.com/google/uuid"
 )
 
 type productService struct {
@@ -35,7 +35,7 @@ func (s *productService) ProductList(ctx context.Context) ([]*model.Product, err
 	}
 	return productList, nil
 }
-func (s *productService) ProductFindByID(ctx context.Context, productId uuid.UUID) (*model.Product, error) {
+func (s *productService) ProductFindByID(ctx context.Context, productId int64) (*model.Product, error) {
 	product, err := s.ProductRepository.ProductFindByID(ctx, productId)
 	if err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func (s *productService) ProductFindByName(ctx context.Context, productName stri
 	return product, nil
 }
 
-func (s *productService) ProductUpdate(ctx context.Context, productId uuid.UUID, product *model.Product) (*model.Product, error) {
+func (s *productService) ProductUpdate(ctx context.Context, productId int64, product *model.Product) (*model.Product, error) {
 	product, err := s.ProductRepository.ProductUpdate(ctx, productId, product)
 	if err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ func (s *productService) ProductUpdate(ctx context.Context, productId uuid.UUID,
 	return product, nil
 }
 
-func (s *productService) ProductDelete(ctx context.Context, productId uuid.UUID) (*model.Product, error) {
+func (s *productService) ProductDelete(ctx context.Context, productId int64) (*model.Product, error) {
 	product, err := s.ProductRepository.ProductDelete(ctx, productId)
 	if err != nil {
 		return nil, err

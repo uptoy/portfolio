@@ -56,11 +56,11 @@ type ImageRepository interface {
 type ProductService interface {
 	ProductCreate(ctx context.Context, product *Product) (*Product, error)
 	ProductList(ctx context.Context) ([]*Product, error)
-	ProductFindByID(ctx context.Context, productId uuid.UUID) (*Product, error)
+	ProductFindByID(ctx context.Context, productId int64) (*Product, error)
 	// ProductSearch
 	ProductFindByName(ctx context.Context, productName string) (*Product, error)
-	ProductUpdate(ctx context.Context, productId uuid.UUID, product *Product) (*Product, error)
-	ProductDelete(ctx context.Context, productId uuid.UUID) (*Product, error)
+	ProductUpdate(ctx context.Context, productId int64, product *Product) (*Product, error)
+	ProductDelete(ctx context.Context, productId int64) (*Product, error)
 }
 
 // TokenRepository defines methods it expects a repository
@@ -68,9 +68,9 @@ type ProductService interface {
 type ProductRepository interface {
 	ProductCreate(ctx context.Context, product *Product) (*Product, error)
 	ProductList(ctx context.Context) ([]*Product, error)
-	ProductFindByID(ctx context.Context, productId uuid.UUID) (*Product, error)
+	ProductFindByID(ctx context.Context, productId int64) (*Product, error)
 	// ProductSearch
 	ProductFindByName(ctx context.Context, productName string) (*Product, error)
-	ProductUpdate(ctx context.Context, productId uuid.UUID, product *Product) (*Product, error)
-	ProductDelete(ctx context.Context, productId uuid.UUID) (*Product, error)
+	ProductUpdate(ctx context.Context, productId int64, product *Product) (*Product, error)
+	ProductDelete(ctx context.Context, productId int64) (*Product, error)
 }

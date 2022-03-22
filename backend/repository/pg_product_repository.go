@@ -6,7 +6,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/google/uuid"
+	// "github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
 )
@@ -45,7 +45,7 @@ func (r *pGProductRepository) ProductList(ctx context.Context) ([]*model.Product
 	}
 	return products, nil
 }
-func (r *pGProductRepository) ProductFindByID(ctx context.Context, productId uuid.UUID) (*model.Product, error) {
+func (r *pGProductRepository) ProductFindByID(ctx context.Context, productId int64) (*model.Product, error) {
 	product := model.Product{}
 	query := "SELECT * FROM products WHERE productId=$1 LIMIT 1"
 	if err := r.DB.GetContext(ctx, product, query, productId); err != nil {
@@ -67,7 +67,7 @@ func (r *pGProductRepository) ProductFindByName(ctx context.Context, productName
 }
 
 // query := `INSERT INTO products (product_name, p.slug, p.product_image, p.brand, p.price, p.category_name, p.count_in_stock, p.description, p.average_rating) VALUES ($1, $2,$3, $4,$5,$6, $7,$8, $9) RETURNING *`
-func (r *pGProductRepository) ProductUpdate(ctx context.Context, productId uuid.UUID, p *model.Product) (*model.Product, error) {
+func (r *pGProductRepository) ProductUpdate(ctx context.Context, productId int64, p *model.Product) (*model.Product, error) {
 	query := `
 	UPDATE products
 	SET product_name = $2,slug = $3,product_image = $4,brand = $5, price = $6,category_name = $7,count_in_stock = $8,description = $9,average_rating = $10
@@ -79,13 +79,17 @@ func (r *pGProductRepository) ProductUpdate(ctx context.Context, productId uuid.
 	}
 	return p, nil
 }
-func (r *pGProductRepository) ProductDelete(ctx context.Context, productId uuid.UUID) (*model.Product, error) {
+func (r *pGProductRepository) ProductDelete(ctx context.Context, productId int64) (*model.Product, error) {
 	product := model.Product{}
-	query := "DELETE FROM products WHERE productId = $1"
-	// err := r.DB.GetContext(ctx,product , query, productId)
-	_, err := r.DB.ExecContext(ctx, query, productId)
-	if err != nil {
-		log.Fatal(err)
+	query := "SELECT * FROM products WHERE productId=$1 LIMIT 1"
+	if err := r.DB.GetContext(ctx, product, query, productId); err != nil {
+		log.Printf("Unable to get product with name: %v. Err: %v\n", product, err)
+		return &product, apperrors.NewNotFound("product_name", product.ProductName)
 	}
-	return &product, err
+	query2 := "DELETE FROM products WHERE productId = $1"
+	if err2 := r.DB.GetContext(ctx, product, query2, productId); err2 != nil {
+		log.Printf("Unable to get product with name: %v. Err: %v\n", product, err2)
+		return &product, apperrors.NewNotFound("product_name", product.ProductName)
+	}
+	return &product, nil
 }

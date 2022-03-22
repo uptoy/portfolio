@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS products (
-  product_id uuid PRIMARY KEY,
+  product_id SERIAL PRIMARY KEY,
   product_name VARCHAR NOT NULL UNIQUE,
   slug VARCHAR NOT NULL UNIQUE,
   product_image VARCHAR NOT NULL DEFAULT 'http://placehold.jp/150x150.png',
@@ -12,5 +12,3 @@ CREATE TABLE IF NOT EXISTS products (
   created_at timestamptz NOT NULL DEFAULT (now()),
   updated_at timestamptz NOT NULL
 );
-ALTER TABLE "products"
-ADD FOREIGN KEY ("category_name") REFERENCES "categories" ("category_name");
