@@ -59,6 +59,7 @@ func bindData(c *gin.Context, req interface{}) bool {
 
 		// if we aren't able to properly extract validation errors,
 		// we'll fallback and return an internal server error
+		// fallBack := apperrors.NewInternal()
 		fallBack := apperrors.NewInternal()
 
 		c.JSON(fallBack.Status(), gin.H{"error": fallBack})

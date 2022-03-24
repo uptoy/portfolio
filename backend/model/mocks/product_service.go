@@ -31,11 +31,11 @@ func (m *MockProductService) ProductCreate(ctx context.Context, p *model.Product
 	return result.(*model.Product), args.Error(1)
 }
 
-func (m *MockProductService) ProductList(ctx context.Context) ([]*model.Product, error) {
+func (m *MockProductService) ProductList(ctx context.Context) ([]model.Product, error) {
 	ret := m.Called(ctx)
-	var r0 []*model.Product
+	var r0 []model.Product
 	if ret.Get(0) != nil {
-		r0 = ret.Get(0).([]*model.Product)
+		r0 = ret.Get(0).([]model.Product)
 	}
 	var r1 error
 	if ret.Get(0) != nil {

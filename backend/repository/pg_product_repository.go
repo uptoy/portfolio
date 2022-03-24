@@ -36,14 +36,40 @@ func (r *pGProductRepository) ProductCreate(ctx context.Context, p *model.Produc
 	return product, nil
 
 }
-func (r *pGProductRepository) ProductList(ctx context.Context) ([]*model.Product, error) {
-	products := []*model.Product{}
+func (r *pGProductRepository) ProductList(ctx context.Context) ([]model.Product, error) {
+	products := []model.Product{}
 	query := "SELECT * FROM products"
 	if err := r.DB.GetContext(ctx, products, query); err != nil {
 		log.Printf("Unable to get products: %v. Err: %v\n", products, err)
 		return products, apperrors.NewNotFound("products", "err")
 	}
 	return products, nil
+	// mockProduct0 := &model.Product{
+	// 	ProductId:     0,
+	// 	ProductName:   "product_name",
+	// 	Slug:          "slug",
+	// 	ProductImage:  "http://placehold.jp/150x150.png",
+	// 	Brand:         "brand",
+	// 	Price:         1,
+	// 	CategoryName:  "category_name",
+	// 	CountInStock:  1,
+	// 	Description:   "description",
+	// 	AverageRating: 5,
+	// }
+	// mockProduct2 := &model.Product{
+	// 	ProductId:     1,
+	// 	ProductName:   "product_name1",
+	// 	Slug:          "slug1",
+	// 	ProductImage:  "http://placehold.jp/150x150.png",
+	// 	Brand:         "brand1",
+	// 	Price:         1,
+	// 	CategoryName:  "category_name1",
+	// 	CountInStock:  1,
+	// 	Description:   "description1",
+	// 	AverageRating: 5,
+	// }
+	// mockProductList := []*model.Product{mockProduct0, mockProduct2}
+	// return mockProductList, nil
 }
 func (r *pGProductRepository) ProductFindByID(ctx context.Context, productId int64) (*model.Product, error) {
 	product := model.Product{}
