@@ -1,31 +1,31 @@
 package handler
 
-// import (
-// 	"encoding/json"
-// 	"net/http"
-// 	"net/http/httptest"
-// 	"testing"
+import (
+	// "encoding/json"
+	// "net/http"
+	// "net/http/httptest"
+	"testing"
 
-// 	"backend/model"
-// 	"backend/model/apperrors"
-// 	"backend/model/mocks"
-// 	"github.com/stretchr/testify/mock"
+	// "backend/model"
+	// "backend/model/apperrors"
+	// "backend/model/mocks"
+	// "github.com/stretchr/testify/mock"
 
-// 	"github.com/gin-gonic/gin"
-// 	"github.com/google/uuid"
+	"github.com/gin-gonic/gin"
+	// "github.com/google/uuid"
 
-// 	"github.com/stretchr/testify/assert"
-// )
+	// "github.com/stretchr/testify/assert"
+)
 
-// func TestSignout(t *testing.T) {
-// 	gin.SetMode(gin.TestMode)
+func TestSignout(t *testing.T) {
+	gin.SetMode(gin.TestMode)
 
 	// t.Run("Success", func(t *testing.T) {
 	// 	uid, _ := uuid.NewRandom()
 
 	// 	ctxUser := &model.User{
-	// 		UserId:   uid,
-	// 		Email: "bob1@bob.com",
+	// 		UserId: uid,
+	// 		Email:  "bob1@bob.com",
 	// 	}
 
 	// 	// a response recorder for getting written http response
@@ -60,8 +60,8 @@ package handler
 	// 	uid, _ := uuid.NewRandom()
 
 	// 	ctxUser := &model.User{
-	// 		UserId:   uid,
-	// 		Email: "bob2@bob.com",
+	// 		UserId: uid,
+	// 		Email:  "bob2@bob.com",
 	// 	}
 
 	// 	// a response recorder for getting written http response
@@ -88,4 +88,4 @@ package handler
 
 	// 	assert.Equal(t, http.StatusInternalServerError, rr.Code)
 	// })
-// }
+}

@@ -53,25 +53,42 @@ type ImageRepository interface {
 	UpdateProfile(ctx context.Context, objName string, imageFile multipart.File) (string, error)
 }
 
-type ProductService interface {
-	ProductCreate(ctx context.Context, product *Product) (*Product, error)
-	// ProductList(ctx context.Context) ([]Product)
-	ProductList() ([]Product)
-	ProductFindByID(ctx context.Context, productId int64) (*Product, error)
-	// ProductSearch
-	ProductFindByName(ctx context.Context, productName string) (*Product, error)
-	ProductUpdate(ctx context.Context, productId int64, product *Product) (*Product, error)
-	ProductDelete(ctx context.Context, productId int64) (*Product, error)
-}
+// type ProductService interface {
+// 	ProductCreate(ctx context.Context, product *Product) (*Product, error)
+// 	// ProductList(ctx context.Context) ([]Product)
+// 	ProductList() ([]Product)
+// 	ProductFindByID(ctx context.Context, productId int64) (*Product, error)
+// 	// ProductSearch
+// 	ProductFindByName(ctx context.Context, productName string) (*Product, error)
+// 	ProductUpdate(ctx context.Context, productId int64, product *Product) (*Product, error)
+// 	ProductDelete(ctx context.Context, productId int64) (*Product, error)
+// }
 
-// TokenRepository defines methods it expects a repository
-// it interacts with to implement
+// // TokenRepository defines methods it expects a repository
+// // it interacts with to implement
+// type ProductRepository interface {
+// 	ProductCreate(ctx context.Context, product *Product) (*Product, error)
+// 	ProductList(ctx context.Context) ([]Product, error)
+// 	ProductFindByID(ctx context.Context, productId int64) (*Product, error)
+// 	// ProductSearch
+// 	ProductFindByName(ctx context.Context, productName string) (*Product, error)
+// 	ProductUpdate(ctx context.Context, productId int64, product *Product) (*Product, error)
+// 	ProductDelete(ctx context.Context, productId int64) (*Product, error)
+// }
+
+type ProductService interface {
+	ProductList(ctx context.Context) ([]*Product,error)
+	ProductCreate(ctx context.Context, p *Product) (*Product,error)
+	ProductFindByID(ctx context.Context, id int64) (*Product,error)
+	ProductUpdate(ctx context.Context, id int64, p *Product)( *Product,error)
+	ProductDelete(ctx context.Context, id int64) (*Product,error)
+	ProductFindByName(ctx context.Context, name string)( *Product,error)
+}
 type ProductRepository interface {
-	ProductCreate(ctx context.Context, product *Product) (*Product, error)
-	ProductList(ctx context.Context) ([]Product, error)
-	ProductFindByID(ctx context.Context, productId int64) (*Product, error)
-	// ProductSearch
-	ProductFindByName(ctx context.Context, productName string) (*Product, error)
-	ProductUpdate(ctx context.Context, productId int64, product *Product) (*Product, error)
-	ProductDelete(ctx context.Context, productId int64) (*Product, error)
+	ProductList(ctx context.Context) ([]*Product,error)
+	ProductCreate(ctx context.Context, p *Product)( *Product,error)
+	ProductFindByID(ctx context.Context, id int64)( *Product,error)
+	ProductUpdate(ctx context.Context, id int64, p *Product)( *Product,error)
+	ProductDelete(ctx context.Context, id int64) (*Product,error)
+	ProductFindByName(ctx context.Context, name string) (*Product,error)
 }

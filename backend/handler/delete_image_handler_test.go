@@ -1,7 +1,5 @@
 package handler
 
-//NG
-
 // import (
 // 	"encoding/json"
 // 	"net/http"

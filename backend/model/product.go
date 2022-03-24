@@ -1,9 +1,9 @@
 package model
 
-// import (
-// 	"github.com/google/uuid"
-// 	// "time"
-// )
+// // import (
+// // 	"github.com/google/uuid"
+// // 	// "time"
+// // )
 
 type Product struct {
 	// ProductId     uuid.UUID `db:"product_id" json:"product_id"`
@@ -20,3 +20,5 @@ type Product struct {
 	// CreatedAt     time.Time `db:"created_at" json:"created_at"`
 	// UpdatedAt     time.Time `db:"updated_at" json:"updated_at"`
 }
+
+

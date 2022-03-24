@@ -25,10 +25,10 @@ func (m *MockProductRepository) ProductCreate(ctx context.Context, p *model.Prod
 	return r0, r1
 }
 
-func (m *MockProductRepository) ProductList(ctx context.Context) ([]model.Product, error) {
+func (m *MockProductRepository) ProductList(ctx context.Context) ([]*model.Product, error) {
 	rets := m.Called(ctx)
 	result := rets.Get(0)
-	return result.([]model.Product), rets.Error(1)
+	return result.([]*model.Product), rets.Error(1)
 }
 
 func (m *MockProductRepository) ProductFindByID(ctx context.Context, productId int64) (*model.Product, error) {

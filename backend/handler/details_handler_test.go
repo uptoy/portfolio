@@ -1,8 +1,5 @@
 package handler
 
-
-//NG
-
 // import (
 // 	"bytes"
 // 	"encoding/json"

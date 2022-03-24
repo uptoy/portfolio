@@ -46,26 +46,26 @@ package handler
 // 		fmt.Println("rr.Body.Bytes()", rr.Body.String())
 // 	})
 // 	t.Run("json null", func(t *testing.T) {
-// 		// rr := httptest.NewRecorder()
-// 		// router := gin.Default()
-// 		// NewHandler(&Config{
-// 		// 	R: router,
-// 		// })
-// 		// request, err := http.NewRequest(http.MethodGet, "/", nil)
-// 		// fmt.Println("err", err)
-// 		// assert.NoError(t, err)
-// 		// router.ServeHTTP(rr, request)
-// 		// respBody, err := json.Marshal(gin.H{
-// 		// 	"error": "null",
-// 		// })
-// 		// fmt.Println("err", err)
-// 		// assert.NoError(t, err)
+		// rr := httptest.NewRecorder()
+		// router := gin.Default()
+		// NewHandler(&Config{
+		// 	R: router,
+		// })
+		// request, err := http.NewRequest(http.MethodGet, "/", nil)
+		// fmt.Println("err", err)
+		// assert.NoError(t, err)
+		// router.ServeHTTP(rr, request)
+		// respBody, err := json.Marshal(gin.H{
+		// 	"error": "null",
+		// })
+		// fmt.Println("err", err)
+		// assert.NoError(t, err)
 
-// 		// assert.Equal(t, http.StatusOK, rr.Code)
-// 		// fmt.Println("http.StatusOK", http.StatusOK)
-// 		// assert.Equal(t, respBody, rr.Body.Bytes())
-// 		// fmt.Println("respBody", string(respBody))
-// 		// fmt.Println("rr.Body.Bytes()", rr.Body.String())
+		// assert.Equal(t, http.StatusOK, rr.Code)
+		// fmt.Println("http.StatusOK", http.StatusOK)
+		// assert.Equal(t, respBody, rr.Body.Bytes())
+		// fmt.Println("respBody", string(respBody))
+		// fmt.Println("rr.Body.Bytes()", rr.Body.String())
 // 	})
 // }
 
