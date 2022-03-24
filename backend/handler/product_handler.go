@@ -28,7 +28,6 @@ func (h *Handler) ProductList(c *gin.Context) {
 		})
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{
 		"products": p,
 	})
@@ -41,9 +40,18 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	p1 := &model.Product{ProductName: json.ProductName}
-	p, err := h.ProductService.ProductCreate(ctx, p1)
+	p := &model.Product{
+		ProductName:   json.ProductName,
+		Slug:          json.Slug,
+		ProductImage:  json.ProductImage,
+		Brand:         json.Brand,
+		Price:         json.Price,
+		CategoryName:  json.CategoryName,
+		CountInStock:  json.CountInStock,
+		Description:   json.Description,
+		AverageRating: json.AverageRating,
+	}
+	p, err := h.ProductService.ProductCreate(ctx, p)
 	if err != nil {
 		log.Printf("Unable to create product: %v", err)
 		e := apperrors.NewNotFound("product", "err")
@@ -70,7 +78,7 @@ func (h *Handler) ProductFindByID(c *gin.Context) {
 	p, err := h.ProductService.ProductFindByID(ctx, uid)
 	if err != nil {
 		log.Printf("Unable to find product with id: %v", err)
-		e := apperrors.NewNotFound("product", "err")
+		e := apperrors.NewNotFound("products", "err")
 
 		c.JSON(e.Status(), gin.H{
 			"error": e,
@@ -97,7 +105,17 @@ func (h *Handler) ProductUpdate(c *gin.Context) {
 		fmt.Println("err", err)
 		return
 	}
-	p1 := &model.Product{ProductName: json.ProductName}
+	p1 := &model.Product{
+		ProductName:   json.ProductName,
+		Slug:          json.Slug,
+		ProductImage:  json.ProductImage,
+		Brand:         json.Brand,
+		Price:         json.Price,
+		CategoryName:  json.CategoryName,
+		CountInStock:  json.CountInStock,
+		Description:   json.Description,
+		AverageRating: json.AverageRating,
+	}
 	p, err := h.ProductService.ProductUpdate(ctx, uid, p1)
 	if err != nil {
 		log.Printf("Unable to update product: %v", err)

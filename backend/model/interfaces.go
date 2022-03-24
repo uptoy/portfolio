@@ -77,7 +77,7 @@ type ImageRepository interface {
 // }
 
 type ProductService interface {
-	ProductList(ctx context.Context) ([]*Product,error)
+	ProductList(ctx context.Context) ([]Product,error)
 	ProductCreate(ctx context.Context, p *Product) (*Product,error)
 	ProductFindByID(ctx context.Context, id int64) (*Product,error)
 	ProductUpdate(ctx context.Context, id int64, p *Product)( *Product,error)
@@ -85,7 +85,7 @@ type ProductService interface {
 	ProductFindByName(ctx context.Context, name string)( *Product,error)
 }
 type ProductRepository interface {
-	ProductList(ctx context.Context) ([]*Product,error)
+	ProductList(ctx context.Context) ([]Product,error)
 	ProductCreate(ctx context.Context, p *Product)( *Product,error)
 	ProductFindByID(ctx context.Context, id int64)( *Product,error)
 	ProductUpdate(ctx context.Context, id int64, p *Product)( *Product,error)

@@ -22,3 +22,13 @@ type Product struct {
 }
 
 
+
+// "product_name":"p1",
+// "slug":"s1",
+// "product_image":"http://placehold.jp/150x150.png",
+// "brand":"brand",
+// "price",1,
+// "category_name","category1",
+// "count_in_stock":1,
+// "description":"desc",
+// "average_rating":1
