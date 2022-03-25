@@ -57,8 +57,8 @@ func (m *MockProductService) ProductFindByID(ctx context.Context, productId int6
 		r0 = ret.Get(0).(*model.Product)
 	}
 	var r1 error
-	if ret.Get(0) != nil {
-		r1 = ret.Get(0).(error)
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
 	}
 	return r0, r1
 }
@@ -70,8 +70,8 @@ func (m *MockProductService) ProductFindByName(ctx context.Context, productName 
 		r0 = ret.Get(0).(*model.Product)
 	}
 	var r1 error
-	if ret.Get(0) != nil {
-		r1 = ret.Get(0).(error)
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
 	}
 	return r0, r1
 }
@@ -83,8 +83,8 @@ func (m *MockProductService) ProductUpdate(ctx context.Context, productId int64,
 		r0 = ret.Get(0).(*model.Product)
 	}
 	var r1 error
-	if ret.Get(0) != nil {
-		r1 = ret.Get(0).(error)
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
 	}
 	return r0, r1
 }
@@ -96,8 +96,8 @@ func (m *MockProductService) ProductDelete(ctx context.Context, productId int64)
 		r0 = ret.Get(0).(*model.Product)
 	}
 	var r1 error
-	if ret.Get(0) != nil {
-		r1 = ret.Get(0).(error)
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
 	}
 	return r0, r1
 }

@@ -1,12 +1,11 @@
 package model
 
-// // import (
-// // 	"github.com/google/uuid"
-// // 	// "time"
-// // )
+import (
+	// "github.com/google/uuid"
+	"time"
+)
 
 type Product struct {
-	// ProductId     uuid.UUID `db:"product_id" json:"product_id"`
 	ProductId     int64  `db:"product_id" json:"product_id"`
 	ProductName   string `db:"product_name" json:"product_name"`
 	Slug          string `db:"slug" json:"slug"`
@@ -17,8 +16,8 @@ type Product struct {
 	CountInStock  int64  `db:"count_in_stock" json:"count_in_stock"`
 	Description   string `db:"description" json:"description"`
 	AverageRating int64  `db:"average_rating" json:"average_rating"`
-	// CreatedAt     time.Time `db:"created_at" json:"created_at"`
-	// UpdatedAt     time.Time `db:"updated_at" json:"updated_at"`
+	CreatedAt     time.Time `db:"created_at" json:"created_at"`
+	UpdatedAt     time.Time `db:"updated_at" json:"updated_at"`
 }
 
 // "product_name":"p1",

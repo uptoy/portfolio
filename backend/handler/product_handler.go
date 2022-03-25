@@ -57,13 +57,20 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 
 func (h *Handler) ProductFindByID(c *gin.Context) {
 	id := c.Param("id")
-	c.String(http.StatusOK, "hello DELETE %s", id)
+	uid, _ := strconv.ParseInt(id, 0, 64)
+	ctx := c.Request.Context()
+	p, err := h.ProductService.ProductFindByID(ctx, uid)
+	if err != nil {
+	log.Fatal("err", err)
+	fmt.Println("err", err)
+	return
+}
+	c.JSON(http.StatusOK, gin.H{
+		"product": p,
+	})
 }
 
-// 	AverageRating: 1,
-// }
-// json2 := JsonRequest{Int: 2, Str: "str2"}
-// jsons := []JsonRequest{json1, json2}
+
 // id := c.Param("id")
 // uid, _ := strconv.ParseInt(id, 0, 64)
 // ctx := c.Request.Context()
@@ -127,7 +134,6 @@ func (h *Handler) ProductUpdate(c *gin.Context) {
 		})
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{
 		"product": p,
 	})
@@ -151,7 +157,6 @@ func (h *Handler) ProductDelete(c *gin.Context) {
 		})
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{
 		"product": p,
 	})
