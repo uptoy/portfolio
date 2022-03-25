@@ -7,13 +7,10 @@ import (
 	"strconv"
 
 	"backend/model/apperrors"
-	// "log"
 	"net/http"
 	// // "fmt"
 
 	"github.com/gin-gonic/gin"
-	// "github.com/google/uuid"
-	// "strconv"
 )
 
 func (h *Handler) ProductList(c *gin.Context) {
@@ -50,65 +47,50 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 		Description:   json.Description,
 		AverageRating: json.AverageRating,
 	}
-	fmt.Println("&json",&json)
-	// &json &{0 p2 s1 http://placehold.jp/150x150.png brand 1 category1 1 desc 1}
 	ctx := c.Request.Context()
 	p, _ := h.ProductService.ProductCreate(ctx, &json)
-
-	c.JSON(http.StatusOK, gin.H{
-		"product":p,
-	})
-	// ctx := c.Request.Context()
-	// p := &model.Product{
-	// 	ProductName:   json.ProductName,
-	// 	Slug:          json.Slug,
-	// 	ProductImage:  json.ProductImage,
-	// 	Brand:         json.Brand,
-	// 	Price:         json.Price,
-	// 	CategoryName:  json.CategoryName,
-	// 	CountInStock:  json.CountInStock,
-	// 	Description:   json.Description,
-	// 	AverageRating: json.AverageRating,
-	// }
-	// p, err := h.ProductService.ProductCreate(ctx, p)
-	// if err != nil {
-	// 	log.Printf("Unable to create product: %v", err)
-	// 	e := apperrors.NewNotFound("product", "err")
-
-	// 	c.JSON(e.Status(), gin.H{
-	// 		"error": e,
-	// 	})
-	// 	return
-	// }
-	// c.JSON(http.StatusOK, gin.H{
-	// 	"product": p,
-	// })
-}
-
-func (h *Handler) ProductFindByID(c *gin.Context) {
-	ctx := c.Request.Context()
-	id := c.Param("id")
-	uid, err := strconv.ParseInt(id, 0, 64)
-	if err != nil {
-		log.Fatal("err", err)
-		fmt.Println("err", err)
-		return
-	}
-	p, err := h.ProductService.ProductFindByID(ctx, uid)
-	if err != nil {
-		log.Printf("Unable to find product with id: %v", err)
-		e := apperrors.NewNotFound("products", "err")
-
-		c.JSON(e.Status(), gin.H{
-			"error": e,
-		})
-		return
-	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"product": p,
 	})
 }
+
+func (h *Handler) ProductFindByID(c *gin.Context) {
+	id := c.Param("id")
+	c.String(http.StatusOK, "hello DELETE %s", id)
+}
+
+// 	AverageRating: 1,
+// }
+// json2 := JsonRequest{Int: 2, Str: "str2"}
+// jsons := []JsonRequest{json1, json2}
+// id := c.Param("id")
+// uid, _ := strconv.ParseInt(id, 0, 64)
+// ctx := c.Request.Context()
+// p, _ := h.ProductService.ProductFindByID(ctx, uid)
+// c.JSON(http.StatusOK, gin.H{
+// 	"jsons": p,
+// })
+// ctx := c.Request.Context()
+// id := c.Param("id")
+// uid, err := strconv.ParseInt(id, 0, 64)
+// if err != nil {
+// 	log.Fatal("err", err)
+// 	fmt.Println("err", err)
+// 	return
+// }
+// p, err := h.ProductService.ProductFindByID(ctx, uid)
+// if err != nil {
+// 	log.Printf("Unable to find product with id: %v", err)
+// 	e := apperrors.NewNotFound("products", "err")
+// 	c.JSON(e.Status(), gin.H{
+// 		"error": e,
+// 	})
+// 	return
+// }
+// c.JSON(http.StatusOK, gin.H{
+// 	"json": p,
+// })
 
 func (h *Handler) ProductUpdate(c *gin.Context) {
 	ctx := c.Request.Context()
@@ -187,18 +169,6 @@ func (h *Handler) ProductFindByName(c *gin.Context) {
 		"product": p,
 	})
 }
-
-// type productReq struct {
-// 	ProductName   string `db:"product_name" json:"product_name"`
-// 	Slug          string `db:"slug" json:"slug"`
-// 	ProductImage  string `db:"product_image" json:"product_image"`
-// 	Brand         string `db:"brand" json:"brand"`
-// 	Price         int    `db:"price" json:"price"`
-// 	CategoryName  string `db:"category_name" json:"category_name"`
-// 	CountInStock  int    `db:"count_in_stock" json:"count_in_stock"`
-// 	Description   string `db:"description" json:"description"`
-// 	AverageRating int    `db:"average_rating" json:"average_rating"`
-// }
 
 // func (h *Handler) ProductCreate(c *gin.Context) {
 // 	var req productReq

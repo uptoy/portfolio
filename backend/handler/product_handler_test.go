@@ -3,17 +3,20 @@ package handler
 import (
 	"bytes"
 	"encoding/json"
+	// "strconv"
 
 	"backend/model"
 	"backend/model/mocks"
 	"fmt"
+	"net/http"
+	"net/http/httptest"
+
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"net/http"
-	"net/http/httptest"
-	"testing"
+
 	// "strconv"
+	"testing"
 )
 
 func TestProductList(t *testing.T) {
@@ -72,61 +75,6 @@ func TestProductList(t *testing.T) {
 	})
 }
 
-// // func TestProductList(t *testing.T) {
-// // 	gin.SetMode(gin.TestMode)
-// // 	t.Run("Success", func(t *testing.T) {
-// // 		rr := httptest.NewRecorder()
-// // 		router := gin.Default()
-// // 		mockProductService := new(mocks.MockProductService)
-// // 		p1 := model.Product{
-// // 			ProductId:     1,
-// // 			ProductName:   "product_name1",
-// // 			Slug:          "slug1",
-// // 			ProductImage:  "http://placehold.jp/150x150.png",
-// // 			Brand:         "brand1",
-// // 			Price:         1,
-// // 			CategoryName:  "category_name1",
-// // 			CountInStock:  1,
-// // 			Description:   "description1",
-// // 			AverageRating: 1,
-// // 		}
-// // 		p2 := model.Product{
-// // 			ProductId:     2,
-// // 			ProductName:   "product_name2",
-// // 			Slug:          "slug2",
-// // 			ProductImage:  "http://placehold.jp/150x150.png",
-// // 			Brand:         "brand2",
-// // 			Price:         2,
-// // 			CategoryName:  "category_name2",
-// // 			CountInStock:  2,
-// // 			Description:   "description2",
-// // 			AverageRating: 2,
-// // 		}
-// // 		p := []model.Product{p1, p2}
-// // 		fmt.Println(p)
-// // 		NewHandler(&Config{
-// // 			R:              router,
-// // 			ProductService: mockProductService,
-// // 		})
-// // 		// mockProductService.On("ProductList", mock.AnythingOfType("*context.emptyCtx")).Return(p, nil)
-// // 		request, err := http.NewRequest(http.MethodGet, "/products", nil)
-// // 		fmt.Println("err", err)
-// // 		assert.NoError(t, err)
-// // 		router.ServeHTTP(rr, request)
-// // 		// respBody, err := json.Marshal(gin.H{
-// // 		// 	"products": p,
-// // 		// })
-// // 		fmt.Println("err", err)
-// // 		assert.NoError(t, err)
-
-// // 		assert.Equal(t, http.StatusOK, rr.Code)
-// // 		fmt.Println("http.StatusOK", http.StatusOK)
-// // 		// assert.Equal(t, respBody, rr.Body.Bytes())
-// // 		// fmt.Println("respBody", string(respBody))
-// // 		// fmt.Println("rr.Body.Bytes()", rr.Body.String())
-// // 	})
-// // }
-
 func TestProductCreate(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
@@ -135,7 +83,7 @@ func TestProductCreate(t *testing.T) {
 		router := gin.Default()
 		mockProductService := new(mocks.MockProductService)
 		NewHandler(&Config{
-			R: router,
+			R:              router,
 			ProductService: mockProductService,
 		})
 		json1 := &model.Product{
@@ -168,7 +116,7 @@ func TestProductCreate(t *testing.T) {
 		assert.NoError(t, err)
 		router.ServeHTTP(rr, request)
 		respBody, err := json.Marshal(gin.H{
-			"product":json1,
+			"product": json1,
 		})
 		fmt.Println("err", err)
 		assert.NoError(t, err)
@@ -179,89 +127,63 @@ func TestProductCreate(t *testing.T) {
 		fmt.Println(string(respBody))
 		fmt.Println(rr.Body.String())
 	})
-	// gin.SetMode(gin.TestMode)
-
-	// t.Run("Success", func(t *testing.T) {
-	// 	router := gin.Default()
-	// 	mockProductService := new(mocks.MockProductService)
-	// 	NewHandler(&Config{
-	// 		R:              router,
-	// 		ProductService: mockProductService,
-	// 	})
-	// 	p := &model.Product{
-	// 		ProductId:     1,
-	// 		ProductName:   "product_name1",
-	// 		Slug:          "slug1",
-	// 		ProductImage:  "http://placehold.jp/150x150.png",
-	// 		Brand:         "brand1",
-	// 		Price:         1,
-	// 		CategoryName:  "category_name1",
-	// 		CountInStock:  1,
-	// 		Description:   "description1",
-	// 		AverageRating: 1,
-	// 	}
-	// 	fmt.Println("p", p)
-	// 	mockProductService.On("ProductCreate", mock.AnythingOfType("*context.emptyCtx"), mock.AnythingOfType("*model.Product")).Return(p)
-	// 	reqBody, err := json.Marshal(gin.H{
-	// 		"product": p,
-	// 	})
-	// 	rr := httptest.NewRecorder()
-	// 	fmt.Println("err", err)
-	// 	assert.NoError(t, err)
-	// 	request, err := http.NewRequest(http.MethodPost, "/products", bytes.NewBuffer(reqBody))
-	// 	request.Header.Set("Content-Type", "application/json")
-	// 	fmt.Println("err", err)
-	// 	assert.NoError(t, err)
-	// 	router.ServeHTTP(rr, request)
-	// 	respBody, err := json.Marshal(gin.H{
-	// 		"product": p,
-	// 	})
-	// 	fmt.Println("err", err)
-	// 	assert.NoError(t, err)
-	// 	assert.Equal(t, http.StatusOK, rr.Code)
-	// 	fmt.Println("http.StatusOK", http.StatusOK)
-	// 	assert.Equal(t, respBody, rr.Body.Bytes())
-	// 	fmt.Println("respBody", string(respBody))
-	// 	fmt.Println("rr.Body.Bytes()", rr.Body.String())
-	// })
 }
 
-// // func TestProductFindByID(t *testing.T) {
-// // 	gin.SetMode(gin.TestMode)
-// // 	t.Run("Success", func(t *testing.T) {
-// // 		router := gin.Default()
-// // 		mockProductService := new(mocks.MockProductService)
-// // 		NewHandler(&Config{
-// // 			R:              router,
-// // 			ProductService: mockProductService,
-// // 		})
-// // 		p := &model.Product{ProductId: 0, ProductName: "name1"}
-// // 		fmt.Println("p", p)
-// // 		mockProductService.On("ProductFindByID", mock.AnythingOfType("*context.emptyCtx"), p.ProductId).Return(p)
-// // 		reqBody, err := json.Marshal(gin.H{
-// // 			"product": p,
-// // 		})
-// // 		id := strconv.Itoa(int(p.ProductId))
-// // 		rr := httptest.NewRecorder()
-// // 		fmt.Println("err", err)
-// // 		assert.NoError(t, err)
-// // 		request, err := http.NewRequest(http.MethodGet, "/products/"+id, bytes.NewBuffer(reqBody))
-// // 		request.Header.Set("Content-Type", "application/json")
-// // 		fmt.Println("err", err)
-// // 		assert.NoError(t, err)
-// // 		router.ServeHTTP(rr, request)
-// // 		respBody, err := json.Marshal(gin.H{
-// // 			"product": p,
-// // 		})
-// // 		fmt.Println("err", err)
-// // 		assert.NoError(t, err)
-// // 		assert.Equal(t, http.StatusOK, rr.Code)
-// // 		fmt.Println("http.StatusOK", http.StatusOK)
-// // 		assert.Equal(t, respBody, rr.Body.Bytes())
-// // 		fmt.Println("respBody", string(respBody))
-// // 		fmt.Println("rr.Body.Bytes()", rr.Body.String())
-// // 	})
-// // }
+func TestProductFindByID(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	t.Run("Success", func(t *testing.T) {
+		rr := httptest.NewRecorder()
+		router := gin.Default()
+		mockProductService := new(mocks.MockProductService)
+		NewHandler(&Config{
+			R:              router,
+			ProductService: mockProductService,
+		})
+		id := "123"
+		req, _ := http.NewRequest(http.MethodGet, "/products/"+id, nil)
+		router.ServeHTTP(rr, req)
+		assert.Equal(t, http.StatusOK, rr.Code)
+		assert.Equal(t, "hello DELETE "+id, rr.Body.String())
+	})
+}
+
+// gin.SetMode(gin.TestMode)
+
+// t.Run("Success", func(t *testing.T) {
+// 	rr := httptest.NewRecorder()
+// 	router := gin.Default()
+// 	NewHandler(&Config{
+// 		R: router,
+// 	})
+// 	json1 := &model.Product{
+// 		ProductId:     1,
+// 		ProductName:   "p1",
+// 		Slug:          "s1",
+// 		ProductImage:  "http://placehold.jp/150x150.png",
+// 		Brand:         "brand",
+// 		Price:         1,
+// 		CategoryName:  "category1",
+// 		CountInStock:  1,
+// 		Description:   "desc",
+// 		AverageRating: 1,
+// 	}
+// 	uid := strconv.Itoa(int(json1.ProductId))
+// 	request, err := http.NewRequest(http.MethodGet, "/products/"+uid, nil)
+// 	fmt.Println("err", err)
+// 	assert.NoError(t, err)
+// 	router.ServeHTTP(rr, request)
+// 	respBody, err := json.Marshal(gin.H{
+// 		"jsons": json1,
+// 	})
+// 	fmt.Println("err", err)
+// 	assert.NoError(t, err)
+
+// 	assert.Equal(t, http.StatusOK, rr.Code)
+// 	fmt.Println("http.StatusOK", http.StatusOK)
+// 	assert.Equal(t, respBody, rr.Body.Bytes())
+// 	fmt.Println(string(respBody))
+// 	fmt.Println(rr.Body.String())
+// })
 
 // // func TestProductFindByName(t *testing.T) {
 // // 	gin.SetMode(gin.TestMode)
@@ -316,7 +238,7 @@ func TestProductCreate(t *testing.T) {
 // // 		rr := httptest.NewRecorder()
 // // 		fmt.Println("err", err)
 // // 		assert.NoError(t, err)
-// // 		id := strconv.Itoa(int(p.ProductId))
+// 		id := strconv.Itoa(int(p.ProductId))
 // // 		request, err := http.NewRequest(http.MethodPut, "/products/"+id, bytes.NewBuffer(reqBody))
 // // 		request.Header.Set("Content-Type", "application/json")
 // // 		fmt.Println("err", err)
