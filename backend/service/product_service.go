@@ -28,11 +28,11 @@ func (s *productService) ProductList(ctx context.Context) ([]model.Product, erro
 }
 
 func (s *productService) ProductCreate(ctx context.Context, p *model.Product) (*model.Product, error) {
-	product, err := s.ProductRepository.ProductCreate(ctx, p)
+	p, err := s.ProductRepository.ProductCreate(ctx, p)
 	if err != nil {
 		return nil, err
 	}
-	return product, nil
+	return p, nil
 }
 
 func (s *productService) ProductFindByID(ctx context.Context, id int64) (*model.Product, error) {

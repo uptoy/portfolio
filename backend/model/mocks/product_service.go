@@ -8,36 +8,46 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-// MockUserService is a mock type for model.UserService
 type MockProductService struct {
 	mock.Mock
 }
 
 func (m *MockProductService) ProductCreate(ctx context.Context, p *model.Product) (*model.Product, error) {
 	ret := m.Called(ctx, p)
+
+	// first value passed to "Return"
 	var r0 *model.Product
 	if ret.Get(0) != nil {
+		// we can just return this if we know we won't be passing function to "Return"
 		r0 = ret.Get(0).(*model.Product)
 	}
+
 	var r1 error
-	if ret.Get(0) != nil {
-		r1 = ret.Get(0).(error)
+
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
 	}
-	return r0,r1
+
+	return r0, r1
 }
 
-// func (m *MockProductService) ProductList(ctx context.Context) ([]model.Product, error) {
-func (m *MockProductService) ProductList(ctx context.Context) ([]*model.Product, error) {
+func (m *MockProductService) ProductList(ctx context.Context) ([]model.Product, error) {
+	// args that will be passed to "Return" in the tests, when function
+	// is called with a uid. Hence the name "ret"
 	ret := m.Called(ctx)
-	var r0 []*model.Product
+	// first value passed to "Return"
+	var r0 []model.Product
 	if ret.Get(0) != nil {
-		r0 = ret.Get(0).([]*model.Product)
+		// we can just return this if we know we won't be passing function to "Return"
+		r0 = ret.Get(0).([]model.Product)
 	}
 	var r1 error
-	if ret.Get(0) != nil {
-		r1 = ret.Get(0).(error)
+
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
 	}
-	return r0,r1
+
+	return r0, r1
 }
 
 func (m *MockProductService) ProductFindByID(ctx context.Context, productId int64) (*model.Product, error) {
@@ -63,7 +73,7 @@ func (m *MockProductService) ProductFindByName(ctx context.Context, productName 
 	if ret.Get(0) != nil {
 		r1 = ret.Get(0).(error)
 	}
-	return r0,r1
+	return r0, r1
 }
 
 func (m *MockProductService) ProductUpdate(ctx context.Context, productId int64, p *model.Product) (*model.Product, error) {

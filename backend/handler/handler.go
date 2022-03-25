@@ -2,13 +2,14 @@ package handler
 
 import (
 	// "log"
-	// "net/http"
+	"net/http"
 	"time"
 
-	"backend/handler/middleware"
+	// "backend/handler/middleware"
 	"backend/model"
-	"backend/model/apperrors"
+	// "backend/model/apperrors"
 	"github.com/gin-gonic/gin"
+	// "strconv"
 )
 
 // Handler struct holds required services for handler to function
@@ -46,7 +47,7 @@ func NewHandler(c *Config) {
 	g := c.R.Group(c.BaseURL)
 
 	if gin.Mode() != gin.TestMode {
-		g.Use(middleware.Timeout(c.TimeoutDuration, apperrors.NewServiceUnavailable()))
+		// g.Use(middleware.Timeout(c.TimeoutDuration, apperrors.NewServiceUnavailable()))
 		// g.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
 		g.GET("/products", h.ProductList)
 		g.POST("/products", h.ProductCreate)
@@ -54,7 +55,12 @@ func NewHandler(c *Config) {
 		g.PUT("/products/:id", h.ProductUpdate)
 		g.DELETE("/products/:id", h.ProductDelete)
 		g.GET("/products/search/:name", h.ProductFindByName)
-		// g.POST("/signout", middleware.AuthUser(h.TokenService), h.Signout)
+		g.GET("/", h.SampleGetList)
+		g.POST("/", h.SamplePost)
+		g.GET("/:id", h.SampleGetFindByID)
+		g.PUT("/:id", h.SampleUpdate)
+		g.DELETE("/:id", h.SampleDelete)
+		g.GET("/search/:name", h.SampleGetFindByName)
 		// g.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
 		// g.POST("/image", middleware.AuthUser(h.TokenService), h.Image)
 		// g.DELETE("/image", middleware.AuthUser(h.TokenService), h.DeleteImage)
@@ -66,6 +72,12 @@ func NewHandler(c *Config) {
 		g.PUT("/products/:id", h.ProductUpdate)
 		g.DELETE("/products/:id", h.ProductDelete)
 		g.GET("/products/search/:name", h.ProductFindByName)
+		g.GET("/", h.SampleGetList)
+		g.POST("/", h.SamplePost)
+		g.GET("/:id", h.SampleGetFindByID)
+		g.PUT("/:id", h.SampleUpdate)
+		g.DELETE("/:id", h.SampleDelete)
+		g.GET("/search/:name", h.SampleGetFindByName)
 		// g.POST("/signout", h.Signout)
 		// g.PUT("/details", h.Details)
 		// g.POST("/image", h.Image)
@@ -83,17 +95,103 @@ func NewHandler(c *Config) {
 // 	})
 // }
 
-// func (h *Handler) SamplePost(c *gin.Context) {
-// 	ctx := c.Request.Context()
-// 	var json model.Product
-// 	if err := c.ShouldBindJSON(&json); err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
+func (h *Handler) SamplePost(c *gin.Context) {
+	type JsonRequest struct {
+		Int int    `json:"int"`
+		Str string `json:"str"`
+	}
+	var json JsonRequest
+	if err := c.ShouldBindJSON(&json); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	json = JsonRequest{
+		Int: json.Int,
+		Str: json.Str,
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"int": json.Int,
+		"str": json.Str,
+	})
+}
 
-// 	p1 := &model.Product{ProductName: json.ProductName}
-// 	p := h.ProductService.ProductCreate(ctx, p1)
-// 	c.JSON(http.StatusOK, gin.H{
-// 		"product": p,
-// 	})
-// }
+func (h *Handler) SampleGetList(c *gin.Context) {
+	type JsonRequest struct {
+		Int int    `json:"int"`
+		Str string `json:"str"`
+	}
+	json1 := JsonRequest{Int: 1, Str: "str1"}
+	json2 := JsonRequest{Int: 2, Str: "str2"}
+	jsons := []JsonRequest{json1, json2}
+	// p, _ := h.ProductService.ProductCreate(ctx, p1)
+	c.JSON(http.StatusOK, gin.H{
+		"jsons": jsons,
+	})
+}
+
+func (h *Handler) SampleGetFindByID(c *gin.Context) {
+	// p := &model.Product{ProductId: 0, ProductName: "name1"}
+	type JsonRequest struct {
+		Int int    `json:"int"`
+		Str string `json:"str"`
+	}
+	json1 := JsonRequest{Int: 1, Str: "str1"}
+	// json2 := JsonRequest{Int: 2, Str: "str2"}
+	// jsons := []JsonRequest{json1, json2}
+	// p, _ := h.ProductService.ProductCreate(ctx, p1)
+	c.JSON(http.StatusOK, gin.H{
+		"jsons": json1,
+	})
+}
+
+func (h *Handler) SampleGetFindByName(c *gin.Context) {
+	// p := &model.Product{ProductId: 0, ProductName: "name1"}
+	// json1 := JsonRequest{Int: 1, Str: "str1"}
+	name := c.Param("name")
+	// json2 := JsonRequest{Int: 2, Str: "str2"}
+	// jsons := []JsonRequest{json1, json2}
+	// p, _ := h.ProductService.ProductCreate(ctx, p1)
+	c.JSON(http.StatusOK, gin.H{
+		"name": name,
+	})
+}
+
+func (h *Handler) SampleUpdate(c *gin.Context) {
+	type JsonRequest struct {
+		Int int    `json:"int"`
+		Str string `json:"str"`
+	}
+	var json JsonRequest
+	if err := c.ShouldBindJSON(&json); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	json = JsonRequest{
+		Int: json.Int,
+		Str: json.Str,
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"int": json.Int,
+		"str": json.Str,
+	})
+}
+func (h *Handler) SampleDelete(c *gin.Context) {
+	// id := c.Param("id")
+	type JsonRequest struct {
+		Int int    `json:"int"`
+		Str string `json:"str"`
+	}
+	json1 := JsonRequest{Str: "str1", Int: 1}
+	// type JsonRequest struct {
+	// 	Int int    `json:"int"`
+	// 	Str string `json:"str"`
+	// }
+	// json1 := JsonRequest{Int: 1, Str: "str1"}
+	// json2 := JsonRequest{Int: 2, Str: "str2"}
+	// jsons := []JsonRequest{json1, json2}
+	// p, _ := h.ProductService.ProductCreate(ctx, p1)
+	c.JSON(http.StatusOK, gin.H{
+		"int": json1.Int,
+		"str": json1.Str,
+	})
+}

@@ -29,18 +29,17 @@ func (h *Handler) ProductList(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"products": p,
+		"jsons": p,
 	})
 }
 
 func (h *Handler) ProductCreate(c *gin.Context) {
-	ctx := c.Request.Context()
 	var json model.Product
 	if err := c.ShouldBindJSON(&json); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	p := &model.Product{
+	json = model.Product{
 		ProductName:   json.ProductName,
 		Slug:          json.Slug,
 		ProductImage:  json.ProductImage,
@@ -51,19 +50,39 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 		Description:   json.Description,
 		AverageRating: json.AverageRating,
 	}
-	p, err := h.ProductService.ProductCreate(ctx, p)
-	if err != nil {
-		log.Printf("Unable to create product: %v", err)
-		e := apperrors.NewNotFound("product", "err")
+	fmt.Println("&json",&json)
+	// &json &{0 p2 s1 http://placehold.jp/150x150.png brand 1 category1 1 desc 1}
+	ctx := c.Request.Context()
+	p, _ := h.ProductService.ProductCreate(ctx, &json)
 
-		c.JSON(e.Status(), gin.H{
-			"error": e,
-		})
-		return
-	}
 	c.JSON(http.StatusOK, gin.H{
-		"product": p,
+		"product":p,
 	})
+	// ctx := c.Request.Context()
+	// p := &model.Product{
+	// 	ProductName:   json.ProductName,
+	// 	Slug:          json.Slug,
+	// 	ProductImage:  json.ProductImage,
+	// 	Brand:         json.Brand,
+	// 	Price:         json.Price,
+	// 	CategoryName:  json.CategoryName,
+	// 	CountInStock:  json.CountInStock,
+	// 	Description:   json.Description,
+	// 	AverageRating: json.AverageRating,
+	// }
+	// p, err := h.ProductService.ProductCreate(ctx, p)
+	// if err != nil {
+	// 	log.Printf("Unable to create product: %v", err)
+	// 	e := apperrors.NewNotFound("product", "err")
+
+	// 	c.JSON(e.Status(), gin.H{
+	// 		"error": e,
+	// 	})
+	// 	return
+	// }
+	// c.JSON(http.StatusOK, gin.H{
+	// 	"product": p,
+	// })
 }
 
 func (h *Handler) ProductFindByID(c *gin.Context) {

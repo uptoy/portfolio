@@ -2,6 +2,7 @@
 *.pem
 backend/serviceAccount.json
 README.md
+memo
 
 workspace.code-workspace
 

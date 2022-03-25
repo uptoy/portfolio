@@ -1,235 +1,375 @@
 package handler
 
-// import (
-// 	"bytes"
-// 	"encoding/json"
+import (
+	"bytes"
+	"encoding/json"
 
-// 	"backend/model"
-// 	"backend/model/mocks"
-// 	"fmt"
-// 	"github.com/gin-gonic/gin"
-// 	"github.com/stretchr/testify/assert"
-// 	"github.com/stretchr/testify/mock"
-// 	"net/http"
-// 	"net/http/httptest"
-// 	"testing"
-// 	"strconv"
-// )
+	"backend/model"
+	"backend/model/mocks"
+	"fmt"
+	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+	// "strconv"
+)
 
-// func TestProductList(t *testing.T) {
-// 	gin.SetMode(gin.TestMode)
-// 	t.Run("Success", func(t *testing.T) {
-// 		rr := httptest.NewRecorder()
-// 		router := gin.Default()
-// 		mockProductService := new(mocks.MockProductService)
-// 		p1 := &model.Product{ProductId: 0, ProductName: "name1"}
-// 		p2 := &model.Product{ProductId: 1, ProductName: "name2"}
-// 		p := []*model.Product{p1, p2}
-// 		NewHandler(&Config{
-// 			R:              router,
-// 			ProductService: mockProductService,
-// 		})
-// 		mockProductService.On("ProductList", mock.AnythingOfType("*context.emptyCtx")).Return(p, nil)
-// 		request, err := http.NewRequest(http.MethodGet, "/products", nil)
-// 		fmt.Println("err", err)
-// 		assert.NoError(t, err)
-// 		router.ServeHTTP(rr, request)
-// 		respBody, err := json.Marshal(gin.H{
-// 			"products": p,
-// 		})
-// 		fmt.Println("err", err)
-// 		assert.NoError(t, err)
+func TestProductList(t *testing.T) {
+	gin.SetMode(gin.TestMode)
 
-// 		assert.Equal(t, http.StatusOK, rr.Code)
-// 		fmt.Println("http.StatusOK", http.StatusOK)
-// 		assert.Equal(t, respBody, rr.Body.Bytes())
-// 		fmt.Println("respBody", string(respBody))
-// 		fmt.Println("rr.Body.Bytes()", rr.Body.String())
-// 	})
-// }
+	t.Run("Success", func(t *testing.T) {
+		rr := httptest.NewRecorder()
+		router := gin.Default()
+		mockProductService := new(mocks.MockProductService)
+		NewHandler(&Config{
+			R:              router,
+			ProductService: mockProductService,
+		})
 
-// func TestProductCreate(t *testing.T) {
-// 	gin.SetMode(gin.TestMode)
+		p1 := model.Product{
+			ProductId:     1,
+			ProductName:   "product_name1",
+			Slug:          "slug1",
+			ProductImage:  "http://placehold.jp/150x150.png",
+			Brand:         "brand1",
+			Price:         1,
+			CategoryName:  "category_name1",
+			CountInStock:  1,
+			Description:   "description1",
+			AverageRating: 1,
+		}
+		p2 := model.Product{
+			ProductId:     2,
+			ProductName:   "product_name2",
+			Slug:          "slug2",
+			ProductImage:  "http://placehold.jp/150x150.png",
+			Brand:         "brand2",
+			Price:         2,
+			CategoryName:  "category_name2",
+			CountInStock:  2,
+			Description:   "description2",
+			AverageRating: 2,
+		}
+		p := []model.Product{p1, p2}
+		mockProductService.On("ProductList", mock.AnythingOfType("*context.emptyCtx")).Return(p, nil)
+		request, err := http.NewRequest(http.MethodGet, "/products", nil)
+		fmt.Println("err", err)
+		assert.NoError(t, err)
+		router.ServeHTTP(rr, request)
 
-// 	t.Run("Success", func(t *testing.T) {
-// 		router := gin.Default()
-// 		mockProductService := new(mocks.MockProductService)
-// 		NewHandler(&Config{
-// 			R:              router,
-// 			ProductService: mockProductService,
-// 		})
-// 		p := &model.Product{ProductId: 0, ProductName: "name1"}
-// 		fmt.Println("p", p)
-// 		mockProductService.On("ProductCreate", mock.AnythingOfType("*context.emptyCtx"), mock.AnythingOfType("*model.Product")).Return(p)
-// 		reqBody, err := json.Marshal(gin.H{
-// 			"product": p,
-// 		})
-// 		rr := httptest.NewRecorder()
-// 		fmt.Println("err", err)
-// 		assert.NoError(t, err)
-// 		request, err := http.NewRequest(http.MethodPost, "/products", bytes.NewBuffer(reqBody))
-// 		request.Header.Set("Content-Type", "application/json")
-// 		fmt.Println("err", err)
-// 		assert.NoError(t, err)
-// 		router.ServeHTTP(rr, request)
-// 		respBody, err := json.Marshal(gin.H{
-// 			"product": p,
-// 		})
-// 		fmt.Println("err", err)
-// 		assert.NoError(t, err)
-// 		assert.Equal(t, http.StatusOK, rr.Code)
-// 		fmt.Println("http.StatusOK", http.StatusOK)
-// 		assert.Equal(t, respBody, rr.Body.Bytes())
-// 		fmt.Println("respBody", string(respBody))
-// 		fmt.Println("rr.Body.Bytes()", rr.Body.String())
-// 	})
-// }
+		respBody, err := json.Marshal(gin.H{
+			"jsons": p,
+		})
+		fmt.Println("err", err)
+		assert.NoError(t, err)
+		assert.Equal(t, http.StatusOK, rr.Code)
+		fmt.Println("http.StatusOK", http.StatusOK)
+		assert.Equal(t, respBody, rr.Body.Bytes())
+		fmt.Println(string(respBody))
+		fmt.Println(rr.Body.String())
+	})
+}
 
-// func TestProductFindByID(t *testing.T) {
-// 	gin.SetMode(gin.TestMode)
-// 	t.Run("Success", func(t *testing.T) {
-// 		router := gin.Default()
-// 		mockProductService := new(mocks.MockProductService)
-// 		NewHandler(&Config{
-// 			R:              router,
-// 			ProductService: mockProductService,
-// 		})
-// 		p := &model.Product{ProductId: 0, ProductName: "name1"}
-// 		fmt.Println("p", p)
-// 		mockProductService.On("ProductFindByID", mock.AnythingOfType("*context.emptyCtx"), p.ProductId).Return(p)
-// 		reqBody, err := json.Marshal(gin.H{
-// 			"product": p,
-// 		})
-// 		id := strconv.Itoa(int(p.ProductId))
-// 		rr := httptest.NewRecorder()
-// 		fmt.Println("err", err)
-// 		assert.NoError(t, err)
-// 		request, err := http.NewRequest(http.MethodGet, "/products/"+id, bytes.NewBuffer(reqBody))
-// 		request.Header.Set("Content-Type", "application/json")
-// 		fmt.Println("err", err)
-// 		assert.NoError(t, err)
-// 		router.ServeHTTP(rr, request)
-// 		respBody, err := json.Marshal(gin.H{
-// 			"product": p,
-// 		})
-// 		fmt.Println("err", err)
-// 		assert.NoError(t, err)
-// 		assert.Equal(t, http.StatusOK, rr.Code)
-// 		fmt.Println("http.StatusOK", http.StatusOK)
-// 		assert.Equal(t, respBody, rr.Body.Bytes())
-// 		fmt.Println("respBody", string(respBody))
-// 		fmt.Println("rr.Body.Bytes()", rr.Body.String())
-// 	})
-// }
+// // func TestProductList(t *testing.T) {
+// // 	gin.SetMode(gin.TestMode)
+// // 	t.Run("Success", func(t *testing.T) {
+// // 		rr := httptest.NewRecorder()
+// // 		router := gin.Default()
+// // 		mockProductService := new(mocks.MockProductService)
+// // 		p1 := model.Product{
+// // 			ProductId:     1,
+// // 			ProductName:   "product_name1",
+// // 			Slug:          "slug1",
+// // 			ProductImage:  "http://placehold.jp/150x150.png",
+// // 			Brand:         "brand1",
+// // 			Price:         1,
+// // 			CategoryName:  "category_name1",
+// // 			CountInStock:  1,
+// // 			Description:   "description1",
+// // 			AverageRating: 1,
+// // 		}
+// // 		p2 := model.Product{
+// // 			ProductId:     2,
+// // 			ProductName:   "product_name2",
+// // 			Slug:          "slug2",
+// // 			ProductImage:  "http://placehold.jp/150x150.png",
+// // 			Brand:         "brand2",
+// // 			Price:         2,
+// // 			CategoryName:  "category_name2",
+// // 			CountInStock:  2,
+// // 			Description:   "description2",
+// // 			AverageRating: 2,
+// // 		}
+// // 		p := []model.Product{p1, p2}
+// // 		fmt.Println(p)
+// // 		NewHandler(&Config{
+// // 			R:              router,
+// // 			ProductService: mockProductService,
+// // 		})
+// // 		// mockProductService.On("ProductList", mock.AnythingOfType("*context.emptyCtx")).Return(p, nil)
+// // 		request, err := http.NewRequest(http.MethodGet, "/products", nil)
+// // 		fmt.Println("err", err)
+// // 		assert.NoError(t, err)
+// // 		router.ServeHTTP(rr, request)
+// // 		// respBody, err := json.Marshal(gin.H{
+// // 		// 	"products": p,
+// // 		// })
+// // 		fmt.Println("err", err)
+// // 		assert.NoError(t, err)
 
-// func TestProductFindByName(t *testing.T) {
-// 	gin.SetMode(gin.TestMode)
-// 	t.Run("Success", func(t *testing.T) {
-// 		router := gin.Default()
-// 		mockProductService := new(mocks.MockProductService)
-// 		NewHandler(&Config{
-// 			R:              router,
-// 			ProductService: mockProductService,
-// 		})
-// 		p := &model.Product{ProductId: 0, ProductName: "name"}
-// 		fmt.Println("p", p)
-// 		mockProductService.On("ProductFindByName", mock.AnythingOfType("*context.emptyCtx"), p.ProductName).Return(p)
-// 		reqBody, err := json.Marshal(gin.H{
-// 			"product": p,
-// 		})
-// 		rr := httptest.NewRecorder()
-// 		fmt.Println("err", err)
-// 		assert.NoError(t, err)
-// 		request, err := http.NewRequest(http.MethodGet, "/products/search/"+p.ProductName, bytes.NewBuffer(reqBody))
-// 		request.Header.Set("Content-Type", "application/json")
-// 		fmt.Println("err", err)
-// 		assert.NoError(t, err)
-// 		router.ServeHTTP(rr, request)
-// 		respBody, err := json.Marshal(gin.H{
-// 			"product": p,
-// 		})
-// 		fmt.Println("err", err)
-// 		assert.NoError(t, err)
-// 		assert.Equal(t, http.StatusOK, rr.Code)
-// 		fmt.Println("http.StatusOK", http.StatusOK)
-// 		assert.Equal(t, respBody, rr.Body.Bytes())
-// 		fmt.Println("respBody", string(respBody))
-// 		fmt.Println("rr.Body.Bytes()", rr.Body.String())
-// 	})
-// }
+// // 		assert.Equal(t, http.StatusOK, rr.Code)
+// // 		fmt.Println("http.StatusOK", http.StatusOK)
+// // 		// assert.Equal(t, respBody, rr.Body.Bytes())
+// // 		// fmt.Println("respBody", string(respBody))
+// // 		// fmt.Println("rr.Body.Bytes()", rr.Body.String())
+// // 	})
+// // }
 
+func TestProductCreate(t *testing.T) {
+	gin.SetMode(gin.TestMode)
 
-// func TestProductUpdate(t *testing.T) {
-// 	gin.SetMode(gin.TestMode)
-// 	t.Run("Success", func(t *testing.T) {
-// 		router := gin.Default()
-// 		mockProductService := new(mocks.MockProductService)
-// 		NewHandler(&Config{
-// 			R:              router,
-// 			ProductService: mockProductService,
-// 		})
-// 		p := &model.Product{ProductId: 0, ProductName: "name"}
-// 		mockProductService.On("ProductUpdate", mock.AnythingOfType("*context.emptyCtx"), p.ProductId,mock.AnythingOfType("*model.Product")).Return(p)
-// 		reqBody, err := json.Marshal(gin.H{
-// 			"product": p,
-// 		})
-// 		rr := httptest.NewRecorder()
-// 		fmt.Println("err", err)
-// 		assert.NoError(t, err)
-// 		id := strconv.Itoa(int(p.ProductId))
-// 		request, err := http.NewRequest(http.MethodPut, "/products/"+id, bytes.NewBuffer(reqBody))
-// 		request.Header.Set("Content-Type", "application/json")
-// 		fmt.Println("err", err)
-// 		assert.NoError(t, err)
-// 		router.ServeHTTP(rr, request)
-// 		respBody, err := json.Marshal(gin.H{
-// 			"product": p,
-// 		})
-// 		fmt.Println("err", err)
-// 		assert.NoError(t, err)
-// 		assert.Equal(t, http.StatusOK, rr.Code)
-// 		fmt.Println("http.StatusOK", http.StatusOK)
-// 		assert.Equal(t, respBody, rr.Body.Bytes())
-// 		fmt.Println("respBody", string(respBody))
-// 		fmt.Println("rr.Body.Bytes()", rr.Body.String())
-// 	})
-// }
+	t.Run("Success", func(t *testing.T) {
+		rr := httptest.NewRecorder()
+		router := gin.Default()
+		mockProductService := new(mocks.MockProductService)
+		NewHandler(&Config{
+			R: router,
+			ProductService: mockProductService,
+		})
+		json1 := &model.Product{
+			ProductName:   "p1",
+			Slug:          "s1",
+			ProductImage:  "http://placehold.jp/150x150.png",
+			Brand:         "brand",
+			Price:         1,
+			CategoryName:  "category1",
+			CountInStock:  1,
+			Description:   "desc",
+			AverageRating: 1,
+		}
+		reqBody, err := json.Marshal(gin.H{
+			"product_name":   json1.ProductName,
+			"slug":           json1.Slug,
+			"product_image":  json1.ProductImage,
+			"brand":          json1.Brand,
+			"price":          json1.Price,
+			"category_name":  json1.CategoryName,
+			"count_in_stock": json1.CountInStock,
+			"description":    json1.Description,
+			"average_rating": json1.AverageRating,
+		})
+		fmt.Println("err", err)
+		assert.NoError(t, err)
+		mockProductService.On("ProductCreate", mock.AnythingOfType("*context.emptyCtx"), mock.AnythingOfType("*model.Product")).Return(json1, nil)
+		request, err := http.NewRequest(http.MethodPost, "/products", bytes.NewBuffer(reqBody))
+		fmt.Println("err", err)
+		assert.NoError(t, err)
+		router.ServeHTTP(rr, request)
+		respBody, err := json.Marshal(gin.H{
+			"product":json1,
+		})
+		fmt.Println("err", err)
+		assert.NoError(t, err)
 
-// func TestProductDelete(t *testing.T) {
-// 	gin.SetMode(gin.TestMode)
-// 	t.Run("Success", func(t *testing.T) {
-// 		router := gin.Default()
-// 		mockProductService := new(mocks.MockProductService)
-// 		NewHandler(&Config{
-// 			R:              router,
-// 			ProductService: mockProductService,
-// 		})
-// 		p := &model.Product{ProductId: 0, ProductName: "name"}
-// 		mockProductService.On("ProductDelete", mock.AnythingOfType("*context.emptyCtx"), p.ProductId).Return(p)
-// 		reqBody, err := json.Marshal(gin.H{
-// 			"product": p,
-// 		})
-// 		rr := httptest.NewRecorder()
-// 		fmt.Println("err", err)
-// 		assert.NoError(t, err)
-// 		id := strconv.Itoa(int(p.ProductId))
-// 		request, err := http.NewRequest(http.MethodDelete, "/products/"+id, bytes.NewBuffer(reqBody))
-// 		request.Header.Set("Content-Type", "application/json")
-// 		fmt.Println("err", err)
-// 		assert.NoError(t, err)
-// 		router.ServeHTTP(rr, request)
-// 		respBody, err := json.Marshal(gin.H{
-// 			"product": p,
-// 		})
-// 		fmt.Println("err", err)
-// 		assert.NoError(t, err)
-// 		assert.Equal(t, http.StatusOK, rr.Code)
-// 		fmt.Println("http.StatusOK", http.StatusOK)
-// 		assert.Equal(t, respBody, rr.Body.Bytes())
-// 		fmt.Println("respBody", string(respBody))
-// 		fmt.Println("rr.Body.Bytes()", rr.Body.String())
-// 	})
-// }
+		assert.Equal(t, http.StatusOK, rr.Code)
+		fmt.Println("http.StatusOK", http.StatusOK)
+		assert.Equal(t, respBody, rr.Body.Bytes())
+		fmt.Println(string(respBody))
+		fmt.Println(rr.Body.String())
+	})
+	// gin.SetMode(gin.TestMode)
+
+	// t.Run("Success", func(t *testing.T) {
+	// 	router := gin.Default()
+	// 	mockProductService := new(mocks.MockProductService)
+	// 	NewHandler(&Config{
+	// 		R:              router,
+	// 		ProductService: mockProductService,
+	// 	})
+	// 	p := &model.Product{
+	// 		ProductId:     1,
+	// 		ProductName:   "product_name1",
+	// 		Slug:          "slug1",
+	// 		ProductImage:  "http://placehold.jp/150x150.png",
+	// 		Brand:         "brand1",
+	// 		Price:         1,
+	// 		CategoryName:  "category_name1",
+	// 		CountInStock:  1,
+	// 		Description:   "description1",
+	// 		AverageRating: 1,
+	// 	}
+	// 	fmt.Println("p", p)
+	// 	mockProductService.On("ProductCreate", mock.AnythingOfType("*context.emptyCtx"), mock.AnythingOfType("*model.Product")).Return(p)
+	// 	reqBody, err := json.Marshal(gin.H{
+	// 		"product": p,
+	// 	})
+	// 	rr := httptest.NewRecorder()
+	// 	fmt.Println("err", err)
+	// 	assert.NoError(t, err)
+	// 	request, err := http.NewRequest(http.MethodPost, "/products", bytes.NewBuffer(reqBody))
+	// 	request.Header.Set("Content-Type", "application/json")
+	// 	fmt.Println("err", err)
+	// 	assert.NoError(t, err)
+	// 	router.ServeHTTP(rr, request)
+	// 	respBody, err := json.Marshal(gin.H{
+	// 		"product": p,
+	// 	})
+	// 	fmt.Println("err", err)
+	// 	assert.NoError(t, err)
+	// 	assert.Equal(t, http.StatusOK, rr.Code)
+	// 	fmt.Println("http.StatusOK", http.StatusOK)
+	// 	assert.Equal(t, respBody, rr.Body.Bytes())
+	// 	fmt.Println("respBody", string(respBody))
+	// 	fmt.Println("rr.Body.Bytes()", rr.Body.String())
+	// })
+}
+
+// // func TestProductFindByID(t *testing.T) {
+// // 	gin.SetMode(gin.TestMode)
+// // 	t.Run("Success", func(t *testing.T) {
+// // 		router := gin.Default()
+// // 		mockProductService := new(mocks.MockProductService)
+// // 		NewHandler(&Config{
+// // 			R:              router,
+// // 			ProductService: mockProductService,
+// // 		})
+// // 		p := &model.Product{ProductId: 0, ProductName: "name1"}
+// // 		fmt.Println("p", p)
+// // 		mockProductService.On("ProductFindByID", mock.AnythingOfType("*context.emptyCtx"), p.ProductId).Return(p)
+// // 		reqBody, err := json.Marshal(gin.H{
+// // 			"product": p,
+// // 		})
+// // 		id := strconv.Itoa(int(p.ProductId))
+// // 		rr := httptest.NewRecorder()
+// // 		fmt.Println("err", err)
+// // 		assert.NoError(t, err)
+// // 		request, err := http.NewRequest(http.MethodGet, "/products/"+id, bytes.NewBuffer(reqBody))
+// // 		request.Header.Set("Content-Type", "application/json")
+// // 		fmt.Println("err", err)
+// // 		assert.NoError(t, err)
+// // 		router.ServeHTTP(rr, request)
+// // 		respBody, err := json.Marshal(gin.H{
+// // 			"product": p,
+// // 		})
+// // 		fmt.Println("err", err)
+// // 		assert.NoError(t, err)
+// // 		assert.Equal(t, http.StatusOK, rr.Code)
+// // 		fmt.Println("http.StatusOK", http.StatusOK)
+// // 		assert.Equal(t, respBody, rr.Body.Bytes())
+// // 		fmt.Println("respBody", string(respBody))
+// // 		fmt.Println("rr.Body.Bytes()", rr.Body.String())
+// // 	})
+// // }
+
+// // func TestProductFindByName(t *testing.T) {
+// // 	gin.SetMode(gin.TestMode)
+// // 	t.Run("Success", func(t *testing.T) {
+// // 		router := gin.Default()
+// // 		mockProductService := new(mocks.MockProductService)
+// // 		NewHandler(&Config{
+// // 			R:              router,
+// // 			ProductService: mockProductService,
+// // 		})
+// // 		p := &model.Product{ProductId: 0, ProductName: "name"}
+// // 		fmt.Println("p", p)
+// // 		mockProductService.On("ProductFindByName", mock.AnythingOfType("*context.emptyCtx"), p.ProductName).Return(p)
+// // 		reqBody, err := json.Marshal(gin.H{
+// // 			"product": p,
+// // 		})
+// // 		rr := httptest.NewRecorder()
+// // 		fmt.Println("err", err)
+// // 		assert.NoError(t, err)
+// // 		request, err := http.NewRequest(http.MethodGet, "/products/search/"+p.ProductName, bytes.NewBuffer(reqBody))
+// // 		request.Header.Set("Content-Type", "application/json")
+// // 		fmt.Println("err", err)
+// // 		assert.NoError(t, err)
+// // 		router.ServeHTTP(rr, request)
+// // 		respBody, err := json.Marshal(gin.H{
+// // 			"product": p,
+// // 		})
+// // 		fmt.Println("err", err)
+// // 		assert.NoError(t, err)
+// // 		assert.Equal(t, http.StatusOK, rr.Code)
+// // 		fmt.Println("http.StatusOK", http.StatusOK)
+// // 		assert.Equal(t, respBody, rr.Body.Bytes())
+// // 		fmt.Println("respBody", string(respBody))
+// // 		fmt.Println("rr.Body.Bytes()", rr.Body.String())
+// // 	})
+// // }
+
+// // func TestProductUpdate(t *testing.T) {
+// // 	gin.SetMode(gin.TestMode)
+// // 	t.Run("Success", func(t *testing.T) {
+// // 		router := gin.Default()
+// // 		mockProductService := new(mocks.MockProductService)
+// // 		NewHandler(&Config{
+// // 			R:              router,
+// // 			ProductService: mockProductService,
+// // 		})
+// // 		p := &model.Product{ProductId: 0, ProductName: "name"}
+// // 		mockProductService.On("ProductUpdate", mock.AnythingOfType("*context.emptyCtx"), p.ProductId,mock.AnythingOfType("*model.Product")).Return(p)
+// // 		reqBody, err := json.Marshal(gin.H{
+// // 			"product": p,
+// // 		})
+// // 		rr := httptest.NewRecorder()
+// // 		fmt.Println("err", err)
+// // 		assert.NoError(t, err)
+// // 		id := strconv.Itoa(int(p.ProductId))
+// // 		request, err := http.NewRequest(http.MethodPut, "/products/"+id, bytes.NewBuffer(reqBody))
+// // 		request.Header.Set("Content-Type", "application/json")
+// // 		fmt.Println("err", err)
+// // 		assert.NoError(t, err)
+// // 		router.ServeHTTP(rr, request)
+// // 		respBody, err := json.Marshal(gin.H{
+// // 			"product": p,
+// // 		})
+// // 		fmt.Println("err", err)
+// // 		assert.NoError(t, err)
+// // 		assert.Equal(t, http.StatusOK, rr.Code)
+// // 		fmt.Println("http.StatusOK", http.StatusOK)
+// // 		assert.Equal(t, respBody, rr.Body.Bytes())
+// // 		fmt.Println("respBody", string(respBody))
+// // 		fmt.Println("rr.Body.Bytes()", rr.Body.String())
+// // 	})
+// // }
+
+// // func TestProductDelete(t *testing.T) {
+// // 	gin.SetMode(gin.TestMode)
+// // 	t.Run("Success", func(t *testing.T) {
+// // 		router := gin.Default()
+// // 		mockProductService := new(mocks.MockProductService)
+// // 		NewHandler(&Config{
+// // 			R:              router,
+// // 			ProductService: mockProductService,
+// // 		})
+// // 		p := &model.Product{ProductId: 0, ProductName: "name"}
+// // 		mockProductService.On("ProductDelete", mock.AnythingOfType("*context.emptyCtx"), p.ProductId).Return(p)
+// // 		reqBody, err := json.Marshal(gin.H{
+// // 			"product": p,
+// // 		})
+// // 		rr := httptest.NewRecorder()
+// // 		fmt.Println("err", err)
+// // 		assert.NoError(t, err)
+// // 		id := strconv.Itoa(int(p.ProductId))
+// // 		request, err := http.NewRequest(http.MethodDelete, "/products/"+id, bytes.NewBuffer(reqBody))
+// // 		request.Header.Set("Content-Type", "application/json")
+// // 		fmt.Println("err", err)
+// // 		assert.NoError(t, err)
+// // 		router.ServeHTTP(rr, request)
+// // 		respBody, err := json.Marshal(gin.H{
+// // 			"product": p,
+// // 		})
+// // 		fmt.Println("err", err)
+// // 		assert.NoError(t, err)
+// // 		assert.Equal(t, http.StatusOK, rr.Code)
+// // 		fmt.Println("http.StatusOK", http.StatusOK)
+// // 		assert.Equal(t, respBody, rr.Body.Bytes())
+// // 		fmt.Println("respBody", string(respBody))
+// // 		fmt.Println("rr.Body.Bytes()", rr.Body.String())
+// // 	})
+// // }
 
 // // 	rr := httptest.NewRecorder()
 // // 	router := gin.Default()
