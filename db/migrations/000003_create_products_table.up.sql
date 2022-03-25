@@ -8,5 +8,7 @@ CREATE TABLE IF NOT EXISTS products (
   category_name VARCHAR NOT NULL,
   count_in_stock INTEGER NOT NULL DEFAULT 0,
   description VARCHAR NOT NULL DEFAULT 'description',
-  average_rating INTEGER NOT NULL DEFAULT 0
+  average_rating INTEGER NOT NULL DEFAULT 0,
+  created_at timestamptz NOT NULL DEFAULT (now()),
+  updated_at timestamptz NOT NULL
 );

@@ -1,13 +1,12 @@
 package model
 
 import (
-	"github.com/google/uuid"
 	"time"
 )
 
 // User defines domain model and its json and db representations
 type Shipping struct {
-	ShippingId uuid.UUID `db:"shipping_id" json:"shipping_id"`
+	ShippingId int64     `db:"shipping_id" json:"shipping_id"`
 	Address    string    `db:"address" json:"address"`
 	City       string    `db:"city" json:"city"`
 	PostalCode string    `db:"postal_code" json:"postal_code"`
