@@ -14,6 +14,7 @@ import (
 
 // Handler struct holds required services for handler to function
 type Handler struct {
+	CartService    model.CartService
 	UserService    model.UserService
 	ProductService model.ProductService
 	TokenService   model.TokenService
@@ -24,6 +25,7 @@ type Handler struct {
 // handler layer on handler initialization
 type Config struct {
 	R               *gin.Engine
+	CartService    model.CartService
 	UserService     model.UserService
 	ProductService  model.ProductService
 	TokenService    model.TokenService
@@ -37,6 +39,7 @@ type Config struct {
 func NewHandler(c *Config) {
 	// Create a handler (which will later have injected services)
 	h := &Handler{
+		CartService:    c.CartService,
 		UserService:    c.UserService,
 		ProductService: c.ProductService,
 		TokenService:   c.TokenService,
