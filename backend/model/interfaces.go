@@ -51,47 +51,50 @@ type ImageRepository interface {
 	UpdateProfile(ctx context.Context, objName string, imageFile multipart.File) (string, error)
 }
 type ProductService interface {
-	ProductList(ctx context.Context) ([]Product,error)
-	ProductCreate(ctx context.Context, p *Product) (*Product,error)
-	ProductFindByID(ctx context.Context, id int64) (*Product,error)
-	ProductUpdate(ctx context.Context, id int64, p *Product)( *Product,error)
-	ProductDelete(ctx context.Context, id int64) (*Product,error)
-	ProductFindByName(ctx context.Context, name string)( *Product,error)
+	ProductList(ctx context.Context) ([]Product, error)
+	ProductCreate(ctx context.Context, p *Product) (*Product, error)
+	ProductFindByID(ctx context.Context, id int64) (*Product, error)
+	ProductUpdate(ctx context.Context, id int64, p *Product) (*Product, error)
+	ProductDelete(ctx context.Context, id int64) (*Product, error)
+	ProductFindByName(ctx context.Context, name string) (*Product, error)
 }
 type ProductRepository interface {
-	ProductList(ctx context.Context) ([]Product,error)
-	ProductCreate(ctx context.Context, p *Product)( *Product,error)
-	ProductFindByID(ctx context.Context, id int64)( *Product,error)
-	ProductUpdate(ctx context.Context, id int64, p *Product)( *Product,error)
-	ProductDelete(ctx context.Context, id int64) (*Product,error)
-	ProductFindByName(ctx context.Context, name string) (*Product,error)
+	ProductList(ctx context.Context) ([]Product, error)
+	ProductCreate(ctx context.Context, p *Product) (*Product, error)
+	ProductFindByID(ctx context.Context, id int64) (*Product, error)
+	ProductUpdate(ctx context.Context, id int64, p *Product) (*Product, error)
+	ProductDelete(ctx context.Context, id int64) (*Product, error)
+	ProductFindByName(ctx context.Context, name string) (*Product, error)
 }
-
 
 type CategoryService interface {
-	CategoryList(ctx context.Context) ([]Category,error)
-	CategoryCreate(ctx context.Context, c *Category) (*Category,error)
-	CategoryFindByID(ctx context.Context, id int64) (*Category,error)
-	CategoryUpdate(ctx context.Context, id int64, c *Category)( *Category,error)
-	CategoryDelete(ctx context.Context, id int64) (*Category,error)
-	CategoryFindByName(ctx context.Context, name string)( *Category,error)
+	CategoryList(ctx context.Context) ([]Category, error)
+	CategoryCreate(ctx context.Context, c *Category) (*Category, error)
+	CategoryFindByID(ctx context.Context, id int64) (*Category, error)
+	CategoryUpdate(ctx context.Context, id int64, c *Category) (*Category, error)
+	CategoryDelete(ctx context.Context, id int64) (*Category, error)
+	CategoryFindByName(ctx context.Context, name string) (*Category, error)
 }
 type CategoryRepository interface {
-	CategoryList(ctx context.Context) ([]Category,error)
-	CategoryCreate(ctx context.Context, c *Category)( *Category,error)
-	CategoryFindByID(ctx context.Context, id int64)( *Category,error)
-	CategoryUpdate(ctx context.Context, id int64, c *Category)( *Category,error)
-	CategoryDelete(ctx context.Context, id int64) (*Category,error)
-	CategoryFindByName(ctx context.Context, name string) (*Category,error)
+	CategoryList(ctx context.Context) ([]Category, error)
+	CategoryCreate(ctx context.Context, c *Category) (*Category, error)
+	CategoryFindByID(ctx context.Context, id int64) (*Category, error)
+	CategoryUpdate(ctx context.Context, id int64, c *Category) (*Category, error)
+	CategoryDelete(ctx context.Context, id int64) (*Category, error)
+	CategoryFindByName(ctx context.Context, name string) (*Category, error)
 }
 
 type CartService interface {
-	CartList(ctx context.Context,userID uuid.UUID) ([]Cart,error)
-	CartAdd(ctx context.Context,userID uuid.UUID, productId int64,quantity int64) (*Cart,error)
-	CartRemove(ctx context.Context,userID uuid.UUID,productId int64,quantity int64) (*Cart,error)
+	CartGet(ctx context.Context, userID uuid.UUID) ([]CartItem, error)
+	CartAddItem(ctx context.Context, cartId int64, productId int64, quantity int64) ([]CartItem, error)
+	CartDeleteItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
+	CartIncrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
+	CartDecrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
 }
 type CartRepository interface {
-	CartList(ctx context.Context,userID uuid.UUID) ([]Cart,error)
-	CartAdd(ctx context.Context,userID uuid.UUID, productId int64,quantity int64) (*Cart,error)
-	CartRemove(ctx context.Context,userID uuid.UUID, productId int64,quantity int64) (*Cart,error)
+	CartGet(ctx context.Context, userID uuid.UUID) ([]CartItem, error)
+	CartAddItem(ctx context.Context, cartId int64, productId int64, quantity int64) ([]CartItem, error)
+	CartDeleteItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
+	CartIncrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
+	CartDecrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
 }

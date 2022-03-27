@@ -25,7 +25,7 @@ type Handler struct {
 // handler layer on handler initialization
 type Config struct {
 	R               *gin.Engine
-	CartService    model.CartService
+	CartService     model.CartService
 	UserService     model.UserService
 	ProductService  model.ProductService
 	TokenService    model.TokenService
@@ -58,6 +58,11 @@ func NewHandler(c *Config) {
 		g.PUT("/products/:id", h.ProductUpdate)
 		g.DELETE("/products/:id", h.ProductDelete)
 		g.GET("/products/search/:name", h.ProductFindByName)
+		g.POST("/carts", h.CartGet)
+		g.POST("/carts/add", h.CartAddItem)
+		g.POST("/carts/delete", h.CartDeleteItem)
+		g.POST("/carts/increment", h.CartIncrementItem)
+		g.POST("/carts/decrement", h.CartDecrementItem)
 		// g.GET("/", h.SampleGetList)
 		// g.POST("/", h.SamplePost)
 		// g.GET("/:id", h.SampleGetFindByID)
