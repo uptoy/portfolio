@@ -98,3 +98,14 @@ type CartRepository interface {
 	CartIncrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
 	CartDecrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
 }
+
+type OrderService interface {
+	OrderList(ctx context.Context, userID uuid.UUID) ([]Order, error)
+	OrderCreate(ctx context.Context, order *Order) (*Order, error)
+	OrderFindByID(ctx context.Context, orderId int64) (*Order, error)
+}
+type OrderRepository interface {
+	OrderList(ctx context.Context, userID uuid.UUID) ([]Order, error)
+	OrderCreate(ctx context.Context, order *Order) (*Order, error)
+	OrderFindByID(ctx context.Context, orderId int64) (*Order, error)
+}

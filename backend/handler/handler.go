@@ -5,15 +5,16 @@ import (
 	"net/http"
 	"time"
 
-	// "backend/handler/middleware"
+	"backend/handler/middleware"
 	"backend/model"
-	// "backend/model/apperrors"
+	"backend/model/apperrors"
 	"github.com/gin-gonic/gin"
 	// "strconv"
 )
 
 // Handler struct holds required services for handler to function
 type Handler struct {
+	OrderService   model.OrderService
 	CartService    model.CartService
 	UserService    model.UserService
 	ProductService model.ProductService
@@ -25,6 +26,7 @@ type Handler struct {
 // handler layer on handler initialization
 type Config struct {
 	R               *gin.Engine
+	OrderService    model.OrderService
 	CartService     model.CartService
 	UserService     model.UserService
 	ProductService  model.ProductService
@@ -39,6 +41,7 @@ type Config struct {
 func NewHandler(c *Config) {
 	// Create a handler (which will later have injected services)
 	h := &Handler{
+		OrderService:   c.OrderService,
 		CartService:    c.CartService,
 		UserService:    c.UserService,
 		ProductService: c.ProductService,
@@ -47,54 +50,49 @@ func NewHandler(c *Config) {
 	} // currently has no properties
 
 	// Create an account group
-	g := c.R.Group(c.BaseURL)
+	api := c.R.Group(c.BaseURL)
 
-	if gin.Mode() != gin.TestMode {
-		// g.Use(middleware.Timeout(c.TimeoutDuration, apperrors.NewServiceUnavailable()))
-		// g.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
-		g.GET("/products", h.ProductList)
-		g.POST("/products", h.ProductCreate)
-		g.GET("/products/:id", h.ProductFindByID)
-		g.PUT("/products/:id", h.ProductUpdate)
-		g.DELETE("/products/:id", h.ProductDelete)
-		g.GET("/products/search/:name", h.ProductFindByName)
-		g.POST("/carts", h.CartGet)
-		g.POST("/carts/add", h.CartAddItem)
-		g.POST("/carts/delete", h.CartDeleteItem)
-		g.POST("/carts/increment", h.CartIncrementItem)
-		g.POST("/carts/decrement", h.CartDecrementItem)
-		// g.GET("/", h.SampleGetList)
-		// g.POST("/", h.SamplePost)
-		// g.GET("/:id", h.SampleGetFindByID)
-		// g.PUT("/:id", h.SampleUpdate)
-		// g.DELETE("/:id", h.SampleDelete)
-		// g.GET("/search/:name", h.SampleGetFindByName)
-		// g.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
-		// g.POST("/image", middleware.AuthUser(h.TokenService), h.Image)
-		// g.DELETE("/image", middleware.AuthUser(h.TokenService), h.DeleteImage)
-	} else {
-		// g.GET("/me", h.Me)
-		g.GET("/products", h.ProductList)
-		g.POST("/products", h.ProductCreate)
-		g.GET("/products/:id", h.ProductFindByID)
-		g.PUT("/products/:id", h.ProductUpdate)
-		g.DELETE("/products/:id", h.ProductDelete)
-		g.GET("/products/search/:name", h.ProductFindByName)
-		// g.GET("/", h.SampleGetList)
-		// g.POST("/", h.SamplePost)
-		// g.GET("/:id", h.SampleGetFindByID)
-		// g.PUT("/:id", h.SampleUpdate)
-		// g.DELETE("/:id", h.SampleDelete)
-		// g.GET("/search/:name", h.SampleGetFindByName)
-		// g.POST("/signout", h.Signout)
-		// g.PUT("/details", h.Details)
-		// g.POST("/image", h.Image)
-		// g.DELETE("/image", h.DeleteImage)
+	api.Use(middleware.Timeout(c.TimeoutDuration, apperrors.NewServiceUnavailable()))
+	products := api.Group("/products")
+	{
+		products.GET("/", h.ProductList)
+		products.POST("/", h.ProductCreate)
+		products.GET("/:id", h.ProductFindByID)
+		products.PUT("/:id", h.ProductUpdate)
+		products.DELETE("/:id", h.ProductDelete)
+		products.GET("/search/:name", h.ProductFindByName)
 	}
-
-	g.POST("/signup", h.Signup)
-	g.POST("/signin", h.Signin)
-	g.POST("/tokens", h.Tokens)
+	carts := api.Group("/carts")
+	{
+		carts.POST("/", h.CartGet)
+		carts.POST("/carts/add", h.CartAddItem)
+		carts.POST("/carts/delete", h.CartDeleteItem)
+		carts.POST("/carts/increment", h.CartIncrementItem)
+		carts.POST("/carts/decrement", h.CartDecrementItem)
+	}
+	sample := api.Group("/sample")
+	{
+		sample.GET("/", h.SampleGetList)
+		sample.POST("/", h.SamplePost)
+		sample.GET("/:id", h.SampleGetFindByID)
+		sample.PUT("/:id", h.SampleUpdate)
+		sample.DELETE("/:id", h.SampleDelete)
+		sample.GET("/search/:name", h.SampleGetFindByName)
+	}
+	order := api.Group("/orders")
+	{
+		order.POST("/create", h.OrderCreate)
+		order.GET("/", h.OrderList)
+		order.GET("/:id", h.OrderFindByID)
+	}
+	// api.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
+	api.POST("/image", middleware.AuthUser(h.TokenService), h.Image)
+	api.DELETE("/image", middleware.AuthUser(h.TokenService), h.DeleteImage)
+	api.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
+	api.POST("/signup", h.Signup)
+	api.POST("/signin", h.Signin)
+	api.POST("/signout", h.Signout)
+	api.POST("/tokens", h.Tokens)
 }
 
 // func (h *Handler) Sample(c *gin.Context) {
