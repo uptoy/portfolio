@@ -70,7 +70,7 @@ func (r *pGCartRepository) CartAddItem(ctx context.Context, cartId int64, produc
 
 func (r *pGCartRepository) CartDeleteItem(ctx context.Context, cartId int64, productId int64) ([]model.CartItem, error) {
 	cart := []model.CartItem{}
-	query := `delete from cart_items where cart_id = $1 AND product_id = $2 returning *`
+	query := `DELETE FROM cart_items WHERE cart_id = $1 AND product_id = $2 returning *`
 	if err := r.DB.GetContext(ctx, &cart, query, cartId, productId); err != nil {
 		log.Printf("Unable to remove cart: %v. Err: %v\n", cart, err)
 		return nil, apperrors.NewNotFound("cart", "cart")
