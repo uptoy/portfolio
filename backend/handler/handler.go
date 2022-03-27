@@ -14,6 +14,7 @@ import (
 
 // Handler struct holds required services for handler to function
 type Handler struct {
+	ReviewService  model.ReviewService
 	OrderService   model.OrderService
 	CartService    model.CartService
 	UserService    model.UserService
@@ -26,6 +27,7 @@ type Handler struct {
 // handler layer on handler initialization
 type Config struct {
 	R               *gin.Engine
+	ReviewService   model.ReviewService
 	OrderService    model.OrderService
 	CartService     model.CartService
 	UserService     model.UserService
@@ -41,6 +43,7 @@ type Config struct {
 func NewHandler(c *Config) {
 	// Create a handler (which will later have injected services)
 	h := &Handler{
+		ReviewService:  c.ReviewService,
 		OrderService:   c.OrderService,
 		CartService:    c.CartService,
 		UserService:    c.UserService,
@@ -60,6 +63,10 @@ func NewHandler(c *Config) {
 		products.GET("/:id", h.ProductFindByID)
 		products.PUT("/:id", h.ProductUpdate)
 		products.DELETE("/:id", h.ProductDelete)
+		products.GET("/:id/reviews", h.ReviewList)
+		products.POST("/:id/reviews", h.ReviewCreate)
+		products.PUT("/:id/reviews", h.ReviewUpdate)
+		products.DELETE("/:id/reviews", h.ReviewUpdate)
 		products.GET("/search/:name", h.ProductFindByName)
 	}
 	carts := api.Group("/carts")

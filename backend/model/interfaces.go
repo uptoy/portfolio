@@ -109,3 +109,16 @@ type OrderRepository interface {
 	OrderCreate(ctx context.Context, order *Order) (*Order, error)
 	OrderFindByID(ctx context.Context, orderId int64) (*Order, error)
 }
+
+type ReviewService interface {
+	ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]Review, error)
+	ReviewCreate(ctx context.Context, userId uuid.UUID, review *Review) (*Review, error)
+	ReviewUpdate(ctx context.Context, reviewId int64, review *Review) (*Review, error)
+	ReviewDelete(ctx context.Context, reviewId int64) (*Review, error)
+}
+type ReviewRepository interface {
+	ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]Review, error)
+	ReviewCreate(ctx context.Context, userId uuid.UUID, review *Review) (*Review, error)
+	ReviewUpdate(ctx context.Context, reviewId int64, review *Review) (*Review, error)
+	ReviewDelete(ctx context.Context, reviewId int64) (*Review, error)
+}
