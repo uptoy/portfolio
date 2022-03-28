@@ -92,9 +92,26 @@ func NewHandler(c *Config) {
 		order.GET("/", h.OrderList)
 		order.GET("/:id", h.OrderFindByID)
 	}
+	// admin := api.Group("/admin")
+	// {
+	// admin.POST("/signup", h.AdminSignup)
+	// admin.POST("/signin", h.AdminSignin)
+	// admin.POST("/signout", h.AdminSignout)
+	// admin.PUT("/order/update", h.AdminOrderUpdate)
+	// admin.GET("/order/orders", h.AdminOrderList)
+	// }
+	// address := api.Group("/address")
+	// {
+	// 	admin.GET("/", h.AddressList)
+	// 	admin.POST("/create", h.CreateAddress)
+	// 	admin.GET("/:id", h.AddressFindByID)
+	// 	admin.PUT("/update/:id", h.AddressUpdate)
+	// 	admin.DELETE("/delete/:id", h.AddressDelete)
+	// }
 	// api.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
-	api.POST("/image", middleware.AuthUser(h.TokenService), h.Image)
-	api.DELETE("/image", middleware.AuthUser(h.TokenService), h.DeleteImage)
+	// api.POST("/image/:filename", h.ImageAWS)
+	// api.POST("/image", middleware.AuthUser(h.TokenService), h.Image)
+	// api.DELETE("/image", middleware.AuthUser(h.TokenService), h.DeleteImage)
 	api.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
 	api.POST("/signup", h.Signup)
 	api.POST("/signin", h.Signin)
@@ -102,11 +119,11 @@ func NewHandler(c *Config) {
 	api.POST("/tokens", h.Tokens)
 }
 
-// func (h *Handler) Sample(c *gin.Context) {
-// 	c.JSON(http.StatusOK, gin.H{
-// 		"hello": "world",
-// 	})
-// }
+func (h *Handler) Sample(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"hello": "world",
+	})
+}
 
 func (h *Handler) SamplePost(c *gin.Context) {
 	type JsonRequest struct {

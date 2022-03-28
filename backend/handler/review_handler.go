@@ -5,17 +5,25 @@ import (
 	"fmt"
 	"log"
 	"strconv"
-
 	"backend/model/apperrors"
 	"net/http"
-	// // "fmt"
-
 	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) ReviewList(c *gin.Context) {
 	ctx := c.Request.Context()
-	p, err := h.ReviewService.ReviewList(ctx)
+	user, exists := c.Get("user")
+	if !exists {
+		log.Printf("Unable to extract user from request context for unknown reason: %v\n", c)
+		err := apperrors.NewInternal()
+		c.JSON(err.Status(), gin.H{
+			"error": err,
+		})
+		return
+	}
+	userId := user.(*model.User).UserId
+	productId := int64(1)
+	result, err := h.ReviewService.ReviewList(ctx, productId, userId)
 	if err != nil {
 		log.Printf("Unable to find reviews: %v", err)
 		e := apperrors.NewNotFound("reviews", "err")
@@ -26,7 +34,7 @@ func (h *Handler) ReviewList(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": p,
+		"jsons": result,
 	})
 }
 
@@ -36,16 +44,29 @@ func (h *Handler) ReviewCreate(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	json = model.Review{
-	}
 	ctx := c.Request.Context()
-	p, _ := h.ReviewService.ReviewCreate(ctx, &json)
+	user, exists := c.Get("user")
+	if !exists {
+		log.Printf("Unable to extract user from request context for unknown reason: %v\n", c)
+		err := apperrors.NewInternal()
+		c.JSON(err.Status(), gin.H{
+			"error": err,
+		})
+
+		return
+	}
+	userId := user.(*model.User).UserId
+	review := &model.Review{
+		Title:   json.Title,
+		Comment: json.Comment,
+		Rating:  json.Rating,
+	}
+	result, _ := h.ReviewService.ReviewCreate(ctx, userId, review)
 
 	c.JSON(http.StatusOK, gin.H{
-		"review": p,
+		"review": result,
 	})
 }
-
 
 func (h *Handler) ReviewUpdate(c *gin.Context) {
 	ctx := c.Request.Context()
@@ -55,15 +76,18 @@ func (h *Handler) ReviewUpdate(c *gin.Context) {
 		return
 	}
 	id := c.Param("id")
-	uid, err := strconv.ParseInt(id, 0, 64)
+	reviewId, err := strconv.ParseInt(id, 0, 64)
 	if err != nil {
 		log.Fatal("err", err)
 		fmt.Println("err", err)
 		return
 	}
-	p1 := &model.Review{
+	review := &model.Review{
+		Title:   json.Title,
+		Comment: json.Comment,
+		Rating:  json.Rating,
 	}
-	p, err := h.ReviewService.ReviewUpdate(ctx, uid, p1)
+	result, err := h.ReviewService.ReviewUpdate(ctx, reviewId, review)
 	if err != nil {
 		log.Printf("Unable to update review: %v", err)
 		e := apperrors.NewNotFound("review", "err")
@@ -74,20 +98,20 @@ func (h *Handler) ReviewUpdate(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"review": p,
+		"review": result,
 	})
 }
 
 func (h *Handler) ReviewDelete(c *gin.Context) {
 	ctx := c.Request.Context()
 	id := c.Param("id")
-	uid, err := strconv.ParseInt(id, 0, 64)
+	reviewId, err := strconv.ParseInt(id, 0, 64)
 	if err != nil {
 		log.Fatal("err", err)
 		fmt.Println("err", err)
 		return
 	}
-	p, err := h.ReviewService.ReviewDelete(ctx, uid)
+	result, err := h.ReviewService.ReviewDelete(ctx, reviewId)
 	if err != nil {
 		log.Printf("Unable to delete review: %v", err)
 		e := apperrors.NewNotFound("review", "err")
@@ -97,6 +121,6 @@ func (h *Handler) ReviewDelete(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"review": p,
+		"review": result,
 	})
 }
