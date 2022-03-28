@@ -14,6 +14,7 @@ import (
 
 // Handler struct holds required services for handler to function
 type Handler struct {
+	PaymentService model.PaymentService
 	ReviewService  model.ReviewService
 	OrderService   model.OrderService
 	CartService    model.CartService
@@ -27,6 +28,7 @@ type Handler struct {
 // handler layer on handler initialization
 type Config struct {
 	R               *gin.Engine
+	PaymentService  model.PaymentService
 	ReviewService   model.ReviewService
 	OrderService    model.OrderService
 	CartService     model.CartService
@@ -43,6 +45,7 @@ type Config struct {
 func NewHandler(c *Config) {
 	// Create a handler (which will later have injected services)
 	h := &Handler{
+		PaymentService: c.PaymentService,
 		ReviewService:  c.ReviewService,
 		OrderService:   c.OrderService,
 		CartService:    c.CartService,
@@ -92,6 +95,17 @@ func NewHandler(c *Config) {
 		order.GET("/", h.OrderList)
 		order.GET("/:id", h.OrderFindByID)
 	}
+	auth := api.Group("/auth")
+	{
+		auth.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
+		auth.POST("/signup", h.Signup)
+		auth.POST("/signin", h.Signin)
+		auth.POST("/signout", h.Signout)
+		auth.POST("/tokens", h.Tokens)
+		auth.POST("/forgot_password", h.Sample)
+		auth.POST("/reset_password", h.Sample)
+	}
+	api.POST("/payment", h.Payment)
 	// admin := api.Group("/admin")
 	// {
 	// admin.POST("/signup", h.AdminSignup)
@@ -112,11 +126,6 @@ func NewHandler(c *Config) {
 	// api.POST("/image/:filename", h.ImageAWS)
 	// api.POST("/image", middleware.AuthUser(h.TokenService), h.Image)
 	// api.DELETE("/image", middleware.AuthUser(h.TokenService), h.DeleteImage)
-	api.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
-	api.POST("/signup", h.Signup)
-	api.POST("/signin", h.Signin)
-	api.POST("/signout", h.Signout)
-	api.POST("/tokens", h.Tokens)
 }
 
 func (h *Handler) Sample(c *gin.Context) {

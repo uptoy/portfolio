@@ -122,3 +122,7 @@ type ReviewRepository interface {
 	ReviewUpdate(ctx context.Context, reviewId int64, review *Review) (*Review, error)
 	ReviewDelete(ctx context.Context, reviewId int64) (*Review, error)
 }
+
+type PaymentService interface {
+	Payment(amount int64, email string) (error)
+}

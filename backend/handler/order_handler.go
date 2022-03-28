@@ -66,13 +66,13 @@ func (h *Handler) OrderFindByID(c *gin.Context) {
 	id := c.Param("id")
 	uid, _ := strconv.ParseInt(id, 0, 64)
 	ctx := c.Request.Context()
-	p, err := h.ProductService.ProductFindByID(ctx, uid)
+	result, err := h.ProductService.ProductFindByID(ctx, uid)
 	if err != nil {
 		log.Fatal("err", err)
 		fmt.Println("err", err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"product": p,
+		"product": result,
 	})
 }
