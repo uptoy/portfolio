@@ -40,6 +40,13 @@ services:
       app_net:
         ipv4_address: 192.168.0.3
 
+  smtp:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+
 networks:
   app_net:
     ipam:
