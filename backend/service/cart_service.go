@@ -24,7 +24,7 @@ func (s *cartService) CartGet(ctx context.Context, userID uuid.UUID) ([]model.Ca
 	var err error
 	cart, err := s.CartRepository.CartGet(ctx, userID)
 	if err != nil {
-		return cart, err
+		return nil, err
 	}
 	return cart, nil
 }

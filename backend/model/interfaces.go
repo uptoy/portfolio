@@ -140,3 +140,18 @@ type WishlistRepository interface {
 	WishlistDelete(ctx context.Context, userId uuid.UUID, productId int64) ([]Product, error)
 	WishlistClear(ctx context.Context, userId uuid.UUID) error
 }
+
+type AddressService interface {
+	AddressCreate(ctx context.Context, userId uuid.UUID, address *Address) (*Address, error)
+	AddressList(ctx context.Context, userId uuid.UUID) ([]Address, error)
+	AddressFindByID(ctx context.Context, addressId int64) (*Address, error)
+	AddressUpdate(ctx context.Context, addressId int64, address *Address) (*Address, error)
+	AddressDelete(ctx context.Context, addressId int64) (*Address, error)
+}
+type AddressRepository interface {
+	AddressCreate(ctx context.Context, userId uuid.UUID, address *Address) (*Address, error)
+	AddressList(ctx context.Context, userId uuid.UUID) ([]Address, error)
+	AddressFindByID(ctx context.Context, addressId int64) (*Address, error)
+	AddressUpdate(ctx context.Context, addressId int64, address *Address) (*Address, error)
+	AddressDelete(ctx context.Context, addressId int64) (*Address, error)
+}

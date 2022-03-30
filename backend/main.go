@@ -86,7 +86,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	 */
 	// userRepository := repository.NewUserRepository(d.DB)
 	productRepository := repository.NewProductRepository(d.DB)
-	wishlistRepository := repository.NewWishlistRepository(d.DB)
+	addressRepository := repository.NewAddressRepository(d.DB)
 	// tokenRepository := repository.NewTokenRepository(d.RedisClient)
 	// bucketName := os.Getenv("GC_IMAGE_BUCKET")
 	// imageRepository := repository.NewImageRepository(d.StorageClient, bucketName)
@@ -101,8 +101,8 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	productService := service.NewProductService(&service.PSConfig{
 		ProductRepository: productRepository,
 	})
-	wishlistService := service.NewWishlistService(&service.WishlistServiceConfig{
-		WishlistRepository: wishlistRepository,
+	addressService := service.NewAddressService(&service.AddressServiceConfig{
+		AddressRepository: addressRepository,
 	})
 
 	// load rsa keys
@@ -175,9 +175,9 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	}
 
 	handler.NewHandler(&handler.Config{
-		R:               router,
-		ProductService:  productService,
-		WishlistService: wishlistService,
+		R:              router,
+		ProductService: productService,
+		AddressService: addressService,
 		// UserService:     userService,
 		// TokenService:    tokenService,
 		BaseURL:         baseURL,

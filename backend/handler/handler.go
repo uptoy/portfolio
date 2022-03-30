@@ -1,7 +1,6 @@
 package handler
 
 import (
-	// "log"
 	"net/http"
 	"time"
 
@@ -9,11 +8,11 @@ import (
 	"backend/model"
 	"backend/model/apperrors"
 	"github.com/gin-gonic/gin"
-	// "strconv"
 )
 
 // Handler struct holds required services for handler to function
 type Handler struct {
+	AddressService  model.AddressService
 	WishlistService model.WishlistService
 	PaymentService  model.PaymentService
 	ReviewService   model.ReviewService
@@ -29,6 +28,7 @@ type Handler struct {
 // handler layer on handler initialization
 type Config struct {
 	R               *gin.Engine
+	AddressService  model.AddressService
 	WishlistService model.WishlistService
 	PaymentService  model.PaymentService
 	ReviewService   model.ReviewService
@@ -47,6 +47,7 @@ type Config struct {
 func NewHandler(c *Config) {
 	// Create a handler (which will later have injected services)
 	h := &Handler{
+		AddressService: c.AddressService,
 		WishlistService: c.WishlistService,
 		PaymentService:  c.PaymentService,
 		ReviewService:   c.ReviewService,
@@ -112,13 +113,6 @@ func NewHandler(c *Config) {
 		auth.POST("/password/reset", h.ResetPassword)
 		auth.POST("/password/reset/send", h.SendPasswordResetEmail)
 	}
-	wishlist := api.Group("/wishlist")
-	{
-		wishlist.GET("/", h.WishlistGet)
-		wishlist.POST("/", h.WishlistCreate)
-		wishlist.DELETE("/:product_id", h.WishlistDelete)
-		wishlist.DELETE("/clear", h.WishlistClear)
-	}
 	api.POST("/payment", h.Payment)
 	// admin := api.Group("/admin")
 	// {
@@ -130,7 +124,6 @@ func NewHandler(c *Config) {
 	// }
 	address := api.Group("/address")
 	{
-
 		address.POST("/create", h.AddressCreate)
 		address.GET("/", h.AddressList)
 		address.GET("/:id", h.AddressFindByID)
