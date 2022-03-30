@@ -22,7 +22,7 @@ func NewReviewRepository(db *sqlx.DB) model.ReviewRepository {
 
 func (r *pGReviewRepository) ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]model.Review, error) {
 	reviews := []model.Review{}
-	query1 := `SELECT EXISTS (SELECT * FROM reviews where product_id = $1 and user_id = $2)`
+	query1 := `SELECT EXISTS (SELECT * FROM reviews WHERE product_id = $1 AND user_id = $2)`
 	if err := r.DB.GetContext(ctx, &reviews, query1, productId, userId); err != nil {
 		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
 			log.Printf("Could not create a reviews: Reason: %v\n", err.Code.Name())
@@ -32,9 +32,9 @@ func (r *pGReviewRepository) ReviewList(ctx context.Context, productId int64, us
 		return nil, apperrors.NewInternal()
 	}
 	query2 :=
-		`SELECT users.fullname as name, reviews.* FROM reviews
-	join users
-	on users.user_id = reviews.user_id
+		`SELECT users.fullname AS name, reviews.* FROM reviews
+	JOIN users
+	ON users.user_id = reviews.user_id
 	WHERE product_id = $1`
 	if err := r.DB.GetContext(ctx, &reviews, query2, productId); err != nil {
 		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
@@ -52,7 +52,7 @@ func (r *pGReviewRepository) ReviewList(ctx context.Context, productId int64, us
 func (r *pGReviewRepository) ReviewCreate(ctx context.Context, userId uuid.UUID, review *model.Review) (*model.Review, error) {
 
 	query := `INSERT INTO reviews(user_id, product_id, content, rating)
-	VALUES($1, $2, $3, $4) returning *
+	VALUES($1, $2, $3, $4) RETURNING *
  `
 	if err := r.DB.GetContext(ctx, &review, query); err != nil {
 		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
@@ -68,7 +68,7 @@ func (r *pGReviewRepository) ReviewCreate(ctx context.Context, userId uuid.UUID,
 
 func (r *pGReviewRepository) ReviewUpdate(ctx context.Context, reviewId int64, review *model.Review) (*model.Review, error) {
 	query :=
-		`UPDATE reviews set content = $1, rating = $2 where id = $3 returning *`
+		`UPDATE reviews SET content = $1, rating = $2 WHERE id = $3 RETURNING *`
 	if err := r.DB.GetContext(ctx, review, query); err != nil {
 		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
 			log.Printf("Could not create a review: Reason: %v\n", err.Code.Name())
@@ -82,7 +82,7 @@ func (r *pGReviewRepository) ReviewUpdate(ctx context.Context, reviewId int64, r
 
 func (r *pGReviewRepository) ReviewDelete(ctx context.Context, reviewId int64) (*model.Review, error) {
 	review := model.Review{}
-	query := `DELETE from reviews where review_id = $1 returning *`
+	query := `DELETE FROM reviews WHERE review_id = $1 RETURNING *`
 	if err := r.DB.GetContext(ctx, &review, query, reviewId); err != nil {
 		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
 			log.Printf("Could not create a review: Reason: %v\n", err.Code.Name())

@@ -8,6 +8,7 @@ import (
 
 	"golang.org/x/text/encoding/japanese"
 	"golang.org/x/text/transform"
+	"github.com/gin-gonic/gin"
 )
 
 var (
@@ -17,7 +18,7 @@ var (
 	cc   = []string{"testtest@gmail.com"}
 )
 
-func main() {
+func (h *Handler) EmailSend(c *gin.Context) {
 	message := strings.NewReader("testtest")
 	transformer := japanese.ISO2022JP.NewEncoder()
 	newMessage, _ := ioutil.ReadAll(transform.NewReader(message, transformer))

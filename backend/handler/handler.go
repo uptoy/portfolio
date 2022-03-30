@@ -14,20 +14,22 @@ import (
 
 // Handler struct holds required services for handler to function
 type Handler struct {
-	PaymentService model.PaymentService
-	ReviewService  model.ReviewService
-	OrderService   model.OrderService
-	CartService    model.CartService
-	UserService    model.UserService
-	ProductService model.ProductService
-	TokenService   model.TokenService
-	MaxBodyBytes   int64
+	WishlistService model.WishlistService
+	PaymentService  model.PaymentService
+	ReviewService   model.ReviewService
+	OrderService    model.OrderService
+	CartService     model.CartService
+	UserService     model.UserService
+	ProductService  model.ProductService
+	TokenService    model.TokenService
+	MaxBodyBytes    int64
 }
 
 // Config will hold services that will eventually be injected into this
 // handler layer on handler initialization
 type Config struct {
 	R               *gin.Engine
+	WishlistService model.WishlistService
 	PaymentService  model.PaymentService
 	ReviewService   model.ReviewService
 	OrderService    model.OrderService
@@ -45,14 +47,15 @@ type Config struct {
 func NewHandler(c *Config) {
 	// Create a handler (which will later have injected services)
 	h := &Handler{
-		PaymentService: c.PaymentService,
-		ReviewService:  c.ReviewService,
-		OrderService:   c.OrderService,
-		CartService:    c.CartService,
-		UserService:    c.UserService,
-		ProductService: c.ProductService,
-		TokenService:   c.TokenService,
-		MaxBodyBytes:   c.MaxBodyBytes,
+		WishlistService: c.WishlistService,
+		PaymentService:  c.PaymentService,
+		ReviewService:   c.ReviewService,
+		OrderService:    c.OrderService,
+		CartService:     c.CartService,
+		UserService:     c.UserService,
+		ProductService:  c.ProductService,
+		TokenService:    c.TokenService,
+		MaxBodyBytes:    c.MaxBodyBytes,
 	} // currently has no properties
 
 	// Create an account group
@@ -86,7 +89,7 @@ func NewHandler(c *Config) {
 		sample.POST("/", h.SamplePost)
 		sample.GET("/:id", h.SampleGetFindByID)
 		sample.PUT("/:id", h.SampleUpdate)
-		sample.DELETE("/:id", h.SampleDelete)
+		sample.DELETE("/:id", h.SampleDELETE)
 		sample.GET("/search/:name", h.SampleGetFindByName)
 	}
 	order := api.Group("/orders")
@@ -94,16 +97,27 @@ func NewHandler(c *Config) {
 		order.POST("/create", h.OrderCreate)
 		order.GET("/", h.OrderList)
 		order.GET("/:id", h.OrderFindByID)
+		// order.PUT("/order/update", h.OrderUpdate)
 	}
 	auth := api.Group("/auth")
 	{
+		// /token/refresh
 		auth.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
 		auth.POST("/signup", h.Signup)
 		auth.POST("/signin", h.Signin)
 		auth.POST("/signout", h.Signout)
 		auth.POST("/tokens", h.Tokens)
-		auth.POST("/forgot_password", h.Sample)
-		auth.POST("/reset_password", h.Sample)
+		auth.POST("/email/verify", h.VerifyUserEmail)
+		auth.POST("/email/verify/send", h.SendVerificationEmail)
+		auth.POST("/password/reset", h.ResetPassword)
+		auth.POST("/password/reset/send", h.SendPasswordResetEmail)
+	}
+	wishlist := api.Group("/wishlist")
+	{
+		wishlist.GET("/", h.WishlistGet)
+		wishlist.POST("/", h.WishlistCreate)
+		wishlist.DELETE("/:product_id", h.WishlistDelete)
+		wishlist.DELETE("/clear", h.WishlistClear)
 	}
 	api.POST("/payment", h.Payment)
 	// admin := api.Group("/admin")
@@ -114,18 +128,21 @@ func NewHandler(c *Config) {
 	// admin.PUT("/order/update", h.AdminOrderUpdate)
 	// admin.GET("/order/orders", h.AdminOrderList)
 	// }
-	// address := api.Group("/address")
-	// {
-	// 	admin.GET("/", h.AddressList)
-	// 	admin.POST("/create", h.CreateAddress)
-	// 	admin.GET("/:id", h.AddressFindByID)
-	// 	admin.PUT("/update/:id", h.AddressUpdate)
-	// 	admin.DELETE("/delete/:id", h.AddressDelete)
-	// }
+	address := api.Group("/address")
+	{
+
+		address.POST("/create", h.AddressCreate)
+		address.GET("/", h.AddressList)
+		address.GET("/:id", h.AddressFindByID)
+		address.PUT("/update/:id", h.AddressUpdate)
+		address.DELETE("/delete/:id", h.AddressDelete)
+	}
+	// user := api.Group("/user")
+	// user.GET("/", h.UserList)
 	// api.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
 	// api.POST("/image/:filename", h.ImageAWS)
 	// api.POST("/image", middleware.AuthUser(h.TokenService), h.Image)
-	// api.DELETE("/image", middleware.AuthUser(h.TokenService), h.DeleteImage)
+	// api.DELETE("/image", middleware.AuthUser(h.TokenService), h.DELETEImage)
 }
 
 func (h *Handler) Sample(c *gin.Context) {
@@ -214,7 +231,7 @@ func (h *Handler) SampleUpdate(c *gin.Context) {
 		"str": json.Str,
 	})
 }
-func (h *Handler) SampleDelete(c *gin.Context) {
+func (h *Handler) SampleDELETE(c *gin.Context) {
 	// id := c.Param("id")
 	type JsonRequest struct {
 		Int int    `json:"int"`

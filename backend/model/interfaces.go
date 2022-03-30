@@ -124,5 +124,19 @@ type ReviewRepository interface {
 }
 
 type PaymentService interface {
-	Payment(amount int64, email string) (error)
+	Payment(amount int64, email string) error
+}
+
+type WishlistService interface {
+	WishlistGet(ctx context.Context, userId uuid.UUID) ([]Product, error)
+	WishlistCreate(ctx context.Context, userId uuid.UUID, productId int64) ([]Product, error)
+	WishlistDelete(ctx context.Context, userId uuid.UUID, productId int64) ([]Product, error)
+	WishlistClear(ctx context.Context, userId uuid.UUID) error
+}
+
+type WishlistRepository interface {
+	WishlistGet(ctx context.Context, userId uuid.UUID) ([]Product, error)
+	WishlistCreate(ctx context.Context, userId uuid.UUID, productId int64) ([]Product, error)
+	WishlistDelete(ctx context.Context, userId uuid.UUID, productId int64) ([]Product, error)
+	WishlistClear(ctx context.Context, userId uuid.UUID) error
 }

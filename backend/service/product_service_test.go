@@ -101,7 +101,8 @@ func TestProductFindByID(t *testing.T) {
 		ps := NewProductService(&PSConfig{
 			ProductRepository: mockProductRepository,
 		})
-		mockProductRepository.On("ProductFindByID", mock.AnythingOfType("*context.emptyCtx"), mockProduct.ProductId).Return(mockProduct, nil)
+		productId := mockProduct.ProductId
+		mockProductRepository.On("ProductFindByID", mock.AnythingOfType("*context.emptyCtx"), productId).Return(mockProduct, nil)
 		ctx := context.TODO()
 		product, err := ps.ProductFindByID(ctx, mockProduct.ProductId)
 		assert.NoError(t, err)
@@ -129,7 +130,8 @@ func TestProductFindByName(t *testing.T) {
 		ps := NewProductService(&PSConfig{
 			ProductRepository: mockProductRepository,
 		})
-		mockProductRepository.On("ProductFindByName", mock.AnythingOfType("*context.emptyCtx"), mockProduct.ProductName).Return(mockProduct, nil)
+		productName := mockProduct.ProductName
+		mockProductRepository.On("ProductFindByName", mock.AnythingOfType("*context.emptyCtx"), productName).Return(mockProduct, nil)
 		ctx := context.TODO()
 		product, err := ps.ProductFindByName(ctx, mockProduct.ProductName)
 		assert.NoError(t, err)
@@ -157,7 +159,8 @@ func TestProductUpdate(t *testing.T) {
 		ps := NewProductService(&PSConfig{
 			ProductRepository: mockProductRepository,
 		})
-		mockProductRepository.On("ProductUpdate", mock.AnythingOfType("*context.emptyCtx"), mockProduct.ProductId, mockProduct).Return(mockProduct, nil)
+		productId := mockProduct.ProductId
+		mockProductRepository.On("ProductUpdate", mock.AnythingOfType("*context.emptyCtx"), productId, mockProduct).Return(mockProduct, nil)
 		ctx := context.TODO()
 		product, err := ps.ProductUpdate(ctx, mockProduct.ProductId, mockProduct)
 		assert.NoError(t, err)
@@ -185,7 +188,8 @@ func TestProductDelete(t *testing.T) {
 		ps := NewProductService(&PSConfig{
 			ProductRepository: mockProductRepository,
 		})
-		mockProductRepository.On("ProductDelete", mock.AnythingOfType("*context.emptyCtx"), mockProduct.ProductId).Return(mockProduct, nil)
+		productId := mockProduct.ProductId
+		mockProductRepository.On("ProductDelete", mock.AnythingOfType("*context.emptyCtx"), productId).Return(mockProduct, nil)
 		ctx := context.TODO()
 		product, err := ps.ProductDelete(ctx, mockProduct.ProductId)
 		assert.NoError(t, err)

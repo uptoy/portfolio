@@ -4,14 +4,9 @@ import (
 	"backend/model"
 	"backend/model/apperrors"
 	"context"
-
-	// "fmt"
-
-	// "database/sql"
 	"log"
 	"strconv"
 
-	// "github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
 )
@@ -39,43 +34,6 @@ func (r *pGProductRepository) ProductCreate(ctx context.Context, p *model.Produc
 	}
 	return p, nil
 }
-
-// "product_name":"p1",
-// "slug":"s1",
-// "product_image":"http://placehold.jp/150x150.png",
-// "brand":"brand",
-// "price",1,
-// "category_name","category1",
-// "count_in_stock":1,
-// "description":"desc",
-// "average_rating":1
-
-// r.DB.NamedExec("INSERT INTO products (product_name, slug, product_image,brand,price,category_name,count_in_stock,description,average_rating) VALUES (:product_name, :slug, :product_image, :brand,:price,:category_name,:count_in_stock,:description,:average_rating)", p)
-
-// query := "INSERT INTO products (product_name, slug,product_image,brand,price,category_name,count_in_stock,description,average_rating) VALUES ($1, $2,$3, $4,$5, $6,$7, $8, $9) RETURNING *"
-// if err := r.DB.GetContext(ctx, p, query, p.ProductName, p.Slug, p.ProductImage, p.Brand, p.Price, p.CategoryName, p.CountInStock, p.Description, p.AverageRating); err != nil {
-// 	// check unique constraint
-// 	if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
-// 		log.Printf("Could not create a product: %v. Reason: %v\n", p.ProductName, err.Code.Name())
-// 		return nil, apperrors.NewConflict("product", p.ProductName)
-// 	}
-
-// 	log.Printf("Could not create a product : %v. Reason: %v\n", p.ProductName, err)
-// 	return nil, apperrors.NewInternal()
-// }
-
-// product := &model.Product{}
-// query := `INSERT INTO products (p.product_name, p.slug, p.product_image, p.brand, p.price, p.category_name, p.count_in_stock, p.description, p.average_rating) VALUES ($1, $2,$3, $4,$5,$6, $7,$8, $9) RETURNING *`
-// if err := r.DB.GetContext(ctx, product, query, p.ProductName, p.Slug, p.ProductImage, p.Brand, p.Price, p.CategoryName, p.CountInStock, p.Description, p.AverageRating); err != nil {
-// 	// check unique constraint
-// 	if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
-// 		log.Printf("Could not create a product: %v. Reason: %v\n", p.ProductName, err.Code.Name())
-// 		return nil, apperrors.NewConflict("product", p.ProductName)
-// 	}
-// 	log.Printf("Could not create a product : %v. Reason: %v\n", p.ProductName, err)
-// 	return nil, apperrors.NewInternal()
-// }
-// return product, nil
 
 func (r *pGProductRepository) ProductList(ctx context.Context) ([]model.Product, error) {
 	products := []model.Product{}
