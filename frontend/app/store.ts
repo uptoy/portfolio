@@ -2,6 +2,8 @@ import {configureStore, ThunkAction, Action} from "@reduxjs/toolkit"
 import {createWrapper} from "next-redux-wrapper"
 import counterReducer from "features/counter/counterSlice"
 import authReducer from "features/auth/authSlice"
+import categoryReducer from "features/category/categorySlice"
+import productReducer from "features/product/productSlice"
 import {useDispatch, useSelector, TypedUseSelectorHook} from "react-redux"
 import Cookies from "js-cookie"
 
@@ -10,6 +12,8 @@ export function makeStore() {
     reducer: {
       counter: counterReducer,
       auth: authReducer,
+      category: categoryReducer,
+      product: productReducer,
     },
   })
 }
