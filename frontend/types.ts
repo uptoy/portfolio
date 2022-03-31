@@ -85,6 +85,26 @@ export type UserSubmitForm = {
   password: string
   confirmPassword: string
 }
+
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  language: string;
+  theme: string;
+  currency: string;
+  is_email_verified: boolean;
+}
+
+
+export interface DateRange {
+  label: string;
+  start_date: string;
+  end_date: string;
+}
+
+
 // export interface IUser {
 //   id: string
 //   name: string
