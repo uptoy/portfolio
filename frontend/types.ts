@@ -102,12 +102,6 @@ export interface DateRange {
   end_date: string
 }
 
-export interface Product {
-  id: string
-  title: string
-  user_id: string
-}
-
 // export interface IUser {
 //   id: string
 //   name: string
@@ -188,7 +182,25 @@ export interface ICategory {
 }
 
 export interface Category {
-  id: string;
-  title: string;
-  user_id: string;
+  id: number
+  title: string
+  user_id: string
+}
+
+export interface Product {
+  id: number
+  title: string
+  user_id: string
+}
+
+export interface Cart {
+  id: number
+  title: string
+  user_id: string
+}
+
+export interface Wishlist {
+  id: number
+  title: string
+  user_id: string
 }

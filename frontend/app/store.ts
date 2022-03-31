@@ -4,6 +4,7 @@ import counterReducer from "features/counter/counterSlice"
 import authReducer from "features/auth/authSlice"
 import categoryReducer from "features/category/categorySlice"
 import productReducer from "features/product/productSlice"
+import cartReducer from "features/cart/cartSlice"
 import {useDispatch, useSelector, TypedUseSelectorHook} from "react-redux"
 import Cookies from "js-cookie"
 
@@ -14,6 +15,7 @@ export function makeStore() {
       auth: authReducer,
       category: categoryReducer,
       product: productReducer,
+      cart: cartReducer,
     },
   })
 }
