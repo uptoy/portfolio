@@ -192,3 +192,9 @@ export interface Category {
   title: string;
   user_id: string;
 }
+
+export interface Cart {
+  id: string;
+  title: string;
+  user_id: string;
+}
