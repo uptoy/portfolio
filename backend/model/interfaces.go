@@ -46,10 +46,18 @@ type TokenRepository interface {
 	DeleteUserRefreshTokens(ctx context.Context, userID string) error
 }
 
-
 // ImageRepository defines methods it expects a repository
 // it interacts with to implement
 type ImageRepository interface {
 	DeleteProfile(ctx context.Context, objName string) error
 	UpdateProfile(ctx context.Context, objName string, imageFile multipart.File) (string, error)
+}
+
+type AuthRepository interface {
+	ResetPassword(ctx context.Context, resetPassword *ResetPassword) error
+	ForgotPassword(ctx context.Context, resetPassword *ResetPassword)  (*ResetPassword, error)
+}
+type AuthService interface {
+	ResetPassword(ctx context.Context, resetPassword *ResetPassword) error
+	ForgotPassword(ctx context.Context, resetPassword *ResetPassword)  (*ResetPassword, error)
 }
