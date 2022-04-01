@@ -203,3 +203,9 @@ export interface Address {
   title: string
   user_id: string
 }
+
+export interface Cart{
+  id: number
+  title: string
+  user_id: string
+}
