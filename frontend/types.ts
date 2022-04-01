@@ -198,3 +198,8 @@ export interface Order {
   title: string
   user_id: string
 }
+export interface Address {
+  id: number
+  title: string
+  user_id: string
+}

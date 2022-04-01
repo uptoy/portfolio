@@ -1,15 +1,21 @@
-import {configureStore, ThunkAction, Action} from "@reduxjs/toolkit"
-import {createWrapper} from "next-redux-wrapper"
-import counterReducer from "features/counter/counterSlice"
-import authReducer from "features/auth/authSlice"
-import {useDispatch, useSelector, TypedUseSelectorHook} from "react-redux"
-import Cookies from "js-cookie"
+import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
+import { createWrapper } from 'next-redux-wrapper'
+import addressReducer from 'features/address/addressSlice'
+import authReducer from 'features/auth/authSlice'
+import orderReducer from 'features/order/orderSlice'
+import productReducer from 'features/product/productSlice'
+import reviewReducer from 'features/review/reviewSlice'
+import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux'
+import Cookies from 'js-cookie'
 
 export function makeStore() {
   return configureStore({
     reducer: {
-      counter: counterReducer,
+      address: addressReducer,
       auth: authReducer,
+      order: orderReducer,
+      product: productReducer,
+      review: reviewReducer,
     },
   })
 }
@@ -17,13 +23,18 @@ export function makeStore() {
 const store = makeStore()
 
 store.subscribe(() => {
-  const {user} = store.getState().auth
-  Cookies.set("currentUser", JSON.stringify(user))
+  const { user } = store.getState().auth
+  Cookies.set('currentUser', JSON.stringify(user))
 })
 export default store
 export type AppState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
-export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppState, unknown, Action<string>>
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  AppState,
+  unknown,
+  Action<string>
+>
 export const useAppDispatch = () => useDispatch<AppDispatch>()
 export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector
 
