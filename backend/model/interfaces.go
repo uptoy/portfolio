@@ -44,12 +44,11 @@ type TokenRepository interface {
 }
 
 type AuthService interface {
-	// ForgotPassword()
 	ForgotPassword(ctx context.Context, passwordReset *PasswordReset) error
-	// ResetPassword(ctx context.Context, newPassword string, passwordReset *PasswordReset) error
+	ResetPassword(ctx context.Context, newPassword string, passwordReset *PasswordReset) error
 }
 
 type AuthRepository interface {
 	ForgotPassword(ctx context.Context, passwordReset *PasswordReset) error
-	// ResetPassword(ctx context.Context, newPassword string, passwordReset *PasswordReset) error
+	ResetPassword(ctx context.Context, newPassword string, passwordReset *PasswordReset) error
 }

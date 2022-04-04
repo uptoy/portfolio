@@ -82,11 +82,11 @@ func (h *Handler) ResetPassword(c *gin.Context) {
 	email := reset.Email
 	password := reset.Password
 	passwordConfirm := reset.PasswordConfirm
-	fmt.Println("password", password)
-	fmt.Println("passwordConfirm", passwordConfirm)
+	// fmt.Println("password", password)
+	// fmt.Println("passwordConfirm", passwordConfirm)
 	// token := reset.Token
-	fmt.Println("reset", reset)
-	fmt.Println("token", token)
+	// fmt.Println("reset", reset)
+	// fmt.Println("token", token)
 	if password != passwordConfirm {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Passwords do not match",
@@ -98,13 +98,14 @@ func (h *Handler) ResetPassword(c *gin.Context) {
 		Email: email,
 		Token: token,
 	}
-	fmt.Println("passwordReset", passwordReset)
+	// fmt.Println("passwordReset", passwordReset)
 	err := h.AuthService.ResetPassword(ctx, password, &passwordReset)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Failed to reset password",
 			"status":  http.StatusBadRequest,
 		})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"message": "success",
