@@ -5,9 +5,9 @@ import (
 	"crypto/rsa"
 	"log"
 
-	"github.com/google/uuid"
 	"backend/model"
 	"backend/model/apperrors"
+	"github.com/google/uuid"
 )
 
 // tokenService used for injecting an implementation of TokenRepository
@@ -130,4 +130,13 @@ func (s *tokenService) ValidateRefreshToken(tokenString string) (*model.RefreshT
 		ID:  tokenUUID,
 		UID: claims.UID,
 	}, nil
+}
+
+func (s *tokenService) ForgotPasswordToken(ctx context.Context, email string, prevTokenID string) (string, error) {
+	token, err := generateForgotPasswordToken(email, s.PrivKey, s.IDExpirationSecs)
+	if err != nil {
+		log.Printf("Error generating token for uid: %v. Error: %v\n", email, err.Error())
+		return token, apperrors.NewInternal()
+	}
+	return token, nil
 }
