@@ -31,22 +31,19 @@ func (s *authService) ForgotPassword(ctx context.Context, passwordReset *model.P
 		log.Printf("Unable to service forgot password: %v\n", passwordReset.Email)
 		return apperrors.NewInternal()
 	}
-	if err := s.AuthRepository.ForgotPassword(ctx, passwordReset); err != nil {
-		return err
-	}
-	return apperrors.NewInternal()
+	return nil
 }
 
-func (s *authService) ResetPassword(ctx context.Context, newPassword string, passwordReset *model.PasswordReset) error {
-	hashPassword, err := hashPassword(newPassword)
-	if err != nil {
-		log.Printf("Unable to reset password hash: %v\n", passwordReset.Email)
-		return apperrors.NewInternal()
-	}
-	err1 := s.AuthRepository.ResetPassword(ctx, hashPassword, passwordReset)
-	if err1 != nil {
-		log.Printf("Unable to service reset password: %v\n", passwordReset.Email)
-		return apperrors.NewAuthorization("Invalid reset password")
-	}
-	return apperrors.NewInternal()
-}
+// func (s *authService) ResetPassword(ctx context.Context, newPassword string, passwordReset *model.PasswordReset) error {
+// 	hashPassword, err := hashPassword(newPassword)
+// 	if err != nil {
+// 		log.Printf("Unable to reset password hash: %v\n", passwordReset.Email)
+// 		return apperrors.NewInternal()
+// 	}
+// 	err1 := s.AuthRepository.ResetPassword(ctx, hashPassword, passwordReset)
+// 	if err1 != nil {
+// 		log.Printf("Unable to service reset password: %v\n", passwordReset.Email)
+// 		return apperrors.NewAuthorization("Invalid reset password")
+// 	}
+// 	return apperrors.NewInternal()
+// }

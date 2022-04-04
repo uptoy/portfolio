@@ -1,4 +1,4 @@
-package formaterror
+package utils
 
 import (
 	"strings"

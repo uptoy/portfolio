@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"net/http"
 	"time"
 
 	"backend/handler/middleware"
@@ -14,7 +15,6 @@ type Handler struct {
 	AuthService  model.AuthService
 	UserService  model.UserService
 	TokenService model.TokenService
-	MaxBodyBytes int64
 }
 
 // Config will hold services that will eventually be injected into this
@@ -26,7 +26,6 @@ type Config struct {
 	TokenService    model.TokenService
 	BaseURL         string
 	TimeoutDuration time.Duration
-	MaxBodyBytes    int64
 }
 
 // NewHandler initializes the handler with required injected services along with http routes
@@ -37,21 +36,31 @@ func NewHandler(c *Config) {
 		AuthService:  c.AuthService,
 		UserService:  c.UserService,
 		TokenService: c.TokenService,
-		MaxBodyBytes: c.MaxBodyBytes,
 	} // currently has no properties
 
-	// Create an api group
-	g := c.R.Group(c.BaseURL)
+	// Create an account group
+	api := c.R.Group(c.BaseURL)
 
-	g.Use(middleware.Timeout(c.TimeoutDuration, apperrors.NewServiceUnavailable()))
-	g.GET("/me", h.Me)
-	g.POST("/signout", h.Signout)
-	g.PUT("/details", h.Details)
-	g.POST("/image", h.Image)
-	g.DELETE("/image", h.DeleteImage)
-	g.POST("/signup", h.Signup)
-	g.POST("/signin", h.Signin)
-	g.POST("/tokens", h.Tokens)
-	g.POST("/forgot_password", h.ForgotPassword)
-	g.POST("/reset_password", h.ResetPassword)
+	api.Use(middleware.Timeout(c.TimeoutDuration, apperrors.NewServiceUnavailable()))
+	api.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
+	api.POST("/signout", middleware.AuthUser(h.TokenService), h.Signout)
+	api.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
+	api.POST("/forgot", h.ForgotPassword)
+	api.POST("/signup", h.Signup)
+	api.POST("/signin", h.Signin)
+	api.POST("/reset", h.ResetPassword)
+}
+
+// Image handler
+func (h *Handler) Forgot(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"hello": "it's image",
+	})
+}
+
+// DeleteImage handler
+func (h *Handler) DeleteImage(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"hello": "it's deleteImage",
+	})
 }
