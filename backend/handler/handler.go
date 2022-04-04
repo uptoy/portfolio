@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"net/http"
 	"time"
 
 	"backend/handler/middleware"
@@ -39,28 +38,25 @@ func NewHandler(c *Config) {
 	} // currently has no properties
 
 	// Create an account group
-	api := c.R.Group(c.BaseURL)
+	g := c.R.Group(c.BaseURL)
 
-	api.Use(middleware.Timeout(c.TimeoutDuration, apperrors.NewServiceUnavailable()))
-	api.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
-	api.POST("/signout", middleware.AuthUser(h.TokenService), h.Signout)
-	api.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
-	api.POST("/forgot", h.ForgotPassword)
-	api.POST("/signup", h.Signup)
-	api.POST("/signin", h.Signin)
-	api.POST("/reset", h.ResetPassword)
-}
-
-// Image handler
-func (h *Handler) Forgot(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"hello": "it's image",
-	})
-}
-
-// DeleteImage handler
-func (h *Handler) DeleteImage(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"hello": "it's deleteImage",
-	})
+	if gin.Mode() != gin.TestMode {
+		//auth
+		g.Use(middleware.Timeout(c.TimeoutDuration, apperrors.NewServiceUnavailable()))
+		g.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
+		g.POST("/signout", middleware.AuthUser(h.TokenService), h.Signout)
+		g.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
+	} else {
+		//こちらがテスト実行される
+		g.GET("/me", h.Me)
+		g.POST("/signout", h.Signout)
+		g.PUT("/details", h.Details)
+		// g.POST("/forgot", h.ForgotPassword)
+	}
+	//こちらがテスト実行される
+	g.POST("/signup", h.Signup)
+	g.POST("/signin", h.Signin)
+	g.POST("/tokens", h.Tokens)
+	g.POST("/forgot", h.ForgotPassword)
+	g.POST("/reset", h.ResetPassword)
 }
