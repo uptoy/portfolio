@@ -18,7 +18,7 @@ create-keypair:
 
 migrate-create:
 	@echo "---Creating migration files---"
-	migrate create -ext sql -dir $(PWD)/$(APPPATH)/migrations -seq -digits 5 $(NAME)
+	migrate create -ext sql -dir $(PWD)/$(APPPATH)migrations -seq -digits 5 $(NAME)
 
 migrate-up:
 	migrate -source $(PWD)/$(APPPATH)backend/migrations -database postgres://postgres:password@localhost:$(PORT)/postgres?sslmode=disable up $(N)
@@ -37,3 +37,10 @@ init:
 	$(MAKE) migrate-down APPPATH=backend N= && \
 	$(MAKE) migrate-up APPPATH=backend N= && \
 	docker-compose down
+
+in:
+	docker container prune
+	docker volume prune
+	docker image prune -a
+	docker network prune
+	docker system prune --volumes

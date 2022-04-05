@@ -2,10 +2,10 @@ FROM golang:alpine as builder
 
 WORKDIR /go/src/app
 
-# Get Reflex for live reload in dev
 ENV GO111MODULE=on
-RUN go get github.com/cespare/reflex
 
+
+RUN go install github.com/cespare/reflex@latest
 COPY go.mod .
 COPY go.sum .
 

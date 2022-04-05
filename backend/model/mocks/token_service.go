@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"backend/model"
-	"github.com/stretchr/testify/mock"
 	"github.com/google/uuid"
+	"github.com/stretchr/testify/mock"
 )
 
 // MockTokenService is a mock type for model.TokenService
@@ -80,5 +80,18 @@ func (m *MockTokenService) ValidateRefreshToken(refreshTokenString string) (*mod
 		r1 = ret.Get(1).(error)
 	}
 
+	return r0, r1
+}
+
+func (m *MockTokenService) ForgotPasswordToken(ctx context.Context, email string, prevTokenID string) (string, error) {
+	ret := m.Called(ctx, email, prevTokenID)
+	var r0 string
+	if ret.Get(0) != nil {
+		r0 = ret.Get(0).(string)
+	}
+	var r1 error
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
+	}
 	return r0, r1
 }
