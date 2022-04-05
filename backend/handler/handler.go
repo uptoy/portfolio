@@ -12,8 +12,9 @@ import (
 // Handler struct holds required services for handler to function
 type Handler struct {
 	AuthService    model.AuthService
+	ProductService    model.ProductService
+	CategoryService    model.CategoryService
 	UserService    model.UserService
-	ProductService model.ProductService
 	TokenService   model.TokenService
 	MaxBodyBytes   int64
 }
@@ -23,8 +24,9 @@ type Handler struct {
 type Config struct {
 	R               *gin.Engine
 	AuthService     model.AuthService
+	ProductService    model.ProductService
+	CategoryService    model.CategoryService
 	UserService     model.UserService
-	ProductService  model.ProductService
 	TokenService    model.TokenService
 	BaseURL         string
 	TimeoutDuration time.Duration
@@ -37,8 +39,9 @@ func NewHandler(c *Config) {
 	// Create a handler (which will later have injected services)
 	h := &Handler{
 		AuthService:    c.AuthService,
-		UserService:    c.UserService,
 		ProductService: c.ProductService,
+		CategoryService:    c.CategoryService,
+		UserService:    c.UserService,
 		TokenService:   c.TokenService,
 		MaxBodyBytes:   c.MaxBodyBytes,
 	} // currently has no properties

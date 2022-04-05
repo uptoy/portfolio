@@ -65,6 +65,7 @@ type ProductService interface {
 	ProductFindByName(ctx context.Context, productName string) (*Product, error)
 }
 
+
 type ProductRepository interface {
 	ProductList(ctx context.Context) ([]Product, error)
 	ProductCreate(ctx context.Context, product *Product) (*Product, error)
@@ -72,4 +73,21 @@ type ProductRepository interface {
 	ProductFindByName(ctx context.Context, productName string) (*Product, error)
 	ProductUpdate(ctx context.Context, productId int64, product *Product) (*Product, error)
 	ProductDelete(ctx context.Context, productId int64) (*Product, error)
+}
+
+type CategoryService interface {
+	CategoryList(ctx context.Context) ([]Category, error)
+	CategoryCreate(ctx context.Context, c *Category) (*Category, error)
+	CategoryFindByID(ctx context.Context, id int64) (*Category, error)
+	CategoryUpdate(ctx context.Context, id int64, c *Category) (*Category, error)
+	CategoryDelete(ctx context.Context, id int64) (*Category, error)
+	CategoryFindByName(ctx context.Context, name string) (*Category, error)
+}
+type CategoryRepository interface {
+	CategoryList(ctx context.Context) ([]Category, error)
+	CategoryCreate(ctx context.Context, c *Category) (*Category, error)
+	CategoryFindByID(ctx context.Context, id int64) (*Category, error)
+	CategoryUpdate(ctx context.Context, id int64, c *Category) (*Category, error)
+	CategoryDelete(ctx context.Context, id int64) (*Category, error)
+	CategoryFindByName(ctx context.Context, name string) (*Category, error)
 }
