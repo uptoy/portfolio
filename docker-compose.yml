@@ -1,17 +1,8 @@
 version: '3.1'
 
 services:
-
-  db:
-    container_name: postgresql_db
-    image: postgres
-    # automatically restarts the container - Docker daemon on restart or
-    # the container itself is manually restarted
-    restart: always
-
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
-
+  postgres-backend:
+    image: "postgres:alpine"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
@@ -21,7 +12,28 @@ services:
     networks:
       app_net:
         ipv4_address: 192.168.0.2
-
+  redis-backend:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    volumes:
+      - "redisdata:/data"
+  backend:
+    build:
+      context: ./backend
+      target: builder
+    image: backend
+    env_file: ./backend/.env.dev
+    expose:
+      - "8080"
+    environment:
+      - ENV=dev
+    volumes:
+      - ./backend:/go/src/app
+    depends_on:
+      - postgres-backend
+      - redis-backend
+    command: reflex -r "\.go$$" -s -- sh -c "go run ./"
   pgadmin:
     container_name: pgadmin4
     image: dpage/pgadmin4
@@ -39,6 +51,12 @@ services:
     networks:
       app_net:
         ipv4_address: 192.168.0.3
+    volumes:
+      - "pgdata_backend:/var/lib/postgresql/data"
+    command: ["postgres", "-c", "log_statement=all"]
+volumes:
+  pgdata_backend:
+  redisdata:
 
 networks:
   app_net:

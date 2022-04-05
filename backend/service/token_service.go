@@ -5,9 +5,9 @@ import (
 	"crypto/rsa"
 	"log"
 
-	"github.com/google/uuid"
 	"backend/model"
 	"backend/model/apperrors"
+	"github.com/google/uuid"
 )
 
 // tokenService used for injecting an implementation of TokenRepository
@@ -51,8 +51,8 @@ func NewTokenService(c *TSConfig) model.TokenService {
 // the tokens repository
 func (s *tokenService) NewPairFromUser(ctx context.Context, u *model.User, prevTokenID string) (*model.TokenPair, error) {
 	if prevTokenID != "" {
-		if err := s.TokenRepository.DeleteRefreshToken(ctx, u.UserId.String(), prevTokenID); err != nil {
-			log.Printf("Could not delete previous refreshToken for uid: %v, tokenID: %v\n", u.UserId.String(), prevTokenID)
+		if err := s.TokenRepository.DeleteRefreshToken(ctx, u.UID.String(), prevTokenID); err != nil {
+			log.Printf("Could not delete previous refreshToken for uid: %v, tokenID: %v\n", u.UID.String(), prevTokenID)
 
 			return nil, err
 		}
@@ -62,26 +62,26 @@ func (s *tokenService) NewPairFromUser(ctx context.Context, u *model.User, prevT
 	idToken, err := generateIDToken(u, s.PrivKey, s.IDExpirationSecs)
 
 	if err != nil {
-		log.Printf("Error generating idToken for uid: %v. Error: %v\n", u.UserId, err.Error())
+		log.Printf("Error generating idToken for uid: %v. Error: %v\n", u.UID, err.Error())
 		return nil, apperrors.NewInternal()
 	}
 
-	refreshToken, err := generateRefreshToken(u.UserId, s.RefreshSecret, s.RefreshExpirationSecs)
+	refreshToken, err := generateRefreshToken(u.UID, s.RefreshSecret, s.RefreshExpirationSecs)
 
 	if err != nil {
-		log.Printf("Error generating refreshToken for uid: %v. Error: %v\n", u.UserId, err.Error())
+		log.Printf("Error generating refreshToken for uid: %v. Error: %v\n", u.UID, err.Error())
 		return nil, apperrors.NewInternal()
 	}
 
 	// set freshly minted refresh token to valid list
-	if err := s.TokenRepository.SetRefreshToken(ctx, u.UserId.String(), refreshToken.ID.String(), refreshToken.ExpiresIn); err != nil {
-		log.Printf("Error storing tokenID for uid: %v. Error: %v\n", u.UserId, err.Error())
+	if err := s.TokenRepository.SetRefreshToken(ctx, u.UID.String(), refreshToken.ID.String(), refreshToken.ExpiresIn); err != nil {
+		log.Printf("Error storing tokenID for uid: %v. Error: %v\n", u.UID, err.Error())
 		return nil, apperrors.NewInternal()
 	}
 
 	return &model.TokenPair{
 		IDToken:      model.IDToken{SS: idToken},
-		RefreshToken: model.RefreshToken{SS: refreshToken.SS, ID: refreshToken.ID, UID: u.UserId},
+		RefreshToken: model.RefreshToken{SS: refreshToken.SS, ID: refreshToken.ID, UID: u.UID},
 	}, nil
 }
 
@@ -130,4 +130,13 @@ func (s *tokenService) ValidateRefreshToken(tokenString string) (*model.RefreshT
 		ID:  tokenUUID,
 		UID: claims.UID,
 	}, nil
+}
+
+func (s *tokenService) ForgotPasswordToken(ctx context.Context, email string, prevTokenID string) (string, error) {
+	token, err := generateForgotPasswordToken(email, s.PrivKey, s.IDExpirationSecs)
+	if err != nil {
+		log.Printf("Error generating token for uid: %v. Error: %v\n", email, err.Error())
+		return token, apperrors.NewInternal()
+	}
+	return token, nil
 }

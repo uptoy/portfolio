@@ -29,7 +29,7 @@ func (h *Handler) Me(c *gin.Context) {
 		return
 	}
 
-	uid := user.(*model.User).UserId
+	uid := user.(*model.User).UID
 
 	// use the Request Context
 	ctx := c.Request.Context()

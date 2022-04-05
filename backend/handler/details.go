@@ -28,7 +28,7 @@ func (h *Handler) UpdateUser(c *gin.Context) {
 
 	// Should be returned with current imageURL
 	u := &model.User{
-		UserId:     authUser.UserId,
+		UID:     authUser.UID,
 		Name:    req.Name,
 		Email:   req.Email,
 	}

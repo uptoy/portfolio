@@ -2,13 +2,13 @@ package service
 
 import (
 	"crypto/rsa"
-	"log"
 	"fmt"
+	"log"
 	"time"
 
+	"backend/model"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/google/uuid"
-	"backend/model"
 )
 
 // idTokenCustomClaims holds structure of jwt claims of idToken
@@ -16,7 +16,6 @@ type idTokenCustomClaims struct {
 	User *model.User `json:"user"`
 	jwt.StandardClaims
 }
-
 
 // generateIDToken generates an IDToken which is a jwt with myCustomClaims
 // Could call this GenerateIDTokenString, but the signature makes this fairly clear
@@ -40,6 +39,24 @@ func generateIDToken(u *model.User, key *rsa.PrivateKey, exp int64) (string, err
 		return "", err
 	}
 
+	return ss, nil
+}
+
+func generateForgotPasswordToken(email string, key *rsa.PrivateKey, exp int64) (string, error) {
+	unixTime := time.Now().Unix()
+	tokenExp := unixTime + exp
+	claims := idTokenCustomClaims{
+		StandardClaims: jwt.StandardClaims{
+			IssuedAt:  unixTime,
+			ExpiresAt: tokenExp,
+		},
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
+	ss, err := token.SignedString(key)
+	if err != nil {
+		log.Println("Failed to forgot password token string")
+		return "", err
+	}
 	return ss, nil
 }
 
@@ -114,7 +131,6 @@ func validateIDToken(tokenString string, key *rsa.PublicKey) (*idTokenCustomClai
 
 	claims, ok := token.Claims.(*idTokenCustomClaims)
 
-
 	if !ok {
 		return nil, fmt.Errorf("ID token valid but couldn't parse claims")
 	}
@@ -129,25 +145,20 @@ func validateRefreshToken(tokenString string, key string) (*refreshTokenCustomCl
 		return []byte(key), nil
 	})
 
-
 	// For now we'll just return the error and handle logging in service level
 	if err != nil {
 		return nil, err
 	}
 
-
 	if !token.Valid {
 		return nil, fmt.Errorf("Refresh token is invalid")
 	}
 
-
 	claims, ok := token.Claims.(*refreshTokenCustomClaims)
-
 
 	if !ok {
 		return nil, fmt.Errorf("Refresh token valid but couldn't parse claims")
 	}
-
 
 	return claims, nil
 }

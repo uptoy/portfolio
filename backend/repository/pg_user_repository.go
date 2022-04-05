@@ -92,6 +92,7 @@ func (r *pGUserRepository) Update(ctx context.Context, u *model.User) error {
 
 	return nil
 }
+<<<<<<< HEAD
 
 // UpdateImage is used to separately update a user's image separate from
 // other api details
@@ -114,3 +115,5 @@ func (r *pGUserRepository) UpdateImage(ctx context.Context, uid uuid.UUID, image
 
 	return u, nil
 }
+=======
+>>>>>>> 5ac364e5651865ca92d7f065e0cc60cea26bd157

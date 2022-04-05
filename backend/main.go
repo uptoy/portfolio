@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	// "io/ioutil"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -15,21 +15,19 @@ import (
 	"backend/handler"
 	"backend/repository"
 	"backend/service"
-	// "github.com/dgrijalva/jwt-go"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-
-	"cloud.google.com/go/storage"
 	"github.com/go-redis/redis/v8"
 	"github.com/jmoiron/sqlx"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
 func main() {
+	loadEnv()
 	log.Println("Starting server...")
 
-	// initialize data sources
 	ds, err := initDS()
-
 	if err != nil {
 		log.Fatalf("Unable to initialize data sources: %v\n", err)
 	}
@@ -44,8 +42,6 @@ func main() {
 		Addr:    "127.0.0.1:8080",
 		Handler: router,
 	}
-
-	// Graceful server shutdown - https://github.com/gin-gonic/examples/blob/master/graceful-shutdown/graceful-shutdown/server.go
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("Failed to initialize server: %v\n", err)
@@ -80,86 +76,85 @@ func main() {
 }
 
 func inject(d *dataSources) (*gin.Engine, error) {
+	loadEnv()
 	log.Println("Injecting data sources")
 	/*
 	 * repository layer
 	 */
-	// userRepository := repository.NewUserRepository(d.DB)
+	userRepository := repository.NewUserRepository(d.DB)
+	authRepository := repository.NewAuthRepository(d.DB)
 	productRepository := repository.NewProductRepository(d.DB)
-	// tokenRepository := repository.NewTokenRepository(d.RedisClient)
-	// bucketName := os.Getenv("GC_IMAGE_BUCKET")
-	// imageRepository := repository.NewImageRepository(d.StorageClient, bucketName)
-
+	tokenRepository := repository.NewTokenRepository(d.RedisClient)
 	/*
 	 * service layer
 	 */
-	// userService := service.NewUserService(&service.USConfig{
-	// 	UserRepository: userRepository,
-	// 	// ImageRepository: imageRepository,
-	// })
+	userService := service.NewUserService(&service.USConfig{
+		UserRepository: userRepository,
+	})
 	productService := service.NewProductService(&service.PSConfig{
 		ProductRepository: productRepository,
 	})
 
+	authService := service.NewAuthService(&service.AuthServiceConfig{
+		AuthRepository: authRepository,
+	})
+
 	// load rsa keys
-	// privKeyFile := os.Getenv("PRIV_KEY_FILE")
-	// priv, err := ioutil.ReadFile(privKeyFile)
+	privKeyFile := os.Getenv("PRIV_KEY_FILE")
+	priv, err := ioutil.ReadFile(privKeyFile)
 
-	// if err != nil {
-	// 	return nil, fmt.Errorf("could not read private key pem file: %w", err)
-	// }
+	if err != nil {
+		return nil, fmt.Errorf("could not read private key pem file: %w", err)
+	}
 
-	// privKey, err := jwt.ParseRSAPrivateKeyFromPEM(priv)
+	privKey, err := jwt.ParseRSAPrivateKeyFromPEM(priv)
 
-	// if err != nil {
-	// 	return nil, fmt.Errorf("could not parse private key: %w", err)
-	// }
+	if err != nil {
+		return nil, fmt.Errorf("could not parse private key: %w", err)
+	}
 
-	// pubKeyFile := os.Getenv("PUB_KEY_FILE")
-	// pub, err := ioutil.ReadFile(pubKeyFile)
+	pubKeyFile := os.Getenv("PUB_KEY_FILE")
+	pub, err := ioutil.ReadFile(pubKeyFile)
 
-	// if err != nil {
-	// 	return nil, fmt.Errorf("could not read public key pem file: %w", err)
-	// }
+	if err != nil {
+		return nil, fmt.Errorf("could not read public key pem file: %w", err)
+	}
 
-	// pubKey, err := jwt.ParseRSAPublicKeyFromPEM(pub)
+	pubKey, err := jwt.ParseRSAPublicKeyFromPEM(pub)
 
-	// if err != nil {
-	// 	return nil, fmt.Errorf("could not parse public key: %w", err)
-	// }
+	if err != nil {
+		return nil, fmt.Errorf("could not parse public key: %w", err)
+	}
 
 	// load refresh token secret from env variable
-	// refreshSecret := "259200"
-	// idTokenExp := "900"
-	// refreshTokenExp := "259200"
+	refreshSecret := os.Getenv("REFRESH_SECRET")
 
-	// idExp, err := strconv.ParseInt(idTokenExp, 0, 64)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("could not parse ID_TOKEN_EXP as int: %w", err)
-	// }
+	// load expiration lengths from env variables and parse as int
+	idTokenExp := os.Getenv("ID_TOKEN_EXP")
+	refreshTokenExp := os.Getenv("REFRESH_TOKEN_EXP")
 
-	// refreshExp, err := strconv.ParseInt(refreshTokenExp, 0, 64)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("could not parse REFRESH_TOKEN_EXP as int: %w", err)
-	// }
+	idExp, err := strconv.ParseInt(idTokenExp, 0, 64)
+	if err != nil {
+		return nil, fmt.Errorf("could not parse ID_TOKEN_EXP as int: %w", err)
+	}
 
-	// tokenService := service.NewTokenService(&service.TSConfig{
-	// 	TokenRepository: tokenRepository,
-	// 	// PrivKey:               privKey,
-	// 	// PubKey:                pubKey,
-	// 	RefreshSecret:         refreshSecret,
-	// 	IDExpirationSecs:      idExp,
-	// 	RefreshExpirationSecs: refreshExp,
-	// })
+	refreshExp, err := strconv.ParseInt(refreshTokenExp, 0, 64)
+	if err != nil {
+		return nil, fmt.Errorf("could not parse REFRESH_TOKEN_EXP as int: %w", err)
+	}
 
-	// initialize gin.Engine
+	tokenService := service.NewTokenService(&service.TSConfig{
+		TokenRepository:       tokenRepository,
+		PrivKey:               privKey,
+		PubKey:                pubKey,
+		RefreshSecret:         refreshSecret,
+		IDExpirationSecs:      idExp,
+		RefreshExpirationSecs: refreshExp,
+	})
+
 	router := gin.Default()
-
-	// read in BACKEND_API_URL
-	baseURL := "/"
-
-	// read in HANDLER_TIMEOUT
-	handlerTimeout := "5"
+	baseURL := os.Getenv("BACKEND_API_URL")
+	handlerTimeout := os.Getenv("HANDLER_TIMEOUT")
 	ht, err := strconv.ParseInt(handlerTimeout, 0, 64)
 	if err != nil {
 		return nil, fmt.Errorf("could not parse HANDLER_TIMEOUT as int: %w", err)
@@ -173,28 +168,24 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	handler.NewHandler(&handler.Config{
 		R:               router,
 		ProductService:  productService,
-		// UserService:     userService,
-		// TokenService:    tokenService,
+		AuthService:     authService,
+		UserService:     userService,
+		TokenService:    tokenService,
 		BaseURL:         baseURL,
 		TimeoutDuration: time.Duration(time.Duration(ht) * time.Second),
 		MaxBodyBytes:    mbb,
 	})
-
 	return router, nil
 }
 
 type dataSources struct {
-	DB            *sqlx.DB
-	RedisClient   *redis.Client
-	StorageClient *storage.Client
+	DB          *sqlx.DB
+	RedisClient *redis.Client
 }
 
 // InitDS establishes connections to fields in dataSources
 func initDS() (*dataSources, error) {
 	log.Printf("Initializing data sources\n")
-	// load env variables - we could pass these in,
-	// but this is sort of just a top-level (main package)
-	// helper function, so I'll just read them in here
 	pgHost := "localhost"
 	pgPort := "5432"
 	pgUser := "postgres"
@@ -211,61 +202,42 @@ func initDS() (*dataSources, error) {
 		return nil, fmt.Errorf("error opening db: %w", err)
 	}
 
-	// Verify database connection is working
 	if err := db.Ping(); err != nil {
 		return nil, fmt.Errorf("error connecting to db: %w", err)
 	}
-
-	// Initialize redis connection
 	redisHost := "localhost"
 	redisPort := "6379"
-
 	log.Printf("Connecting to Redis\n")
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", redisHost, redisPort),
 		Password: "",
 		DB:       0,
 	})
-
 	// verify redis connection
-
 	_, err = rdb.Ping(context.Background()).Result()
 
 	if err != nil {
 		return nil, fmt.Errorf("error connecting to redis: %w", err)
 	}
-
-	// Initialize google storage client
-	// log.Printf("Connecting to Cloud Storage\n")
-	// ctx := context.Background()
-	// ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
-	// defer cancel() // releases resources if slowOperation completes before timeout elapses
-	// storage, err := storage.NewClient(ctx)
-
-	// if err != nil {
-	// 	return nil, fmt.Errorf("error creating cloud storage client: %w", err)
-	// }
-
 	return &dataSources{
 		DB:          db,
 		RedisClient: rdb,
-		// StorageClient: storage,
 	}, nil
 }
 
-// close to be used in graceful server shutdown
 func (d *dataSources) close() error {
 	if err := d.DB.Close(); err != nil {
 		return fmt.Errorf("error closing Postgresql: %w", err)
 	}
-
 	if err := d.RedisClient.Close(); err != nil {
 		return fmt.Errorf("error closing Redis Client: %w", err)
 	}
-
-	if err := d.StorageClient.Close(); err != nil {
-		return fmt.Errorf("error closing Cloud Storage client: %w", err)
-	}
-
 	return nil
+}
+
+func loadEnv() {
+	err := godotenv.Load(".env.dev")
+	if err != nil {
+		fmt.Printf("Could not read env: %v", err)
+	}
 }
