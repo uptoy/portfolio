@@ -11,8 +11,6 @@ import (
 	"github.com/lib/pq"
 )
 
-// PGUserRepository is data/repository implementation
-// of service layer UserRepository
 type pGUserRepository struct {
 	DB *sqlx.DB
 }
@@ -58,9 +56,7 @@ func (r *pGUserRepository) FindByID(ctx context.Context, uid uuid.UUID) (*model.
 // FindByEmail retrieves user row by email address
 func (r *pGUserRepository) FindByEmail(ctx context.Context, email string) (*model.User, error) {
 	user := &model.User{}
-
 	query := "SELECT * FROM users WHERE email=$1"
-
 	if err := r.DB.GetContext(ctx, user, query, email); err != nil {
 		log.Printf("Unable to get user with email address: %v. Err: %v\n", email, err)
 		return user, apperrors.NewNotFound("email", email)

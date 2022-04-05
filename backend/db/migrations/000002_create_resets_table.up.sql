@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS resets (
+  id       SERIAL PRIMARY KEY,
+  email    VARCHAR NOT NULL UNIQUE,
+  token    VARCHAR NOT NULL DEFAULT ''
+);

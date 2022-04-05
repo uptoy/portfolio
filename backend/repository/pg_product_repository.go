@@ -29,7 +29,7 @@ func NewProductRepository(db *sqlx.DB) model.ProductRepository {
 func (r *pGProductRepository) ProductCreate(ctx context.Context, p *model.Product) (*model.Product, error) {
 	product := model.Product{}
 	query := `INSERT INTO products (product_name, slug, product_image, brand, price, category_name, count_in_stock, description,average_rating) VALUES ($1, $2,$3, $4,$5,$6, $7,$8, $9) RETURNING *`
-	if err := r.DB.GetContext(ctx, &product, query, p.ProductName, p.Slug, p.ProductImage, p.Brand, p.Price, p.CategoryName, p.CountInStock, p.Description, p.AverageRating); err != nil {
+	if err := r.DB.GetContext(ctx, &product, query, p.ProductName, p.Slug, p.ProductImage, p.Brand, p.Price, p.CategoryId, p.CountInStock, p.Description, p.AverageRating); err != nil {
 		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
 			log.Printf("Could not create a product: %v. Reason: %v\n", p.ProductName, err.Code.Name())
 			return nil, apperrors.NewConflict("product", p.ProductName)
@@ -39,43 +39,6 @@ func (r *pGProductRepository) ProductCreate(ctx context.Context, p *model.Produc
 	}
 	return p, nil
 }
-
-// "product_name":"p1",
-// "slug":"s1",
-// "product_image":"http://placehold.jp/150x150.png",
-// "brand":"brand",
-// "price",1,
-// "category_name","category1",
-// "count_in_stock":1,
-// "description":"desc",
-// "average_rating":1
-
-// r.DB.NamedExec("INSERT INTO products (product_name, slug, product_image,brand,price,category_name,count_in_stock,description,average_rating) VALUES (:product_name, :slug, :product_image, :brand,:price,:category_name,:count_in_stock,:description,:average_rating)", p)
-
-// query := "INSERT INTO products (product_name, slug,product_image,brand,price,category_name,count_in_stock,description,average_rating) VALUES ($1, $2,$3, $4,$5, $6,$7, $8, $9) RETURNING *"
-// if err := r.DB.GetContext(ctx, p, query, p.ProductName, p.Slug, p.ProductImage, p.Brand, p.Price, p.CategoryName, p.CountInStock, p.Description, p.AverageRating); err != nil {
-// 	// check unique constraint
-// 	if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
-// 		log.Printf("Could not create a product: %v. Reason: %v\n", p.ProductName, err.Code.Name())
-// 		return nil, apperrors.NewConflict("product", p.ProductName)
-// 	}
-
-// 	log.Printf("Could not create a product : %v. Reason: %v\n", p.ProductName, err)
-// 	return nil, apperrors.NewInternal()
-// }
-
-// product := &model.Product{}
-// query := `INSERT INTO products (p.product_name, p.slug, p.product_image, p.brand, p.price, p.category_name, p.count_in_stock, p.description, p.average_rating) VALUES ($1, $2,$3, $4,$5,$6, $7,$8, $9) RETURNING *`
-// if err := r.DB.GetContext(ctx, product, query, p.ProductName, p.Slug, p.ProductImage, p.Brand, p.Price, p.CategoryName, p.CountInStock, p.Description, p.AverageRating); err != nil {
-// 	// check unique constraint
-// 	if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
-// 		log.Printf("Could not create a product: %v. Reason: %v\n", p.ProductName, err.Code.Name())
-// 		return nil, apperrors.NewConflict("product", p.ProductName)
-// 	}
-// 	log.Printf("Could not create a product : %v. Reason: %v\n", p.ProductName, err)
-// 	return nil, apperrors.NewInternal()
-// }
-// return product, nil
 
 func (r *pGProductRepository) ProductList(ctx context.Context) ([]model.Product, error) {
 	products := []model.Product{}
@@ -115,7 +78,7 @@ func (r *pGProductRepository) ProductUpdate(ctx context.Context, productId int64
 	SET product_name = $2,slug = $3,product_image = $4,brand = $5, price = $6,category_name = $7,count_in_stock = $8,description = $9,average_rating = $10
 	WHERE product_id=$1
 	RETURNING *;`
-	if err := r.DB.GetContext(ctx, p, query, productId, p.ProductName, p.Slug, p.ProductImage, p.Brand, p.Price, p.CategoryName, p.CountInStock, p.Description, p.AverageRating); err != nil {
+	if err := r.DB.GetContext(ctx, p, query, productId, p.ProductName, p.Slug, p.ProductImage, p.Brand, p.Price, p.CategoryId, p.CountInStock, p.Description, p.AverageRating); err != nil {
 		log.Printf("Unable to update product: %v. Err: %v\n", p.ProductName, err)
 		id := strconv.Itoa(int(productId))
 		return nil, apperrors.NewNotFound("product_id", id)

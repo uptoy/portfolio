@@ -1,22 +1,21 @@
 package handler
 
 import (
-	"net/http"
-	"time"
 	"backend/handler/middleware"
 	"backend/model"
 	"backend/model/apperrors"
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"time"
 )
 
 // Handler struct holds required services for handler to function
 type Handler struct {
-	AuthService  model.AuthService
+	AuthService    model.AuthService
 	UserService    model.UserService
 	ProductService model.ProductService
-	TokenService model.TokenService
+	TokenService   model.TokenService
 	MaxBodyBytes   int64
-
 }
 
 // Config will hold services that will eventually be injected into this
@@ -30,7 +29,6 @@ type Config struct {
 	BaseURL         string
 	TimeoutDuration time.Duration
 	MaxBodyBytes    int64
-
 }
 
 // NewHandler initializes the handler with required injected services along with http routes
@@ -38,7 +36,7 @@ type Config struct {
 func NewHandler(c *Config) {
 	// Create a handler (which will later have injected services)
 	h := &Handler{
-		AuthService:  c.AuthService,
+		AuthService:    c.AuthService,
 		UserService:    c.UserService,
 		ProductService: c.ProductService,
 		TokenService:   c.TokenService,
@@ -46,39 +44,42 @@ func NewHandler(c *Config) {
 	} // currently has no properties
 
 	// Create an account group
-	g := c.R.Group(c.BaseURL)
+	api := c.R.Group(c.BaseURL)
+	auth := api.Group("/auth")
+	sample := api.Group("/sample")
+	products := api.Group("/products")
 
 	if gin.Mode() != gin.TestMode {
-		g.Use(middleware.Timeout(c.TimeoutDuration, apperrors.NewServiceUnavailable()))
-		g.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
-		g.POST("/signout", middleware.AuthUser(h.TokenService), h.Signout)
-		g.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
+		api.Use(middleware.Timeout(c.TimeoutDuration, apperrors.NewServiceUnavailable()))
+		api.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
+		auth.POST("/signout", middleware.AuthUser(h.TokenService), h.Signout)
+		api.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
 	} else {
 		//こちらがテスト実行される
-		g.GET("/me", h.Me)
-		g.POST("/signout", h.Signout)
-		g.PUT("/details", h.Details)
+		api.GET("/me", h.Me)
+		auth.POST("/signout", h.Signout)
+		api.PUT("/details", h.Details)
 	}
 	//こちらがテスト実行される
-	g.POST("/signup", h.Signup)
-	g.POST("/signin", h.Signin)
-	g.POST("/signout", h.Signout)
-	g.POST("/tokens", h.Tokens)
-	g.POST("/forgot", h.ForgotPassword)
-	g.POST("/reset", h.ResetPassword)
-	g.GET("/", h.SampleGetList)
-	g.POST("/", h.SamplePost)
-	g.GET("/:id", h.SampleGetFindByID)
-	g.PUT("/:id", h.SampleUpdate)
-	g.DELETE("/:id", h.SampleDelete)
-	g.GET("/search/:name", h.SampleGetFindByName)
-
-	g.GET("/products", h.ProductList)
-	g.POST("/products", h.ProductCreate)
-	g.GET("/products/:id", h.ProductFindByID)
-	g.PUT("/products/:id", h.ProductUpdate)
-	g.DELETE("/products/:id", h.ProductDelete)
-	g.GET("/products/search/:name", h.ProductFindByName)
+	auth.POST("/signup", h.Signup)
+	auth.POST("/signin", h.Signin)
+	auth.POST("/tokens", h.Tokens)
+	auth.POST("/forgot", h.ForgotPassword)
+	auth.POST("/reset", h.ResetPassword)
+	//sample
+	sample.GET("/", h.SampleGetList)
+	sample.POST("/", h.SamplePost)
+	sample.GET("/:id", h.SampleGetFindByID)
+	sample.PUT("/:id", h.SampleUpdate)
+	sample.DELETE("/:id", h.SampleDelete)
+	sample.GET("/search/:name", h.SampleGetFindByName)
+	//product
+	products.GET("/", h.ProductList)
+	products.POST("/", h.ProductCreate)
+	products.GET("/:id", h.ProductFindByID)
+	products.PUT("/:id", h.ProductUpdate)
+	products.DELETE("/:id", h.ProductDelete)
+	products.GET("/search/:name", h.ProductFindByName)
 }
 
 func (h *Handler) Sample(c *gin.Context) {
