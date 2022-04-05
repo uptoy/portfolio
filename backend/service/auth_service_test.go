@@ -41,29 +41,32 @@ func TestForgotPassword(t *testing.T) {
 // 	t.Run("Success", func(t *testing.T) {
 // 		email := "email@email.com"
 // 		newpassword := "newpassword"
+// 		hashPass, err := hashPassword(newpassword)
+// 		assert.NoError(t, err)
 // 		token := "token"
 // 		mockReset := &model.PasswordReset{
 // 			Email: email,
 // 			Token: token,
 // 		}
-// 		// hashedPassword, _ := hashPassword(newpassword)
 // 		mockArgs := mock.Arguments{
 // 			mock.AnythingOfType("*context.emptyCtx"),
-// 			newpassword,
+// 			hashPass,
 // 			mockReset,
 // 		}
-// 		// mockUserResp := &model.User{
-// 		// 	Password: hashedPassword,
-// 		// }
 // 		mockAuthRepository := new(mocks.MockAuthRepository)
 // 		as := NewAuthService(&AuthServiceConfig{
 // 			AuthRepository: mockAuthRepository,
 // 		})
 // 		mockAuthRepository.
-// 			On("ResetPassword", mockArgs...).Return(nil)
+// 			On("ResetPassword", mockArgs...).
+// 			Run(func(args mock.Arguments) {
+// 				userArg := args.Get(1).(*model.User) // arg 0 is context, arg 1 is *User
+// 				userArg.Password = hashPass
+// 			}).Return(nil)
+
 // 		ctx := context.TODO()
-// 		err := as.ResetPassword(ctx, newpassword, mockReset)
-// 		assert.NoError(t, err)
+// 		err1 := as.ResetPassword(ctx, newpassword, mockReset)
+// 		assert.NoError(t, err1)
 // 		mockAuthRepository.AssertCalled(t, "ResetPassword", mockArgs...)
 // 	})
 // }

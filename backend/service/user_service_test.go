@@ -146,7 +146,7 @@ func TestSignin(t *testing.T) {
 			Password: hashedValidPW,
 		}
 
-		mockArgs := mock.Argumejjj
+		mockArgs := mock.Arguments{
 			mock.AnythingOfType("*context.emptyCtx"),
 			email,
 		}
