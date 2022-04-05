@@ -53,27 +53,11 @@ func NewHandler(c *Config) {
 		g.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
 		g.POST("/signout", middleware.AuthUser(h.TokenService), h.Signout)
 		g.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
-		g.GET("/products", h.ProductList)
-		g.POST("/products", h.ProductCreate)
-		g.GET("/products/:id", h.ProductFindByID)
-		g.PUT("/products/:id", h.ProductUpdate)
-		g.DELETE("/products/:id", h.ProductDelete)
-		g.GET("/products/search/:name", h.ProductFindByName)
-		// g.GET("/", h.SampleGetList)
-		// g.POST("/", h.SamplePost)
-		// g.GET("/:id", h.SampleGetFindByID)
-		// g.PUT("/:id", h.SampleUpdate)
-		// g.DELETE("/:id", h.SampleDelete)
-		// g.GET("/search/:name", h.SampleGetFindByName)
-		// g.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
-		// g.POST("/image", middleware.AuthUser(h.TokenService), h.Image)
-		// g.DELETE("/image", middleware.AuthUser(h.TokenService), h.DeleteImage)
 	} else {
 		//こちらがテスト実行される
 		g.GET("/me", h.Me)
 		g.POST("/signout", h.Signout)
 		g.PUT("/details", h.Details)
-		// g.POST("/forgot", h.ForgotPassword)
 	}
 	//こちらがテスト実行される
 	g.POST("/signup", h.Signup)
@@ -82,7 +66,6 @@ func NewHandler(c *Config) {
 	g.POST("/tokens", h.Tokens)
 	g.POST("/forgot", h.ForgotPassword)
 	g.POST("/reset", h.ResetPassword)
-
 	g.GET("/", h.SampleGetList)
 	g.POST("/", h.SamplePost)
 	g.GET("/:id", h.SampleGetFindByID)
