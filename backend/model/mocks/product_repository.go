@@ -93,3 +93,16 @@ func (m *MockProductRepository) ProductDelete(ctx context.Context, uid int64) (*
 	}
 	return r0, r1
 }
+
+func (m *MockProductRepository) BulkDelete(ctx context.Context) ([]model.Product, error) {
+	ret := m.Called(ctx)
+	var r0 []model.Product
+	if ret.Get(0) != nil {
+		r0 = ret.Get(0).([]model.Product)
+	}
+	var r1 error
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
+	}
+	return r0, r1
+}

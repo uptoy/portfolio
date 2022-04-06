@@ -14,6 +14,7 @@ type UserService interface {
 	Signup(ctx context.Context, u *User) error
 	Signin(ctx context.Context, u *User) error
 	UpdateDetails(ctx context.Context, u *User) error
+	Delete(ctx context.Context, email string)  (*User, error)
 }
 
 // TokenService defines methods the handler layer expects to interact
@@ -33,6 +34,8 @@ type UserRepository interface {
 	FindByEmail(ctx context.Context, email string) (*User, error)
 	Create(ctx context.Context, u *User) error
 	Update(ctx context.Context, u *User) error
+	Delete(ctx context.Context, email string)  (*User, error)
+
 }
 
 // TokenService defines methods the handler layer expects to interact
@@ -63,8 +66,9 @@ type ProductService interface {
 	ProductUpdate(ctx context.Context, productId int64, product *Product) (*Product, error)
 	ProductDelete(ctx context.Context, productId int64) (*Product, error)
 	ProductFindByName(ctx context.Context, productName string) (*Product, error)
+	BulkDelete(ctx context.Context) ([]Product, error)
+	BulkInsert(ctx context.Context, products []Product) ([]Product, error)
 }
-
 
 type ProductRepository interface {
 	ProductList(ctx context.Context) ([]Product, error)
@@ -73,6 +77,8 @@ type ProductRepository interface {
 	ProductFindByName(ctx context.Context, productName string) (*Product, error)
 	ProductUpdate(ctx context.Context, productId int64, product *Product) (*Product, error)
 	ProductDelete(ctx context.Context, productId int64) (*Product, error)
+	BulkDelete(ctx context.Context) ([]Product, error)
+	BulkInsert(ctx context.Context, products []Product) ([]Product, error)
 }
 
 type CategoryService interface {
@@ -82,6 +88,8 @@ type CategoryService interface {
 	CategoryUpdate(ctx context.Context, id int64, c *Category) (*Category, error)
 	CategoryDelete(ctx context.Context, id int64) (*Category, error)
 	CategoryFindByName(ctx context.Context, name string) (*Category, error)
+	BulkDelete(ctx context.Context) ([]Category, error)
+	BulkInsert(ctx context.Context, categories []Category) ([]Category, error)
 }
 type CategoryRepository interface {
 	CategoryList(ctx context.Context) ([]Category, error)
@@ -90,4 +98,6 @@ type CategoryRepository interface {
 	CategoryUpdate(ctx context.Context, id int64, c *Category) (*Category, error)
 	CategoryDelete(ctx context.Context, id int64) (*Category, error)
 	CategoryFindByName(ctx context.Context, name string) (*Category, error)
+	BulkDelete(ctx context.Context) ([]Category, error)
+	BulkInsert(ctx context.Context, categories []Category) ([]Category, error)
 }

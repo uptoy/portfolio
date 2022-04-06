@@ -7,6 +7,8 @@ import (
 	"log"
 	"strconv"
 
+	// "time"
+
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
 )
@@ -23,6 +25,9 @@ func NewCategoryRepository(db *sqlx.DB) model.CategoryRepository {
 
 func (r *pGCategoryRepository) CategoryCreate(ctx context.Context, c *model.Category) (*model.Category, error) {
 	category := model.Category{}
+	c.PreSave()
+	c.Validate()
+
 	query := `INSERT INTO categories (category_name) VALUES ($1) RETURNING *`
 	if err := r.DB.GetContext(ctx, &category, query, c.CategoryName); err != nil {
 		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
@@ -67,6 +72,7 @@ func (r *pGCategoryRepository) CategoryFindByName(ctx context.Context, name stri
 }
 
 func (r *pGCategoryRepository) CategoryUpdate(ctx context.Context, id int64, c *model.Category) (*model.Category, error) {
+	c.PreUpdate()
 	query := `
 	UPDATE categories
 	SET category_name = $2
@@ -95,4 +101,29 @@ func (r *pGCategoryRepository) CategoryDelete(ctx context.Context, id int64) (*m
 		return nil, apperrors.NewNotFound("category_id", id)
 	}
 	return &category, nil
+}
+
+func (r *pGCategoryRepository) BulkDelete(ctx context.Context) ([]model.Category, error) {
+	categories := []model.Category{}
+	query := "SELECT * FROM categories"
+	if err := r.DB.SelectContext(ctx, &categories, query); err != nil {
+		log.Printf("Unable to get product with name: %v. Err: %v\n", categories, err)
+		return nil, apperrors.NewNotFound("product_name", "products")
+	}
+	query1 := "DELETE FROM categories"
+	_, err2 := r.DB.ExecContext(ctx, query1)
+	if err2 != nil {
+		log.Printf("Unable to delete product: %v. Err: %v\n", categories, err2)
+		return nil, apperrors.NewNotFound("categories", "categories")
+	}
+	return categories, nil
+}
+
+func (r *pGCategoryRepository) BulkInsert(ctx context.Context, categories []model.Category) ([]model.Category, error) {
+	query := "INSERT INTO categories (category_name) values (:category_name)"
+	_, err := r.DB.NamedExecContext(ctx, query, categories)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return categories, nil
 }

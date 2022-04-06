@@ -11,12 +11,12 @@ import (
 
 // Handler struct holds required services for handler to function
 type Handler struct {
-	AuthService    model.AuthService
-	ProductService    model.ProductService
-	CategoryService    model.CategoryService
-	UserService    model.UserService
-	TokenService   model.TokenService
-	MaxBodyBytes   int64
+	AuthService     model.AuthService
+	ProductService  model.ProductService
+	CategoryService model.CategoryService
+	UserService     model.UserService
+	TokenService    model.TokenService
+	MaxBodyBytes    int64
 }
 
 // Config will hold services that will eventually be injected into this
@@ -24,8 +24,8 @@ type Handler struct {
 type Config struct {
 	R               *gin.Engine
 	AuthService     model.AuthService
-	ProductService    model.ProductService
-	CategoryService    model.CategoryService
+	ProductService  model.ProductService
+	CategoryService model.CategoryService
 	UserService     model.UserService
 	TokenService    model.TokenService
 	BaseURL         string
@@ -38,12 +38,12 @@ type Config struct {
 func NewHandler(c *Config) {
 	// Create a handler (which will later have injected services)
 	h := &Handler{
-		AuthService:    c.AuthService,
-		ProductService: c.ProductService,
-		CategoryService:    c.CategoryService,
-		UserService:    c.UserService,
-		TokenService:   c.TokenService,
-		MaxBodyBytes:   c.MaxBodyBytes,
+		AuthService:     c.AuthService,
+		ProductService:  c.ProductService,
+		CategoryService: c.CategoryService,
+		UserService:     c.UserService,
+		TokenService:    c.TokenService,
+		MaxBodyBytes:    c.MaxBodyBytes,
 	} // currently has no properties
 
 	// Create an account group
@@ -51,6 +51,7 @@ func NewHandler(c *Config) {
 	auth := api.Group("/auth")
 	sample := api.Group("/sample")
 	products := api.Group("/products")
+	categories := api.Group("/categories")
 
 	if gin.Mode() != gin.TestMode {
 		api.Use(middleware.Timeout(c.TimeoutDuration, apperrors.NewServiceUnavailable()))
@@ -77,12 +78,23 @@ func NewHandler(c *Config) {
 	sample.DELETE("/:id", h.SampleDelete)
 	sample.GET("/search/:name", h.SampleGetFindByName)
 	//product
-	products.GET("/", h.ProductList)
-	products.POST("/", h.ProductCreate)
+	products.GET("", h.ProductList)
+	products.POST("", h.ProductCreate)
 	products.GET("/:id", h.ProductFindByID)
 	products.PUT("/:id", h.ProductUpdate)
 	products.DELETE("/:id", h.ProductDelete)
 	products.GET("/search/:name", h.ProductFindByName)
+	products.DELETE("/delete", h.ProductBulkDelete)
+	products.POST("/insert", h.ProductBulkInsert)
+	//category categories Category
+	categories.GET("", h.CategoryList)
+	categories.POST("", h.CategoryCreate)
+	categories.GET("/:id", h.CategoryFindByID)
+	categories.PUT("/:id", h.CategoryUpdate)
+	categories.DELETE("/:id", h.CategoryDelete)
+	categories.GET("/search/:name", h.CategoryFindByName)
+	categories.DELETE("/delete", h.CategoryBulkDelete)
+	categories.POST("/insert", h.CategoryBulkInsert)
 }
 
 func (h *Handler) Sample(c *gin.Context) {

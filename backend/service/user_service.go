@@ -107,3 +107,11 @@ func (s *userService) UpdateDetails(ctx context.Context, u *model.User) error {
 
 	return nil
 }
+
+func (s *userService) Delete(ctx context.Context, email string) (*model.User, error) {
+	user, err := s.UserRepository.Delete(ctx, email)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}

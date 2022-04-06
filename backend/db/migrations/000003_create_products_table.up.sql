@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS products (
-  product_id SERIAL PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   product_name VARCHAR NOT NULL UNIQUE,
   slug VARCHAR NOT NULL UNIQUE,
   product_image VARCHAR NOT NULL DEFAULT 'http://placehold.jp/150x150.png',

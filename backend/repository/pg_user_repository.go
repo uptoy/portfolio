@@ -24,6 +24,7 @@ func NewUserRepository(db *sqlx.DB) model.UserRepository {
 
 // Create reaches out to database SQLX api
 func (r *pGUserRepository) Create(ctx context.Context, u *model.User) error {
+	u.PreSave()
 	query := "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *"
 
 	if err := r.DB.GetContext(ctx, u, query, u.Email, u.Password); err != nil {
@@ -67,6 +68,7 @@ func (r *pGUserRepository) FindByEmail(ctx context.Context, email string) (*mode
 
 // Update updates a user's properties
 func (r *pGUserRepository) Update(ctx context.Context, u *model.User) error {
+	u.PreUpdate()
 	query := `
 		UPDATE users
 		SET name=:name, email=:email, website=:website
@@ -87,4 +89,20 @@ func (r *pGUserRepository) Update(ctx context.Context, u *model.User) error {
 	}
 
 	return nil
+}
+
+func (r *pGUserRepository) Delete(ctx context.Context, email string) (*model.User, error) {
+	user := model.User{}
+	query := "SELECT * FROM users WHERE email=$1"
+	if err := r.DB.GetContext(ctx, &user, query, email); err != nil {
+		log.Printf("Unable to get user: %v. Err: %v\n", user, err)
+		return nil, apperrors.NewNotFound("user email", email)
+	}
+	query2 := "DELETE FROM users WHERE email = $1"
+	_, err2 := r.DB.ExecContext(ctx, query2, email)
+	if err2 != nil {
+		log.Printf("Unable to delete user: %v. Err: %v\n", user, err2)
+		return nil, apperrors.NewNotFound("user email", email)
+	}
+	return &user, nil
 }

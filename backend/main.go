@@ -83,6 +83,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	userRepository := repository.NewUserRepository(d.DB)
 	authRepository := repository.NewAuthRepository(d.DB)
 	productRepository := repository.NewProductRepository(d.DB)
+	categoryRepository := repository.NewCategoryRepository(d.DB)
 	tokenRepository := repository.NewTokenRepository(d.RedisClient)
 	/*
 	 * service layer
@@ -93,7 +94,9 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	productService := service.NewProductService(&service.PSConfig{
 		ProductRepository: productRepository,
 	})
-
+	categoryService := service.NewCategoryService(&service.CategoryServiceConfig{
+		CategoryRepository: categoryRepository,
+	})
 	authService := service.NewAuthService(&service.AuthServiceConfig{
 		AuthRepository: authRepository,
 	})
@@ -167,6 +170,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	handler.NewHandler(&handler.Config{
 		R:               router,
 		ProductService:  productService,
+		CategoryService: categoryService,
 		AuthService:     authService,
 		UserService:     userService,
 		TokenService:    tokenService,

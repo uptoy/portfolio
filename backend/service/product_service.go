@@ -66,3 +66,19 @@ func (s *productService) ProductFindByName(ctx context.Context, name string) (*m
 	}
 	return product, nil
 }
+
+func (s *productService) BulkDelete(ctx context.Context) ([]model.Product, error) {
+	products, err := s.ProductRepository.BulkDelete(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return products, nil
+}
+
+func (s *productService) BulkInsert(ctx context.Context, products []model.Product) ([]model.Product, error) {
+	products, err := s.ProductRepository.BulkInsert(ctx, products)
+	if err != nil {
+		return nil, err
+	}
+	return products, nil
+}

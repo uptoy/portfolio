@@ -34,20 +34,21 @@ func (r *pGAuthRepository) ForgotPassword(ctx context.Context, passwordReset *mo
 }
 
 func (r *pGAuthRepository) ResetPassword(ctx context.Context, hashPassword string, passwordReset *model.PasswordReset) error {
-		reset := &model.PasswordReset{}
-		query := "SELECT * FROM resets WHERE token=$1"
-		if err := r.DB.GetContext(ctx, reset, query, passwordReset.Token); err != nil {
-			return apperrors.NewNotFound("email", reset.Email)
-		}
-		user := &model.User{}
-		query1 := `
+	reset := &model.PasswordReset{}
+	query := "SELECT * FROM resets WHERE token=$1"
+	if err := r.DB.GetContext(ctx, reset, query, passwordReset.Token); err != nil {
+		return apperrors.NewNotFound("email", reset.Email)
+	}
+	user := &model.User{}
+	user.PreUpdate()
+	query1 := `
 		UPDATE users
 		SET password=$2
 		WHERE email=$1
 		RETURNING *;
 	`
-		if err := r.DB.GetContext(ctx, user, query1, passwordReset.Email, hashPassword); err != nil {
-			return apperrors.NewNotFound("email", reset.Email)
-		}
+	if err := r.DB.GetContext(ctx, user, query1, passwordReset.Email, hashPassword); err != nil {
+		return apperrors.NewNotFound("email", reset.Email)
+	}
 	return nil
 }
