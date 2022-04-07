@@ -4,9 +4,11 @@ import (
 	"backend/model"
 	"backend/model/apperrors"
 	"context"
+	"fmt"
+	"log"
+
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
-	"log"
 )
 
 type pGReviewRepository struct {
@@ -32,28 +34,18 @@ func (r *pGReviewRepository) ReviewBulkInsert(ctx context.Context, reviews []mod
 	return reviews, nil
 }
 
-func (r *pGReviewRepository) ReviewCreate(ctx context.Context,product_id int64, review *model.ProductReview) (*model.ProductReview, error) {
-	q := `INSERT INTO product_review(user_id, product_id, rating, title, comment, created_at, updated_at) VALUES(:user_id, :product_id, :rating, :title, :comment, :created_at, :updated_at) RETURNING id`
-	var id int64
-	rows, err := r.DB.NamedQuery(q, review)
-	if err != nil {
-		return nil, err
+func (r *pGReviewRepository) ReviewCreate(ctx context.Context, product_id int64, review *model.ProductReview) (*model.ProductReview, error) {
+	fmt.Println("review", review)
+	query := `INSERT INTO product_review (user_id, product_id, rating, title, comment) VALUES ($1, $2,$3, $4,$5) RETURNING *`
+	if err := r.DB.GetContext(ctx, review, query, review.UserID, review.ProductID, review.Rating, review.Title, review.Comment); err != nil {
+		log.Printf("Could not create product review : %v. Reason: %v\n", review.ProductID, err)
+		return nil, apperrors.NewInternal()
 	}
-	defer rows.Close()
-	for rows.Next() {
-		rows.Scan(&id)
-	}
-	if err := rows.Err(); err != nil {
-		if err != nil {
-			return nil, err
-		}
-	}
-	review.ID = id
 	return review, nil
 }
 
 // Get gets one review by id
-func (r *pGReviewRepository) Get(ctx context.Context,product_id, review_id int64) (*model.ProductReview, error) {
+func (r *pGReviewRepository) Get(ctx context.Context, product_id, review_id int64) (*model.ProductReview, error) {
 	q := `SELECT
 	r.*,
 	u.id AS user_id,
@@ -73,7 +65,7 @@ func (r *pGReviewRepository) Get(ctx context.Context,product_id, review_id int64
 }
 
 // GetAll returns all reviews
-func (r *pGReviewRepository) GetAll(ctx context.Context,product_id int64) ([]*model.ProductReview, error) {
+func (r *pGReviewRepository) GetAll(ctx context.Context, product_id int64) ([]*model.ProductReview, error) {
 	q := `SELECT
 	r.*,
 	u.id AS user_id,
@@ -98,7 +90,7 @@ func (r *pGReviewRepository) GetAll(ctx context.Context,product_id int64) ([]*mo
 }
 
 // Update updates the review
-func (r *pGReviewRepository) Update(ctx context.Context,product_id, review_id int64, rev *model.ProductReview) (*model.ProductReview, error) {
+func (r *pGReviewRepository) Update(ctx context.Context, product_id, review_id int64, rev *model.ProductReview) (*model.ProductReview, error) {
 	q := `UPDATE product_review SET rating=:rating, title=:title, comment=:comment, updated_at=:updated_at WHERE product_id=:product_id AND id=:review_id`
 	m := map[string]interface{}{"product_id": product_id, "review_id": review_id, "rating": rev.Rating, "title": rev.Title, "comment": rev.Comment, "updated_at": rev.UpdatedAt}
 	if _, err := r.DB.NamedExec(q, m); err != nil {
@@ -108,7 +100,7 @@ func (r *pGReviewRepository) Update(ctx context.Context,product_id, review_id in
 }
 
 // Delete hard deletes the review
-func (r *pGReviewRepository) Delete(ctx context.Context,product_id, review_id int64) (*model.ProductReview, error) {
+func (r *pGReviewRepository) Delete(ctx context.Context, product_id, review_id int64) (*model.ProductReview, error) {
 	review := model.ProductReview{}
 	if _, err := r.DB.NamedExec("DELETE FROM product_review WHERE product_id=:product_id AND id=:review_id", map[string]interface{}{"product_id": product_id, "review_id": review_id}); err != nil {
 		return nil, err

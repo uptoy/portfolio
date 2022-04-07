@@ -160,51 +160,66 @@ func (h *Handler) ReviewBulkDelete(c *gin.Context) {
 }
 
 func (h *Handler) ConfirmInsertReview(c *gin.Context) {
-	product := model.Product{
-		ProductId:     1,
-		ProductName:   "product_name",
-		Slug:          "slug",
-		ProductImage:  "product_image",
-		Brand:         "brand",
-		Price:         1,
-		CategoryId:    1,
-		CountInStock:  1,
-		Description:   "desc",
-		AverageRating: 1,
-	}
 	ctx := c.Request.Context()
-	result, _ := h.ProductService.ProductCreate(ctx, &product)
-	category_id := product.CategoryId
 
-	category := model.Category{
-		ID:           category_id,
-		CategoryName: "category_name1",
-	}
+	// var uid uuid.UUID
+	// user := model.User{
+	// 	UID:      uid,
+	// 	Email:    "email@email.com",
+	// 	Password: "password",
+	// }
+	// err := h.UserService.Signup(ctx, &user)
+	// if err != nil {
+	// 	log.Printf("Failed to sign up user: %v\n", err.Error())
+	// 	return
+	// }
+	// product := model.Product{
+	// 	ProductId:     1,
+	// 	ProductName:   "product_name",
+	// 	Slug:          "slug",
+	// 	ProductImage:  "product_image",
+	// 	Brand:         "brand",
+	// 	Price:         1,
+	// 	CategoryId:    1,
+	// 	CountInStock:  1,
+	// 	Description:   "desc",
+	// 	AverageRating: 1,
+	// }
+	// // result, _ := h.ProductService.ProductCreate(ctx, &product)
+	// category_id := product.CategoryId
+
+	// category := model.Category{
+	// 	ID:           category_id,
+	// 	CategoryName: "category_name1",
+	// }
 	// result1, _ := h.CategoryService.CategoryCreate(ctx, &category)
 
-	product_id := product.ProductId
-	uid, _ := uuid.NewRandom()
+	// user1, _ := c.Get("user")
+
+	// uuid := user1.(*model.User).UID
+	// fmt.Println("uuid",uuid)
+
+	// product_id := int64(1)
+	mockUserID, _ := uuid.NewRandom()
+	// // product_id := product.ProductId
 	review := model.ProductReview{
 		ID:        1,
-		UserID:    uid,
-		ProductID: product_id,
+		UserID:    mockUserID,
+		ProductID: 1,
 		Rating:    1,
 		Title:     "title1",
 		Comment:   "comment1",
 	}
-	// id := c.Param("id")
-	// product_id, _ := strconv.ParseInt(id, 0, 64)
-	// result2, _ := h.ReviewService.ReviewCreate(ctx, product_id, &review)
+	result2, _ := h.ReviewService.ReviewCreate(ctx, 1, &review)
 	// fmt.Println("product", result)
 	// fmt.Println("category", result1)
 	// fmt.Println("review", result2)
-	// "product":  result,
-	// "category": result1,
-	// "review":   result2,
 	c.JSON(http.StatusOK, gin.H{
-		"product":  result,
-		"category": category,
-		"review":   review,
+		// "user":     user,
+		// "product":  product,
+		// "category": category,
+		// "review":   result2,
+		"review": result2,
 	})
 
 }

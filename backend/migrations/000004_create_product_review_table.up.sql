@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS product_review(
   comment VARCHAR (100) UNIQUE NOT NULL,
   created_at timestamptz NOT NULL DEFAULT (now()),
   updated_at timestamptz NOT NULL DEFAULT (now()),
-  FOREIGN KEY (user_id) REFERENCES users (uid) ON DELETE CASCADE,
-  FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE,
   CHECK (rating >= 1 AND rating <= 5),
-  UNIQUE (user_id, product_id)
+  UNIQUE (user_id, product_id),
+  FOREIGN KEY (user_id) REFERENCES users (uid) ON DELETE CASCADE,
+  FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
 );
