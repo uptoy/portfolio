@@ -15,14 +15,14 @@ import (
 // Handler struct holds required services for handler to function
 type Handler struct {
 	AuthService     model.AuthService
-	CategoryService model.CategoryService
-	UserService     model.UserService
-	TokenService    model.TokenService
-	PaymentService  model.PaymentService
-	ReviewService   model.ReviewService
-	OrderService    model.OrderService
 	CartService     model.CartService
+	CategoryService model.CategoryService
+	OrderService    model.OrderService
+	PaymentService  model.PaymentService
 	ProductService  model.ProductService
+	ReviewService   model.ReviewService
+	TokenService    model.TokenService
+	UserService     model.UserService
 	MaxBodyBytes    int64
 }
 
@@ -31,14 +31,14 @@ type Handler struct {
 type Config struct {
 	R               *gin.Engine
 	AuthService     model.AuthService
-	CategoryService model.CategoryService
-	PaymentService  model.PaymentService
-	ReviewService   model.ReviewService
-	OrderService    model.OrderService
 	CartService     model.CartService
-	UserService     model.UserService
+	CategoryService model.CategoryService
+	OrderService    model.OrderService
+	PaymentService  model.PaymentService
 	ProductService  model.ProductService
+	ReviewService   model.ReviewService
 	TokenService    model.TokenService
+	UserService     model.UserService
 	BaseURL         string
 	TimeoutDuration time.Duration
 	MaxBodyBytes    int64
@@ -49,11 +49,16 @@ type Config struct {
 func NewHandler(c *Config) {
 	// Create a handler (which will later have injected services)
 	h := &Handler{
-		CategoryService: c.CategoryService,
-		ReviewService:   c.ReviewService,
 		AuthService:     c.AuthService,
-		UserService:     c.UserService,
+		CartService:     c.CartService,
+		CategoryService: c.CategoryService,
+		OrderService:    c.OrderService,
+		PaymentService:  c.PaymentService,
+		ProductService:  c.ProductService,
+		ReviewService:   c.ReviewService,
 		TokenService:    c.TokenService,
+		UserService:     c.UserService,
+
 		MaxBodyBytes:    c.MaxBodyBytes,
 	} // currently has no properties
 

@@ -48,10 +48,16 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 		AverageRating: json.AverageRating,
 	}
 	ctx := c.Request.Context()
-	p, _ := h.ProductService.ProductCreate(ctx, &json)
-
+	product, err := h.ProductService.ProductCreate(ctx, &json)
+	if err != nil {
+		log.Printf("Failed to create product: %v\n", err.Error())
+		c.JSON(apperrors.Status(err), gin.H{
+			"error": err,
+		})
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{
-		"product": p,
+		"product": product,
 	})
 }
 

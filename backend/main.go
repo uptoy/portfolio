@@ -80,30 +80,55 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	/*
 	 * repository layer
 	 */
-	userRepository := repository.NewUserRepository(d.DB)
 	authRepository := repository.NewAuthRepository(d.DB)
-	productRepository := repository.NewProductRepository(d.DB)
+
+	// cartRepository := repository.NewCartRepository(d.DB)
 	categoryRepository := repository.NewCategoryRepository(d.DB)
+	// orderRepository := repository.NewOrderRepository(d.DB)
+	// paymentRepository := repository.NewPaymentRepository(d.DB)
+	productRepository := repository.NewProductRepository(d.DB)
 	reviewRepository := repository.NewReviewRepository(d.DB)
 	tokenRepository := repository.NewTokenRepository(d.RedisClient)
+	userRepository := repository.NewUserRepository(d.DB)
 
+	// AuthService     model.AuthService
+	// CartService     model.CartService
+	// CategoryService model.CategoryService
+	// OrderService    model.OrderService
+	// PaymentService  model.PaymentService
+	// ProductService  model.ProductService
+	// ReviewService   model.ReviewService
+	// TokenService    model.TokenService
+	// UserService     model.UserService
 	/*
 	 * service layer
 	 */
-	userService := service.NewUserService(&service.USConfig{
-		UserRepository: userRepository,
-	})
-	productService := service.NewProductService(&service.PSConfig{
-		ProductRepository: productRepository,
-	})
 	authService := service.NewAuthService(&service.AuthServiceConfig{
 		AuthRepository: authRepository,
 	})
+	// cartService := service.NewCartService(&service.CartServiceConfig{
+	// 	CartRepository: cartRepository,
+	// })
+	categoryService := service.NewCategoryService(&service.CategoryServiceConfig{
+		CategoryRepository: categoryRepository,
+	})
+	// orderService := service.NewOrderService(&service.OrderServiceConfig{
+	// 	OrderRepository: orderRepository,
+	// })
+
+	// paymentService := service.NewPaymentService(&service.PaymentServiceConfig{
+	// 	PaymentRepository: paymentRepository,
+	// })
+	productService := service.NewProductService(&service.PSConfig{
+		ProductRepository: productRepository,
+	})
+
 	reviewService := service.NewReviewService(&service.ReviewServiceConfig{
 		ReviewRepository: reviewRepository,
 	})
-	categoryService := service.NewCategoryService(&service.CategoryServiceConfig{
-		CategoryRepository: categoryRepository,
+
+	userService := service.NewUserService(&service.USConfig{
+		UserRepository: userRepository,
 	})
 
 	// load rsa keys
@@ -174,12 +199,15 @@ func inject(d *dataSources) (*gin.Engine, error) {
 
 	handler.NewHandler(&handler.Config{
 		R:               router,
-		ReviewService:   reviewService,
-		CategoryService: categoryService,
-		ProductService:  productService,
 		AuthService:     authService,
-		UserService:     userService,
+		// CartService:     cartService,
+		CategoryService: categoryService,
+		// OrderService:    orderService,
+		// PaymentService:  paymentService,
+		ProductService:  productService,
+		ReviewService:   reviewService,
 		TokenService:    tokenService,
+		UserService:     userService,
 		BaseURL:         baseURL,
 		TimeoutDuration: time.Duration(time.Duration(ht) * time.Second),
 		MaxBodyBytes:    mbb,
