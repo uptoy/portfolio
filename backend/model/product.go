@@ -16,12 +16,14 @@ type Product struct {
 	Brand         string    `db:"brand" json:"brand"`
 	Price         int64     `db:"price" json:"price"`
 	CategoryId    int64     `db:"category_id" json:"category_id"`
-	Category      Category  `json:"category"`
 	CountInStock  int64     `db:"count_in_stock" json:"count_in_stock"`
 	Description   string    `db:"description" json:"description"`
 	AverageRating int64     `db:"average_rating" json:"average_rating"`
 	CreatedAt     time.Time `db:"created_at" json:"created_at"`
 	UpdatedAt     time.Time `db:"updated_at" json:"updated_at"`
+
+
+	Category        *Category `json:"category"`
 }
 
 type Category struct {

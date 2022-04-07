@@ -80,7 +80,8 @@ func NewHandler(c *Config) {
 	//product
 	products.GET("", h.ProductList)
 	products.POST("", h.ProductCreate)
-	products.GET("/:id", h.ProductFindByID)
+	// products.GET("/:id", h.ProductFindByID)
+	products.GET("/:id", h.ProductJoin)
 	products.PUT("/:id", h.ProductUpdate)
 	products.DELETE("/:id", h.ProductDelete)
 	products.GET("/search/:name", h.ProductFindByName)

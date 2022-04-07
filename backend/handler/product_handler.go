@@ -37,7 +37,6 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 		return
 	}
 	json = model.Product{
-		ProductId:     json.ProductId,
 		ProductName:   json.ProductName,
 		Slug:          json.Slug,
 		ProductImage:  json.ProductImage,
@@ -202,5 +201,21 @@ func (h *Handler) ProductBulkInsert(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"products": result,
+	})
+}
+
+
+func (h *Handler) ProductJoin(c *gin.Context) {
+	id := c.Param("id")
+	uid, _ := strconv.ParseInt(id, 0, 64)
+	ctx := c.Request.Context()
+	p, err := h.ProductService.ProductFindByIDJoin(ctx, uid)
+	if err != nil {
+		log.Fatal("err", err)
+		fmt.Println("err", err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"product": p,
 	})
 }

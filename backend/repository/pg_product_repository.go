@@ -4,14 +4,12 @@ import (
 	"backend/model"
 	"backend/model/apperrors"
 	"context"
+	"fmt"
 
 	// "fmt"
-
-	// "database/sql"
 	"log"
 	"strconv"
 
-	// "github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
@@ -117,5 +115,41 @@ func (r *pGProductRepository) BulkDelete(ctx context.Context) ([]model.Product, 
 }
 
 func (r *pGProductRepository) BulkInsert(ctx context.Context, products []model.Product) ([]model.Product, error) {
+	query := "INSERT INTO categories (category_name,slug,product_image,brand,price,category_id,count_in_stock,description,average_rating,created_at,updated_at) values (:category_name,:slug,:product_image,:brand,:price,:category_id,:count_in_stock,:description,:average_rating,:created_at,:updated_at)"
+	_, err := r.DB.NamedExecContext(ctx, query, products)
+	if err != nil {
+		log.Printf("Unable to bulk insert product: %v. Err: %v\n", products, err)
+	}
 	return products, nil
+}
+
+func (r *pGProductRepository) ProductFindByIDJoin(ctx context.Context, productId int64) (*model.Product, error) {
+
+	var pj productJoin
+	q := `
+	SELECT products.*,categories.* FROM products LEFT JOIN categories ON products.category_id = categories.id WHERE products.id = $1;
+	`
+	if err := r.DB.GetContext(ctx, &pj, q, productId); err != nil {
+		log.Printf("Unable to get product with name: %v. Err: %v\n", "", err)
+	}
+	fmt.Println("pj", pj)
+	// return pj.ToProduct(), nil
+	product := model.Product{
+		ProductId:     pj.ProductId,
+		ProductName:   pj.ProductName,
+		Slug:          pj.Slug,
+		ProductImage:  pj.Slug,
+		Brand:         pj.Slug,
+		Price:         pj.Price,
+		CountInStock:  pj.CountInStock,
+		Description:   pj.Description,
+		AverageRating: pj.AverageRating,
+		CreatedAt:     pj.Product.CreatedAt,
+		UpdatedAt:     pj.Product.UpdatedAt,
+		Category: &model.Category{
+			CategoryName: pj.CCategoryName,
+		},
+
+	}
+	return &product, nil
 }

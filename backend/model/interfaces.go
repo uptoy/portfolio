@@ -59,6 +59,11 @@ type AuthRepository interface {
 	ResetPassword(ctx context.Context, newPassword string, passwordReset *PasswordReset) error
 }
 
+type productJoin struct {
+	Product
+	*Category
+}
+
 type ProductService interface {
 	ProductList(ctx context.Context) ([]Product, error)
 	ProductCreate(ctx context.Context, product *Product) (*Product, error)
@@ -68,7 +73,9 @@ type ProductService interface {
 	ProductFindByName(ctx context.Context, productName string) (*Product, error)
 	BulkDelete(ctx context.Context) ([]Product, error)
 	BulkInsert(ctx context.Context, products []Product) ([]Product, error)
+	ProductFindByIDJoin(ctx context.Context, productId int64) (*Product, error)
 }
+
 
 type ProductRepository interface {
 	ProductList(ctx context.Context) ([]Product, error)
@@ -79,6 +86,7 @@ type ProductRepository interface {
 	ProductDelete(ctx context.Context, productId int64) (*Product, error)
 	BulkDelete(ctx context.Context) ([]Product, error)
 	BulkInsert(ctx context.Context, products []Product) ([]Product, error)
+	ProductFindByIDJoin(ctx context.Context, productId int64) (*Product, error)
 }
 
 type CategoryService interface {

@@ -3,6 +3,7 @@ package service
 import (
 	"backend/model"
 	"context"
+	// "fmt"
 )
 
 type productService struct {
@@ -81,4 +82,12 @@ func (s *productService) BulkInsert(ctx context.Context, products []model.Produc
 		return nil, err
 	}
 	return products, nil
+}
+
+func (s *productService) ProductFindByIDJoin(ctx context.Context, productId int64) (*model.Product, error) {
+	product, err := s.ProductRepository.ProductFindByIDJoin(ctx, productId)
+	if err != nil {
+		return nil, err
+	}
+	return product, nil
 }
