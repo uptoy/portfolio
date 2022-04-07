@@ -14,15 +14,16 @@ import (
 
 // Handler struct holds required services for handler to function
 type Handler struct {
-	AuthService    model.AuthService
-	UserService    model.UserService
-	TokenService   model.TokenService
-	PaymentService model.PaymentService
-	ReviewService  model.ReviewService
-	OrderService   model.OrderService
-	CartService    model.CartService
-	ProductService model.ProductService
-	MaxBodyBytes   int64
+	AuthService     model.AuthService
+	CategoryService model.CategoryService
+	UserService     model.UserService
+	TokenService    model.TokenService
+	PaymentService  model.PaymentService
+	ReviewService   model.ReviewService
+	OrderService    model.OrderService
+	CartService     model.CartService
+	ProductService  model.ProductService
+	MaxBodyBytes    int64
 }
 
 // Config will hold services that will eventually be injected into this
@@ -30,6 +31,7 @@ type Handler struct {
 type Config struct {
 	R               *gin.Engine
 	AuthService     model.AuthService
+	CategoryService model.CategoryService
 	PaymentService  model.PaymentService
 	ReviewService   model.ReviewService
 	OrderService    model.OrderService
@@ -47,11 +49,12 @@ type Config struct {
 func NewHandler(c *Config) {
 	// Create a handler (which will later have injected services)
 	h := &Handler{
-		ReviewService: c.ReviewService,
-		AuthService:   c.AuthService,
-		UserService:   c.UserService,
-		TokenService:  c.TokenService,
-		MaxBodyBytes:  c.MaxBodyBytes,
+		CategoryService: c.CategoryService,
+		ReviewService:   c.ReviewService,
+		AuthService:     c.AuthService,
+		UserService:     c.UserService,
+		TokenService:    c.TokenService,
+		MaxBodyBytes:    c.MaxBodyBytes,
 	} // currently has no properties
 
 	// Create an account group
@@ -78,16 +81,25 @@ func NewHandler(c *Config) {
 	api.POST("/reset", h.ResetPassword)
 	products := api.Group("/products")
 	{
-		products.GET("/", h.ProductList)
-		products.POST("/", h.ProductCreate)
+		products.GET("", h.ProductList)
+		products.POST("", h.ProductCreate)
 		products.GET("/:id", h.ProductFindByID)
 		products.PUT("/:id", h.ProductUpdate)
 		products.DELETE("/:id", h.ProductDelete)
-		products.GET("/:id/reviews", h.ReviewList)
-		products.POST("/:id/reviews", h.ReviewCreate)
-		products.PUT("/:id/reviews", h.ReviewUpdate)
-		products.DELETE("/:id/reviews", h.ReviewUpdate)
+		// products.GET("/:id/reviews", h.ReviewList)
+		// products.POST("/:id/reviews", h.ReviewCreate)
+		// products.PUT("/:id/reviews", h.ReviewUpdate)
+		// products.DELETE("/:id/reviews", h.ReviewUpdate)
 		products.GET("/search/:name", h.ProductFindByName)
+		/////////////////////
+		products.GET("/:id/reviews/insert", h.ReviewBulkInsert)
+		products.DELETE("/:id/reviews/delete", h.ReviewBulkDelete)
+		products.POST("/:id/reviews", h.ReviewCreate)
+		products.GET("/:id/reviews", h.ReviewGetAll)
+		products.GET("/:id/reviews/:rid", h.ReviewGet)
+		products.PUT("/:id/reviews/:rid", h.ReviewUpdate)
+		products.DELETE("/:id/reviews/:rid", h.ReviewDelete)
+		products.POST("/confirm", h.ConfirmInsertReview)
 	}
 	sample := api.Group("/sample")
 	{
@@ -98,12 +110,12 @@ func NewHandler(c *Config) {
 		sample.DELETE("/:id", h.SampleDelete)
 		sample.GET("/search/:name", h.SampleGetFindByName)
 	}
-	order := api.Group("/orders")
-	{
-		order.POST("/create", h.OrderCreate)
-		order.GET("/", h.OrderList)
-		order.GET("/:id", h.OrderFindByID)
-	}
+	// order := api.Group("/orders")
+	// {
+	// 	order.POST("/create", h.OrderCreate)
+	// 	order.GET("/", h.OrderList)
+	// 	order.GET("/:id", h.OrderFindByID)
+	// }
 	auth := api.Group("/auth")
 	{
 		auth.GET("/me", middleware.AuthUser(h.TokenService), h.Me)

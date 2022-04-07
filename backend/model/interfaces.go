@@ -34,7 +34,6 @@ type UserRepository interface {
 	Update(ctx context.Context, u *User) error
 }
 
-
 // TokenRepository defines methods it expects a repository
 // it interacts with to implement
 type TokenRepository interface {
@@ -76,6 +75,9 @@ type CategoryService interface {
 	CategoryUpdate(ctx context.Context, id int64, c *Category) (*Category, error)
 	CategoryDelete(ctx context.Context, id int64) (*Category, error)
 	CategoryFindByName(ctx context.Context, name string) (*Category, error)
+	BulkDelete(ctx context.Context) ([]Category, error)
+	BulkInsert(ctx context.Context, categories []Category) ([]Category, error)
+	CategoryCount(ctx context.Context) (int, error)
 }
 type CategoryRepository interface {
 	CategoryList(ctx context.Context) ([]Category, error)
@@ -84,6 +86,9 @@ type CategoryRepository interface {
 	CategoryUpdate(ctx context.Context, id int64, c *Category) (*Category, error)
 	CategoryDelete(ctx context.Context, id int64) (*Category, error)
 	CategoryFindByName(ctx context.Context, name string) (*Category, error)
+	BulkDelete(ctx context.Context) ([]Category, error)
+	BulkInsert(ctx context.Context, categories []Category) ([]Category, error)
+	CategoryCount(ctx context.Context) (int, error)
 }
 
 type CartService interface {
@@ -113,16 +118,30 @@ type OrderRepository interface {
 }
 
 type ReviewService interface {
-	ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]Review, error)
-	ReviewCreate(ctx context.Context, userId uuid.UUID, review *Review) (*Review, error)
-	ReviewUpdate(ctx context.Context, reviewId int64, review *Review) (*Review, error)
-	ReviewDelete(ctx context.Context, reviewId int64) (*Review, error)
+	// ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]Review, error)
+	// ReviewCreate(ctx context.Context, userId uuid.UUID, review *Review) (*Review, error)
+	// ReviewUpdate(ctx context.Context, reviewId int64, review *Review) (*Review, error)
+	// ReviewDelete(ctx context.Context, reviewId int64) (*Review, error)
+	ReviewBulkInsert(ctx context.Context, reviews []ProductReview) ([]ProductReview, error)
+	ReviewCreate(ctx context.Context,product_id int64, review *ProductReview) (*ProductReview, error)
+	Get(ctx context.Context,product_id, review_id int64) (*ProductReview, error)
+	GetAll(ctx context.Context,product_id int64) ([]*ProductReview, error)
+	Update(ctx context.Context,product_id, review_id int64, review *ProductReview) (*ProductReview, error)
+	Delete(ctx context.Context,product_id, review_id int64) (*ProductReview, error)
+	BulkDelete(ctx context.Context,product_id int64, ids []int) ([]ProductReview, error)
 }
 type ReviewRepository interface {
-	ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]Review, error)
-	ReviewCreate(ctx context.Context, userId uuid.UUID, review *Review) (*Review, error)
-	ReviewUpdate(ctx context.Context, reviewId int64, review *Review) (*Review, error)
-	ReviewDelete(ctx context.Context, reviewId int64) (*Review, error)
+	// ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]Review, error)
+	// ReviewCreate(ctx context.Context, userId uuid.UUID, review *Review) (*Review, error)
+	// ReviewUpdate(ctx context.Context, reviewId int64, review *Review) (*Review, error)
+	// ReviewDelete(ctx context.Context, reviewId int64) (*Review, error)
+	ReviewBulkInsert(ctx context.Context, reviews []ProductReview) ([]ProductReview, error)
+	ReviewCreate(ctx context.Context,product_id int64, review *ProductReview) (*ProductReview, error)
+	Get(ctx context.Context,product_id, review_id int64) (*ProductReview, error)
+	GetAll(ctx context.Context,product_id int64) ([]*ProductReview, error)
+	Update(ctx context.Context,product_id, review_id int64, review *ProductReview) (*ProductReview, error)
+	Delete(ctx context.Context,product_id, review_id int64) (*ProductReview, error)
+	BulkDelete(ctx context.Context,product_id int64, ids []int) ([]ProductReview, error)
 }
 
 type PaymentService interface {

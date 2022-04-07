@@ -66,3 +66,28 @@ func (s *categoryService) CategoryFindByName(ctx context.Context, name string) (
 	}
 	return category, nil
 }
+
+func (s *categoryService) BulkDelete(ctx context.Context) ([]model.Category, error) {
+	categories, err := s.CategoryRepository.BulkDelete(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return categories, nil
+}
+
+func (s *categoryService) BulkInsert(ctx context.Context, categories []model.Category) ([]model.Category, error) {
+	categories, err := s.CategoryRepository.BulkInsert(ctx, categories)
+	if err != nil {
+		return nil, err
+	}
+	return categories, nil
+}
+
+
+func (s *categoryService) CategoryCount(ctx context.Context) (int, error){
+	count, err := s.CategoryRepository.CategoryCount(ctx)
+	if err != nil {
+		return count, err
+	}
+	return count, nil
+}

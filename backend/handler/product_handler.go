@@ -42,7 +42,7 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 		ProductImage:  json.ProductImage,
 		Brand:         json.Brand,
 		Price:         json.Price,
-		CategoryName:  json.CategoryName,
+		CategoryId:    json.CategoryId,
 		CountInStock:  json.CountInStock,
 		Description:   json.Description,
 		AverageRating: json.AverageRating,
@@ -61,10 +61,10 @@ func (h *Handler) ProductFindByID(c *gin.Context) {
 	ctx := c.Request.Context()
 	p, err := h.ProductService.ProductFindByID(ctx, uid)
 	if err != nil {
-	log.Fatal("err", err)
-	fmt.Println("err", err)
-	return
-}
+		log.Fatal("err", err)
+		fmt.Println("err", err)
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{
 		"product": p,
 	})
@@ -90,7 +90,7 @@ func (h *Handler) ProductUpdate(c *gin.Context) {
 		ProductImage:  json.ProductImage,
 		Brand:         json.Brand,
 		Price:         json.Price,
-		CategoryName:  json.CategoryName,
+		CategoryId:    json.CategoryId,
 		CountInStock:  json.CountInStock,
 		Description:   json.Description,
 		AverageRating: json.AverageRating,

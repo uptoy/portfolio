@@ -83,6 +83,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	userRepository := repository.NewUserRepository(d.DB)
 	authRepository := repository.NewAuthRepository(d.DB)
 	productRepository := repository.NewProductRepository(d.DB)
+	categoryRepository := repository.NewCategoryRepository(d.DB)
 	reviewRepository := repository.NewReviewRepository(d.DB)
 	tokenRepository := repository.NewTokenRepository(d.RedisClient)
 
@@ -98,9 +99,11 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	authService := service.NewAuthService(&service.AuthServiceConfig{
 		AuthRepository: authRepository,
 	})
-
 	reviewService := service.NewReviewService(&service.ReviewServiceConfig{
 		ReviewRepository: reviewRepository,
+	})
+	categoryService := service.NewCategoryService(&service.CategoryServiceConfig{
+		CategoryRepository: categoryRepository,
 	})
 
 	// load rsa keys
@@ -172,6 +175,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	handler.NewHandler(&handler.Config{
 		R:               router,
 		ReviewService:   reviewService,
+		CategoryService: categoryService,
 		ProductService:  productService,
 		AuthService:     authService,
 		UserService:     userService,
