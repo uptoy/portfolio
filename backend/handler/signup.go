@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"backend/model"
 	"backend/model/apperrors"
+	"github.com/gin-gonic/gin"
 )
 
 // signupReq is not exported, hence the lowercase name

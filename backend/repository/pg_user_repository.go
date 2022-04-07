@@ -4,9 +4,9 @@ import (
 	"context"
 	"log"
 
-	"github.com/google/uuid"
 	"backend/model"
 	"backend/model/apperrors"
+	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
 )

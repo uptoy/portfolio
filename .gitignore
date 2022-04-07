@@ -2,6 +2,8 @@
 *.pem
 backend/serviceAccount.json
 README.md
+memo
+db_table
 
 workspace.code-workspace
 
@@ -90,3 +92,4 @@ _testmain.go
 workspace.code-workspace
 memo.go
 memo
+README.md

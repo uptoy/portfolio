@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/google/uuid"
 	"backend/model"
 	"backend/model/apperrors"
 	"backend/model/mocks"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -206,10 +206,10 @@ func TestUpdateDetails(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		mockUser := &model.User{
-			UID:     uid,
-			Email:   "new@bob.com",
-			Website: "https://jacobgoodwin.me",
-			Name:    "A New Bob!",
+			UID:        uid,
+			Email:      "new@bob.com",
+			ProfileUrl: "https://jacobgoodwin.me",
+			Name:       "A New Bob!",
 		}
 
 		mockArgs := mock.Arguments{

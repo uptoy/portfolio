@@ -6,11 +6,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"backend/model"
 	"backend/model/apperrors"
 	"backend/model/mocks"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -21,8 +21,8 @@ func TestAuthUser(t *testing.T) {
 
 	uid, _ := uuid.NewRandom()
 	u := &model.User{
-		UID:   uid,
-		Email: "bob@bob.com",
+		UID: uid,
+		Email:  "bob@bob.com",
 	}
 
 	// Since we mock tokenService, we need not

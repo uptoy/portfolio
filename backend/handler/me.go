@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"backend/model"
 	"backend/model/apperrors"
+	"github.com/gin-gonic/gin"
 )
 
 // Me handler calls services for getting

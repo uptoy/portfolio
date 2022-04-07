@@ -1,29 +1,25 @@
 package main
 
 import (
+	"backend/handler"
+	"backend/repository"
+	"backend/service"
 	"context"
 	"fmt"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
+	"github.com/jmoiron/sqlx"
+	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
-
-	"backend/handler"
-	"backend/repository"
-	"backend/service"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
-
-	"github.com/jmoiron/sqlx"
-	"github.com/joho/godotenv"
-	_ "github.com/lib/pq"
-	"strconv"
-
-	"github.com/go-redis/redis/v8"
-	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -81,12 +77,13 @@ func main() {
 func inject(d *dataSources) (*gin.Engine, error) {
 	loadEnv()
 	log.Println("Injecting data sources")
-
 	/*
 	 * repository layer
 	 */
 	userRepository := repository.NewUserRepository(d.DB)
 	authRepository := repository.NewAuthRepository(d.DB)
+	productRepository := repository.NewProductRepository(d.DB)
+	reviewRepository := repository.NewReviewRepository(d.DB)
 	tokenRepository := repository.NewTokenRepository(d.RedisClient)
 
 	/*
@@ -95,8 +92,15 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	userService := service.NewUserService(&service.USConfig{
 		UserRepository: userRepository,
 	})
+	productService := service.NewProductService(&service.PSConfig{
+		ProductRepository: productRepository,
+	})
 	authService := service.NewAuthService(&service.AuthServiceConfig{
 		AuthRepository: authRepository,
+	})
+
+	reviewService := service.NewReviewService(&service.ReviewServiceConfig{
+		ReviewRepository: reviewRepository,
 	})
 
 	// load rsa keys
@@ -152,28 +156,30 @@ func inject(d *dataSources) (*gin.Engine, error) {
 		RefreshExpirationSecs: refreshExp,
 	})
 
-	// initialize gin.Engine
 	router := gin.Default()
-
-	// read in ACCOUNT_API_URL
 	baseURL := os.Getenv("BACKEND_API_URL")
-
-	// read in HANDLER_TIMEOUT
 	handlerTimeout := os.Getenv("HANDLER_TIMEOUT")
 	ht, err := strconv.ParseInt(handlerTimeout, 0, 64)
 	if err != nil {
 		return nil, fmt.Errorf("could not parse HANDLER_TIMEOUT as int: %w", err)
 	}
+	maxBodyBytes := "4194304"
+	mbb, err := strconv.ParseInt(maxBodyBytes, 0, 64)
+	if err != nil {
+		return nil, fmt.Errorf("could not parse MAX_BODY_BYTES as int: %w", err)
+	}
 
 	handler.NewHandler(&handler.Config{
 		R:               router,
+		ReviewService:   reviewService,
+		ProductService:  productService,
+		AuthService:     authService,
 		UserService:     userService,
 		TokenService:    tokenService,
-		AuthService:     authService,
 		BaseURL:         baseURL,
 		TimeoutDuration: time.Duration(time.Duration(ht) * time.Second),
+		MaxBodyBytes:    mbb,
 	})
-
 	return router, nil
 }
 
@@ -185,15 +191,12 @@ type dataSources struct {
 // InitDS establishes connections to fields in dataSources
 func initDS() (*dataSources, error) {
 	log.Printf("Initializing data sources\n")
-	// load env variables - we could pass these in,
-	// but this is sort of just a top-level (main package)
-	// helper function, so I'll just read them in here
-	pgHost := os.Getenv("PG_HOST")
-	pgPort := os.Getenv("PG_PORT")
-	pgUser := os.Getenv("PG_USER")
-	pgPassword := os.Getenv("PG_PASSWORD")
-	pgDB := os.Getenv("PG_DB")
-	pgSSL := os.Getenv("PG_SSL")
+	pgHost := "localhost"
+	pgPort := "5432"
+	pgUser := "postgres"
+	pgPassword := "password"
+	pgDB := "portfolio_db"
+	pgSSL := "disable"
 
 	pgConnString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s", pgHost, pgPort, pgUser, pgPassword, pgDB, pgSSL)
 
@@ -204,46 +207,36 @@ func initDS() (*dataSources, error) {
 		return nil, fmt.Errorf("error opening db: %w", err)
 	}
 
-	// Verify database connection is working
 	if err := db.Ping(); err != nil {
 		return nil, fmt.Errorf("error connecting to db: %w", err)
 	}
-
-	// Initialize redis connection
-	redisHost := os.Getenv("REDIS_HOST")
-	redisPort := os.Getenv("REDIS_PORT")
-
+	redisHost := "localhost"
+	redisPort := "6379"
 	log.Printf("Connecting to Redis\n")
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", redisHost, redisPort),
 		Password: "",
 		DB:       0,
 	})
-
 	// verify redis connection
-
 	_, err = rdb.Ping(context.Background()).Result()
 
 	if err != nil {
 		return nil, fmt.Errorf("error connecting to redis: %w", err)
 	}
-
 	return &dataSources{
 		DB:          db,
 		RedisClient: rdb,
 	}, nil
 }
 
-// close to be used in graceful server shutdown
 func (d *dataSources) close() error {
 	if err := d.DB.Close(); err != nil {
 		return fmt.Errorf("error closing Postgresql: %w", err)
 	}
-
 	if err := d.RedisClient.Close(); err != nil {
 		return fmt.Errorf("error closing Redis Client: %w", err)
 	}
-
 	return nil
 }
 

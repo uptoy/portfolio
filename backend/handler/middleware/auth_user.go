@@ -3,10 +3,10 @@ package middleware
 import (
 	"strings"
 
-	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"backend/model"
 	"backend/model/apperrors"
+	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 type authHeader struct {

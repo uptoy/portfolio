@@ -1,10 +1,5 @@
 package middleware
 
-/*
- * Inspired by Golang's TimeoutHandler: https://golang.org/src/net/http/server.go?s=101514:101582#L3212
- * and gin-timeout: https://github.com/vearne/gin-timeout
- */
-
 import (
 	"bytes"
 	"context"
@@ -14,8 +9,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"backend/model/apperrors"
+	"github.com/gin-gonic/gin"
 )
 
 // Timeout wraps the request context with a timeout
@@ -134,7 +129,6 @@ func (tw *timeoutWriter) writeHeader(code int) {
 	tw.code = code
 }
 
-// Header "relays" the header, h, set in struct
 // In http.ResponseWriter interface
 func (tw *timeoutWriter) Header() http.Header {
 	return tw.h

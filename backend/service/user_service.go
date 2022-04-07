@@ -4,9 +4,9 @@ import (
 	"context"
 	"log"
 
-	"github.com/google/uuid"
 	"backend/model"
 	"backend/model/apperrors"
+	"github.com/google/uuid"
 )
 
 // userService acts as a struct for injecting an implementation of UserRepository
