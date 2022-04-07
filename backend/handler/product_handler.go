@@ -204,7 +204,6 @@ func (h *Handler) ProductBulkInsert(c *gin.Context) {
 	})
 }
 
-
 func (h *Handler) ProductJoin(c *gin.Context) {
 	id := c.Param("id")
 	uid, _ := strconv.ParseInt(id, 0, 64)
@@ -217,5 +216,19 @@ func (h *Handler) ProductJoin(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"product": p,
+	})
+}
+
+
+func (h *Handler) ProductCount(c *gin.Context) {
+	ctx := c.Request.Context()
+	result, err := h.ProductService.ProductCount(ctx)
+	if err != nil {
+		log.Fatal("err", err)
+		fmt.Println("err", err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"product count": result,
 	})
 }

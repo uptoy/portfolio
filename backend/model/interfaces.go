@@ -14,7 +14,7 @@ type UserService interface {
 	Signup(ctx context.Context, u *User) error
 	Signin(ctx context.Context, u *User) error
 	UpdateDetails(ctx context.Context, u *User) error
-	Delete(ctx context.Context, email string)  (*User, error)
+	Delete(ctx context.Context, email string) (*User, error)
 }
 
 // TokenService defines methods the handler layer expects to interact
@@ -34,8 +34,7 @@ type UserRepository interface {
 	FindByEmail(ctx context.Context, email string) (*User, error)
 	Create(ctx context.Context, u *User) error
 	Update(ctx context.Context, u *User) error
-	Delete(ctx context.Context, email string)  (*User, error)
-
+	Delete(ctx context.Context, email string) (*User, error)
 }
 
 // TokenService defines methods the handler layer expects to interact
@@ -74,8 +73,8 @@ type ProductService interface {
 	BulkDelete(ctx context.Context) ([]Product, error)
 	BulkInsert(ctx context.Context, products []Product) ([]Product, error)
 	ProductFindByIDJoin(ctx context.Context, productId int64) (*Product, error)
+	ProductCount(ctx context.Context) (int, error)
 }
-
 
 type ProductRepository interface {
 	ProductList(ctx context.Context) ([]Product, error)
@@ -87,6 +86,7 @@ type ProductRepository interface {
 	BulkDelete(ctx context.Context) ([]Product, error)
 	BulkInsert(ctx context.Context, products []Product) ([]Product, error)
 	ProductFindByIDJoin(ctx context.Context, productId int64) (*Product, error)
+	ProductCount(ctx context.Context) (int, error)
 }
 
 type CategoryService interface {
@@ -98,6 +98,7 @@ type CategoryService interface {
 	CategoryFindByName(ctx context.Context, name string) (*Category, error)
 	BulkDelete(ctx context.Context) ([]Category, error)
 	BulkInsert(ctx context.Context, categories []Category) ([]Category, error)
+	CategoryCount(ctx context.Context) (int, error)
 }
 type CategoryRepository interface {
 	CategoryList(ctx context.Context) ([]Category, error)
@@ -108,4 +109,5 @@ type CategoryRepository interface {
 	CategoryFindByName(ctx context.Context, name string) (*Category, error)
 	BulkDelete(ctx context.Context) ([]Category, error)
 	BulkInsert(ctx context.Context, categories []Category) ([]Category, error)
+	CategoryCount(ctx context.Context) (int, error)
 }

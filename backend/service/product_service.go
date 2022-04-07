@@ -91,3 +91,11 @@ func (s *productService) ProductFindByIDJoin(ctx context.Context, productId int6
 	}
 	return product, nil
 }
+
+func (s *productService) ProductCount(ctx context.Context) (int, error) {
+	count, err := s.ProductRepository.ProductCount(ctx)
+	if err != nil {
+		return count, err
+	}
+	return count, nil
+}

@@ -13,34 +13,28 @@ import (
 	"github.com/lib/pq"
 )
 
-type pGCategoryRepository struct {
+type pGProductCategoryRepository struct {
 	DB *sqlx.DB
 }
 
-func NewCategoryRepository(db *sqlx.DB) model.CategoryRepository {
-	return &pGCategoryRepository{
+func NewProductCategoryRepository(db *sqlx.DB) model.CategoryRepository {
+	return &pGProductCategoryRepository{
 		DB: db,
 	}
 }
 
-func (r *pGCategoryRepository) CategoryCreate(ctx context.Context, c *model.Category) (*model.Category, error) {
+func (r *pGProductCategoryRepository) CategoryCreate(ctx context.Context, c *model.Category) (*model.Category, error) {
 	category := model.Category{}
 	c.PreSave()
 	c.Validate()
-
-	query := `INSERT INTO categories (category_name) VALUES ($1) RETURNING *`
-	if err := r.DB.GetContext(ctx, &category, query, c.CategoryName); err != nil {
-		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
-			log.Printf("Could not create a category: %v. Reason: %v\n", c.CategoryName, err.Code.Name())
-			return nil, apperrors.NewConflict("category", c.CategoryName)
-		}
-		log.Printf("Could not create a category : %v. Reason: %v\n", c.CategoryName, err)
-		return nil, apperrors.NewInternal()
+	if _, err := r.DB.NamedExec(`INSERT INTO product_category(category_id, product_id) VALUES(:category_id, :product_id)`, categoryProduct); err != nil {
+		log.Printf("Unable to get category with name: %v. Err: %v\n", categories, err)
+		return nil, apperrors.NewNotFound("category_name", "categories")
 	}
 	return &category, nil
 }
 
-func (r *pGCategoryRepository) CategoryList(ctx context.Context) ([]model.Category, error) {
+func (r *pGProductCategoryRepository) CategoryList(ctx context.Context) ([]model.Category, error) {
 	categories := []model.Category{}
 	query := "SELECT * FROM categories"
 	if err := r.DB.SelectContext(ctx, &categories, query); err != nil {
@@ -49,7 +43,7 @@ func (r *pGCategoryRepository) CategoryList(ctx context.Context) ([]model.Catego
 	}
 	return categories, nil
 }
-func (r *pGCategoryRepository) CategoryFindByID(ctx context.Context, id int64) (*model.Category, error) {
+func (r *pGProductCategoryRepository) CategoryFindByID(ctx context.Context, id int64) (*model.Category, error) {
 	category := model.Category{}
 	query := "SELECT * FROM categories WHERE id=$1"
 	if err := r.DB.GetContext(ctx, &category, query, id); err != nil {
@@ -60,7 +54,7 @@ func (r *pGCategoryRepository) CategoryFindByID(ctx context.Context, id int64) (
 	return &category, nil
 }
 
-func (r *pGCategoryRepository) CategoryFindByName(ctx context.Context, name string) (*model.Category, error) {
+func (r *pGProductCategoryRepository) CategoryFindByName(ctx context.Context, name string) (*model.Category, error) {
 	category := model.Category{}
 	query := "SELECT * FROM categories WHERE category_name=$1"
 	if err := r.DB.GetContext(ctx, &category, query, name); err != nil {
@@ -71,7 +65,7 @@ func (r *pGCategoryRepository) CategoryFindByName(ctx context.Context, name stri
 	return &category, nil
 }
 
-func (r *pGCategoryRepository) CategoryUpdate(ctx context.Context, id int64, c *model.Category) (*model.Category, error) {
+func (r *pGProductCategoryRepository) CategoryUpdate(ctx context.Context, id int64, c *model.Category) (*model.Category, error) {
 	c.PreUpdate()
 	query := `
 	UPDATE categories
@@ -85,7 +79,7 @@ func (r *pGCategoryRepository) CategoryUpdate(ctx context.Context, id int64, c *
 	}
 	return c, nil
 }
-func (r *pGCategoryRepository) CategoryDelete(ctx context.Context, id int64) (*model.Category, error) {
+func (r *pGProductCategoryRepository) CategoryDelete(ctx context.Context, id int64) (*model.Category, error) {
 	category := model.Category{}
 	query := "SELECT * FROM categories WHERE id=$1"
 	if err := r.DB.GetContext(ctx, &category, query, id); err != nil {
@@ -103,7 +97,7 @@ func (r *pGCategoryRepository) CategoryDelete(ctx context.Context, id int64) (*m
 	return &category, nil
 }
 
-func (r *pGCategoryRepository) BulkDelete(ctx context.Context) ([]model.Category, error) {
+func (r *pGProductCategoryRepository) BulkDelete(ctx context.Context) ([]model.Category, error) {
 	categories := []model.Category{}
 	query := "SELECT * FROM categories"
 	if err := r.DB.SelectContext(ctx, &categories, query); err != nil {
@@ -119,7 +113,7 @@ func (r *pGCategoryRepository) BulkDelete(ctx context.Context) ([]model.Category
 	return categories, nil
 }
 
-func (r *pGCategoryRepository) BulkInsert(ctx context.Context, categories []model.Category) ([]model.Category, error) {
+func (r *pGProductCategoryRepository) BulkInsert(ctx context.Context, categories []model.Category) ([]model.Category, error) {
 	query := "INSERT INTO categories (category_name,created_at,updated_at) values (:category_name,:created_at,:updated_at)"
 	for _, category := range categories {
 		category.PreSave()
@@ -131,7 +125,7 @@ func (r *pGCategoryRepository) BulkInsert(ctx context.Context, categories []mode
 	return categories, nil
 }
 
-func (r *pGCategoryRepository) CategoryCount(ctx context.Context) (int, error) {
+func (r *pGProductCategoryRepository) CategoryCount(ctx context.Context) (int, error) {
 	var count int
 	query := `
 	SELECT COUNT(*) FROM categories

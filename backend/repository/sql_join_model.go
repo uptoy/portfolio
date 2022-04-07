@@ -13,10 +13,10 @@ type productJoin struct {
 
 // CategoryJoin is temp join type
 type CategoryJoin struct {
-	CCategoryId   int64     `db:"category_id"`
+	CCategoryId       int64     `db:"category_id"`
 	CCategoryName string    `db:"category_name"`
-	CCreatedAt    time.Time `db:"category_created_at"`
-	CUpdatedAt    time.Time `db:"category_updated_at"`
+	CCreatedAt        time.Time `db:"category_created_at"`
+	CUpdatedAt        time.Time `db:"category_updated_at"`
 }
 
 func (pj *productJoin) ToProduct() *model.Product {

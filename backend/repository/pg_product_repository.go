@@ -133,23 +133,16 @@ func (r *pGProductRepository) ProductFindByIDJoin(ctx context.Context, productId
 		log.Printf("Unable to get product with name: %v. Err: %v\n", "", err)
 	}
 	fmt.Println("pj", pj)
-	// return pj.ToProduct(), nil
-	product := model.Product{
-		ProductId:     pj.ProductId,
-		ProductName:   pj.ProductName,
-		Slug:          pj.Slug,
-		ProductImage:  pj.Slug,
-		Brand:         pj.Slug,
-		Price:         pj.Price,
-		CountInStock:  pj.CountInStock,
-		Description:   pj.Description,
-		AverageRating: pj.AverageRating,
-		CreatedAt:     pj.Product.CreatedAt,
-		UpdatedAt:     pj.Product.UpdatedAt,
-		Category: &model.Category{
-			CategoryName: pj.CCategoryName,
-		},
 
-	}
-	return &product, nil
+	product := pj.ToProduct()
+	return product, nil
+}
+
+func (r *pGProductRepository) ProductCount(ctx context.Context) (int, error) {
+	var count int
+	query := `
+	SELECT COUNT(*) FROM products
+	`
+	r.DB.GetContext(ctx, &count, query)
+	return count, nil
 }

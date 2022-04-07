@@ -82,3 +82,15 @@ func (s *categoryService) BulkInsert(ctx context.Context, categories []model.Cat
 	}
 	return categories, nil
 }
+
+
+func (s *categoryService) CategoryCount(ctx context.Context) (int, error){
+	count, err := s.CategoryRepository.CategoryCount(ctx)
+	if err != nil {
+		return count, err
+	}
+	return count, nil
+}
+
+
+

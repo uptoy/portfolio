@@ -87,6 +87,7 @@ func NewHandler(c *Config) {
 	products.GET("/search/:name", h.ProductFindByName)
 	products.DELETE("/delete", h.ProductBulkDelete)
 	products.POST("/insert", h.ProductBulkInsert)
+	products.GET("/count", h.ProductCount)
 	//category categories Category
 	categories.GET("", h.CategoryList)
 	categories.POST("", h.CategoryCreate)
@@ -96,6 +97,7 @@ func NewHandler(c *Config) {
 	categories.GET("/search/:name", h.CategoryFindByName)
 	categories.DELETE("/delete", h.CategoryBulkDelete)
 	categories.POST("/insert", h.CategoryBulkInsert)
+	categories.GET("/count", h.CategoryCount)
 }
 
 func (h *Handler) Sample(c *gin.Context) {

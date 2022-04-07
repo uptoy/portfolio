@@ -206,3 +206,18 @@ func (h *Handler) CategoryBulkInsert(c *gin.Context) {
 		"categories": result,
 	})
 }
+
+
+
+func (h *Handler) CategoryCount(c *gin.Context) {
+	ctx := c.Request.Context()
+	result, err := h.CategoryService.CategoryCount(ctx)
+	if err != nil {
+		log.Fatal("err", err)
+		fmt.Println("err", err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"category count": result,
+	})
+}
