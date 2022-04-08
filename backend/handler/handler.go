@@ -14,6 +14,7 @@ import (
 
 // Handler struct holds required services for handler to function
 type Handler struct {
+	AddressService  model.AddressService
 	AuthService     model.AuthService
 	CartService     model.CartService
 	CategoryService model.CategoryService
@@ -32,6 +33,7 @@ type Handler struct {
 // handler layer on handler initialization
 type Config struct {
 	R               *gin.Engine
+	AddressService  model.AddressService
 	AuthService     model.AuthService
 	CartService     model.CartService
 	CategoryService model.CategoryService
@@ -53,6 +55,7 @@ type Config struct {
 func NewHandler(c *Config) {
 	// Create a handler (which will later have injected services)
 	h := &Handler{
+		AddressService:  c.AddressService,
 		AuthService:     c.AuthService,
 		CartService:     c.CartService,
 		CategoryService: c.CategoryService,
@@ -96,10 +99,10 @@ func NewHandler(c *Config) {
 		products.GET("/:id", h.ProductFindByID)
 		products.PUT("/:id", h.ProductUpdate)
 		products.DELETE("/:id", h.ProductDelete)
-		// products.GET("/:id/reviews", h.ReviewList)
-		// products.POST("/:id/reviews", h.ReviewCreate)
-		// products.PUT("/:id/reviews", h.ReviewUpdate)
-		// products.DELETE("/:id/reviews", h.ReviewUpdate)
+		products.DELETE("/delete", h.ProductBulkDelete)
+		products.POST("/insert", h.ProductBulkInsert)
+		products.GET("/count", h.ProductCount)
+
 		products.GET("/search/:name", h.ProductFindByName)
 		products.GET("/:id/reviews/insert", h.ReviewBulkInsert)
 		products.DELETE("/:id/reviews/delete", h.ReviewBulkDelete)
@@ -109,6 +112,22 @@ func NewHandler(c *Config) {
 		products.PUT("/:id/reviews/:rid", h.ReviewUpdate)
 		products.DELETE("/:id/reviews/:rid", h.ReviewDelete)
 		products.POST("/confirm", h.ConfirmCreateReviewFlow)
+		// products.GET("/:id/reviews", h.ReviewList)
+		// products.POST("/:id/reviews", h.ReviewCreate)
+		// products.PUT("/:id/reviews", h.ReviewUpdate)
+		// products.DELETE("/:id/reviews", h.ReviewUpdate)
+	}
+	categories := api.Group("/categories")
+	{
+		categories.GET("", h.CategoryList)
+		categories.POST("", h.CategoryCreate)
+		categories.GET("/:id", h.CategoryFindByID)
+		categories.PUT("/:id", h.CategoryUpdate)
+		categories.DELETE("/:id", h.CategoryDelete)
+		categories.GET("/search/:name", h.CategoryFindByName)
+		categories.DELETE("/delete", h.CategoryBulkDelete)
+		categories.POST("/insert", h.CategoryBulkInsert)
+		categories.GET("/count", h.CategoryCount)
 	}
 	sample := api.Group("/sample")
 	{
@@ -119,7 +138,6 @@ func NewHandler(c *Config) {
 		sample.DELETE("/:id", h.SampleDelete)
 		sample.GET("/search/:name", h.SampleGetFindByName)
 	}
-
 	auth := api.Group("/auth")
 	{
 		auth.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
@@ -137,31 +155,47 @@ func NewHandler(c *Config) {
 		wishlist.DELETE("/:product_id", h.WishlistDelete)
 		wishlist.DELETE("/clear", h.WishlistClear)
 	}
+	cart := api.Group("/cart")
+	{
+		cart.GET("", h.CartGet)
+		cart.POST("/add", h.CartAddItem)
+		cart.DELETE("/:id", h.CartDeleteItem)
+		cart.PUT("/inc", h.CartIncrementItem)
+		cart.PUT("/dec", h.CartDecrementItem)
+	}
 	api.POST("/payment", h.Payment)
-		// order := api.Group("/orders")
-	// {
-	// 	order.POST("/create", h.OrderCreate)
-	// 	order.GET("/", h.OrderList)
-	// 	order.GET("/:id", h.OrderFindByID)
-	// }
-
-	// admin := api.Group("/admin")
-	// {
-	// admin.POST("/signup", h.AdminSignup)
-	// admin.POST("/signin", h.AdminSignin)
-	// admin.POST("/signout", h.AdminSignout)
-	// admin.PUT("/order/update", h.AdminOrderUpdate)
-	// admin.GET("/order/orders", h.AdminOrderList)
-	// }
-	// address := api.Group("/address")
-	// {
-	// 	admin.GET("/", h.AddressList)
-	// 	admin.POST("/create", h.CreateAddress)
-	// 	admin.GET("/:id", h.AddressFindByID)
-	// 	admin.PUT("/update/:id", h.AddressUpdate)
-	// 	admin.DELETE("/delete/:id", h.AddressDelete)
-	// }
+	order := api.Group("/orders")
+	{
+		order.POST("/create", h.OrderCreate)
+		order.GET("/", h.OrderList)
+		order.GET("/:id", h.OrderFindByID)
+	}
+	address := api.Group("/address")
+	{
+		address.POST("", h.AddressUserCreate)
+		address.GET("", h.AddressListUserGet)
+		address.GET("/:id", h.AddressUserGet)
+		address.PUT("/:id", h.AddressUserUpdate)
+		address.DELETE("/:id", h.AddressUserDelete)
+	}
 }
+
+// admin := api.Group("/admin")
+// {
+// admin.POST("/signup", h.AdminSignup)
+// admin.POST("/signin", h.AdminSignin)
+// admin.POST("/signout", h.AdminSignout)
+// admin.PUT("/order/update", h.AdminOrderUpdate)
+// admin.GET("/order/orders", h.AdminOrderList)
+// }
+// address := api.Group("/address")
+// {
+// 	admin.GET("/", h.AddressList)
+// 	admin.POST("/create", h.CreateAddress)
+// 	admin.GET("/:id", h.AddressFindByID)
+// 	admin.PUT("/update/:id", h.AddressUpdate)
+// 	admin.DELETE("/delete/:id", h.AddressDelete)
+// }
 func (h *Handler) Sample(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"hello": "world",

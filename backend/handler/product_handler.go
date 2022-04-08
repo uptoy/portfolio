@@ -151,3 +151,84 @@ func (h *Handler) ProductFindByName(c *gin.Context) {
 		"product": p,
 	})
 }
+
+func (h *Handler) ProductBulkDelete(c *gin.Context) {
+	ctx := c.Request.Context()
+	p, err := h.ProductService.BulkDelete(ctx)
+	if err != nil {
+		log.Printf("Unable to find products: %v", err)
+		e := apperrors.NewNotFound("products", "err")
+
+		c.JSON(e.Status(), gin.H{
+			"error": e,
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"jsons": p,
+	})
+}
+
+func (h *Handler) ProductBulkInsert(c *gin.Context) {
+	var jsons []model.Product
+	if err := c.ShouldBindJSON(&jsons); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	products := []model.Product{}
+	for _, json := range jsons {
+		products = append(products, model.Product{
+			ProductName:   json.ProductName,
+			Slug:          json.Slug,
+			ProductImage:  json.ProductImage,
+			Brand:         json.Brand,
+			Price:         json.Price,
+			CategoryId:    json.CategoryId,
+			CountInStock:  json.CountInStock,
+			Description:   json.Description,
+			AverageRating: json.AverageRating,
+		},
+		)
+	}
+	ctx := c.Request.Context()
+	result, err := h.ProductService.BulkInsert(ctx, products)
+	if err != nil {
+		log.Printf("Failed to create products: %v\n", err.Error())
+		c.JSON(apperrors.Status(err), gin.H{
+			"error": err,
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"products": result,
+	})
+}
+
+func (h *Handler) ProductJoin(c *gin.Context) {
+	id := c.Param("id")
+	uid, _ := strconv.ParseInt(id, 0, 64)
+	ctx := c.Request.Context()
+	p, err := h.ProductService.ProductFindByIDJoin(ctx, uid)
+	if err != nil {
+		log.Fatal("err", err)
+		fmt.Println("err", err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"product": p,
+	})
+}
+
+
+func (h *Handler) ProductCount(c *gin.Context) {
+	ctx := c.Request.Context()
+	result, err := h.ProductService.ProductCount(ctx)
+	if err != nil {
+		log.Fatal("err", err)
+		fmt.Println("err", err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"product count": result,
+	})
+}

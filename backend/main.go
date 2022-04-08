@@ -80,8 +80,8 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	/*
 	 * repository layer
 	 */
+	addressRepository := repository.NewAddressRepository(d.DB)
 	authRepository := repository.NewAuthRepository(d.DB)
-
 	cartRepository := repository.NewCartRepository(d.DB)
 	categoryRepository := repository.NewCategoryRepository(d.DB)
 	orderRepository := repository.NewOrderRepository(d.DB)
@@ -92,7 +92,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	userRepository := repository.NewUserRepository(d.DB)
 	wishlistRepository := repository.NewWishlistRepository(d.DB)
 
-
+	// AddressService     model.AddressService
 	// AuthService     model.AuthService
 	// CartService     model.CartService
 	// CategoryService model.CategoryService
@@ -105,6 +105,9 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	/*
 	 * service layer
 	 */
+	addressService := service.NewAddressService(&service.AddressServiceConfig{
+		AddressRepository: addressRepository,
+	})
 	authService := service.NewAuthService(&service.AuthServiceConfig{
 		AuthRepository: authRepository,
 	})
@@ -205,6 +208,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 
 	handler.NewHandler(&handler.Config{
 		R:               router,
+		AddressService:  addressService,
 		AuthService:     authService,
 		CartService:     cartService,
 		CategoryService: categoryService,

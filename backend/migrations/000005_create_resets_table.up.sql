@@ -1,5 +1,7 @@
 CREATE TABLE IF NOT EXISTS resets (
   id       SERIAL PRIMARY KEY,
   email    VARCHAR NOT NULL UNIQUE,
-  token    VARCHAR NOT NULL DEFAULT ''
+  token    VARCHAR NOT NULL DEFAULT '',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT (now()),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT (now())
 );

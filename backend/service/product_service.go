@@ -66,3 +66,35 @@ func (s *productService) ProductFindByName(ctx context.Context, name string) (*m
 	}
 	return product, nil
 }
+
+func (s *productService) BulkDelete(ctx context.Context) ([]model.Product, error) {
+	products, err := s.ProductRepository.BulkDelete(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return products, nil
+}
+
+func (s *productService) BulkInsert(ctx context.Context, products []model.Product) ([]model.Product, error) {
+	products, err := s.ProductRepository.BulkInsert(ctx, products)
+	if err != nil {
+		return nil, err
+	}
+	return products, nil
+}
+
+func (s *productService) ProductFindByIDJoin(ctx context.Context, productId int64) (*model.Product, error) {
+	product, err := s.ProductRepository.ProductFindByIDJoin(ctx, productId)
+	if err != nil {
+		return nil, err
+	}
+	return product, nil
+}
+
+func (s *productService) ProductCount(ctx context.Context) (int, error) {
+	count, err := s.ProductRepository.ProductCount(ctx)
+	if err != nil {
+		return count, err
+	}
+	return count, nil
+}

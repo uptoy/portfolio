@@ -77,35 +77,3 @@ func (r *cartService) CartDecrementItem(ctx context.Context, cartId int64, produ
 	}
 	return cartItems, err
 }
-
-// func (s *cartService) CartAddItem(ctx context.Context, cartId int64, productId int64, quantity int64) ([]model.CartItem, error) {
-// 	cart, err := s.CartRepository.CartAddItem(ctx, cartId, productId, quantity)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return cart, nil
-// }
-
-// func (s *cartService) CartDeleteItem(ctx context.Context, cartId int64, productId int64) ([]model.CartItem, error) {
-// 	cart, err := s.CartRepository.CartDeleteItem(ctx, cartId, productId)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return cart, nil
-// }
-
-// func (s *cartService) CartIncrementItem(ctx context.Context, cartId int64, productId int64) ([]model.CartItem, error) {
-// 	cart, err := s.CartRepository.CartIncrementItem(ctx, cartId, productId)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return cart, nil
-// }
-
-// func (s *cartService) CartDecrementItem(ctx context.Context, cartId int64, productId int64) ([]model.CartItem, error) {
-// 	cart, err := s.CartRepository.CartDecrementItem(ctx, cartId, productId)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return cart, nil
-// }

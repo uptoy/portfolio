@@ -93,3 +93,55 @@ func (m *MockProductRepository) ProductDelete(ctx context.Context, uid int64) (*
 	}
 	return r0, r1
 }
+
+func (m *MockProductRepository) BulkDelete(ctx context.Context) ([]model.Product, error) {
+	ret := m.Called(ctx)
+	var r0 []model.Product
+	if ret.Get(0) != nil {
+		r0 = ret.Get(0).([]model.Product)
+	}
+	var r1 error
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
+	}
+	return r0, r1
+}
+
+func (m *MockProductRepository) BulkInsert(ctx context.Context, products []model.Product) ([]model.Product, error) {
+	ret := m.Called(ctx)
+	var r0 []model.Product
+	if ret.Get(0) != nil {
+		r0 = ret.Get(0).([]model.Product)
+	}
+	var r1 error
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
+	}
+	return r0, r1
+}
+
+func (m *MockProductRepository) ProductFindByIDJoin(ctx context.Context, productId int64) (*model.Product, error) {
+	ret := m.Called(ctx, productId)
+	var r0 *model.Product
+	if ret.Get(0) != nil {
+		r0 = ret.Get(0).(*model.Product)
+	}
+	var r1 error
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
+	}
+	return r0, r1
+}
+
+func (m *MockProductRepository) ProductCount(ctx context.Context) (int, error) {
+	ret := m.Called(ctx)
+	var r0 int
+	if ret.Get(0) != nil {
+		r0 = ret.Get(0).(int)
+	}
+	var r1 error
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
+	}
+	return r0, r1
+}

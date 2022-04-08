@@ -7,6 +7,21 @@ import (
 	"github.com/google/uuid"
 )
 
+type AddressRepository interface {
+	AddressCreate(ctx context.Context, userId uuid.UUID, address *Address) (*Address, error)
+	AddressList(ctx context.Context, userId uuid.UUID) ([]*Address, error)
+	AddressGet(ctx context.Context, userId uuid.UUID, addressId int64) (*Address, error)
+	AddressUpdate(ctx context.Context, addressId int64, address *Address) (*Address, error)
+	AddressDelete(ctx context.Context, addressId int64) error
+}
+type AddressService interface {
+	AddressCreate(ctx context.Context, userId uuid.UUID, address *Address) (*Address, error)
+	AddressList(ctx context.Context, userId uuid.UUID) ([]*Address, error)
+	AddressGet(ctx context.Context, userId uuid.UUID, addressId int64) (*Address, error)
+	AddressUpdate(ctx context.Context, addressId int64, address *Address) (*Address, error)
+	AddressDelete(ctx context.Context, addressId int64) error
+}
+
 type AuthRepository interface {
 	ForgotPassword(ctx context.Context, passwordReset *PasswordReset) error
 	ResetPassword(ctx context.Context, newPassword string, passwordReset *PasswordReset) error
@@ -90,6 +105,10 @@ type ProductRepository interface {
 	ProductUpdate(ctx context.Context, id int64, p *Product) (*Product, error)
 	ProductDelete(ctx context.Context, id int64) (*Product, error)
 	ProductFindByName(ctx context.Context, name string) (*Product, error)
+	BulkDelete(ctx context.Context) ([]Product, error)
+	BulkInsert(ctx context.Context, products []Product) ([]Product, error)
+	ProductFindByIDJoin(ctx context.Context, productId int64) (*Product, error)
+	ProductCount(ctx context.Context) (int, error)
 }
 type ProductService interface {
 	ProductList(ctx context.Context) ([]Product, error)
@@ -98,6 +117,10 @@ type ProductService interface {
 	ProductUpdate(ctx context.Context, id int64, p *Product) (*Product, error)
 	ProductDelete(ctx context.Context, id int64) (*Product, error)
 	ProductFindByName(ctx context.Context, name string) (*Product, error)
+	BulkDelete(ctx context.Context) ([]Product, error)
+	BulkInsert(ctx context.Context, products []Product) ([]Product, error)
+	ProductFindByIDJoin(ctx context.Context, productId int64) (*Product, error)
+	ProductCount(ctx context.Context) (int, error)
 }
 
 type ReviewService interface {

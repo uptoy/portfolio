@@ -218,11 +218,14 @@ func (h *Handler) ConfirmCreateReviewFlow(c *gin.Context) {
 
 	result3, _ := h.WishlistService.WishlistCreate(ctx, uuid, product_id)
 
-	cart_item := model.CartItem{
+	cartId, _ := h.CartService.CartGetId(ctx, uuid)
+
+	cartItem := model.CartItem{
+		CartId:    cartId,
 		ProductId: product_id,
 		Quantity:  8,
 	}
-	result5, _ := h.CartService.CartAddItem(ctx, uuid, &cart_item)
+	result4, _ := h.CartService.CartAddItem(ctx, &cartItem)
 	// fmt.Println("product", result)
 	// fmt.Println("category", result1)
 	// fmt.Println("review", result2)
@@ -233,7 +236,7 @@ func (h *Handler) ConfirmCreateReviewFlow(c *gin.Context) {
 		"category": result1,
 		"review":   result2,
 		"wishlist": result3,
-		"cart":     result5,
+		"cartadd":     result4,
 	})
 }
 

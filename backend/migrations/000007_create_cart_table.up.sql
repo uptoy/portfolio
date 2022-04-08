@@ -1,8 +1,9 @@
 CREATE TABLE carts
 (
-    id SERIAL NOT NULL,
+    id       SERIAL PRIMARY KEY,
     user_id uuid UNIQUE NOT NULL,
-    PRIMARY KEY (id)
+    created_at TIMESTAMPTZ NOT NULL DEFAULT (now()),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT (now())
 );
 
 
@@ -12,7 +13,10 @@ CREATE TABLE cart_item
     cart_id INTEGER NOT NULL,
     product_id INTEGER NOT NULL,
     quantity INTEGER NOT NULL CHECK (quantity > 0),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT (now()),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT (now()),
     UNIQUE (cart_id, product_id)
+
 );
 
 ALTER TABLE carts

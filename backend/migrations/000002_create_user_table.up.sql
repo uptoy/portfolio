@@ -6,8 +6,8 @@ create table users (
   email VARCHAR NOT NULL UNIQUE,
   password VARCHAR NOT NULL,
   profile_url VARCHAR NOT NULL DEFAULT '',
-  created_at timestamptz NOT NULL DEFAULT (now()),
-  updated_at timestamptz NOT NULL DEFAULT (now())
+  created_at TIMESTAMPTZ NOT NULL DEFAULT (now()),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT (now())
 );
 
 
