@@ -166,9 +166,12 @@ func NewHandler(c *Config) {
 	api.POST("/payment", h.Payment)
 	order := api.Group("/orders")
 	{
-		order.POST("/create", h.OrderCreate)
+		order.POST("", h.OrderCreate)
 		order.GET("", h.OrderList)
 		order.GET("/:id", h.OrderFindByID)
+		order.GET("/:id/detail", h.OrderGetDetails)
+		order.GET("/count", h.OrderCount)
+
 	}
 	address := api.Group("/address")
 	{

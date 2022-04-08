@@ -38,10 +38,6 @@ type CartRepository interface {
 	CartDeleteItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
 	CartIncrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
 	CartDecrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
-	// GetCartItemList(ctx context.Context, userId uuid.UUID) (*Cart, error)
-	// CartRemoveItem(ctx context.Context, userId uuid.UUID, productId uuid.UUID) (*Cart, error)
-	// CartAddItem(ctx context.Context, cartId int64, productId int64, quantity int64) ([]CartItem, error)
-	// CartDeleteItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
 }
 type CartService interface {
 	CartCreate(ctx context.Context, userID uuid.UUID) (*Cart, error)
@@ -51,11 +47,6 @@ type CartService interface {
 	CartDeleteItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
 	CartIncrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
 	CartDecrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
-	// CartGet(ctx context.Context, userID uuid.UUID) ([]CartItem, error)
-	// CartAddItem(ctx context.Context, cartId int64, productId int64, quantity int64) ([]CartItem, error)
-	// CartDeleteItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
-	// CartIncrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
-	// CartDecrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
 }
 type CategoryRepository interface {
 	CategoryList(ctx context.Context) ([]Category, error)
@@ -84,11 +75,14 @@ type OrderRepository interface {
 	OrderList(ctx context.Context, userID uuid.UUID) ([]Order, error)
 	OrderCreate(ctx context.Context, order *Order) (*Order, error)
 	OrderFindByID(ctx context.Context, orderId int64) (*Order, error)
+	OrderCount(ctx context.Context) (int, error)
 }
 type OrderService interface {
 	OrderList(ctx context.Context, userID uuid.UUID) ([]Order, error)
 	OrderCreate(ctx context.Context, order *Order) (*Order, error)
 	OrderFindByID(ctx context.Context, orderId int64) (*Order, error)
+	OrderGetDetails(ctx, orderId int64) (*OrderDetail, error)
+	OrderCount(ctx context.Context) (int, error)
 }
 
 type PaymentRepository interface {

@@ -43,3 +43,11 @@ func (s *orderService) OrderFindByID(ctx context.Context, orderId int64) (*model
 	}
 	return order, nil
 }
+
+func (s *orderService) OrderCount(ctx context.Context) (int, error) {
+	result, err := s.OrderRepository.OrderCount(ctx)
+	if err != nil {
+		return result, err
+	}
+	return result, nil
+}

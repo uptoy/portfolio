@@ -27,13 +27,16 @@ func NewOrderRepository(db *sqlx.DB) model.OrderRepository {
 }
 
 func (r *pGOrderRepository) OrderCreate(ctx context.Context, order *model.Order) (*model.Order, error) {
-	query := `INSERT INTO orders () VALUES () RETURNING *`
-	if err := r.DB.GetContext(ctx, &order, query); err != nil {
+	query := `
+	INSERT INTO orders (user_id , total_price, shipping_address, shipping_city,shipping_state,shipping_country,shipping_zip)
+	VALUES ($1, $2,$3, $4,$5,$6, $7) RETURNING *
+	`
+	if err := r.DB.GetContext(ctx, order, query, order.UserId, order.TotalPrice, order.ShippingAddress, order.ShippingCity, order.ShippingState, order.ShippingCountry, order.ShippingZIP); err != nil {
 		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
-			log.Printf("Could not create a order: %v. Reason: %v\n", order.OrderId, err.Code.Name())
+			log.Printf("Could not create a order: %v. Reason: %v\n", order.Id, err.Code.Name())
 			return nil, apperrors.NewConflict("order", "order")
 		}
-		log.Printf("Could not create a order : %v. Reason: %v\n", order.OrderId, err)
+		log.Printf("Could not create a order : %v. Reason: %v\n", order.Id, err)
 		return nil, apperrors.NewInternal()
 	}
 	return order, nil
@@ -57,4 +60,14 @@ func (r *pGOrderRepository) OrderFindByID(ctx context.Context, orderId int64) (*
 		return nil, apperrors.NewNotFound("order_id", "order_id")
 	}
 	return &order, nil
+}
+
+func (r *pGOrderRepository) OrderCount(ctx context.Context) (int, error) {
+	var n int
+	query := "SELECT COUNT(*) FROM order"
+	if err := r.DB.GetContext(ctx, &n, query); err != nil {
+		log.Printf("Unable to get order: %v. Err: %v\n", n, err)
+		return n, apperrors.NewNotFound("order_id", "order_id")
+	}
+	return n, nil
 }

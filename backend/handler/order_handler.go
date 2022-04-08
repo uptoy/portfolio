@@ -23,7 +23,7 @@ func (h *Handler) OrderList(c *gin.Context) {
 		return
 	}
 	userId := user.(*model.User).UID
-	p, err := h.OrderService.OrderList(ctx, userId)
+	orders, err := h.OrderService.OrderList(ctx, userId)
 	if err != nil {
 		log.Printf("Unable to find products: %v", err)
 		e := apperrors.NewNotFound("products", "err")
@@ -34,31 +34,23 @@ func (h *Handler) OrderList(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": p,
+		"orders": orders,
 	})
 }
 func (h *Handler) OrderCreate(c *gin.Context) {
-	var json model.Product
+	var json model.Order
 	if err := c.ShouldBindJSON(&json); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	json = model.Product{
-		ProductName:   json.ProductName,
-		Slug:          json.Slug,
-		ProductImage:  json.ProductImage,
-		Brand:         json.Brand,
-		Price:         json.Price,
-		CategoryId:    json.CategoryId,
-		CountInStock:  json.CountInStock,
-		Description:   json.Description,
-		AverageRating: json.AverageRating,
+	json = model.Order{
+		OrderId: json.OrderId,
 	}
 	ctx := c.Request.Context()
-	p, _ := h.ProductService.ProductCreate(ctx, &json)
+	order, _ := h.OrderService.OrderCreate(ctx, &json)
 
 	c.JSON(http.StatusOK, gin.H{
-		"product": p,
+		"order": order,
 	})
 }
 
@@ -66,13 +58,41 @@ func (h *Handler) OrderFindByID(c *gin.Context) {
 	id := c.Param("id")
 	uid, _ := strconv.ParseInt(id, 0, 64)
 	ctx := c.Request.Context()
-	result, err := h.ProductService.ProductFindByID(ctx, uid)
+	result, err := h.OrderService.OrderFindByID(ctx, uid)
 	if err != nil {
 		log.Fatal("err", err)
 		fmt.Println("err", err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"product": result,
+		"order": result,
+	})
+}
+
+func (h *Handler) OrderGetDetails(c *gin.Context) {
+	id := c.Param("id")
+	orderId, _ := strconv.ParseInt(id, 0, 64)
+	ctx := c.Request.Context()
+	result, err := h.OrderService.OrderGetDetails(ctx, orderId)
+	if err != nil {
+		log.Fatal("err", err)
+		fmt.Println("err", err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"order": result,
+	})
+}
+
+func (h *Handler) OrderCount(c *gin.Context) {
+	ctx := c.Request.Context()
+	result, err := h.OrderService.OrderCount(ctx)
+	if err != nil {
+		log.Fatal("err", err)
+		fmt.Println("err", err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"order_count": result,
 	})
 }
