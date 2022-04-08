@@ -49,13 +49,9 @@ func (r *pGReviewRepository) Get(ctx context.Context, product_id, review_id int6
 	q := `SELECT
 	r.*,
 	u.id AS user_id,
-	u.first_name AS user_first_name,
-	u.last_name AS user_last_name,
-	u.username AS user_username,
-	u.avatar_url AS user_avatar_url,
-	u.avatar_public_id AS user_avatar_public_id
+	u.name AS name,
 	FROM product_review r
-	LEFT JOIN public.user u ON r.user_id = u.id
+	LEFT JOIN users u ON r.user_id = u.id
 	WHERE r.product_id = $1 AND r.id = $2`
 	var rj reviewJoin
 	if err := r.DB.Get(&rj, q, product_id, review_id); err != nil {
@@ -69,13 +65,9 @@ func (r *pGReviewRepository) GetAll(ctx context.Context, product_id int64) ([]*m
 	q := `SELECT
 	r.*,
 	u.id AS user_id,
-	u.first_name AS user_first_name,
-	u.last_name AS user_last_name,
-	u.username AS user_username,
-	u.avatar_url AS user_avatar_url,
-	u.avatar_public_id AS user_avatar_public_id
+	u.name AS name,
 	FROM product_review r
-	LEFT JOIN public.user u ON r.user_id = u.id
+	LEFT JOIN users u ON r.user_id = u.id
 	WHERE r.product_id = $1`
 
 	var rj []reviewJoin
@@ -90,19 +82,19 @@ func (r *pGReviewRepository) GetAll(ctx context.Context, product_id int64) ([]*m
 }
 
 // Update updates the review
-func (r *pGReviewRepository) Update(ctx context.Context, product_id, review_id int64, rev *model.ProductReview) (*model.ProductReview, error) {
+func (r *pGReviewRepository) Update(ctx context.Context, product_id, review_id int64, review *model.ProductReview) (*model.ProductReview, error) {
 	q := `UPDATE product_review SET rating=:rating, title=:title, comment=:comment, updated_at=:updated_at WHERE product_id=:product_id AND id=:review_id`
-	m := map[string]interface{}{"product_id": product_id, "review_id": review_id, "rating": rev.Rating, "title": rev.Title, "comment": rev.Comment, "updated_at": rev.UpdatedAt}
+	m := map[string]interface{}{"product_id": product_id, "review_id": review_id, "rating": review.Rating, "title": review.Title, "comment": review.Comment, "updated_at": review.UpdatedAt}
 	if _, err := r.DB.NamedExec(q, m); err != nil {
 		return nil, err
 	}
-	return rev, nil
+	return review, nil
 }
 
 // Delete hard deletes the review
 func (r *pGReviewRepository) Delete(ctx context.Context, product_id, review_id int64) (*model.ProductReview, error) {
 	review := model.ProductReview{}
-	if _, err := r.DB.NamedExec("DELETE FROM product_review WHERE product_id=:product_id AND id=:review_id", map[string]interface{}{"product_id": product_id, "review_id": review_id}); err != nil {
+	if _, err := r.DB.NamedExecContext(ctx, "DELETE FROM product_review WHERE product_id=:product_id AND id=:review_id", map[string]interface{}{"product_id": product_id, "review_id": review_id}); err != nil {
 		return nil, err
 	}
 	return &review, nil
@@ -110,14 +102,17 @@ func (r *pGReviewRepository) Delete(ctx context.Context, product_id, review_id i
 
 func (r *pGReviewRepository) BulkDelete(ctx context.Context, product_id int64, ids []int) ([]model.ProductReview, error) {
 	reviews := []model.ProductReview{}
-	q, args, err := sqlx.In(`DELETE FROM public.product_review WHERE product_id = ? AND id IN (?)`, product_id, ids)
-	if err != nil {
-		return nil, err
+	query := "SELECT * FROM product_review WHERE product_id = $1"
+	if err := r.DB.SelectContext(ctx, &reviews, query, product_id); err != nil {
+		log.Printf("Unable to get review: %v. Err: %v\n", reviews, err)
+		return nil, apperrors.NewNotFound("product_name", "products")
 	}
-	if _, err := r.DB.Exec(r.DB.Rebind(q), args...); err != nil {
-		return nil, err
+	query1 := "DELETE FROM product_review WHERE product_id = $1"
+	_, err2 := r.DB.ExecContext(ctx, query1, product_id)
+	if err2 != nil {
+		log.Printf("Unable to delete review: %v. Err: %v\n", reviews, err2)
+		return nil, apperrors.NewNotFound("products", "products")
 	}
-
 	return reviews, nil
 }
 
