@@ -162,50 +162,48 @@ func (h *Handler) ReviewBulkDelete(c *gin.Context) {
 func (h *Handler) ConfirmInsertReview(c *gin.Context) {
 	ctx := c.Request.Context()
 
-	// var uid uuid.UUID
-	// user := model.User{
-	// 	UID:      uid,
-	// 	Email:    "email@email.com",
-	// 	Password: "password",
-	// }
-	// err := h.UserService.Signup(ctx, &user)
-	// if err != nil {
-	// 	log.Printf("Failed to sign up user: %v\n", err.Error())
-	// 	return
-	// }
-	// product := model.Product{
-	// 	ProductId:     1,
-	// 	ProductName:   "product_name",
-	// 	Slug:          "slug",
-	// 	ProductImage:  "product_image",
-	// 	Brand:         "brand",
-	// 	Price:         1,
-	// 	CategoryId:    1,
-	// 	CountInStock:  1,
-	// 	Description:   "desc",
-	// 	AverageRating: 1,
-	// }
-	// // result, _ := h.ProductService.ProductCreate(ctx, &product)
-	// category_id := product.CategoryId
+	var uid uuid.UUID
+	user := model.User{
+		UID:      uid,
+		Email:    "email@email.com",
+		Password: "password",
+	}
+	err := h.UserService.Signup(ctx, &user)
+	if err != nil {
+		log.Printf("Failed to sign up user: %v\n", err.Error())
+		return
+	}
+	product := model.Product{
+		ProductId:     1,
+		ProductName:   "product_name1",
+		Slug:          "product_name1",
+		ProductImage:  "product_image",
+		Brand:         "brand",
+		Price:         1,
+		CategoryId:    1,
+		CountInStock:  1,
+		Description:   "desc",
+		AverageRating: 1,
+	}
+	result, _ := h.ProductService.ProductCreate(ctx, &product)
+	category_id := product.CategoryId
 
-	// category := model.Category{
-	// 	ID:           category_id,
-	// 	CategoryName: "category_name1",
-	// }
-	// result1, _ := h.CategoryService.CategoryCreate(ctx, &category)
+	category := model.Category{
+		ID:           category_id,
+		CategoryName: "category_name1",
+	}
+	result1, _ := h.CategoryService.CategoryCreate(ctx, &category)
 
 	// user1, _ := c.Get("user")
 
 	// uuid := user1.(*model.User).UID
 	// fmt.Println("uuid",uuid)
 
-	// product_id := int64(1)
-	mockUserID, _ := uuid.NewRandom()
-	// // product_id := product.ProductId
+	product_id := product.ProductId
 	review := model.ProductReview{
 		ID:        1,
-		UserID:    mockUserID,
-		ProductID: 1,
+		UserID:    user.UID,
+		ProductID: product_id,
 		Rating:    1,
 		Title:     "title1",
 		Comment:   "comment1",
@@ -215,11 +213,10 @@ func (h *Handler) ConfirmInsertReview(c *gin.Context) {
 	// fmt.Println("category", result1)
 	// fmt.Println("review", result2)
 	c.JSON(http.StatusOK, gin.H{
-		// "user":     user,
-		// "product":  product,
-		// "category": category,
-		// "review":   result2,
-		"review": result2,
+		"user":     user,
+		"product":  result,
+		"category": result1,
+		"review":   result2,
 	})
 
 }

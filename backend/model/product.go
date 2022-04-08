@@ -10,7 +10,7 @@ import (
 )
 
 type Product struct {
-	ProductId     int64     `db:"product_id" json:"product_id"`
+	ProductId     int64     `db:"id" json:"id"`
 	ProductName   string    `db:"product_name" json:"product_name"`
 	Slug          string    `db:"slug" json:"slug"`
 	ProductImage  string    `db:"product_image" json:"product_image"`
