@@ -5,5 +5,5 @@ CREATE TABLE product_wishlist (
   UNIQUE (user_id, product_id)
 );
 
-ALTER TABLE "product_wishlist" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("uid");
-ALTER TABLE "product_wishlist" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
+ALTER TABLE product_wishlist ADD FOREIGN KEY (user_id) REFERENCES users (uid);
+ALTER TABLE product_wishlist ADD FOREIGN KEY (product_id) REFERENCES products (id);

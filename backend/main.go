@@ -131,6 +131,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 
 	userService := service.NewUserService(&service.USConfig{
 		UserRepository: userRepository,
+		CartRepository: cartRepository,
 	})
 	wishlistService := service.NewWishlistService(&service.WishlistServiceConfig{
 		WishlistRepository: wishlistRepository,

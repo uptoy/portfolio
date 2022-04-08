@@ -16,8 +16,10 @@ type AuthService interface {
 	ResetPassword(ctx context.Context, newPassword string, passwordReset *PasswordReset) error
 }
 type CartRepository interface {
+	CartCreate(ctx context.Context, userID uuid.UUID) (*Cart, error)
 	CartGet(ctx context.Context, userID uuid.UUID) ([]CartItem, error)
-	CartAddItem(ctx context.Context, userId uuid.UUID, cartItem *CartItem) (*Cart, error)
+	CartGetId(ctx context.Context, userId uuid.UUID) (int64, error)
+	CartAddItem(ctx context.Context, cartItem *CartItem) (*Cart, error)
 	CartDeleteItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
 	CartIncrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
 	CartDecrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
@@ -27,8 +29,10 @@ type CartRepository interface {
 	// CartDeleteItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
 }
 type CartService interface {
+	CartCreate(ctx context.Context, userID uuid.UUID) (*Cart, error)
 	CartGet(ctx context.Context, userID uuid.UUID) ([]CartItem, error)
-	CartAddItem(ctx context.Context, userId uuid.UUID, cartItem *CartItem) (*Cart, error)
+	CartGetId(ctx context.Context, userId uuid.UUID) (int64, error)
+	CartAddItem(ctx context.Context, cartItem *CartItem) (*Cart, error)
 	CartDeleteItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
 	CartIncrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
 	CartDecrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
@@ -145,7 +149,7 @@ type TokenService interface {
 type UserRepository interface {
 	FindByID(ctx context.Context, uid uuid.UUID) (*User, error)
 	FindByEmail(ctx context.Context, email string) (*User, error)
-	Create(ctx context.Context, u *User) error
+	Create(ctx context.Context, u *User) (*User, error)
 	Update(ctx context.Context, u *User) error
 }
 

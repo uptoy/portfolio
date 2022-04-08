@@ -101,7 +101,6 @@ func NewHandler(c *Config) {
 		// products.PUT("/:id/reviews", h.ReviewUpdate)
 		// products.DELETE("/:id/reviews", h.ReviewUpdate)
 		products.GET("/search/:name", h.ProductFindByName)
-		/////////////////////
 		products.GET("/:id/reviews/insert", h.ReviewBulkInsert)
 		products.DELETE("/:id/reviews/delete", h.ReviewBulkDelete)
 		products.POST("/:id/reviews", h.ReviewCreate)
@@ -109,23 +108,18 @@ func NewHandler(c *Config) {
 		products.GET("/:id/reviews/:rid", h.ReviewGet)
 		products.PUT("/:id/reviews/:rid", h.ReviewUpdate)
 		products.DELETE("/:id/reviews/:rid", h.ReviewDelete)
-		// products.POST("/confirm", h.ConfirmCreateReviewFlow)
+		products.POST("/confirm", h.ConfirmCreateReviewFlow)
 	}
 	sample := api.Group("/sample")
 	{
-		sample.GET("/", h.SampleGetList)
-		sample.POST("/", h.SamplePost)
+		sample.GET("", h.SampleGetList)
+		sample.POST("", h.SamplePost)
 		sample.GET("/:id", h.SampleGetFindByID)
 		sample.PUT("/:id", h.SampleUpdate)
 		sample.DELETE("/:id", h.SampleDelete)
 		sample.GET("/search/:name", h.SampleGetFindByName)
 	}
-	// order := api.Group("/orders")
-	// {
-	// 	order.POST("/create", h.OrderCreate)
-	// 	order.GET("/", h.OrderList)
-	// 	order.GET("/:id", h.OrderFindByID)
-	// }
+
 	auth := api.Group("/auth")
 	{
 		auth.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
@@ -138,12 +132,18 @@ func NewHandler(c *Config) {
 	}
 	wishlist := api.Group("/wishlist")
 	{
-		wishlist.GET("/", h.WishlistGet)
-		wishlist.POST("/", h.WishlistCreate)
+		wishlist.GET("", h.WishlistGet)
+		wishlist.POST("", h.WishlistCreate)
 		wishlist.DELETE("/:product_id", h.WishlistDelete)
 		wishlist.DELETE("/clear", h.WishlistClear)
 	}
 	api.POST("/payment", h.Payment)
+		// order := api.Group("/orders")
+	// {
+	// 	order.POST("/create", h.OrderCreate)
+	// 	order.GET("/", h.OrderList)
+	// 	order.GET("/:id", h.OrderFindByID)
+	// }
 
 	// admin := api.Group("/admin")
 	// {

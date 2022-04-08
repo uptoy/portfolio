@@ -2,10 +2,12 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"backend/model"
 	"backend/model/apperrors"
+
 	"github.com/google/uuid"
 )
 
@@ -13,12 +15,14 @@ import (
 // for use in service methods
 type userService struct {
 	UserRepository model.UserRepository
+	CartRepository model.CartRepository
 }
 
 // USConfig will hold repositories that will eventually be injected into this
 // this service layer
 type USConfig struct {
 	UserRepository model.UserRepository
+	CartRepository model.CartRepository
 }
 
 // NewUserService is a factory function for
@@ -26,6 +30,7 @@ type USConfig struct {
 func NewUserService(c *USConfig) model.UserService {
 	return &userService{
 		UserRepository: c.UserRepository,
+		CartRepository: c.CartRepository,
 	}
 }
 
@@ -50,17 +55,19 @@ func (s *userService) Signup(ctx context.Context, u *model.User) error {
 	// then created a user. It's somewhat un-natural to mutate the user here
 	u.Password = pw
 
-	if err := s.UserRepository.Create(ctx, u); err != nil {
-		return err
+	user, err := s.UserRepository.Create(ctx, u)
+	if err != nil {
+		log.Printf("Unable to signup user for email: %v\n", u.Email)
+		return apperrors.NewInternal()
 	}
+	uid := user.UID
 
-	// If we get around to adding events, we'd Publish it here
-	// err := s.EventsBroker.PublishUserUpdated(u, true)
-
-	// if err != nil {
-	// 	return nil, apperrors.NewInternal()
-	// }
-
+	cart, err := s.CartRepository.CartCreate(ctx, uid)
+	if err != nil {
+		log.Printf("Unable to signup user for email: %v\n", u.Email)
+		return apperrors.NewInternal()
+	}
+	fmt.Println("cart", cart)
 	return nil
 }
 
