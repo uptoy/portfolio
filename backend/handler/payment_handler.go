@@ -11,6 +11,7 @@ import (
 )
 
 func (h *Handler) Payment(c *gin.Context) {
+	ctx := c.Request.Context()
 	type reqPayment struct {
 		Email  string
 		Amount int64
@@ -18,7 +19,7 @@ func (h *Handler) Payment(c *gin.Context) {
 	var json reqPayment
 	amount := json.Amount
 	email := json.Email
-	err := h.PaymentService.Payment(amount, email)
+	err := h.PaymentService.Payment(ctx, amount, email)
 	if err != nil {
 		log.Printf("Unable to find products: %v", err)
 		e := apperrors.NewNotFound("products", "err")

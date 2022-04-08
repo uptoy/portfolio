@@ -72,7 +72,7 @@ func (r *pGProductRepository) ProductFindByName(ctx context.Context, productName
 func (r *pGProductRepository) ProductUpdate(ctx context.Context, productId int64, p *model.Product) (*model.Product, error) {
 	query := `
 	UPDATE products
-	SET product_name = $2,slug = $3,product_image = $4,brand = $5, price = $6,category_name = $7,count_in_stock = $8,description = $9,average_rating = $10
+	SET product_name = $2,slug = $3,product_image = $4,brand = $5, price = $6,category_id = $7,count_in_stock = $8,description = $9,average_rating = $10
 	WHERE product_id=$1
 	RETURNING *;`
 	if err := r.DB.GetContext(ctx, p, query, productId, p.ProductName, p.Slug, p.ProductImage, p.Brand, p.Price, p.CategoryId, p.CountInStock, p.Description, p.AverageRating); err != nil {

@@ -11,3 +11,6 @@ CREATE TABLE IF NOT EXISTS product_review(
   UNIQUE (user_id, product_id),
   PRIMARY KEY (user_id, product_id)
 );
+
+ALTER TABLE "product_review" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("uid") ON DELETE CASCADE;
+ALTER TABLE "product_review" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id") ON DELETE CASCADE;

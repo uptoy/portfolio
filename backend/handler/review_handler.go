@@ -9,7 +9,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
+	// "github.com/google/uuid"
 )
 
 func (h *Handler) ReviewBulkInsert(c *gin.Context) {
@@ -159,67 +159,66 @@ func (h *Handler) ReviewBulkDelete(c *gin.Context) {
 	})
 }
 
-func (h *Handler) ConfirmInsertReview(c *gin.Context) {
-	ctx := c.Request.Context()
+// func (h *Handler) ConfirmCreateReviewFlow(c *gin.Context) {
+// 	ctx := c.Request.Context()
 
-	var uid uuid.UUID
-	user := model.User{
-		UID:      uid,
-		Email:    "email@email.com",
-		Password: "password",
-	}
-	err := h.UserService.Signup(ctx, &user)
-	if err != nil {
-		log.Printf("Failed to sign up user: %v\n", err.Error())
-		return
-	}
-	product := model.Product{
-		ProductId:     1,
-		ProductName:   "product_name1",
-		Slug:          "product_name1",
-		ProductImage:  "product_image",
-		Brand:         "brand",
-		Price:         1,
-		CategoryId:    1,
-		CountInStock:  1,
-		Description:   "desc",
-		AverageRating: 1,
-	}
-	result, _ := h.ProductService.ProductCreate(ctx, &product)
-	category_id := product.CategoryId
+// 	var uid uuid.UUID
+// 	user := model.User{
+// 		UID:      uid,
+// 		Email:    "email@email.com",
+// 		Password: "password",
+// 	}
+// 	err := h.UserService.Signup(ctx, &user)
+// 	if err != nil {
+// 		log.Printf("Failed to sign up user: %v\n", err.Error())
+// 		return
+// 	}
+// 	product := model.Product{
+// 		ProductId:     1,
+// 		ProductName:   "product_name1",
+// 		Slug:          "product_name1",
+// 		ProductImage:  "product_image",
+// 		Brand:         "brand",
+// 		Price:         1,
+// 		CategoryId:    1,
+// 		CountInStock:  1,
+// 		Description:   "desc",
+// 		AverageRating: 1,
+// 	}
+// 	result, _ := h.ProductService.ProductCreate(ctx, &product)
+// 	category_id := product.CategoryId
 
-	category := model.Category{
-		ID:           category_id,
-		CategoryName: "category_name1",
-	}
-	result1, _ := h.CategoryService.CategoryCreate(ctx, &category)
+// 	category := model.Category{
+// 		ID:           category_id,
+// 		CategoryName: "category_name1",
+// 	}
+// 	result1, _ := h.CategoryService.CategoryCreate(ctx, &category)
 
-	// user1, _ := c.Get("user")
+// 	// user1, _ := c.Get("user")
 
-	// uuid := user1.(*model.User).UID
-	// fmt.Println("uuid",uuid)
+// 	// uuid := user1.(*model.User).UID
+// 	// fmt.Println("uuid",uuid)
 
-	product_id := product.ProductId
-	review := model.ProductReview{
-		ID:        1,
-		UserID:    user.UID,
-		ProductID: product_id,
-		Rating:    1,
-		Title:     "title1",
-		Comment:   "comment1",
-	}
-	result2, _ := h.ReviewService.ReviewCreate(ctx, 1, &review)
-	// fmt.Println("product", result)
-	// fmt.Println("category", result1)
-	// fmt.Println("review", result2)
-	c.JSON(http.StatusOK, gin.H{
-		"user":     user,
-		"product":  result,
-		"category": result1,
-		"review":   result2,
-	})
-
-}
+// 	product_id := product.ProductId
+// 	review := model.ProductReview{
+// 		ID:        1,
+// 		UserID:    user.UID,
+// 		ProductID: product_id,
+// 		Rating:    1,
+// 		Title:     "title1",
+// 		Comment:   "comment1",
+// 	}
+// 	result2, _ := h.ReviewService.ReviewCreate(ctx, 1, &review)
+// 	// fmt.Println("product", result)
+// 	// fmt.Println("category", result1)
+// 	// fmt.Println("review", result2)
+// 	c.JSON(http.StatusOK, gin.H{
+// 		"user":     user,
+// 		"product":  result,
+// 		"category": result1,
+// 		"review":   result2,
+// 	})
+// }
 
 // func (h *Handler) ReviewList(c *gin.Context) {
 // 	ctx := c.Request.Context()

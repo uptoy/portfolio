@@ -23,7 +23,9 @@ type Handler struct {
 	ReviewService   model.ReviewService
 	TokenService    model.TokenService
 	UserService     model.UserService
-	MaxBodyBytes    int64
+	WishlistService model.WishlistService
+
+	MaxBodyBytes int64
 }
 
 // Config will hold services that will eventually be injected into this
@@ -39,6 +41,8 @@ type Config struct {
 	ReviewService   model.ReviewService
 	TokenService    model.TokenService
 	UserService     model.UserService
+	WishlistService model.WishlistService
+
 	BaseURL         string
 	TimeoutDuration time.Duration
 	MaxBodyBytes    int64
@@ -58,8 +62,9 @@ func NewHandler(c *Config) {
 		ReviewService:   c.ReviewService,
 		TokenService:    c.TokenService,
 		UserService:     c.UserService,
+		WishlistService: c.WishlistService,
 
-		MaxBodyBytes:    c.MaxBodyBytes,
+		MaxBodyBytes: c.MaxBodyBytes,
 	} // currently has no properties
 
 	// Create an account group
@@ -104,7 +109,7 @@ func NewHandler(c *Config) {
 		products.GET("/:id/reviews/:rid", h.ReviewGet)
 		products.PUT("/:id/reviews/:rid", h.ReviewUpdate)
 		products.DELETE("/:id/reviews/:rid", h.ReviewDelete)
-		products.POST("/confirm", h.ConfirmInsertReview)
+		// products.POST("/confirm", h.ConfirmCreateReviewFlow)
 	}
 	sample := api.Group("/sample")
 	{
@@ -130,6 +135,13 @@ func NewHandler(c *Config) {
 		auth.POST("/tokens", h.Tokens)
 		auth.POST("/forgot_password", h.Sample)
 		auth.POST("/reset_password", h.Sample)
+	}
+	wishlist := api.Group("/wishlist")
+	{
+		wishlist.GET("/", h.WishlistGet)
+		wishlist.POST("/", h.WishlistCreate)
+		wishlist.DELETE("/:product_id", h.WishlistDelete)
+		wishlist.DELETE("/clear", h.WishlistClear)
 	}
 	api.POST("/payment", h.Payment)
 
