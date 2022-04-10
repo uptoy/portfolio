@@ -10,7 +10,7 @@ import (
 )
 
 type Product struct {
-	ProductId     int64     `db:"id" json:"id"`
+	Id     int64     `db:"id" json:"id"`
 	ProductName   string    `db:"product_name" json:"product_name"`
 	Slug          string    `db:"slug" json:"slug"`
 	ProductImage  string    `db:"product_image" json:"product_image"`
@@ -37,7 +37,7 @@ func (c *Product) PreUpdate() {
 func (p Product) Validate() error {
 	var err error
 
-	if p.ProductId != 0 {
+	if p.Id != 0 {
 		fmt.Println(err, "ID is 0")
 	}
 	if p.ProductName == "" {

@@ -180,7 +180,7 @@ func (h *Handler) ConfirmCreateReviewFlow(c *gin.Context) {
 		return
 	}
 	product := model.Product{
-		ProductId:     1,
+		Id:     1,
 		ProductName:   "product_name1",
 		Slug:          "product_name1",
 		ProductImage:  "product_image",
@@ -205,7 +205,7 @@ func (h *Handler) ConfirmCreateReviewFlow(c *gin.Context) {
 	uuid := user1.(*model.User).UID
 	fmt.Println("uuid", uuid)
 
-	product_id := product.ProductId
+	product_id := product.Id
 	review := model.ProductReview{
 		ID:        1,
 		UserID:    user.UID,

@@ -17,7 +17,7 @@ import (
 func TestWishlistCreate(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		mockProduct0 := model.Product{
-			ProductId:     0,
+			Id:     0,
 			ProductName:   "product_name",
 			Slug:          "slug",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -29,7 +29,7 @@ func TestWishlistCreate(t *testing.T) {
 			AverageRating: 5,
 		}
 		mockProduct2 := model.Product{
-			ProductId:     1,
+			Id:     1,
 			ProductName:   "product_name1",
 			Slug:          "slug1",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -52,14 +52,14 @@ func TestWishlistCreate(t *testing.T) {
 			WishlistRepository: mockWishlistRepository,
 		})
 		userId := mockUser.UID
-		productId2 := mockProduct2.ProductId
+		productId2 := mockProduct2.Id
 		mockWishlistRepository.On("WishlistCreate", mock.AnythingOfType("*context.emptyCtx"), userId, productId2).Return(mockProductList, nil)
 		ctx := context.TODO()
 		wishlist, err := ws.WishlistGet(ctx, mockUser.UID)
 		assert.NoError(t, err)
-		assert.Equal(t, mockProductList[0].ProductId, wishlist[0].ProductId)
-		assert.Equal(t, mockProductList[1].ProductId, wishlist[1].ProductId)
-		assert.NotNil(t, wishlist[0].ProductId)
+		assert.Equal(t, mockProductList[0].Id, wishlist[0].Id)
+		assert.Equal(t, mockProductList[1].Id, wishlist[1].Id)
+		assert.NotNil(t, wishlist[0].Id)
 		mockWishlistRepository.AssertExpectations(t)
 	})
 }
@@ -67,7 +67,7 @@ func TestWishlistCreate(t *testing.T) {
 func TestWishlistGet(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		mockProduct0 := model.Product{
-			ProductId:     0,
+			Id:     0,
 			ProductName:   "product_name",
 			Slug:          "slug",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -79,7 +79,7 @@ func TestWishlistGet(t *testing.T) {
 			AverageRating: 5,
 		}
 		mockProduct2 := model.Product{
-			ProductId:     1,
+			Id:     1,
 			ProductName:   "product_name1",
 			Slug:          "slug1",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -108,8 +108,8 @@ func TestWishlistGet(t *testing.T) {
 		assert.NoError(t, err)
 		fmt.Println("mockProductList[0]", mockProductList[0])
 		fmt.Println("mockProductList[1]", mockProductList[1])
-		assert.Equal(t, mockProductList[0].ProductId, wishlist[0].ProductId)
-		assert.Equal(t, mockProductList[1].ProductId, wishlist[1].ProductId)
+		assert.Equal(t, mockProductList[0].Id, wishlist[0].Id)
+		assert.Equal(t, mockProductList[1].Id, wishlist[1].Id)
 		mockWishlistRepository.AssertExpectations(t)
 	})
 }
@@ -117,7 +117,7 @@ func TestWishlistGet(t *testing.T) {
 func TestWishlistDelete(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		mockProduct1 := model.Product{
-			ProductId:     0,
+			Id:     0,
 			ProductName:   "product_name",
 			Slug:          "slug",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -129,7 +129,7 @@ func TestWishlistDelete(t *testing.T) {
 			AverageRating: 5,
 		}
 		mockProduct2 := model.Product{
-			ProductId:     1,
+			Id:     1,
 			ProductName:   "product_name1",
 			Slug:          "slug1",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -152,13 +152,13 @@ func TestWishlistDelete(t *testing.T) {
 			WishlistRepository: mockWishlistRepository,
 		})
 		userId := mockUser.UID
-		productId2 := mockProduct2.ProductId
+		productId2 := mockProduct2.Id
 		mockWishlistRepository.On("WishlistDelete", mock.AnythingOfType("*context.emptyCtx"), userId, productId2).Return(mockProductList, nil)
 		ctx := context.TODO()
-		wishlist, err := ws.WishlistDelete(ctx, mockUser.UID, mockProduct2.ProductId)
+		wishlist, err := ws.WishlistDelete(ctx, mockUser.UID, mockProduct2.Id)
 		assert.NoError(t, err)
 		fmt.Println("mockProductList[0]", mockProductList[0])
-		assert.Equal(t, mockProductList[0].ProductId, wishlist[0].ProductId)
+		assert.Equal(t, mockProductList[0].Id, wishlist[0].Id)
 		mockWishlistRepository.AssertExpectations(t)
 	})
 }

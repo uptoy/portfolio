@@ -9,11 +9,11 @@ type productService struct {
 	ProductRepository model.ProductRepository
 }
 
-type PSConfig struct {
+type ProductServiceConfig struct {
 	ProductRepository model.ProductRepository
 }
 
-func NewProductService(c *PSConfig) model.ProductService {
+func NewProductService(c *ProductServiceConfig) model.ProductService {
 	return &productService{
 		ProductRepository: c.ProductRepository,
 	}
@@ -97,4 +97,12 @@ func (s *productService) ProductCount(ctx context.Context) (int, error) {
 		return count, err
 	}
 	return count, nil
+}
+
+func (s *productService) ProductListByIDS(ctx context.Context, ids []int64) ([]*model.Product, error) {
+	products, err := s.ProductRepository.ProductListByIDS(ctx, ids)
+	if err != nil {
+		return nil, err
+	}
+	return products, nil
 }

@@ -124,7 +124,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	paymentService := service.NewPaymentService(&service.PaymentServiceConfig{
 		PaymentRepository: paymentRepository,
 	})
-	productService := service.NewProductService(&service.PSConfig{
+	productService := service.NewProductService(&service.ProductServiceConfig{
 		ProductRepository: productRepository,
 	})
 

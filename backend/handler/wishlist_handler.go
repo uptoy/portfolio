@@ -42,7 +42,7 @@ func (h *Handler) WishlistCreate(c *gin.Context) {
 		return
 	}
 	json = model.Product{
-		ProductId:     json.ProductId,
+		Id:     json.Id,
 		ProductName:   json.ProductName,
 		Slug:          json.Slug,
 		ProductImage:  json.ProductImage,
@@ -64,7 +64,7 @@ func (h *Handler) WishlistCreate(c *gin.Context) {
 		return
 	}
 	uid := user.(*model.User).UID
-	productId := json.ProductId
+	productId := json.Id
 	ctx := c.Request.Context()
 	w, err := h.WishlistService.WishlistCreate(ctx, uid, productId)
 	if err != nil {

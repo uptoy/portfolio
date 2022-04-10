@@ -106,11 +106,14 @@ func (s *userService) UpdateDetails(ctx context.Context, u *model.User) error {
 		return err
 	}
 
-	// // Publish user updated
-	// err = s.EventsBroker.PublishUserUpdated(u, false)
-	// if err != nil {
-	// 	return apperrors.NewInternal()
-	// }
-
 	return nil
+}
+
+func (s *userService) Count(ctx context.Context) (int, error) {
+	result, err := s.UserRepository.Count(ctx)
+
+	if err != nil {
+		return result, err
+	}
+	return result, err
 }

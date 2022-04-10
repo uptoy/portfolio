@@ -27,15 +27,15 @@ func TestProductCreate(t *testing.T) {
 			AverageRating: 5,
 		}
 		mockProductRepository := new(mocks.MockProductRepository)
-		ps := NewProductService(&PSConfig{
+		ps := NewProductService(&ProductServiceConfig{
 			ProductRepository: mockProductRepository,
 		})
 		mockProductRepository.On("ProductCreate", mock.AnythingOfType("*context.emptyCtx"), mock.AnythingOfType("*model.Product")).Return(mockProduct, nil)
 		ctx := context.TODO()
 		product, err := ps.ProductCreate(ctx, mockProduct)
 		assert.NoError(t, err)
-		assert.Equal(t, int64(0), product.ProductId)
-		assert.NotNil(t, product.ProductId)
+		assert.Equal(t, int64(0), product.Id)
+		assert.NotNil(t, product.Id)
 		mockProductRepository.AssertExpectations(t)
 	})
 }
@@ -43,7 +43,7 @@ func TestProductCreate(t *testing.T) {
 func TestProductList(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		mockProduct0 := model.Product{
-			ProductId:     0,
+			Id:            0,
 			ProductName:   "product_name",
 			Slug:          "slug",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -55,7 +55,7 @@ func TestProductList(t *testing.T) {
 			AverageRating: 5,
 		}
 		mockProduct2 := model.Product{
-			ProductId:     1,
+			Id:            1,
 			ProductName:   "product_name1",
 			Slug:          "slug1",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -68,7 +68,7 @@ func TestProductList(t *testing.T) {
 		}
 		mockProductList := []model.Product{mockProduct0, mockProduct2}
 		mockProductRepository := new(mocks.MockProductRepository)
-		ps := NewProductService(&PSConfig{
+		ps := NewProductService(&ProductServiceConfig{
 			ProductRepository: mockProductRepository,
 		})
 		mockProductRepository.On("ProductList", mock.AnythingOfType("*context.emptyCtx")).Return(mockProductList, nil)
@@ -77,8 +77,8 @@ func TestProductList(t *testing.T) {
 		assert.NoError(t, err)
 		fmt.Println("mockProductList[0]", mockProductList[0])
 		fmt.Println("mockProductList[1]", mockProductList[1])
-		assert.Equal(t, mockProductList[0].ProductId, productList[0].ProductId)
-		assert.Equal(t, mockProductList[1].ProductId, productList[1].ProductId)
+		assert.Equal(t, mockProductList[0].Id, productList[0].Id)
+		assert.Equal(t, mockProductList[1].Id, productList[1].Id)
 		mockProductRepository.AssertExpectations(t)
 	})
 }
@@ -86,7 +86,7 @@ func TestProductList(t *testing.T) {
 func TestProductFindByID(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		mockProduct := &model.Product{
-			ProductId:     0,
+			Id:            0,
 			ProductName:   "product_name",
 			Slug:          "slug",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -98,12 +98,12 @@ func TestProductFindByID(t *testing.T) {
 			AverageRating: 5,
 		}
 		mockProductRepository := new(mocks.MockProductRepository)
-		ps := NewProductService(&PSConfig{
+		ps := NewProductService(&ProductServiceConfig{
 			ProductRepository: mockProductRepository,
 		})
-		mockProductRepository.On("ProductFindByID", mock.AnythingOfType("*context.emptyCtx"), mockProduct.ProductId).Return(mockProduct, nil)
+		mockProductRepository.On("ProductFindByID", mock.AnythingOfType("*context.emptyCtx"), mockProduct.Id).Return(mockProduct, nil)
 		ctx := context.TODO()
-		product, err := ps.ProductFindByID(ctx, mockProduct.ProductId)
+		product, err := ps.ProductFindByID(ctx, mockProduct.Id)
 		assert.NoError(t, err)
 		assert.Equal(t, mockProduct, product)
 		assert.Equal(t, mockProduct.ProductName, product.ProductName)
@@ -114,7 +114,7 @@ func TestProductFindByID(t *testing.T) {
 func TestProductFindByName(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		mockProduct := &model.Product{
-			ProductId:     0,
+			Id:            0,
 			ProductName:   "product_name",
 			Slug:          "slug",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -126,7 +126,7 @@ func TestProductFindByName(t *testing.T) {
 			AverageRating: 5,
 		}
 		mockProductRepository := new(mocks.MockProductRepository)
-		ps := NewProductService(&PSConfig{
+		ps := NewProductService(&ProductServiceConfig{
 			ProductRepository: mockProductRepository,
 		})
 		mockProductRepository.On("ProductFindByName", mock.AnythingOfType("*context.emptyCtx"), mockProduct.ProductName).Return(mockProduct, nil)
@@ -134,7 +134,7 @@ func TestProductFindByName(t *testing.T) {
 		product, err := ps.ProductFindByName(ctx, mockProduct.ProductName)
 		assert.NoError(t, err)
 		assert.Equal(t, mockProduct, product)
-		assert.Equal(t, mockProduct.ProductId, product.ProductId)
+		assert.Equal(t, mockProduct.Id, product.Id)
 		mockProductRepository.AssertExpectations(t)
 	})
 }
@@ -142,7 +142,7 @@ func TestProductFindByName(t *testing.T) {
 func TestProductUpdate(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		mockProduct := &model.Product{
-			ProductId:     0,
+			Id:            0,
 			ProductName:   "product_name",
 			Slug:          "slug",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -154,15 +154,15 @@ func TestProductUpdate(t *testing.T) {
 			AverageRating: 5,
 		}
 		mockProductRepository := new(mocks.MockProductRepository)
-		ps := NewProductService(&PSConfig{
+		ps := NewProductService(&ProductServiceConfig{
 			ProductRepository: mockProductRepository,
 		})
-		mockProductRepository.On("ProductUpdate", mock.AnythingOfType("*context.emptyCtx"), mockProduct.ProductId, mockProduct).Return(mockProduct, nil)
+		mockProductRepository.On("ProductUpdate", mock.AnythingOfType("*context.emptyCtx"), mockProduct.Id, mockProduct).Return(mockProduct, nil)
 		ctx := context.TODO()
-		product, err := ps.ProductUpdate(ctx, mockProduct.ProductId, mockProduct)
+		product, err := ps.ProductUpdate(ctx, mockProduct.Id, mockProduct)
 		assert.NoError(t, err)
 		assert.Equal(t, mockProduct, product)
-		assert.Equal(t, mockProduct.ProductId, product.ProductId)
+		assert.Equal(t, mockProduct.Id, product.Id)
 		mockProductRepository.AssertExpectations(t)
 	})
 }
@@ -170,7 +170,7 @@ func TestProductUpdate(t *testing.T) {
 func TestProductDelete(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		mockProduct := &model.Product{
-			ProductId:     0,
+			Id:            0,
 			ProductName:   "product_name",
 			Slug:          "slug",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -182,12 +182,12 @@ func TestProductDelete(t *testing.T) {
 			AverageRating: 5,
 		}
 		mockProductRepository := new(mocks.MockProductRepository)
-		ps := NewProductService(&PSConfig{
+		ps := NewProductService(&ProductServiceConfig{
 			ProductRepository: mockProductRepository,
 		})
-		mockProductRepository.On("ProductDelete", mock.AnythingOfType("*context.emptyCtx"), mockProduct.ProductId).Return(mockProduct, nil)
+		mockProductRepository.On("ProductDelete", mock.AnythingOfType("*context.emptyCtx"), mockProduct.Id).Return(mockProduct, nil)
 		ctx := context.TODO()
-		product, err := ps.ProductDelete(ctx, mockProduct.ProductId)
+		product, err := ps.ProductDelete(ctx, mockProduct.Id)
 		assert.NoError(t, err)
 		assert.Equal(t, mockProduct, product)
 		assert.Equal(t, mockProduct.ProductName, product.ProductName)

@@ -29,7 +29,7 @@ func TestProductList(t *testing.T) {
 		})
 
 		p1 := model.Product{
-			ProductId:     1,
+			Id:     1,
 			ProductName:   "product_name1",
 			Slug:          "slug1",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -43,7 +43,7 @@ func TestProductList(t *testing.T) {
 			UpdatedAt:     time.Now(),
 		}
 		p2 := model.Product{
-			ProductId:     2,
+			Id:     2,
 			ProductName:   "product_name2",
 			Slug:          "slug2",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -145,7 +145,7 @@ func TestProductFindByID(t *testing.T) {
 			ProductService: mockProductService,
 		})
 		json1 := &model.Product{
-			ProductId:     1,
+			Id:     1,
 			ProductName:   "p1",
 			Slug:          "s1",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -158,8 +158,8 @@ func TestProductFindByID(t *testing.T) {
 			CreatedAt:     time.Now(),
 			UpdatedAt:     time.Now(),
 		}
-		sid := strconv.Itoa(int(json1.ProductId))
-		mockProductService.On("ProductFindByID", mock.AnythingOfType("*context.emptyCtx"), json1.ProductId).Return(json1, nil)
+		sid := strconv.Itoa(int(json1.Id))
+		mockProductService.On("ProductFindByID", mock.AnythingOfType("*context.emptyCtx"), json1.Id).Return(json1, nil)
 		request, err := http.NewRequest(http.MethodGet, "/products/"+sid, nil)
 		fmt.Println("err", err)
 		assert.NoError(t, err)
@@ -188,7 +188,7 @@ func TestProductFindByName(t *testing.T) {
 			ProductService: mockProductService,
 		})
 		json1 := &model.Product{
-			ProductId:     1,
+			Id:     1,
 			ProductName:   "p1",
 			Slug:          "s1",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -232,7 +232,7 @@ func TestProductUpdate(t *testing.T) {
 			ProductService: mockProductService,
 		})
 		json1 := &model.Product{
-			ProductId:     1,
+			Id:     1,
 			ProductName:   "p1",
 			Slug:          "s1",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -260,8 +260,8 @@ func TestProductUpdate(t *testing.T) {
 		})
 		fmt.Println("err", err)
 		assert.NoError(t, err)
-		sid := strconv.Itoa(int(json1.ProductId))
-		mockProductService.On("ProductUpdate", mock.AnythingOfType("*context.emptyCtx"), json1.ProductId, mock.AnythingOfType("*model.Product")).Return(json1, nil)
+		sid := strconv.Itoa(int(json1.Id))
+		mockProductService.On("ProductUpdate", mock.AnythingOfType("*context.emptyCtx"), json1.Id, mock.AnythingOfType("*model.Product")).Return(json1, nil)
 		request, err := http.NewRequest(http.MethodPut, "/products/"+sid, bytes.NewBuffer(reqBody))
 		fmt.Println("err", err)
 		assert.NoError(t, err)
@@ -291,7 +291,7 @@ func TestProductDelete(t *testing.T) {
 			ProductService: mockProductService,
 		})
 		json1 := &model.Product{
-			ProductId:     1,
+			Id:     1,
 			ProductName:   "p1",
 			Slug:          "s1",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -304,8 +304,8 @@ func TestProductDelete(t *testing.T) {
 			CreatedAt:     time.Now(),
 			UpdatedAt:     time.Now(),
 		}
-		sid := strconv.Itoa(int(json1.ProductId))
-		mockProductService.On("ProductDelete", mock.AnythingOfType("*context.emptyCtx"), json1.ProductId).Return(json1, nil)
+		sid := strconv.Itoa(int(json1.Id))
+		mockProductService.On("ProductDelete", mock.AnythingOfType("*context.emptyCtx"), json1.Id).Return(json1, nil)
 		request, err := http.NewRequest(http.MethodDelete, "/products/"+sid, nil)
 		fmt.Println("err", err)
 		assert.NoError(t, err)

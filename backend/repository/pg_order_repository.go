@@ -62,6 +62,10 @@ func (r *pGOrderRepository) OrderFindByID(ctx context.Context, orderId int64) (*
 	return &order, nil
 }
 
+func (r *pGOrderRepository) OrderUpdate(ctx context.Context, orderId int64, order *model.Order) (*model.Order, error) {
+	return order, nil
+}
+
 func (r *pGOrderRepository) OrderCount(ctx context.Context) (int, error) {
 	var n int
 	query := "SELECT COUNT(*) FROM order"
@@ -70,4 +74,28 @@ func (r *pGOrderRepository) OrderCount(ctx context.Context) (int, error) {
 		return n, apperrors.NewNotFound("order_id", "order_id")
 	}
 	return n, nil
+}
+
+//order detail
+func (r *pGOrderRepository) OrderDetailsBulkInsert(ctx context.Context, items []*model.OrderDetail) error {
+	if _, err := r.DB.NamedExecContext(ctx, `INSERT INTO order_detail (order_id, product_id, quantity, sub_price) VALUES (:order_id, :product_id, :quantity, :sub_price)`, items); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *pGOrderRepository) Save(ctx context.Context, o *model.OrderDetail) (*model.OrderDetail, error) {
+	if _, err := r.DB.NamedExecContext(ctx, `INSERT INTO order_detail (order_id, product_id, quantity, sub_price) VALUES (:order_id, :product_id, :quantity, :sub_price)`, o); err != nil {
+		return nil, err
+	}
+	return o, nil
+}
+
+func (r *pGOrderRepository) OrderGetDetails(ctx context.Context, orderID int64) ([]*model.OrderInfo, error) {
+	var ods = make([]*model.OrderInfo, 0)
+	q := `SELECT * FROM order_detail od LEFT JOIN product p ON od.product_id = p.id WHERE od.order_id = $1`
+	if err := r.DB.SelectContext(ctx, &ods, q, orderID); err != nil {
+		return nil, err
+	}
+	return ods, nil
 }

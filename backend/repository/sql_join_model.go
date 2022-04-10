@@ -24,7 +24,7 @@ type CategoryJoin struct {
 
 func (pj *productJoin) ToProduct() *model.Product {
 	return &model.Product{
-		ProductId:     pj.ProductId,
+		Id:     pj.Id,
 		ProductName:   pj.ProductName,
 		Slug:          pj.Slug,
 		ProductImage:  pj.ProductImage,

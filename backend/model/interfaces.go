@@ -76,13 +76,16 @@ type OrderRepository interface {
 	OrderCreate(ctx context.Context, order *Order) (*Order, error)
 	OrderFindByID(ctx context.Context, orderId int64) (*Order, error)
 	OrderCount(ctx context.Context) (int, error)
+	OrderDetailsBulkInsert(ctx context.Context, items []*OrderDetail) error
+	OrderGetDetails(ctx context.Context, orderID int64) ([]*OrderInfo, error)
 }
 type OrderService interface {
 	OrderList(ctx context.Context, userID uuid.UUID) ([]Order, error)
-	OrderCreate(ctx context.Context, order *Order) (*Order, error)
+	OrderCreate(ctx context.Context, userID uuid.UUID, data *OrderRequestData) (*Order, error)
 	OrderFindByID(ctx context.Context, orderId int64) (*Order, error)
-	OrderGetDetails(ctx, orderId int64) (*OrderDetail, error)
+	OrderGetDetails(ctx context.Context, orderId int64) ([]*OrderInfo, error)
 	OrderCount(ctx context.Context) (int, error)
+	OrderDetailsBulkInsert(ctx context.Context, items []*OrderDetail) error
 }
 
 type PaymentRepository interface {
@@ -103,6 +106,7 @@ type ProductRepository interface {
 	BulkInsert(ctx context.Context, products []Product) ([]Product, error)
 	ProductFindByIDJoin(ctx context.Context, productId int64) (*Product, error)
 	ProductCount(ctx context.Context) (int, error)
+	ProductListByIDS(ctx context.Context, ids []int64) ([]*Product, error)
 }
 type ProductService interface {
 	ProductList(ctx context.Context) ([]Product, error)
@@ -115,6 +119,7 @@ type ProductService interface {
 	BulkInsert(ctx context.Context, products []Product) ([]Product, error)
 	ProductFindByIDJoin(ctx context.Context, productId int64) (*Product, error)
 	ProductCount(ctx context.Context) (int, error)
+	ProductListByIDS(ctx context.Context, ids []int64) ([]*Product, error)
 }
 
 type ReviewService interface {
@@ -168,6 +173,7 @@ type UserRepository interface {
 	FindByEmail(ctx context.Context, email string) (*User, error)
 	Create(ctx context.Context, u *User) (*User, error)
 	Update(ctx context.Context, u *User) error
+	Count(ctx context.Context) (int, error)
 }
 
 // UserService defines methods the handler layer expects
@@ -177,6 +183,7 @@ type UserService interface {
 	Signup(ctx context.Context, u *User) error
 	Signin(ctx context.Context, u *User) error
 	UpdateDetails(ctx context.Context, u *User) error
+	Count(ctx context.Context) (int, error)
 }
 
 type WishlistService interface {

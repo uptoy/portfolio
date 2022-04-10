@@ -147,3 +147,9 @@ func (r *pGProductRepository) ProductCount(ctx context.Context) (int, error) {
 	r.DB.GetContext(ctx, &count, query)
 	return count, nil
 }
+
+func (r *pGProductRepository) ProductListByIDS(ctx context.Context, ids []int64) ([]*model.Product, error) {
+	products := []*model.Product{}
+
+	return products, nil
+}

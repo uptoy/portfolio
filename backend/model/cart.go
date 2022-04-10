@@ -18,3 +18,4 @@ type CartItem struct {
 	ProductId int64 `db:"product_id" json:"product_id"`
 	Quantity  int64 `db:"quantity" json:"quantity"`
 }
+

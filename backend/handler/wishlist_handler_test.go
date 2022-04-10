@@ -28,7 +28,7 @@ func TestWishlistGet(t *testing.T) {
 		})
 
 		p1 := model.Product{
-			ProductId:     1,
+			Id:     1,
 			ProductName:   "product_name1",
 			Slug:          "slug1",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -42,7 +42,7 @@ func TestWishlistGet(t *testing.T) {
 			UpdatedAt:     time.Now(),
 		}
 		p2 := model.Product{
-			ProductId:     2,
+			Id:     2,
 			ProductName:   "product_name2",
 			Slug:          "slug2",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -93,7 +93,7 @@ func TestWishlistCreate(t *testing.T) {
 		})
 
 		p1 := model.Product{
-			ProductId:     1,
+			Id:     1,
 			ProductName:   "product_name1",
 			Slug:          "slug1",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -107,7 +107,7 @@ func TestWishlistCreate(t *testing.T) {
 			UpdatedAt:     time.Now(),
 		}
 		p2 := model.Product{
-			ProductId:     2,
+			Id:     2,
 			ProductName:   "product_name2",
 			Slug:          "slug2",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -127,7 +127,7 @@ func TestWishlistCreate(t *testing.T) {
 			Email:  "email@email.com",
 		}
 		wishlist := []model.Product{p1, p2}
-		productId := strconv.Itoa(int(p2.ProductId))
+		productId := strconv.Itoa(int(p2.Id))
 		userId := mockUser.UID
 		mockWishlistService.On("WishlistCreate", mock.AnythingOfType("*context.emptyCtx"), userId, productId).Return(wishlist, nil)
 		request, err := http.NewRequest(http.MethodPost, "/wishlist", nil)
@@ -159,7 +159,7 @@ func TestWishlistDelete(t *testing.T) {
 		})
 
 		p1 := model.Product{
-			ProductId:     1,
+			Id:     1,
 			ProductName:   "product_name1",
 			Slug:          "slug1",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -173,7 +173,7 @@ func TestWishlistDelete(t *testing.T) {
 			UpdatedAt:     time.Now(),
 		}
 		p2 := model.Product{
-			ProductId:     2,
+			Id:     2,
 			ProductName:   "product_name2",
 			Slug:          "slug2",
 			ProductImage:  "http://placehold.jp/150x150.png",
@@ -193,7 +193,7 @@ func TestWishlistDelete(t *testing.T) {
 			Name:   "name",
 			Email:  "email@email.com",
 		}
-		productId := strconv.Itoa(int(p2.ProductId))
+		productId := strconv.Itoa(int(p2.Id))
 		userId := mockUser.UID
 		mockWishlistService.On("WishlistDelete", mock.AnythingOfType("*context.emptyCtx"), userId, productId).Return(wishlist, nil)
 		request, err := http.NewRequest(http.MethodDelete, "/wishlist/"+productId, nil)
