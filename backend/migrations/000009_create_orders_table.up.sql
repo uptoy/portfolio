@@ -17,7 +17,7 @@ CREATE TABLE order_detail (
   order_id INTEGER NOT NULL,
   product_id INTEGER NOT NULL,
   quantity INTEGER NOT NULL,
-  price INTEGER NOT NULL,
+  sub_price INTEGER NOT NULL,
   PRIMARY KEY (order_id, product_id)
 );
 
