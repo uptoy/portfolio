@@ -29,8 +29,6 @@ type Handler struct {
 	MaxBodyBytes int64
 }
 
-// Config will hold services that will eventually be injected into this
-// handler layer on handler initialization
 type Config struct {
 	R               *gin.Engine
 	AddressService  model.AddressService
@@ -196,13 +194,6 @@ func NewHandler(c *Config) {
 // admin.PUT("/order/update", h.AdminOrderUpdate)
 // admin.GET("/order/orders", h.AdminOrderList)
 // }
-// address := api.Group("/address")
-// {
-// 	admin.GET("/", h.AddressList)
-// 	admin.POST("/create", h.CreateAddress)
-// 	admin.GET("/:id", h.AddressFindByID)
-// 	admin.PUT("/update/:id", h.AddressUpdate)
-// 	admin.DELETE("/delete/:id", h.AddressDelete)
 // }
 func (h *Handler) Sample(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
