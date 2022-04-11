@@ -123,10 +123,6 @@ type ProductService interface {
 }
 
 type ReviewService interface {
-	// ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]Review, error)
-	// ReviewCreate(ctx context.Context, userId uuid.UUID, review *Review) (*Review, error)
-	// ReviewUpdate(ctx context.Context, reviewId int64, review *Review) (*Review, error)
-	// ReviewDelete(ctx context.Context, reviewId int64) (*Review, error)
 	ReviewBulkInsert(ctx context.Context, reviews []ProductReview) ([]ProductReview, error)
 	ReviewCreate(ctx context.Context, product_id int64, review *ProductReview) (*ProductReview, error)
 	Get(ctx context.Context, product_id, review_id int64) (*ProductReview, error)
@@ -134,12 +130,12 @@ type ReviewService interface {
 	Update(ctx context.Context, product_id, review_id int64, review *ProductReview) (*ProductReview, error)
 	Delete(ctx context.Context, product_id, review_id int64) (*ProductReview, error)
 	BulkDelete(ctx context.Context, product_id int64, ids []int) ([]ProductReview, error)
+		// ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]Review, error)
+	// ReviewCreate(ctx context.Context, userId uuid.UUID, review *Review) (*Review, error)
+	// ReviewUpdate(ctx context.Context, reviewId int64, review *Review) (*Review, error)
+	// ReviewDelete(ctx context.Context, reviewId int64) (*Review, error)
 }
 type ReviewRepository interface {
-	// ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]Review, error)
-	// ReviewCreate(ctx context.Context, userId uuid.UUID, review *Review) (*Review, error)
-	// ReviewUpdate(ctx context.Context, reviewId int64, review *Review) (*Review, error)
-	// ReviewDelete(ctx context.Context, reviewId int64) (*Review, error)
 	ReviewBulkInsert(ctx context.Context, reviews []ProductReview) ([]ProductReview, error)
 	ReviewCreate(ctx context.Context, product_id int64, review *ProductReview) (*ProductReview, error)
 	Get(ctx context.Context, product_id, review_id int64) (*ProductReview, error)
@@ -147,6 +143,10 @@ type ReviewRepository interface {
 	Update(ctx context.Context, product_id, review_id int64, review *ProductReview) (*ProductReview, error)
 	Delete(ctx context.Context, product_id, review_id int64) (*ProductReview, error)
 	BulkDelete(ctx context.Context, product_id int64, ids []int) ([]ProductReview, error)
+		// ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]Review, error)
+	// ReviewCreate(ctx context.Context, userId uuid.UUID, review *Review) (*Review, error)
+	// ReviewUpdate(ctx context.Context, reviewId int64, review *Review) (*Review, error)
+	// ReviewDelete(ctx context.Context, reviewId int64) (*Review, error)
 }
 
 // TokenRepository defines methods it expects a repository
@@ -169,6 +169,7 @@ type TokenService interface {
 // UserRepository defines methods the service layer expects
 // any repository it interacts with to implement
 type UserRepository interface {
+	GetList(ctx context.Context) ([]*User, error)
 	FindByID(ctx context.Context, uid uuid.UUID) (*User, error)
 	FindByEmail(ctx context.Context, email string) (*User, error)
 	Create(ctx context.Context, u *User) (*User, error)
@@ -180,6 +181,7 @@ type UserRepository interface {
 // any service it interacts with to implement
 type UserService interface {
 	Get(ctx context.Context, uid uuid.UUID) (*User, error)
+	GetList(ctx context.Context) ([]*User, error)
 	Signup(ctx context.Context, u *User) error
 	Signin(ctx context.Context, u *User) error
 	UpdateDetails(ctx context.Context, u *User) error

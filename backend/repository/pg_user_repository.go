@@ -98,3 +98,15 @@ func (r *pGUserRepository) Count(ctx context.Context) (int, error) {
 	}
 	return n, nil
 }
+
+func (r *pGUserRepository) GetList(ctx context.Context) ([]*model.User, error) {
+
+	userList := []*model.User{}
+	query := "SELECT * FROM users"
+	err := r.DB.GetContext(ctx, userList, query)
+	if err != nil {
+		return nil, err
+	}
+	return userList, nil
+
+}

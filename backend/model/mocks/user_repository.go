@@ -78,13 +78,28 @@ func (m *MockUserRepository) Update(ctx context.Context, u *model.User) error {
 	return r0
 }
 
-
-
 func (m *MockUserRepository) Count(ctx context.Context) (int, error) {
 	ret := m.Called(ctx)
 	var r0 int
 	if ret.Get(0) != nil {
 		r0 = ret.Get(0).(int)
+	}
+
+	var r1 error
+
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
+	}
+
+	return r0, r1
+}
+
+func (m *MockUserRepository) GetList(ctx context.Context) ([]*model.User, error) {
+	ret := m.Called(ctx)
+
+	var r0 []*model.User
+	if ret.Get(0) != nil {
+		r0 = ret.Get(0).([]*model.User)
 	}
 
 	var r1 error

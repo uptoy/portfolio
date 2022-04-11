@@ -49,3 +49,22 @@ func (h *Handler) Me(c *gin.Context) {
 		"user": u,
 	})
 }
+
+// Me handler calls services for getting
+// a user's details
+func (h *Handler) UserList(c *gin.Context) {
+	// use the Request Context
+	ctx := c.Request.Context()
+	u, err := h.UserService.GetList(ctx)
+	if err != nil {
+		log.Printf("Unable to find user: %v\n%v", u, err)
+		e := apperrors.NewNotFound("user", "not find user")
+		c.JSON(e.Status(), gin.H{
+			"error": e,
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"user": u,
+	})
+}

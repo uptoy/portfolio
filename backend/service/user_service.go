@@ -117,3 +117,11 @@ func (s *userService) Count(ctx context.Context) (int, error) {
 	}
 	return result, err
 }
+
+func (s *userService) GetList(ctx context.Context) ([]*model.User, error) {
+	result, err := s.UserRepository.GetList(ctx)
+	if err != nil {
+		return result, err
+	}
+	return result, err
+}

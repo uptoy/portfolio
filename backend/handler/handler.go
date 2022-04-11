@@ -92,6 +92,10 @@ func NewHandler(c *Config) {
 	api.POST("/tokens", h.Tokens)
 	api.POST("/forgot", h.ForgotPassword)
 	api.POST("/reset", h.ResetPassword)
+	users := api.Group("/users")
+	{
+		users.GET("", h.UserList)
+	}
 	products := api.Group("/products")
 	{
 		products.GET("", h.ProductList)
@@ -112,10 +116,6 @@ func NewHandler(c *Config) {
 		products.PUT("/:id/reviews/:rid", h.ReviewUpdate)
 		products.DELETE("/:id/reviews/:rid", h.ReviewDelete)
 		products.POST("/confirm", h.ConfirmCreateReviewFlow)
-		// products.GET("/:id/reviews", h.ReviewList)
-		// products.POST("/:id/reviews", h.ReviewCreate)
-		// products.PUT("/:id/reviews", h.ReviewUpdate)
-		// products.DELETE("/:id/reviews", h.ReviewUpdate)
 	}
 	categories := api.Group("/categories")
 	{
@@ -182,6 +182,11 @@ func NewHandler(c *Config) {
 		address.DELETE("/:id", h.AddressUserDelete)
 	}
 }
+
+// products.GET("/:id/reviews", h.ReviewList)
+// products.POST("/:id/reviews", h.ReviewCreate)
+// products.PUT("/:id/reviews", h.ReviewUpdate)
+// products.DELETE("/:id/reviews", h.ReviewUpdate)
 
 // admin := api.Group("/admin")
 // {
