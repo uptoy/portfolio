@@ -116,7 +116,7 @@ func (r *pGProductRepository) BulkDelete(ctx context.Context) ([]model.Product, 
 }
 
 func (r *pGProductRepository) BulkInsert(ctx context.Context, products []model.Product) ([]model.Product, error) {
-	query := "INSERT INTO categories (category_name,slug,product_image,brand,price,category_id,count_in_stock,description,average_rating,created_at,updated_at) values (:category_name,:slug,:product_image,:brand,:price,:category_id,:count_in_stock,:description,:average_rating,:created_at,:updated_at)"
+	query := "INSERT INTO categories (category_name,slug,brand,price,category_id,count_in_stock,description,average_rating,created_at,updated_at) values (:category_name,:slug,:brand,:price,:category_id,:count_in_stock,:description,:average_rating,:created_at,:updated_at)"
 	_, err := r.DB.NamedExecContext(ctx, query, products)
 	if err != nil {
 		log.Printf("Unable to bulk insert product: %v. Err: %v\n", products, err)
