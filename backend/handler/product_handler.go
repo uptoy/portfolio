@@ -7,7 +7,9 @@ import (
 	"strconv"
 
 	"backend/model/apperrors"
+	"github.com/google/uuid"
 	"net/http"
+	"path/filepath"
 	// // "fmt"
 
 	"github.com/gin-gonic/gin"
@@ -39,7 +41,6 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 	json = model.Product{
 		ProductName:   json.ProductName,
 		Slug:          json.Slug,
-		ProductImage:  json.ProductImage,
 		Brand:         json.Brand,
 		Price:         json.Price,
 		CategoryId:    json.CategoryId,
@@ -47,8 +48,21 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 		Description:   json.Description,
 		AverageRating: json.AverageRating,
 	}
+	//image
+	form, _ := c.MultipartForm()
+	images := form.File["images[]"]
+
+	filepaths := make([]string, 0)
+	for _, file := range images {
+		log.Println(file.Filename)
+		filename := uuid.New().String() + filepath.Ext(file.Filename)
+		filepath := "./images/" + filename
+		c.SaveUploadedFile(file, filepath)
+		filepaths = append(filepaths, filename)
+		fmt.Println("names", filepaths)
+	}
 	ctx := c.Request.Context()
-	product, err := h.ProductService.ProductCreate(ctx, &json)
+	product, err := h.ProductService.ProductCreate(ctx, &json, filepaths)
 	if err != nil {
 		log.Printf("Failed to create product: %v\n", err.Error())
 		c.JSON(apperrors.Status(err), gin.H{
@@ -93,7 +107,6 @@ func (h *Handler) ProductUpdate(c *gin.Context) {
 	p1 := &model.Product{
 		ProductName:   json.ProductName,
 		Slug:          json.Slug,
-		ProductImage:  json.ProductImage,
 		Brand:         json.Brand,
 		Price:         json.Price,
 		CategoryId:    json.CategoryId,
@@ -180,7 +193,6 @@ func (h *Handler) ProductBulkInsert(c *gin.Context) {
 		products = append(products, model.Product{
 			ProductName:   json.ProductName,
 			Slug:          json.Slug,
-			ProductImage:  json.ProductImage,
 			Brand:         json.Brand,
 			Price:         json.Price,
 			CategoryId:    json.CategoryId,
@@ -218,7 +230,6 @@ func (h *Handler) ProductJoin(c *gin.Context) {
 		"product": p,
 	})
 }
-
 
 func (h *Handler) ProductCount(c *gin.Context) {
 	ctx := c.Request.Context()

@@ -2,6 +2,8 @@ package model
 
 import (
 	"context"
+	// "io"
+	// "mime/multipart"
 	"time"
 
 	"github.com/google/uuid"
@@ -71,6 +73,17 @@ type CategoryService interface {
 	CategoryCount(ctx context.Context) (int, error)
 }
 
+// type ImageService interface {
+// 	ProductImageToS3(file *multipart.FileHeader, imageName string) error
+// 	ProductImageToDB(file *multipart.FileHeader, imageName string) error
+// 	// OrderList(ctx context.Context, userID uuid.UUID) ([]Order, error)
+// 	// OrderCreate(ctx context.Context, userID uuid.UUID, data *OrderRequestData) (*Order, error)
+// 	// OrderFindByID(ctx context.Context, orderId int64) (*Order, error)
+// 	// OrderGetDetails(ctx context.Context, orderId int64) ([]*OrderInfo, error)
+// 	// OrderCount(ctx context.Context) (int, error)
+// 	// OrderDetailsBulkInsert(ctx context.Context, items []*OrderDetail) error
+// }
+
 type OrderRepository interface {
 	OrderList(ctx context.Context, userID uuid.UUID) ([]Order, error)
 	OrderCreate(ctx context.Context, order *Order) (*Order, error)
@@ -95,6 +108,19 @@ type PaymentService interface {
 	Payment(ctx context.Context, amount int64, email string) error
 }
 
+type ProductImageRepository interface {
+	BulkInsert(ctx context.Context, images []*ProductImage) error
+	Save(ctx context.Context, productId int64, image *ProductImage) (*ProductImage, error)
+	// Get(ctx context.Context, productId, id int64) (*ProductImage, error)
+	Update(ctx context.Context, productId, id int64, image *ProductImage) (*ProductImage, error)
+	Delete(ctx context.Context, productId, id int64) error
+	BulkDelete(ctx context.Context, pid int64, ids []int) error
+}
+
+// type ProductImageService interface {
+// 	UploadImage(data io.Reader, filename string)
+// }
+
 type ProductRepository interface {
 	ProductList(ctx context.Context) ([]Product, error)
 	ProductCreate(ctx context.Context, p *Product) (*Product, error)
@@ -110,7 +136,7 @@ type ProductRepository interface {
 }
 type ProductService interface {
 	ProductList(ctx context.Context) ([]Product, error)
-	ProductCreate(ctx context.Context, p *Product) (*Product, error)
+	ProductCreate(ctx context.Context, p *Product, filepaths []string) (*Product, error)
 	ProductFindByID(ctx context.Context, id int64) (*Product, error)
 	ProductUpdate(ctx context.Context, id int64, p *Product) (*Product, error)
 	ProductDelete(ctx context.Context, id int64) (*Product, error)
@@ -130,7 +156,7 @@ type ReviewService interface {
 	Update(ctx context.Context, product_id, review_id int64, review *ProductReview) (*ProductReview, error)
 	Delete(ctx context.Context, product_id, review_id int64) (*ProductReview, error)
 	BulkDelete(ctx context.Context, product_id int64, ids []int) ([]ProductReview, error)
-		// ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]Review, error)
+	// ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]Review, error)
 	// ReviewCreate(ctx context.Context, userId uuid.UUID, review *Review) (*Review, error)
 	// ReviewUpdate(ctx context.Context, reviewId int64, review *Review) (*Review, error)
 	// ReviewDelete(ctx context.Context, reviewId int64) (*Review, error)
@@ -143,7 +169,7 @@ type ReviewRepository interface {
 	Update(ctx context.Context, product_id, review_id int64, review *ProductReview) (*ProductReview, error)
 	Delete(ctx context.Context, product_id, review_id int64) (*ProductReview, error)
 	BulkDelete(ctx context.Context, product_id int64, ids []int) ([]ProductReview, error)
-		// ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]Review, error)
+	// ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]Review, error)
 	// ReviewCreate(ctx context.Context, userId uuid.UUID, review *Review) (*Review, error)
 	// ReviewUpdate(ctx context.Context, reviewId int64, review *Review) (*Review, error)
 	// ReviewDelete(ctx context.Context, reviewId int64) (*Review, error)

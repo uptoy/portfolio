@@ -11,6 +11,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	// "mime/multipart"
 )
 
 func TestProductCreate(t *testing.T) {
@@ -18,7 +19,6 @@ func TestProductCreate(t *testing.T) {
 		mockProduct := &model.Product{
 			ProductName:   "product_name",
 			Slug:          "slug",
-			ProductImage:  "http://placehold.jp/150x150.png",
 			Brand:         "brand",
 			Price:         1,
 			CategoryId:    1,
@@ -26,13 +26,14 @@ func TestProductCreate(t *testing.T) {
 			Description:   "description",
 			AverageRating: 5,
 		}
+		var images []string
 		mockProductRepository := new(mocks.MockProductRepository)
 		ps := NewProductService(&ProductServiceConfig{
 			ProductRepository: mockProductRepository,
 		})
 		mockProductRepository.On("ProductCreate", mock.AnythingOfType("*context.emptyCtx"), mock.AnythingOfType("*model.Product")).Return(mockProduct, nil)
 		ctx := context.TODO()
-		product, err := ps.ProductCreate(ctx, mockProduct)
+		product, err := ps.ProductCreate(ctx, mockProduct, images)
 		assert.NoError(t, err)
 		assert.Equal(t, int64(0), product.Id)
 		assert.NotNil(t, product.Id)
@@ -46,7 +47,6 @@ func TestProductList(t *testing.T) {
 			Id:            0,
 			ProductName:   "product_name",
 			Slug:          "slug",
-			ProductImage:  "http://placehold.jp/150x150.png",
 			Brand:         "brand",
 			Price:         1,
 			CategoryId:    1,
@@ -58,7 +58,6 @@ func TestProductList(t *testing.T) {
 			Id:            1,
 			ProductName:   "product_name1",
 			Slug:          "slug1",
-			ProductImage:  "http://placehold.jp/150x150.png",
 			Brand:         "brand1",
 			Price:         1,
 			CategoryId:    2,
@@ -89,7 +88,6 @@ func TestProductFindByID(t *testing.T) {
 			Id:            0,
 			ProductName:   "product_name",
 			Slug:          "slug",
-			ProductImage:  "http://placehold.jp/150x150.png",
 			Brand:         "brand",
 			Price:         1,
 			CategoryId:    1,
@@ -117,7 +115,6 @@ func TestProductFindByName(t *testing.T) {
 			Id:            0,
 			ProductName:   "product_name",
 			Slug:          "slug",
-			ProductImage:  "http://placehold.jp/150x150.png",
 			Brand:         "brand",
 			Price:         1,
 			CategoryId:    1,
@@ -145,7 +142,6 @@ func TestProductUpdate(t *testing.T) {
 			Id:            0,
 			ProductName:   "product_name",
 			Slug:          "slug",
-			ProductImage:  "http://placehold.jp/150x150.png",
 			Brand:         "brand",
 			Price:         1,
 			CategoryId:    1,
@@ -173,7 +169,6 @@ func TestProductDelete(t *testing.T) {
 			Id:            0,
 			ProductName:   "product_name",
 			Slug:          "slug",
-			ProductImage:  "http://placehold.jp/150x150.png",
 			Brand:         "brand",
 			Price:         1,
 			CategoryId:    1,

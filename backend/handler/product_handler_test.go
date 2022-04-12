@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	// "mime/multipart"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
@@ -29,10 +30,9 @@ func TestProductList(t *testing.T) {
 		})
 
 		p1 := model.Product{
-			Id:     1,
+			Id:            1,
 			ProductName:   "product_name1",
 			Slug:          "slug1",
-			ProductImage:  "http://placehold.jp/150x150.png",
 			Brand:         "brand1",
 			Price:         1,
 			CategoryId:    1,
@@ -43,10 +43,9 @@ func TestProductList(t *testing.T) {
 			UpdatedAt:     time.Now(),
 		}
 		p2 := model.Product{
-			Id:     2,
+			Id:            2,
 			ProductName:   "product_name2",
 			Slug:          "slug2",
-			ProductImage:  "http://placehold.jp/150x150.png",
 			Brand:         "brand2",
 			Price:         2,
 			CategoryId:    2,
@@ -90,7 +89,6 @@ func TestProductCreate(t *testing.T) {
 		json1 := &model.Product{
 			ProductName:   "p1",
 			Slug:          "s1",
-			ProductImage:  "http://placehold.jp/150x150.png",
 			Brand:         "brand",
 			Price:         1,
 			CategoryId:    1,
@@ -103,7 +101,6 @@ func TestProductCreate(t *testing.T) {
 		reqBody, err := json.Marshal(gin.H{
 			"product_name":   json1.ProductName,
 			"slug":           json1.Slug,
-			"product_image":  json1.ProductImage,
 			"brand":          json1.Brand,
 			"price":          json1.Price,
 			"category_id":    json1.CategoryId,
@@ -145,10 +142,9 @@ func TestProductFindByID(t *testing.T) {
 			ProductService: mockProductService,
 		})
 		json1 := &model.Product{
-			Id:     1,
+			Id:            1,
 			ProductName:   "p1",
 			Slug:          "s1",
-			ProductImage:  "http://placehold.jp/150x150.png",
 			Brand:         "brand",
 			Price:         1,
 			CategoryId:    1,
@@ -188,10 +184,9 @@ func TestProductFindByName(t *testing.T) {
 			ProductService: mockProductService,
 		})
 		json1 := &model.Product{
-			Id:     1,
+			Id:            1,
 			ProductName:   "p1",
 			Slug:          "s1",
-			ProductImage:  "http://placehold.jp/150x150.png",
 			Brand:         "brand",
 			Price:         1,
 			CategoryId:    1,
@@ -232,10 +227,9 @@ func TestProductUpdate(t *testing.T) {
 			ProductService: mockProductService,
 		})
 		json1 := &model.Product{
-			Id:     1,
+			Id:            1,
 			ProductName:   "p1",
 			Slug:          "s1",
-			ProductImage:  "http://placehold.jp/150x150.png",
 			Brand:         "brand",
 			Price:         1,
 			CategoryId:    1,
@@ -248,7 +242,6 @@ func TestProductUpdate(t *testing.T) {
 		reqBody, err := json.Marshal(gin.H{
 			"product_name":   json1.ProductName,
 			"slug":           json1.Slug,
-			"product_image":  json1.ProductImage,
 			"brand":          json1.Brand,
 			"price":          json1.Price,
 			"category_id":    json1.CategoryId,
@@ -291,10 +284,9 @@ func TestProductDelete(t *testing.T) {
 			ProductService: mockProductService,
 		})
 		json1 := &model.Product{
-			Id:     1,
+			Id:            1,
 			ProductName:   "p1",
 			Slug:          "s1",
-			ProductImage:  "http://placehold.jp/150x150.png",
 			Brand:         "brand",
 			Price:         1,
 			CategoryId:    1,

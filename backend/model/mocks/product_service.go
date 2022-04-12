@@ -12,8 +12,8 @@ type MockProductService struct {
 	mock.Mock
 }
 
-func (m *MockProductService) ProductCreate(ctx context.Context, p *model.Product) (*model.Product, error) {
-	ret := m.Called(ctx, p)
+func (m *MockProductService) ProductCreate(ctx context.Context, p *model.Product, filepaths []string) (*model.Product, error) {
+	ret := m.Called(ctx, p, filepaths)
 
 	// first value passed to "Return"
 	var r0 *model.Product
@@ -27,7 +27,6 @@ func (m *MockProductService) ProductCreate(ctx context.Context, p *model.Product
 	if ret.Get(1) != nil {
 		r1 = ret.Get(1).(error)
 	}
-
 	return r0, r1
 }
 

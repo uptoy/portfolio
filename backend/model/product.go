@@ -10,10 +10,9 @@ import (
 )
 
 type Product struct {
-	Id     int64     `db:"id" json:"id"`
+	Id            int64     `db:"id" json:"id"`
 	ProductName   string    `db:"product_name" json:"product_name"`
 	Slug          string    `db:"slug" json:"slug"`
-	ProductImage  string    `db:"product_image" json:"product_image"`
 	Brand         string    `db:"brand" json:"brand"`
 	Price         int64     `db:"price" json:"price"`
 	CategoryId    int64     `db:"category_id" json:"category_id"`
@@ -24,6 +23,7 @@ type Product struct {
 	UpdatedAt     time.Time `db:"updated_at" json:"updated_at"`
 	Category      *Category `json:"category" schema:"-"`
 }
+
 
 func (p Product) PreSave() {
 	p.CreatedAt = time.Now()
@@ -66,10 +66,30 @@ type ProductReview struct {
 
 // "product_name":"p1",
 // "slug":"s1",
-// "product_image":"http://placehold.jp/150x150.png",
 // "brand":"brand",
 // "price":1,
 // "category_id":1,
 // "count_in_stock":1,
 // "description":"desc",
 // "average_rating":1
+
+
+type ProductImage struct {
+	ID        int64     `db:"id" json:"id"`
+	ProductId int64     `db:"product_id" json:"product_id"`
+	URL       string    `db:"url" json:"url"`
+	CreatedAt *time.Time `db:"created_at" json:"created_at" `
+	UpdatedAt *time.Time `db:"updated_at" json:"updated_at" `
+}
+
+func (img *ProductImage) PreSave() {
+	now := time.Now()
+	img.CreatedAt = &now
+	img.UpdatedAt = img.CreatedAt
+}
+
+// PreUpdate sets the update timestamp
+func (img *ProductImage) PreUpdate() {
+	now := time.Now()
+	img.UpdatedAt = &now
+}

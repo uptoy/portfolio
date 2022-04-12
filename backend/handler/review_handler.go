@@ -3,7 +3,7 @@ package handler
 import (
 	"backend/model"
 	"backend/model/apperrors"
-	"fmt"
+	// "fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -159,86 +159,86 @@ func (h *Handler) ReviewBulkDelete(c *gin.Context) {
 	})
 }
 
-func (h *Handler) ConfirmCreateReviewFlow(c *gin.Context) {
-	ctx := c.Request.Context()
+// func (h *Handler) ConfirmCreateReviewFlow(c *gin.Context) {
+// 	ctx := c.Request.Context()
 
-	// uid, _ := uuid.NewRandom()
-	user := model.User{
-		// UID:      uid,
-		Email:    "email@email.com",
-		Password: "password",
-	}
-	err := h.UserService.Signup(ctx, &user)
-	if err != nil {
-		log.Printf("Failed to sign up user: %v\n", err.Error())
-		return
-	}
+// 	// uid, _ := uuid.NewRandom()
+// 	user := model.User{
+// 		// UID:      uid,
+// 		Email:    "email@email.com",
+// 		Password: "password",
+// 	}
+// 	err := h.UserService.Signup(ctx, &user)
+// 	if err != nil {
+// 		log.Printf("Failed to sign up user: %v\n", err.Error())
+// 		return
+// 	}
 
-	err1 := h.UserService.Signin(ctx, &user)
-	if err1 != nil {
-		log.Printf("Failed to sign up user: %v\n", err.Error())
-		return
-	}
-	product := model.Product{
-		Id:     1,
-		ProductName:   "product_name1",
-		Slug:          "product_name1",
-		ProductImage:  "product_image",
-		Brand:         "brand",
-		Price:         1,
-		CategoryId:    1,
-		CountInStock:  1,
-		Description:   "desc",
-		AverageRating: 1,
-	}
-	result, _ := h.ProductService.ProductCreate(ctx, &product)
-	category_id := product.CategoryId
+// 	err1 := h.UserService.Signin(ctx, &user)
+// 	if err1 != nil {
+// 		log.Printf("Failed to sign up user: %v\n", err.Error())
+// 		return
+// 	}
+// 	product := model.Product{
+// 		Id:     1,
+// 		ProductName:   "product_name1",
+// 		Slug:          "product_name1",
+// 		ProductImage:  "product_image",
+// 		Brand:         "brand",
+// 		Price:         1,
+// 		CategoryId:    1,
+// 		CountInStock:  1,
+// 		Description:   "desc",
+// 		AverageRating: 1,
+// 	}
+// 	result, _ := h.ProductService.ProductCreate(ctx, &product)
+// 	category_id := product.CategoryId
 
-	category := model.Category{
-		ID:           category_id,
-		CategoryName: "category_name1",
-	}
-	result1, _ := h.CategoryService.CategoryCreate(ctx, &category)
+// 	category := model.Category{
+// 		ID:           category_id,
+// 		CategoryName: "category_name1",
+// 	}
+// 	result1, _ := h.CategoryService.CategoryCreate(ctx, &category)
 
-	user1, _ := c.Get("user")
+// 	user1, _ := c.Get("user")
 
-	uuid := user1.(*model.User).UID
-	fmt.Println("uuid", uuid)
+// 	uuid := user1.(*model.User).UID
+// 	fmt.Println("uuid", uuid)
 
-	product_id := product.Id
-	review := model.ProductReview{
-		ID:        1,
-		UserID:    user.UID,
-		ProductID: product_id,
-		Rating:    1,
-		Title:     "title1",
-		Comment:   "comment1",
-	}
-	result2, _ := h.ReviewService.ReviewCreate(ctx, product_id, &review)
+// 	product_id := product.Id
+// 	review := model.ProductReview{
+// 		ID:        1,
+// 		UserID:    user.UID,
+// 		ProductID: product_id,
+// 		Rating:    1,
+// 		Title:     "title1",
+// 		Comment:   "comment1",
+// 	}
+// 	result2, _ := h.ReviewService.ReviewCreate(ctx, product_id, &review)
 
-	result3, _ := h.WishlistService.WishlistCreate(ctx, uuid, product_id)
+// 	result3, _ := h.WishlistService.WishlistCreate(ctx, uuid, product_id)
 
-	cartId, _ := h.CartService.CartGetId(ctx, uuid)
+// 	cartId, _ := h.CartService.CartGetId(ctx, uuid)
 
-	cartItem := model.CartItem{
-		CartId:    cartId,
-		ProductId: product_id,
-		Quantity:  8,
-	}
-	result4, _ := h.CartService.CartAddItem(ctx, &cartItem)
-	// fmt.Println("product", result)
-	// fmt.Println("category", result1)
-	// fmt.Println("review", result2)
-	c.JSON(http.StatusOK, gin.H{
-		"user":     user,
-		"user1":    user1,
-		"product":  result,
-		"category": result1,
-		"review":   result2,
-		"wishlist": result3,
-		"cartadd":     result4,
-	})
-}
+// 	cartItem := model.CartItem{
+// 		CartId:    cartId,
+// 		ProductId: product_id,
+// 		Quantity:  8,
+// 	}
+// 	result4, _ := h.CartService.CartAddItem(ctx, &cartItem)
+// 	// fmt.Println("product", result)
+// 	// fmt.Println("category", result1)
+// 	// fmt.Println("review", result2)
+// 	c.JSON(http.StatusOK, gin.H{
+// 		"user":     user,
+// 		"user1":    user1,
+// 		"product":  result,
+// 		"category": result1,
+// 		"review":   result2,
+// 		"wishlist": result3,
+// 		"cartadd":     result4,
+// 	})
+// }
 
 // func (h *Handler) ReviewList(c *gin.Context) {
 // 	ctx := c.Request.Context()

@@ -15,7 +15,6 @@ type Order struct {
 	ShippingCountry string    `db:"shipping_country" json:"shipping_country"`
 	ShippingZIP     string    `db:"shipping_zip" json:"shipping_zip"`
 	CreatedAt  time.Time `db:"created_at" json:"created_at"`
-	UpdatedAt  time.Time `db:"shipped_at" json:"shipped_at"`
 }
 
 type OrderDetail struct {

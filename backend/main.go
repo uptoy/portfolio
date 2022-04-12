@@ -87,6 +87,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	orderRepository := repository.NewOrderRepository(d.DB)
 	paymentRepository := repository.NewPaymentRepository(d.DB)
 	productRepository := repository.NewProductRepository(d.DB)
+	productImageRepository := repository.NewProductImageRepository(d.DB)
 	reviewRepository := repository.NewReviewRepository(d.DB)
 	tokenRepository := repository.NewTokenRepository(d.RedisClient)
 	userRepository := repository.NewUserRepository(d.DB)
@@ -117,6 +118,10 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	categoryService := service.NewCategoryService(&service.CategoryServiceConfig{
 		CategoryRepository: categoryRepository,
 	})
+	// chatService := service.NewChatService(&service.ChatServiceConfig{
+	// 	ChatRepository: chatRepository,
+	// })
+
 	orderService := service.NewOrderService(&service.OrderServiceConfig{
 		OrderRepository: orderRepository,
 	})
@@ -125,7 +130,8 @@ func inject(d *dataSources) (*gin.Engine, error) {
 		PaymentRepository: paymentRepository,
 	})
 	productService := service.NewProductService(&service.ProductServiceConfig{
-		ProductRepository: productRepository,
+		ProductRepository:      productRepository,
+		ProductImageRepository: productImageRepository,
 	})
 
 	reviewService := service.NewReviewService(&service.ReviewServiceConfig{
@@ -212,6 +218,8 @@ func inject(d *dataSources) (*gin.Engine, error) {
 		AuthService:     authService,
 		CartService:     cartService,
 		CategoryService: categoryService,
+		// ChatService:     chatService,
+		// ImageService:    imageService,
 		OrderService:    orderService,
 		PaymentService:  paymentService,
 		ProductService:  productService,

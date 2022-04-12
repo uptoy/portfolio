@@ -2,20 +2,31 @@ package service
 
 import (
 	"backend/model"
+
+	// "bytes"
 	"context"
+	"io"
+	// "io/ioutil"
+	// "log"
+	// "github.com/google/uuid"
+	// "mime/multipart"
+	// "path/filepath"
 )
 
 type productService struct {
-	ProductRepository model.ProductRepository
+	ProductRepository      model.ProductRepository
+	ProductImageRepository model.ProductImageRepository
 }
 
 type ProductServiceConfig struct {
-	ProductRepository model.ProductRepository
+	ProductRepository      model.ProductRepository
+	ProductImageRepository model.ProductImageRepository
 }
 
 func NewProductService(c *ProductServiceConfig) model.ProductService {
 	return &productService{
-		ProductRepository: c.ProductRepository,
+		ProductRepository:      c.ProductRepository,
+		ProductImageRepository: c.ProductImageRepository,
 	}
 }
 
@@ -27,10 +38,26 @@ func (s *productService) ProductList(ctx context.Context) ([]model.Product, erro
 	return products, nil
 }
 
-func (s *productService) ProductCreate(ctx context.Context, p *model.Product) (*model.Product, error) {
-	p, err := s.ProductRepository.ProductCreate(ctx, p)
+func (s *productService) ProductCreate(ctx context.Context, p *model.Product, filepaths []string) (*model.Product, error) {
+	product, err := s.ProductRepository.ProductCreate(ctx, p)
 	if err != nil {
 		return nil, err
+	}
+
+	if len(filepaths) > 0 {
+		images := make([]*model.ProductImage, 0)
+		for _, filepath := range filepaths {
+			images = append(images, &model.ProductImage{
+				ProductId: product.Id,
+				URL:       filepath,
+			})
+		}
+		for _, img := range images {
+			img.PreSave()
+		}
+		if err := s.ProductImageRepository.BulkInsert(ctx, images); err != nil {
+			return nil, err
+		}
 	}
 	return p, nil
 }
@@ -105,4 +132,9 @@ func (s *productService) ProductListByIDS(ctx context.Context, ids []int64) ([]*
 		return nil, err
 	}
 	return products, nil
+}
+
+//s3
+func (s *productService) UploadImage(data io.Reader, filename string, cloudEnvURI string) error {
+	return nil
 }

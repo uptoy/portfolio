@@ -45,7 +45,6 @@ func (h *Handler) WishlistCreate(c *gin.Context) {
 		Id:     json.Id,
 		ProductName:   json.ProductName,
 		Slug:          json.Slug,
-		ProductImage:  json.ProductImage,
 		Brand:         json.Brand,
 		Price:         json.Price,
 		CategoryId:    json.CategoryId,

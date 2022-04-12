@@ -27,7 +27,6 @@ func (pj *productJoin) ToProduct() *model.Product {
 		Id:     pj.Id,
 		ProductName:   pj.ProductName,
 		Slug:          pj.Slug,
-		ProductImage:  pj.ProductImage,
 		Brand:         pj.Brand,
 		Price:         pj.Price,
 		CategoryId:    pj.CategoryId,

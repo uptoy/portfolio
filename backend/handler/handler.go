@@ -8,6 +8,7 @@ import (
 	"backend/handler/middleware"
 	"backend/model"
 	"backend/model/apperrors"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	// "strconv"
 )
@@ -18,6 +19,8 @@ type Handler struct {
 	AuthService     model.AuthService
 	CartService     model.CartService
 	CategoryService model.CategoryService
+	// ChatService     model.ChatService
+	// ImageService    model.ImageService
 	OrderService    model.OrderService
 	PaymentService  model.PaymentService
 	ProductService  model.ProductService
@@ -35,6 +38,8 @@ type Config struct {
 	AuthService     model.AuthService
 	CartService     model.CartService
 	CategoryService model.CategoryService
+	// ChatService     model.ChatService
+	// ImageService    model.ImageService
 	OrderService    model.OrderService
 	PaymentService  model.PaymentService
 	ProductService  model.ProductService
@@ -57,6 +62,8 @@ func NewHandler(c *Config) {
 		AuthService:     c.AuthService,
 		CartService:     c.CartService,
 		CategoryService: c.CategoryService,
+		// ChatService:     c.ChatService,
+		// ImageService:    c.ImageService,
 		OrderService:    c.OrderService,
 		PaymentService:  c.PaymentService,
 		ProductService:  c.ProductService,
@@ -70,6 +77,18 @@ func NewHandler(c *Config) {
 
 	// Create an account group
 	api := c.R.Group(c.BaseURL)
+	api.Static("images", "./images")
+	api.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "accept", "origin", "Cache-Control", "X-Requested-With"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		AllowOriginFunc: func(origin string) bool {
+			return true
+		},
+		MaxAge: 15 * time.Second,
+	}))
 
 	if gin.Mode() != gin.TestMode {
 		//auth
@@ -113,7 +132,7 @@ func NewHandler(c *Config) {
 		products.GET("/:id/reviews/:rid", h.ReviewGet)
 		products.PUT("/:id/reviews/:rid", h.ReviewUpdate)
 		products.DELETE("/:id/reviews/:rid", h.ReviewDelete)
-		products.POST("/confirm", h.ConfirmCreateReviewFlow)
+		// products.POST("/confirm", h.ConfirmCreateReviewFlow)
 	}
 	categories := api.Group("/categories")
 	{
@@ -179,10 +198,29 @@ func NewHandler(c *Config) {
 		address.PUT("/:id", h.AddressUserUpdate)
 		address.DELETE("/:id", h.AddressUserDelete)
 	}
+	chat := api.Group("/chat")
+	{
+		// chat.GET("", h.ChatRoom)
+		chat.GET("/ws", h.WsEndpoint)
+		// chat.GET("/room/:roomId",)
+		//  router.GET("/ws/:roomId", func(c *gin.Context) {
+		//     roomId := c.Param("roomId")
+		//     serveWs(c.Writer, c.Request, roomId)
+		//  })
+	}
+	image := api.Group("/image")
+	{
+		image.POST("", h.ImageLocalSaveMulti)
+		// image.POST("/upload/multi", h.WsEndpoint)
+		// image.POST("/upload", h.ImageUploadSingle)
+		// image.POST("", h.ImageBulkUpload)
+		//  router.GET("/ws/:roomId", func(c *gin.Context) {
+		//     roomId := c.Param("roomId")
+		//     serveWs(c.Writer, c.Request, roomId)
+		//  })
+	}
 }
 
-// products.GET("/:id/reviews", h.ReviewList)
-// products.POST("/:id/reviews", h.ReviewCreate)
 // products.PUT("/:id/reviews", h.ReviewUpdate)
 // products.DELETE("/:id/reviews", h.ReviewUpdate)
 

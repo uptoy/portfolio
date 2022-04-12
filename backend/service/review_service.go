@@ -20,38 +20,6 @@ func NewReviewService(c *ReviewServiceConfig) model.ReviewService {
 	}
 }
 
-// func (s *reviewService) ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]model.Review, error) {
-// 	reviews, err := s.ReviewRepository.ReviewList(ctx, productId, userId)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return reviews, nil
-// }
-
-// func (s *reviewService) ReviewCreate(ctx context.Context, userId uuid.UUID, review *model.Review) (*model.Review, error) {
-// 	review, err := s.ReviewRepository.ReviewCreate(ctx, userId, review)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return review, nil
-// }
-
-// func (s *reviewService) ReviewUpdate(ctx context.Context, reviewId int64, review *model.Review) (*model.Review, error) {
-// 	review, err := s.ReviewRepository.ReviewUpdate(ctx, reviewId, review)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return review, nil
-// }
-
-// func (s *reviewService) ReviewDelete(ctx context.Context, reviewId int64) (*model.Review, error) {
-// 	review, err := s.ReviewRepository.ReviewDelete(ctx,reviewId)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return review, nil
-// }
-
 func (s *reviewService) ReviewBulkInsert(ctx context.Context, reviews []model.ProductReview) ([]model.ProductReview, error) {
 	review, err := s.ReviewRepository.ReviewBulkInsert(ctx, reviews)
 	if err != nil {
@@ -105,3 +73,36 @@ func (s *reviewService) BulkDelete(ctx context.Context, product_id int64, ids []
 	}
 	return reviews, nil
 }
+
+
+// func (s *reviewService) ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]model.Review, error) {
+// 	reviews, err := s.ReviewRepository.ReviewList(ctx, productId, userId)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return reviews, nil
+// }
+
+// func (s *reviewService) ReviewCreate(ctx context.Context, userId uuid.UUID, review *model.Review) (*model.Review, error) {
+// 	review, err := s.ReviewRepository.ReviewCreate(ctx, userId, review)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return review, nil
+// }
+
+// func (s *reviewService) ReviewUpdate(ctx context.Context, reviewId int64, review *model.Review) (*model.Review, error) {
+// 	review, err := s.ReviewRepository.ReviewUpdate(ctx, reviewId, review)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return review, nil
+// }
+
+// func (s *reviewService) ReviewDelete(ctx context.Context, reviewId int64) (*model.Review, error) {
+// 	review, err := s.ReviewRepository.ReviewDelete(ctx,reviewId)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return review, nil
+// }
