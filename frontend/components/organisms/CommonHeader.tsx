@@ -4,6 +4,7 @@ import {makeStyles} from "@material-ui/styles"
 import Link from "components/Link"
 import {Menu, MenuItem, Badge, InputBase, AppBar, Toolbar, IconButton} from "@material-ui/core"
 import MenuIcon from "@material-ui/icons/Menu"
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
 import SearchIcon from "@material-ui/icons/Search"
 import AccountCircle from "@material-ui/icons/AccountCircle"
 import MailIcon from "@material-ui/icons/Mail"
@@ -199,6 +200,9 @@ export default function CommonHeader() {
         </div>
         <div className={classes.grow} />
         <div className={classes.sectionDesktop}>
+          <IconButton href="/auth/signup" aria-label="show 17 new notifications" color="inherit">
+            <LockOutlinedIcon />
+          </IconButton>
           <IconButton href="/favorite" aria-label="show 17 new notifications" color="inherit">
             <FavoriteBorderIcon />
           </IconButton>

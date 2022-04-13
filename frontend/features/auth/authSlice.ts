@@ -25,13 +25,15 @@ const initialState: InitialState = {
   error: null,
 }
 
-export const login = createAsyncThunk(
-  "user/login",
+export const signin = createAsyncThunk(
+  "user/signin",
   async ({email, password}: {email: string; password: string}, {rejectWithValue}) => {
     try {
-      await AuthAPI.getCSRFCookie()
+      // await AuthAPI.getCSRFCookie()
       const response = await AuthAPI.signin(email, password)
-      const {token, user} = response.data.data
+      // const {token, user} = response.data.data
+      const token = response.data.tokens.idToken
+      const user = response.data.user
       Cookies.set("accessToken", token)
       Cookies.set("currentUser", JSON.stringify(user))
       apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`
@@ -47,30 +49,30 @@ export const login = createAsyncThunk(
   }
 )
 
-export const signinWithGoogle = createAsyncThunk(
-  "user/signin/google",
-  async (accessToken: string, {rejectWithValue}) => {
-    try {
-      await AuthAPI.getCSRFCookie()
-      const response = await AuthAPI.signinWithGoogle(accessToken)
-      const {token, user} = response.data.data
-      Cookies.set("accessToken", token)
-      Cookies.set("currentUser", JSON.stringify(user))
-      apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`
-      return response.data.data.user
-    } catch (err) {
-      const error: AxiosError<ValidationErrors> = err
+// export const signinWithGoogle = createAsyncThunk(
+//   "user/signin/google",
+//   async (accessToken: string, {rejectWithValue}) => {
+//     try {
+      // await AuthAPI.getCSRFCookie()
+      // const response = await AuthAPI.signinWithGoogle(accessToken)
+      // const {token, user} = response.data.data
+      // Cookies.set("accessToken", token)
+      // Cookies.set("currentUser", JSON.stringify(user))
+      // apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`
+//       return response.data.data.user
+//     } catch (err) {
+//       const error: AxiosError<ValidationErrors> = err
 
-      if (!error.response) {
-        throw error
-      }
-      return rejectWithValue(error.response.data)
-    }
-  }
-)
+//       if (!error.response) {
+//         throw error
+//       }
+//       return rejectWithValue(error.response.data)
+//     }
+//   }
+// )
 
-export const register = createAsyncThunk(
-  "user/register",
+export const signup = createAsyncThunk(
+  "user/signup",
   async (
     {
       email,
@@ -86,18 +88,19 @@ export const register = createAsyncThunk(
     {rejectWithValue}
   ) => {
     try {
-      await AuthAPI.getCSRFCookie()
+      // await AuthAPI.getCSRFCookie()
       const response = await AuthAPI.signup({
         email,
         name,
         password,
         password_confirmation,
       })
-      const {token, user} = response.data.data
+      const token = response.data.tokens.idToken
+      const user = response.data.user
       Cookies.set("accessToken", token)
       Cookies.set("currentUser", JSON.stringify(user))
       apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`
-      return response.data.data.user
+      return user
     } catch (err) {
       const error: AxiosError<ValidationErrors> = err
 
@@ -174,30 +177,30 @@ export const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(login.fulfilled, (state, action) => {
+    builder.addCase(signin.fulfilled, (state, action) => {
       state.user = action.payload
     })
-    builder.addCase(login.rejected, (state, action: any) => {
+    builder.addCase(signin.rejected, (state, action: any) => {
       if (action.payload) {
         state.error = action.payload.message
       } else {
         state.error = action.error.message
       }
     })
-    builder.addCase(signinWithGoogle.fulfilled, (state, action) => {
+    // builder.addCase(signinWithGoogle.fulfilled, (state, action) => {
+    //   state.user = action.payload
+    // })
+    // builder.addCase(signinWithGoogle.rejected, (state, action: any) => {
+    //   if (action.payload) {
+    //     state.error = action.payload.message
+    //   } else {
+    //     state.error = action.error.message
+    //   }
+    // })
+    builder.addCase(signup.fulfilled, (state, action) => {
       state.user = action.payload
     })
-    builder.addCase(signinWithGoogle.rejected, (state, action: any) => {
-      if (action.payload) {
-        state.error = action.payload.message
-      } else {
-        state.error = action.error.message
-      }
-    })
-    builder.addCase(register.fulfilled, (state, action) => {
-      state.user = action.payload
-    })
-    builder.addCase(register.rejected, (state, action: any) => {
+    builder.addCase(signup.rejected, (state, action: any) => {
       if (action.payload) {
         state.error = action.payload.message
       } else {

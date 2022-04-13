@@ -80,7 +80,8 @@ func TestSignup(t *testing.T) {
 			}).Return(nil)
 
 		ctx := context.TODO()
-		err := us.Signup(ctx, mockUser)
+		result, err := us.Signup(ctx, mockUser)
+		fmt.Println(result)
 
 		assert.NoError(t, err)
 
@@ -110,7 +111,8 @@ func TestSignup(t *testing.T) {
 			Return(mockErr)
 
 		ctx := context.TODO()
-		err := us.Signup(ctx, mockUser)
+		result, err := us.Signup(ctx, mockUser)
+		fmt.Println(result)
 
 		// assert error is error we response with in mock
 		assert.EqualError(t, err, mockErr.Error())

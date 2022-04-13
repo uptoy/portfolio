@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	"github.com/jmoiron/sqlx"
@@ -199,7 +200,12 @@ func inject(d *dataSources) (*gin.Engine, error) {
 		RefreshExpirationSecs: refreshExp,
 	})
 
-	router := gin.Default()
+	// router := gin.Default()
+	router := gin.New()
+	router.Use(gin.Logger())
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	router.Use(cors.New(config))
 	baseURL := os.Getenv("BACKEND_API_URL")
 	handlerTimeout := os.Getenv("HANDLER_TIMEOUT")
 	ht, err := strconv.ParseInt(handlerTimeout, 0, 64)

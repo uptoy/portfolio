@@ -266,3 +266,14 @@ export interface Wishlist {
   title: string
   user_id: string
 }
+
+export interface User {
+  uid: string;
+  name: string;
+  email: string;
+  profile_url: string;
+  // language: string;
+  // theme: string;
+  // currency: string;
+  // is_email_verified: boolean;
+}

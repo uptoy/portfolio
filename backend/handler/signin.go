@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"backend/model"
 	"backend/model/apperrors"
+	"github.com/gin-gonic/gin"
 )
 
 // signinReq is not exported
@@ -40,6 +40,7 @@ func (h *Handler) Signin(c *gin.Context) {
 	}
 
 	tokens, err := h.TokenService.NewPairFromUser(ctx, u, "")
+	user, err := h.UserService.FindByEmail(ctx, u.Email)
 
 	if err != nil {
 		log.Printf("Failed to create tokens for user: %v\n", err.Error())
@@ -52,5 +53,6 @@ func (h *Handler) Signin(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"tokens": tokens,
+		"user":   user.Name,
 	})
 }

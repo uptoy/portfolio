@@ -43,12 +43,12 @@ func (s *userService) Get(ctx context.Context, uid uuid.UUID) (*model.User, erro
 
 // Signup reaches our to a UserRepository to verify the
 // email address is available and signs up the user if this is the case
-func (s *userService) Signup(ctx context.Context, u *model.User) error {
+func (s *userService) Signup(ctx context.Context, u *model.User) (*model.User, error) {
 	pw, err := hashPassword(u.Password)
 
 	if err != nil {
 		log.Printf("Unable to signup user for email: %v\n", u.Email)
-		return apperrors.NewInternal()
+		return nil, apperrors.NewInternal()
 	}
 
 	// now I realize why I originally used Signup(ctx, email, password)
@@ -58,17 +58,17 @@ func (s *userService) Signup(ctx context.Context, u *model.User) error {
 	user, err := s.UserRepository.Create(ctx, u)
 	if err != nil {
 		log.Printf("Unable to signup user for email: %v\n", u.Email)
-		return apperrors.NewInternal()
+		return nil, apperrors.NewInternal()
 	}
 	uid := user.UID
 
 	cart, err := s.CartRepository.CartCreate(ctx, uid)
 	if err != nil {
 		log.Printf("Unable to signup user for email: %v\n", u.Email)
-		return apperrors.NewInternal()
+		return nil, apperrors.NewInternal()
 	}
 	fmt.Println("cart", cart)
-	return nil
+	return user, nil
 }
 
 // Signin reaches our to a UserRepository check if the user exists
@@ -120,6 +120,14 @@ func (s *userService) Count(ctx context.Context) (int, error) {
 
 func (s *userService) GetList(ctx context.Context) ([]*model.User, error) {
 	result, err := s.UserRepository.GetList(ctx)
+	if err != nil {
+		return result, err
+	}
+	return result, err
+}
+
+func (s *userService) FindByEmail(ctx context.Context, email string) (*model.User, error) {
+	result, err := s.UserRepository.FindByEmail(ctx, email)
 	if err != nil {
 		return result, err
 	}

@@ -1,9 +1,9 @@
 import apiClient from "lib/apiClient"
 import Cookies from "js-cookie"
 
-export const getCSRFCookie = () => {
-  return apiClient.get("/sanctum/csrf-cookie")
-}
+// export const getCSRFCookie = () => {
+//   return apiClient.get("/sanctum/csrf-cookie")
+// }
 
 export const signin = (email: string, password: string) => {
   return apiClient.post("/api/signin", {email, password})

@@ -12,6 +12,7 @@ import (
 // signupReq is not exported, hence the lowercase name
 // it is used for validation and json marshalling
 type signupReq struct {
+	Name     string `json:"name" binding:"required"`
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,gte=6,lte=30"`
 }
@@ -28,12 +29,13 @@ func (h *Handler) Signup(c *gin.Context) {
 	}
 
 	u := &model.User{
+		Name:     req.Name,
 		Email:    req.Email,
 		Password: req.Password,
 	}
 
 	ctx := c.Request.Context()
-	err := h.UserService.Signup(ctx, u)
+	result, err := h.UserService.Signup(ctx, u)
 
 	if err != nil {
 		log.Printf("Failed to sign up user: %v\n", err.Error())
@@ -61,5 +63,6 @@ func (h *Handler) Signup(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{
 		"tokens": tokens,
+		"user":   result,
 	})
 }

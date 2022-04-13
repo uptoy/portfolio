@@ -8,7 +8,6 @@ import (
 	"backend/handler/middleware"
 	"backend/model"
 	"backend/model/apperrors"
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	// "strconv"
 )
@@ -78,17 +77,17 @@ func NewHandler(c *Config) {
 	// Create an account group
 	api := c.R.Group(c.BaseURL)
 	api.Static("images", "./images")
-	api.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "accept", "origin", "Cache-Control", "X-Requested-With"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		AllowOriginFunc: func(origin string) bool {
-			return true
-		},
-		MaxAge: 15 * time.Second,
-	}))
+	// api.Use(cors.New(cors.Config{
+	// 	AllowOrigins:     []string{"*"},
+	// 	AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+	// 	AllowHeaders:     []string{"Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "accept", "origin", "Cache-Control", "X-Requested-With"},
+	// 	ExposeHeaders:    []string{"Content-Length"},
+	// 	AllowCredentials: true,
+	// 	AllowOriginFunc: func(origin string) bool {
+	// 		return true
+	// 	},
+	// 	MaxAge: 15 * time.Second,
+	// }))
 
 	if gin.Mode() != gin.TestMode {
 		//auth
@@ -210,14 +209,14 @@ func NewHandler(c *Config) {
 	}
 	// image := api.Group("/image")
 	// {
-		// image.POST("", h.ImageLocalSaveMulti)
-		// image.POST("/upload/multi", h.WsEndpoint)
-		// image.POST("/upload", h.ImageUploadSingle)
-		// image.POST("", h.ImageBulkUpload)
-		//  router.GET("/ws/:roomId", func(c *gin.Context) {
-		//     roomId := c.Param("roomId")
-		//     serveWs(c.Writer, c.Request, roomId)
-		//  })
+	// image.POST("", h.ImageLocalSaveMulti)
+	// image.POST("/upload/multi", h.WsEndpoint)
+	// image.POST("/upload", h.ImageUploadSingle)
+	// image.POST("", h.ImageBulkUpload)
+	//  router.GET("/ws/:roomId", func(c *gin.Context) {
+	//     roomId := c.Param("roomId")
+	//     serveWs(c.Writer, c.Request, roomId)
+	//  })
 	// }
 }
 
