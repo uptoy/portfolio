@@ -208,9 +208,9 @@ func NewHandler(c *Config) {
 		//     serveWs(c.Writer, c.Request, roomId)
 		//  })
 	}
-	image := api.Group("/image")
-	{
-		image.POST("", h.ImageLocalSaveMulti)
+	// image := api.Group("/image")
+	// {
+		// image.POST("", h.ImageLocalSaveMulti)
 		// image.POST("/upload/multi", h.WsEndpoint)
 		// image.POST("/upload", h.ImageUploadSingle)
 		// image.POST("", h.ImageBulkUpload)
@@ -218,7 +218,7 @@ func NewHandler(c *Config) {
 		//     roomId := c.Param("roomId")
 		//     serveWs(c.Writer, c.Request, roomId)
 		//  })
-	}
+	// }
 }
 
 // products.PUT("/:id/reviews", h.ReviewUpdate)
