@@ -31,13 +31,12 @@ export const signin = createAsyncThunk(
     try {
       // await AuthAPI.getCSRFCookie()
       const response = await AuthAPI.signin(email, password)
-      // const {token, user} = response.data.data
       const token = response.data.tokens.idToken
       const user = response.data.user
       Cookies.set("accessToken", token)
       Cookies.set("currentUser", JSON.stringify(user))
       apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`
-      return response.data.data.user
+      return user
     } catch (err) {
       const error: AxiosError<ValidationErrors> = err
 
@@ -48,28 +47,6 @@ export const signin = createAsyncThunk(
     }
   }
 )
-
-// export const signinWithGoogle = createAsyncThunk(
-//   "user/signin/google",
-//   async (accessToken: string, {rejectWithValue}) => {
-//     try {
-      // await AuthAPI.getCSRFCookie()
-      // const response = await AuthAPI.signinWithGoogle(accessToken)
-      // const {token, user} = response.data.data
-      // Cookies.set("accessToken", token)
-      // Cookies.set("currentUser", JSON.stringify(user))
-      // apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`
-//       return response.data.data.user
-//     } catch (err) {
-//       const error: AxiosError<ValidationErrors> = err
-
-//       if (!error.response) {
-//         throw error
-//       }
-//       return rejectWithValue(error.response.data)
-//     }
-//   }
-// )
 
 export const signup = createAsyncThunk(
   "user/signup",
@@ -224,3 +201,25 @@ export const authSlice = createSlice({
 })
 
 export default authSlice.reducer
+
+// export const signinWithGoogle = createAsyncThunk(
+//   "user/signin/google",
+//   async (accessToken: string, {rejectWithValue}) => {
+//     try {
+// await AuthAPI.getCSRFCookie()
+// const response = await AuthAPI.signinWithGoogle(accessToken)
+// const {token, user} = response.data.data
+// Cookies.set("accessToken", token)
+// Cookies.set("currentUser", JSON.stringify(user))
+// apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`
+//       return response.data.data.user
+//     } catch (err) {
+//       const error: AxiosError<ValidationErrors> = err
+
+//       if (!error.response) {
+//         throw error
+//       }
+//       return rejectWithValue(error.response.data)
+//     }
+//   }
+// )

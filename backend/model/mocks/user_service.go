@@ -37,7 +37,7 @@ func (m *MockUserService) Get(ctx context.Context, uid uuid.UUID) (*model.User, 
 
 // Signup is a mock of UserService.Signup
 func (m *MockUserService) Signup(ctx context.Context, u *model.User) (*model.User, error) {
-	ret := m.Called(ctx,u)
+	ret := m.Called(ctx, u)
 
 	var r0 *model.User
 	if ret.Get(0) != nil {
@@ -54,15 +54,21 @@ func (m *MockUserService) Signup(ctx context.Context, u *model.User) (*model.Use
 }
 
 // Signin is a mock of UserService.Signin
-func (m *MockUserService) Signin(ctx context.Context, u *model.User) error {
+func (m *MockUserService) Signin(ctx context.Context, u *model.User) (*model.User, error) {
 	ret := m.Called(ctx, u)
 
-	var r0 error
+	var r0 *model.User
 	if ret.Get(0) != nil {
-		r0 = ret.Get(0).(error)
+		r0 = ret.Get(0).(*model.User)
 	}
 
-	return r0
+	var r1 error
+
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
+	}
+
+	return r0, r1
 }
 
 // UpdateDetails is a mock of UserService.UpdateDetails

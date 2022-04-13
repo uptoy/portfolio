@@ -29,7 +29,7 @@ func (h *Handler) Signin(c *gin.Context) {
 	}
 
 	ctx := c.Request.Context()
-	err := h.UserService.Signin(ctx, u)
+	result, err := h.UserService.Signin(ctx, u)
 
 	if err != nil {
 		log.Printf("Failed to sign in user: %v\n", err.Error())
@@ -40,7 +40,6 @@ func (h *Handler) Signin(c *gin.Context) {
 	}
 
 	tokens, err := h.TokenService.NewPairFromUser(ctx, u, "")
-	user, err := h.UserService.FindByEmail(ctx, u.Email)
 
 	if err != nil {
 		log.Printf("Failed to create tokens for user: %v\n", err.Error())
@@ -53,6 +52,6 @@ func (h *Handler) Signin(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"tokens": tokens,
-		"user":   user.Name,
+		"user":   result,
 	})
 }

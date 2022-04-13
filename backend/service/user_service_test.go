@@ -159,8 +159,8 @@ func TestSignin(t *testing.T) {
 			On("FindByEmail", mockArgs...).Return(mockUserResp, nil)
 
 		ctx := context.TODO()
-		err := us.Signin(ctx, mockUser)
-
+		result, err := us.Signin(ctx, mockUser)
+		fmt.Println(result)
 		assert.NoError(t, err)
 		mockUserRepository.AssertCalled(t, "FindByEmail", mockArgs...)
 	})
@@ -190,7 +190,8 @@ func TestSignin(t *testing.T) {
 			On("FindByEmail", mockArgs...).Return(mockUserResp, nil)
 
 		ctx := context.TODO()
-		err := us.Signin(ctx, mockUser)
+		result, err := us.Signin(ctx, mockUser)
+		fmt.Println(result)
 
 		assert.Error(t, err)
 		assert.EqualError(t, err, "Invalid email and password combination")

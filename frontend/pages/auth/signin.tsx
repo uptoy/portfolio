@@ -1,47 +1,97 @@
-import React from 'react'
-import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
-import Link from '@material-ui/core/Link'
-import Grid from '@material-ui/core/Grid'
-import Box from '@material-ui/core/Box'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import Typography from '@material-ui/core/Typography'
-import Container from '@material-ui/core/Container'
-import Copyright from 'components/Copyright'
-import { makeStyles } from '@material-ui/styles'
+import {
+  Typography,
+  Container,
+  Grid,
+  Box,
+  CircularProgress,
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  Avatar,
+  Button,
+  Alert,
+} from "@material-ui/core"
+import Link from "components/Link"
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
+import Copyright from "components/Copyright"
+import {makeStyles} from "@material-ui/styles"
+import theme from "theme"
+import React, {useState} from "react"
+import {signin} from "features/auth/authSlice"
 
-import theme from 'theme'
+import {useAppDispatch} from "app/hooks"
+import toast from "react-hot-toast"
+import {useForm, Controller} from "react-hook-form"
+import {unwrapResult} from "@reduxjs/toolkit"
+import Router from "next/router"
 
 const useStyles = makeStyles(() => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  alertContainer: {
+    marginTop: 20,
+    width: "100%",
+  },
 }))
+
+interface FormData {
+  email: string
+  password: string
+}
+
+const defaultValues = {
+  email: "",
+  password: "",
+}
 
 export default function SignIn() {
   const classes = useStyles()
 
+  const {handleSubmit, control} = useForm<FormData>({
+    defaultValues,
+  })
+
+  const dispatch = useAppDispatch()
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState(null)
+
+  const onSubmit = async ({email, password}: FormData) => {
+    try {
+      setIsSubmitting(true)
+      const result = await dispatch(signin({email, password}))
+      unwrapResult(result)
+      setIsSubmitting(false)
+      toast.success("Successfully logged in!")
+      Router.push("/")
+    } catch (error) {
+      setError(error.message)
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
+      {error && (
+        <Alert severity="error" className={classes.alertContainer}>
+          {error}
+        </Alert>
+      )}
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -49,41 +99,79 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
+        <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Controller
+                name="email"
+                control={control}
+                defaultValue=""
+                rules={{
+                  required: "Email is required field",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "invalid email address",
+                  },
+                }}
+                render={({field: {onChange, value}, fieldState: {error}}) => (
+                  <TextField
+                    margin="normal"
+                    required
+                    onChange={onChange}
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                    value={value}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                name="password"
+                control={control}
+                defaultValue=""
+                rules={{
+                  required: "Password is required field",
+                }}
+                render={({field: {onChange, value}, fieldState: {error}}) => (
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    onChange={onChange}
+                    id="password"
+                    label="Password"
+                    name="password"
+                    type="password"
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                    value={value}
+                  />
+                )}
+              />
+            </Grid>
+            {/* <Grid item xs={12}>
+              <FormControlLabel
+                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                label="I want to receive inspiration, marketing promotions and updates via email."
+              />
+            </Grid> */}
+          </Grid>
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
+            size="large"
             className={classes.submit}
+            disabled={isSubmitting}
           >
-            Sign In
+            {isSubmitting ? <CircularProgress size={30} /> : "Sign In"}
           </Button>
           <Grid container>
             <Grid item xs>

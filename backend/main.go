@@ -200,12 +200,31 @@ func inject(d *dataSources) (*gin.Engine, error) {
 		RefreshExpirationSecs: refreshExp,
 	})
 
-	// router := gin.Default()
-	router := gin.New()
-	router.Use(gin.Logger())
-	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true
-	router.Use(cors.New(config))
+	router := gin.Default()
+	router.Use(cors.New(cors.Config{
+		ExposeHeaders: []string{"Content-Length"},
+		// アクセス許可するオリジン
+		AllowOrigins: []string{
+			"http://localhost:3000",
+		},
+		// アクセス許可するHTTPメソッド
+		AllowMethods: []string{
+			"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS",
+		},
+		// 許可するHTTPリクエストヘッダ
+		AllowHeaders: []string{
+			"Origin", "Content-Length", "Content-Type", "Authorization",
+		},
+		// cookieなどの情報を必要とするかどうか
+		// AllowCredentials: true,
+		// preflightリクエストの結果をキャッシュする時間
+		MaxAge: 24 * time.Hour,
+	}))
+	// router.Use(cors.New(cors.Config{
+	// 	AllowOrigins:     []string{"http://localhost:3000"},
+	// 	AllowMethods:     []string{"GET","POST","PUT", "PATCH", "DELETE"},
+	// 	AllowHeaders:     []string{"Origin"},
+	router.Use(cors.Default())
 	baseURL := os.Getenv("BACKEND_API_URL")
 	handlerTimeout := os.Getenv("HANDLER_TIMEOUT")
 	ht, err := strconv.ParseInt(handlerTimeout, 0, 64)

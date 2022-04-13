@@ -209,7 +209,7 @@ type UserService interface {
 	Get(ctx context.Context, uid uuid.UUID) (*User, error)
 	GetList(ctx context.Context) ([]*User, error)
 	Signup(ctx context.Context, u *User) (*User, error)
-	Signin(ctx context.Context, u *User) error
+	Signin(ctx context.Context, u *User) (*User, error)
 	UpdateDetails(ctx context.Context, u *User) error
 	Count(ctx context.Context) (int, error)
 	FindByEmail(ctx context.Context, email string) (*User, error)

@@ -75,27 +75,27 @@ func (s *userService) Signup(ctx context.Context, u *model.User) (*model.User, e
 // and then compares the supplied password with the provided password
 // if a valid email/password combo is provided, u will hold all
 // available user fields
-func (s *userService) Signin(ctx context.Context, u *model.User) error {
+func (s *userService) Signin(ctx context.Context, u *model.User) (*model.User, error) {
 	uFetched, err := s.UserRepository.FindByEmail(ctx, u.Email)
 
 	// Will return NotAuthorized to client to omit details of why
 	if err != nil {
-		return apperrors.NewAuthorization("Invalid email and password combination")
+		return nil, apperrors.NewAuthorization("Invalid email and password combination")
 	}
 
 	// verify password - we previously created this method
 	match, err := comparePasswords(uFetched.Password, u.Password)
 
 	if err != nil {
-		return apperrors.NewInternal()
+		return nil, apperrors.NewInternal()
 	}
 
 	if !match {
-		return apperrors.NewAuthorization("Invalid email and password combination")
+		return nil, apperrors.NewAuthorization("Invalid email and password combination")
 	}
 
 	*u = *uFetched
-	return nil
+	return uFetched, nil
 }
 
 func (s *userService) UpdateDetails(ctx context.Context, u *model.User) error {
