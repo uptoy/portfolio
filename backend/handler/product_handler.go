@@ -3,6 +3,7 @@ package handler
 import (
 	"backend/model"
 	// "fmt"
+	// "fmt"
 	// "log"
 	"strconv"
 
@@ -61,8 +62,6 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 		Description:   description,
 		AverageRating: int64(average_rating),
 	}
-	// fmt.Println("json", json)
-	// fmt.Println("files", files)
 	ctx := c.Request.Context()
 	product, err := h.ProductService.ProductCreate(ctx, &json, files)
 	if err != nil {
@@ -76,62 +75,6 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 		"product": product,
 		"form":    form,
 	})
-	// configPath := filepath.Join(".", "images")
-	// if _, err := os.Stat(configPath); os.IsNotExist(err) {
-	// 	err = os.MkdirAll(configPath, os.ModePerm)
-	// }
-	// for _, file := range files {
-	// log.Println(file.Filename)
-	// dist := filepath.Join(configPath, file.Filename)
-	// c.SaveUploadedFile(file, file.Filename)
-	// }
-
-	//image
-	// form, err := c.MultipartForm()
-	// if err := c.ShouldBindJSON(&json); err != nil {
-	// if err != nil {
-	// 	c.String(http.StatusBadRequest, "get form err: %s", err.Error())
-	// 	return
-	// }
-	// files := form.File["files"]
-	// for _, file := range files {
-	// 	filename := filepath.Base(file.Filename)
-	// 	if err := c.SaveUploadedFile(file, filename); err != nil {
-	// 		c.String(http.StatusBadRequest, "upload file err: %s", err.Error())
-	// 		return
-	// 	}
-	// }
-	//image
-
-	// var json model.Product
-	// if err := c.ShouldBindJSON(&json); err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	// 	return
-	// }
-
-	// form, _ := c.MultipartForm()
-	// images := form.File["images[]"]
-	// fmt.Println("post products")
-
-	// filepaths := make([]string, 0)
-	// for _, file := range images {
-	// 	log.Println(file.Filename)
-	// 	filename := uuid.New().String() + filepath.Ext(file.Filename)
-	// 	filepath := "./images/" + filename
-	// 	c.SaveUploadedFile(file, filepath)
-	// 	filepaths = append(filepaths, filename)
-	// 	fmt.Println("names", filepaths)
-	// }
-	// ctx := c.Request.Context()
-	// product, err := h.ProductService.ProductCreate(ctx, &json, filepaths)
-	// if err != nil {
-	// 	log.Printf("Failed to create product: %v\n", err.Error())
-	// 	c.JSON(apperrors.Status(err), gin.H{
-	// 		"error": err,
-	// 	})
-	// 	return
-	// }
-	// c.String(http.StatusOK, fmt.Sprintf("'%s' uploaded!", file.Filename))
 }
 
 func (h *Handler) ProductFindByID(c *gin.Context) {
@@ -139,6 +82,14 @@ func (h *Handler) ProductFindByID(c *gin.Context) {
 	uid, _ := strconv.ParseInt(id, 0, 64)
 	ctx := c.Request.Context()
 	p, err := h.ProductService.ProductFindByID(ctx, uid)
+	if err != nil {
+		log.Fatal("err", err)
+		return
+	}
+	categoryId := p.CategoryId
+	category, err := h.CategoryService.CategoryFindByID(ctx, categoryId)
+	p.Category = category
+	// fmt.Println(category)
 	if err != nil {
 		log.Fatal("err", err)
 		// fmt.Println("err", err)

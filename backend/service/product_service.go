@@ -2,6 +2,7 @@ package service
 
 import (
 	"backend/model"
+	"fmt"
 	// "fmt"
 	// "fmt"
 
@@ -19,18 +20,20 @@ import (
 type productService struct {
 	ProductRepository      model.ProductRepository
 	ProductImageRepository model.ProductImageRepository
-	// MediaRepository        model.ProductImageRepository
+	CategoryRepository     model.CategoryRepository
 }
 
 type ProductServiceConfig struct {
 	ProductRepository      model.ProductRepository
 	ProductImageRepository model.ProductImageRepository
+	CategoryRepository     model.CategoryRepository
 }
 
 func NewProductService(c *ProductServiceConfig) model.ProductService {
 	return &productService{
 		ProductRepository:      c.ProductRepository,
 		ProductImageRepository: c.ProductImageRepository,
+		CategoryRepository:     c.CategoryRepository,
 	}
 }
 
@@ -73,6 +76,11 @@ func (s *productService) ProductCreate(ctx context.Context, p *model.Product, fi
 
 func (s *productService) ProductFindByID(ctx context.Context, id int64) (*model.Product, error) {
 	product, err := s.ProductRepository.ProductFindByID(ctx, id)
+	categoryId := product.CategoryId
+	fmt.Println(categoryId)
+	images, _ := s.ProductImageRepository.GetAll(ctx, id)
+	product.Images = images
+	// product.Category = category.
 	if err != nil {
 		return nil, err
 	}

@@ -2,15 +2,8 @@ package repository
 
 import (
 	"backend/model"
-	"fmt"
-	// "backend/model/apperrors"
 	"context"
-
-	// "database/sql"
-	// "log"
-	// "strconv"
-
-	// "github.com/google/uuid"
+	"fmt"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
@@ -26,7 +19,7 @@ func NewProductImageRepository(db *sqlx.DB) model.ProductImageRepository {
 }
 
 func (r *pGProductImageRepository) BulkInsert(ctx context.Context, images []*model.ProductImage) error {
-	fmt.Println("images",images)
+	fmt.Println("images", images)
 	q := `INSERT INTO product_image (product_id, url, created_at, updated_at) VALUES(:product_id, :url, :created_at, :updated_at)`
 	if _, err := r.DB.NamedExecContext(ctx, q, images); err != nil {
 		return err
@@ -55,12 +48,12 @@ func (r *pGProductImageRepository) Save(ctx context.Context, productId int64, im
 }
 
 func (r *pGProductImageRepository) Get(ctx context.Context, pid, id int64) (*model.ProductImage, error) {
-	q := `SELECT img.id AS id, img.product_id AS product_id, img.url AS url, img.created_at AS created_at, img.updated_at AS updated_at FROM product_image img WHERE img.id = $1 AND product_id= $2`
-	var img model.ProductImage
-	if err := r.DB.GetContext(ctx, &img, q, id, pid); err != nil {
+	query := `SELECT img.id AS id, img.product_id AS product_id, img.url AS url, img.created_at AS created_at, img.updated_at AS updated_at FROM product_image img WHERE img.id = $1 AND product_id= $2`
+	var image model.ProductImage
+	if err := r.DB.GetContext(ctx, &image, query, id, pid); err != nil {
 		return nil, err
 	}
-	return &img, nil
+	return &image, nil
 }
 
 func (r *pGProductImageRepository) GetAll(ctx context.Context, productId int64) ([]*model.ProductImage, error) {

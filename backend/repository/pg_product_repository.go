@@ -28,7 +28,6 @@ func NewProductRepository(db *sqlx.DB) model.ProductRepository {
 
 func (r *pGProductRepository) ProductCreate(ctx context.Context, p *model.Product) (*model.Product, error) {
 	var id int64
-	// product := model.Product{}
 	query := `INSERT INTO products (product_name, slug, brand, price, category_id, count_in_stock, description,average_rating) VALUES ($1, $2,$3, $4,$5,$6, $7,$8) RETURNING id`
 	if err := r.DB.QueryRowContext(ctx, query, p.ProductName, p.Slug, p.Brand, p.Price, p.CategoryId, p.CountInStock, p.Description, p.AverageRating).Scan(&id); err != nil {
 		log.Printf("Could not create a product : %v. Reason: %v\n", p.ProductName, err)
@@ -49,7 +48,7 @@ func (r *pGProductRepository) ProductList(ctx context.Context) ([]model.Product,
 }
 func (r *pGProductRepository) ProductFindByID(ctx context.Context, productId int64) (*model.Product, error) {
 	product := model.Product{}
-	query := "SELECT * FROM products WHERE product_id=$1"
+	query := "SELECT * FROM products WHERE id=$1"
 	if err := r.DB.GetContext(ctx, &product, query, productId); err != nil {
 		log.Printf("Unable to get product with name: %v. Err: %v\n", product.ProductName, err)
 		id := strconv.Itoa(int(productId))
@@ -74,7 +73,7 @@ func (r *pGProductRepository) ProductUpdate(ctx context.Context, productId int64
 	query := `
 	UPDATE products
 	SET product_name = $2,slug = $3,brand = $4, price = $5,category_id = $6,count_in_stock = $7,description = $8,average_rating = $9
-	WHERE product_id=$1
+	WHERE id=$1
 	RETURNING *;`
 	if err := r.DB.GetContext(ctx, p, query, productId, p.ProductName, p.Slug, p.Brand, p.Price, p.CategoryId, p.CountInStock, p.Description, p.AverageRating); err != nil {
 		log.Printf("Unable to update product: %v. Err: %v\n", p.ProductName, err)
@@ -85,13 +84,13 @@ func (r *pGProductRepository) ProductUpdate(ctx context.Context, productId int64
 }
 func (r *pGProductRepository) ProductDelete(ctx context.Context, productId int64) (*model.Product, error) {
 	product := model.Product{}
-	query := "SELECT * FROM products WHERE product_id=$1"
+	query := "SELECT * FROM products WHERE id=$1"
 	if err := r.DB.GetContext(ctx, &product, query, productId); err != nil {
 		log.Printf("Unable to get product: %v. Err: %v\n", product, err)
 		id := strconv.Itoa(int(productId))
 		return nil, apperrors.NewNotFound("product", id)
 	}
-	query2 := "DELETE FROM products WHERE product_id = $1"
+	query2 := "DELETE FROM products WHERE id = $1"
 	_, err2 := r.DB.ExecContext(ctx, query2, productId)
 	if err2 != nil {
 		log.Printf("Unable to delete product: %v. Err: %v\n", product, err2)

@@ -106,7 +106,8 @@ type PaymentService interface {
 type ProductImageRepository interface {
 	BulkInsert(ctx context.Context, images []*ProductImage) error
 	Save(ctx context.Context, productId int64, image *ProductImage) (*ProductImage, error)
-	// Get(ctx context.Context, productId, id int64) (*ProductImage, error)
+	Get(ctx context.Context, productId, id int64) (*ProductImage, error)
+	GetAll(ctx context.Context, productId int64) ([]*ProductImage, error)
 	Update(ctx context.Context, productId, id int64, image *ProductImage) (*ProductImage, error)
 	Delete(ctx context.Context, productId, id int64) error
 	BulkDelete(ctx context.Context, pid int64, ids []int) error
