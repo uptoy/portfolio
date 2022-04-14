@@ -8,7 +8,7 @@ import cartReducer from "features/cart/cartSlice"
 import orderReducer from "features/order/orderSlice"
 import productReducer from "features/product/productSlice"
 import reviewReducer from "features/review/reviewSlice"
-import kanyeReducer from "features/kanyeSlice"
+// import kanyeReducer from "features/kanyeSlice"
 import {useDispatch, useSelector, TypedUseSelectorHook} from "react-redux"
 import Cookies from "js-cookie"
 
@@ -20,7 +20,7 @@ export function makeStore() {
       cart: cartReducer,
       category: categoryReducer,
       ///
-      kanye: kanyeReducer,
+      // kanye: kanyeReducer,
       ///
       order: orderReducer,
       product: productReducer,

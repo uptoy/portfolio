@@ -16,7 +16,7 @@ const useStyles: any = makeStyles(() =>
     submit_container: {
       marginLeft: "auto",
       marginTop: "1em",
-      width: "9.5em",
+      width: "10.5em",
     },
     formControl: {
       margin: theme.spacing(1, 0),
@@ -40,7 +40,7 @@ const DeleteModal = (props: IProps) => {
             Back
           </Button>
           <Button variant="contained" onClick={props.handleDelete}>
-            Save
+            Delete
           </Button>
         </div>
       </SimpleModal>

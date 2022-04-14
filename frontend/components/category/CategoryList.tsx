@@ -43,12 +43,13 @@ const CategoryList = () => {
           <CardContent>
             <List dense className={classes.list}>
               {categories.map((category) => (
-                <div key={category.id}>
-                  <CategoryItem
-                    category={category}
-                  />
-                  <Divider component="li" />
-                </div>
+                <>
+                  {console.log(category)}
+                  <div key={category?.id}>
+                    <CategoryItem category={category} />
+                    <Divider component="li" />
+                  </div>
+                </>
               ))}
             </List>
           </CardContent>

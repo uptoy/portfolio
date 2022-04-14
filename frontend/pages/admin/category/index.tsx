@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React from "react"
 import {makeStyles} from "@material-ui/styles"
 import {AdminLayout} from "components/dashboard"
 import theme from "theme"
@@ -93,23 +93,6 @@ export default function AdminCategoryList() {
     }
     setState({...state, [anchor]: open})
   }
-  // Modal
-  // const [open, setOpen] = React.useState(false)
-  // const [open1, setOpen1] = useState(false)
-  // const handleOpen = () => {
-  //   setOpen(true)
-  // }
-  // const handleClose = () => {
-  //   setOpen(false)
-  // }
-
-  // const handleDeleteOpen = () => {
-  //   setOpen1(true)
-  // }
-  // const handleDeleteClose = () => {
-  //   setOpen1(false)
-  // }
-  // Modal
   const dispatch = useAppDispatch()
   const {selectedModal} = useAppSelector((state) => state.category)
 
@@ -126,8 +109,7 @@ export default function AdminCategoryList() {
       <Fab size="small" className={classes.fabSearch} onClick={toggleDrawer("right", true)}>
         <SearchIcon />
       </Fab>
-      <CategoryList
-      />
+      <CategoryList />
       <Drawer anchor="right" open={state["right"]} onClose={toggleDrawer("right", false)}>
         <Grid container className={classes.searchDrawer} spacing={1}>
           <Grid item xs={12} className={classes.searchField}>

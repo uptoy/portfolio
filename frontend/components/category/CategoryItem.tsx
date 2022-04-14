@@ -65,7 +65,7 @@ const CategoryItem: React.FC<IProps> = ({category}) => {
 
   return (
     <ListItem className={classes.categoryItem} disabled={isCategoryDeleting}>
-      <ListItemText primary={category.category_name} />
+      <ListItemText primary={category?.category_name} />
       <div className={classes.actionContainer}>
         <Button
           variant="contained"
@@ -78,7 +78,6 @@ const CategoryItem: React.FC<IProps> = ({category}) => {
         <Button variant="contained" className={classes.button} onClick={handleDeleteOpen}>
           <DeleteIcon />
         </Button>
-        {/* <DeleteModal /> */}
         <DeleteModal open={open} handleClose={handleDeleteClose} handleDelete={handleDelete} />
       </div>
     </ListItem>
