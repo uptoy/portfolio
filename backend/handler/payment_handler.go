@@ -5,6 +5,7 @@ import (
 
 	"backend/model/apperrors"
 	"net/http"
+
 	// // "fmt"
 
 	"github.com/gin-gonic/gin"
@@ -30,7 +31,7 @@ func (h *Handler) Payment(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": "paid",
+		"data": "paid",
 	})
 
 }

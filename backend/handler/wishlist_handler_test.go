@@ -5,15 +5,16 @@ import (
 	"backend/model/mocks"
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
 	"testing"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestWishlistGet(t *testing.T) {
@@ -28,7 +29,7 @@ func TestWishlistGet(t *testing.T) {
 		})
 
 		p1 := model.Product{
-			Id:     1,
+			Id:            1,
 			ProductName:   "product_name1",
 			Slug:          "slug1",
 			Brand:         "brand1",
@@ -41,7 +42,7 @@ func TestWishlistGet(t *testing.T) {
 			UpdatedAt:     time.Now(),
 		}
 		p2 := model.Product{
-			Id:     2,
+			Id:            2,
 			ProductName:   "product_name2",
 			Slug:          "slug2",
 			Price:         2,
@@ -54,9 +55,9 @@ func TestWishlistGet(t *testing.T) {
 		}
 		uid, _ := uuid.NewRandom()
 		mockUser := &model.User{
-			UID: uid,
-			Name:   "name",
-			Email:  "email@email.com",
+			UID:   uid,
+			Name:  "name",
+			Email: "email@email.com",
 		}
 		userId := mockUser.UID
 		wishlist := []model.Product{p1, p2}
@@ -66,7 +67,7 @@ func TestWishlistGet(t *testing.T) {
 		assert.NoError(t, err)
 		router.ServeHTTP(rr, request)
 		respBody, err := json.Marshal(gin.H{
-			"jsons": wishlist,
+			"data": wishlist,
 		})
 		fmt.Println("err", err)
 		assert.NoError(t, err)
@@ -90,7 +91,7 @@ func TestWishlistCreate(t *testing.T) {
 		})
 
 		p1 := model.Product{
-			Id:     1,
+			Id:            1,
 			ProductName:   "product_name1",
 			Slug:          "slug1",
 			Brand:         "brand1",
@@ -103,7 +104,7 @@ func TestWishlistCreate(t *testing.T) {
 			UpdatedAt:     time.Now(),
 		}
 		p2 := model.Product{
-			Id:     2,
+			Id:            2,
 			ProductName:   "product_name2",
 			Slug:          "slug2",
 			Brand:         "brand2",
@@ -117,9 +118,9 @@ func TestWishlistCreate(t *testing.T) {
 		}
 		uid, _ := uuid.NewRandom()
 		mockUser := &model.User{
-			UID: uid,
-			Name:   "name",
-			Email:  "email@email.com",
+			UID:   uid,
+			Name:  "name",
+			Email: "email@email.com",
 		}
 		wishlist := []model.Product{p1, p2}
 		productId := strconv.Itoa(int(p2.Id))
@@ -130,7 +131,7 @@ func TestWishlistCreate(t *testing.T) {
 		assert.NoError(t, err)
 		router.ServeHTTP(rr, request)
 		respBody, err := json.Marshal(gin.H{
-			"jsons": wishlist,
+			"data": wishlist,
 		})
 		fmt.Println("err", err)
 		assert.NoError(t, err)
@@ -154,7 +155,7 @@ func TestWishlistDelete(t *testing.T) {
 		})
 
 		p1 := model.Product{
-			Id:     1,
+			Id:            1,
 			ProductName:   "product_name1",
 			Slug:          "slug1",
 			Brand:         "brand1",
@@ -167,7 +168,7 @@ func TestWishlistDelete(t *testing.T) {
 			UpdatedAt:     time.Now(),
 		}
 		p2 := model.Product{
-			Id:     2,
+			Id:            2,
 			ProductName:   "product_name2",
 			Slug:          "slug2",
 			Brand:         "brand2",
@@ -182,9 +183,9 @@ func TestWishlistDelete(t *testing.T) {
 		wishlist := []model.Product{p1}
 		uid, _ := uuid.NewRandom()
 		mockUser := &model.User{
-			UID: uid,
-			Name:   "name",
-			Email:  "email@email.com",
+			UID:   uid,
+			Name:  "name",
+			Email: "email@email.com",
 		}
 		productId := strconv.Itoa(int(p2.Id))
 		userId := mockUser.UID
@@ -194,7 +195,7 @@ func TestWishlistDelete(t *testing.T) {
 		assert.NoError(t, err)
 		router.ServeHTTP(rr, request)
 		respBody, err := json.Marshal(gin.H{
-			"jsons": wishlist,
+			"data": wishlist,
 		})
 		fmt.Println("err", err)
 		assert.NoError(t, err)
@@ -218,9 +219,9 @@ func TestWishlistClear(t *testing.T) {
 		})
 		uid, _ := uuid.NewRandom()
 		mockUser := &model.User{
-			UID: uid,
-			Name:   "name",
-			Email:  "email@email.com",
+			UID:   uid,
+			Name:  "name",
+			Email: "email@email.com",
 		}
 		userId := mockUser.UID
 		mockWishlistService.On("WishlistClear", mock.AnythingOfType("*context.emptyCtx"), userId).Return(nil)
@@ -229,7 +230,7 @@ func TestWishlistClear(t *testing.T) {
 		assert.NoError(t, err)
 		router.ServeHTTP(rr, request)
 		respBody, err := json.Marshal(gin.H{
-			"jsons": "OK",
+			"data": "OK",
 		})
 		fmt.Println("err", err)
 		assert.NoError(t, err)

@@ -3,9 +3,10 @@ package handler
 import (
 	"backend/model"
 	"backend/model/apperrors"
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) WishlistGet(c *gin.Context) {
@@ -32,7 +33,7 @@ func (h *Handler) WishlistGet(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": w,
+		"data": w,
 	})
 }
 func (h *Handler) WishlistCreate(c *gin.Context) {
@@ -42,7 +43,7 @@ func (h *Handler) WishlistCreate(c *gin.Context) {
 		return
 	}
 	json = model.Product{
-		Id:     json.Id,
+		Id:            json.Id,
 		ProductName:   json.ProductName,
 		Slug:          json.Slug,
 		Brand:         json.Brand,
@@ -76,7 +77,7 @@ func (h *Handler) WishlistCreate(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": w,
+		"data": w,
 	})
 }
 func (h *Handler) WishlistDelete(c *gin.Context) {
@@ -106,7 +107,7 @@ func (h *Handler) WishlistDelete(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": w,
+		"data": w,
 	})
 }
 func (h *Handler) WishlistClear(c *gin.Context) {
@@ -131,6 +132,6 @@ func (h *Handler) WishlistClear(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": "OK",
+		"data": "OK",
 	})
 }

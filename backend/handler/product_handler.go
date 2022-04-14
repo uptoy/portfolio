@@ -3,15 +3,22 @@ package handler
 import (
 	"backend/model"
 	"fmt"
-	"log"
+	// "log"
 	"strconv"
 
 	"backend/model/apperrors"
-	"github.com/google/uuid"
+	// "net/http"
+	// "path/filepath"
+
+	// "github.com/google/uuid"
+	// "io/ioutil"
+	"log"
+	// "mime/multipart"
 	"net/http"
-	"path/filepath"
 
 	"github.com/gin-gonic/gin"
+	"os"
+	"path/filepath"
 )
 
 func (h *Handler) ProductList(c *gin.Context) {
@@ -27,51 +34,87 @@ func (h *Handler) ProductList(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": p,
+		"data": p,
 	})
 }
 
 func (h *Handler) ProductCreate(c *gin.Context) {
-	var json model.Product
-	if err := c.ShouldBindJSON(&json); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	form, _ := c.MultipartForm()
+	files := form.File["file"]
+	name := form.Value["name"]
+	fmt.Println("name", name)
+	fmt.Println("form", form)
+	configPath := filepath.Join(".", "images")
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		err = os.MkdirAll(configPath, os.ModePerm)
 	}
-	json = model.Product{
-		ProductName:   json.ProductName,
-		Slug:          json.Slug,
-		Brand:         json.Brand,
-		Price:         json.Price,
-		CategoryId:    json.CategoryId,
-		CountInStock:  json.CountInStock,
-		Description:   json.Description,
-		AverageRating: json.AverageRating,
+	for _, file := range files {
+		log.Println(file.Filename)
+		dist := filepath.Join(configPath, file.Filename)
+		c.SaveUploadedFile(file, dist)
 	}
 	//image
-	form, _ := c.MultipartForm()
-	images := form.File["images[]"]
+	// form, err := c.MultipartForm()
+	// if err := c.ShouldBindJSON(&json); err != nil {
+	// if err != nil {
+	// 	c.String(http.StatusBadRequest, "get form err: %s", err.Error())
+	// 	return
+	// }
+	// files := form.File["files"]
+	// for _, file := range files {
+	// 	filename := filepath.Base(file.Filename)
+	// 	if err := c.SaveUploadedFile(file, filename); err != nil {
+	// 		c.String(http.StatusBadRequest, "upload file err: %s", err.Error())
+	// 		return
+	// 	}
+	// }
+	//image
 
-	filepaths := make([]string, 0)
-	for _, file := range images {
-		log.Println(file.Filename)
-		filename := uuid.New().String() + filepath.Ext(file.Filename)
-		filepath := "./images/" + filename
-		c.SaveUploadedFile(file, filepath)
-		filepaths = append(filepaths, filename)
-		fmt.Println("names", filepaths)
-	}
-	ctx := c.Request.Context()
-	product, err := h.ProductService.ProductCreate(ctx, &json, filepaths)
-	if err != nil {
-		log.Printf("Failed to create product: %v\n", err.Error())
-		c.JSON(apperrors.Status(err), gin.H{
-			"error": err,
-		})
-		return
-	}
+	// var json model.Product
+	// if err := c.ShouldBindJSON(&json); err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	// 	return
+	// }
+	// json = model.Product{
+	// 	ProductName:   json.ProductName,
+	// 	Slug:          json.Slug,
+	// 	Brand:         json.Brand,
+	// 	Price:         json.Price,
+	// 	CategoryId:    json.CategoryId,
+	// 	CountInStock:  json.CountInStock,
+	// 	Description:   json.Description,
+	// 	AverageRating: json.AverageRating,
+	// }
+
+	// form, _ := c.MultipartForm()
+	// images := form.File["images[]"]
+	// fmt.Println("post products")
+
+	// filepaths := make([]string, 0)
+	// for _, file := range images {
+	// 	log.Println(file.Filename)
+	// 	filename := uuid.New().String() + filepath.Ext(file.Filename)
+	// 	filepath := "./images/" + filename
+	// 	c.SaveUploadedFile(file, filepath)
+	// 	filepaths = append(filepaths, filename)
+	// 	fmt.Println("names", filepaths)
+	// }
+	// ctx := c.Request.Context()
+	// product, err := h.ProductService.ProductCreate(ctx, &json, filepaths)
+	// if err != nil {
+	// 	log.Printf("Failed to create product: %v\n", err.Error())
+	// 	c.JSON(apperrors.Status(err), gin.H{
+	// 		"error": err,
+	// 	})
+	// 	return
+	// }
+	// c.String(http.StatusOK, fmt.Sprintf("'%s' uploaded!", file.Filename))
 	c.JSON(http.StatusOK, gin.H{
-		"product": product,
+		"product": name,
+		"form":    form,
+		// "files": files,
 	})
+
 }
 
 func (h *Handler) ProductFindByID(c *gin.Context) {
@@ -177,7 +220,7 @@ func (h *Handler) ProductBulkDelete(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": p,
+		"data": p,
 	})
 }
 

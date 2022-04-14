@@ -268,7 +268,7 @@ func (h *Handler) SampleGetList(c *gin.Context) {
 	jsons := []JsonRequest{json1, json2}
 	// p, _ := h.ProductService.ProductCreate(ctx, p1)
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": jsons,
+		"data": jsons,
 	})
 }
 
@@ -283,7 +283,7 @@ func (h *Handler) SampleGetFindByID(c *gin.Context) {
 	// jsons := []JsonRequest{json1, json2}
 	// p, _ := h.ProductService.ProductCreate(ctx, p1)
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": json1,
+		"data": json1,
 	})
 }
 

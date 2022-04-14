@@ -38,7 +38,7 @@ package handler
 // 		json2 := JsonRequest{Int: 2, Str: "str2"}
 // 		jsons := []JsonRequest{json1, json2}
 // 		respBody, err := json.Marshal(gin.H{
-// 			"jsons": jsons,
+// 			"data": jsons,
 // 		})
 // 		fmt.Println("err", err)
 // 		assert.NoError(t, err)
@@ -154,7 +154,7 @@ package handler
 // 		// json2 := JsonRequest{Int: 2, Str: "str2"}
 // 		// jsons := []JsonRequest{json1, json2}
 // 		respBody, err := json.Marshal(gin.H{
-// 			"jsons": json1,
+// 			"data": json1,
 // 		})
 // 		fmt.Println("err", err)
 // 		assert.NoError(t, err)
@@ -166,7 +166,6 @@ package handler
 // 		fmt.Println(rr.Body.String())
 // 	})
 // }
-
 
 // func TestSampleGetFindByName(t *testing.T) {
 // 	gin.SetMode(gin.TestMode)

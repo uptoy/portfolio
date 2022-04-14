@@ -3,6 +3,7 @@ package handler
 import (
 	"backend/model"
 	"backend/model/apperrors"
+
 	// "fmt"
 	"log"
 	"net/http"
@@ -26,7 +27,7 @@ func (h *Handler) ReviewBulkInsert(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": result,
+		"data": result,
 	})
 }
 func (h *Handler) ReviewCreate(c *gin.Context) {
@@ -56,7 +57,7 @@ func (h *Handler) ReviewCreate(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": result,
+		"data": result,
 	})
 }
 func (h *Handler) ReviewGet(c *gin.Context) {
@@ -76,7 +77,7 @@ func (h *Handler) ReviewGet(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": result,
+		"data": result,
 	})
 }
 func (h *Handler) ReviewGetAll(c *gin.Context) {
@@ -94,7 +95,7 @@ func (h *Handler) ReviewGetAll(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": result,
+		"data": result,
 	})
 }
 func (h *Handler) ReviewUpdate(c *gin.Context) {
@@ -115,7 +116,7 @@ func (h *Handler) ReviewUpdate(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": result,
+		"data": result,
 	})
 
 }
@@ -136,7 +137,7 @@ func (h *Handler) ReviewDelete(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": result,
+		"data": result,
 	})
 }
 func (h *Handler) ReviewBulkDelete(c *gin.Context) {
@@ -155,7 +156,7 @@ func (h *Handler) ReviewBulkDelete(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": result,
+		"data": result,
 	})
 }
 
@@ -264,7 +265,7 @@ func (h *Handler) ReviewBulkDelete(c *gin.Context) {
 // 		return
 // 	}
 // 	c.JSON(http.StatusOK, gin.H{
-// 		"jsons": result,
+// 		"data": result,
 // 	})
 // }
 

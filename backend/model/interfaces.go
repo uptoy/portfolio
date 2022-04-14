@@ -115,6 +115,8 @@ type ProductImageRepository interface {
 	Update(ctx context.Context, productId, id int64, image *ProductImage) (*ProductImage, error)
 	Delete(ctx context.Context, productId, id int64) error
 	BulkDelete(ctx context.Context, pid int64, ids []int) error
+	// FileUpload(file File) (string, error)
+	// RemoteUpload(url Url) (string, error)
 }
 
 // type ProductImageService interface {

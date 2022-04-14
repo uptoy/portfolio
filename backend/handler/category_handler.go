@@ -28,7 +28,7 @@ func (h *Handler) CategoryList(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": categories,
+		"data": categories,
 	})
 }
 
@@ -158,7 +158,7 @@ func (h *Handler) CategoryBulkDelete(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"jsons": categories,
+		"data": categories,
 	})
 }
 

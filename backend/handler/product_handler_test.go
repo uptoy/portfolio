@@ -6,9 +6,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+
 	// "mime/multipart"
 	"net/http"
 	"net/http/httptest"
@@ -63,7 +65,7 @@ func TestProductList(t *testing.T) {
 		router.ServeHTTP(rr, request)
 
 		respBody, err := json.Marshal(gin.H{
-			"jsons": p,
+			"data": p,
 		})
 		fmt.Println("err", err)
 		assert.NoError(t, err)
