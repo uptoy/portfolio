@@ -9,13 +9,14 @@ import (
 	// "io/ioutil"
 	// "log"
 	// "github.com/google/uuid"
-	// "mime/multipart"
+	"mime/multipart"
 	// "path/filepath"
 )
 
 type productService struct {
 	ProductRepository      model.ProductRepository
 	ProductImageRepository model.ProductImageRepository
+	MediaRepository        model.ProductImageRepository
 }
 
 type ProductServiceConfig struct {
@@ -38,18 +39,22 @@ func (s *productService) ProductList(ctx context.Context) ([]model.Product, erro
 	return products, nil
 }
 
-func (s *productService) ProductCreate(ctx context.Context, p *model.Product, filepaths []string) (*model.Product, error) {
+func (s *productService) ProductCreate(ctx context.Context, p *model.Product, files []*multipart.FileHeader) (*model.Product, error) {
 	product, err := s.ProductRepository.ProductCreate(ctx, p)
 	if err != nil {
 		return nil, err
 	}
 
-	if len(filepaths) > 0 {
+	if len(files) > 0 {
 		images := make([]*model.ProductImage, 0)
-		for _, filepath := range filepaths {
+		for _, file := range files {
+			image_url, err := NewMediaService(&MediaServiceConfig{}).FileUpload(file)
+			if err != nil {
+				return nil, err
+			}
 			images = append(images, &model.ProductImage{
 				ProductId: product.Id,
-				URL:       filepath,
+				URL:       image_url,
 			})
 		}
 		for _, img := range images {

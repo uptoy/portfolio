@@ -78,18 +78,15 @@ type ProductImage struct {
 	ID        int64     `db:"id" json:"id"`
 	ProductId int64     `db:"product_id" json:"product_id"`
 	URL       string    `db:"url" json:"url"`
-	CreatedAt *time.Time `db:"created_at" json:"created_at" `
-	UpdatedAt *time.Time `db:"updated_at" json:"updated_at" `
+	CreatedAt time.Time `db:"created_at" json:"created_at" `
+	UpdatedAt time.Time `db:"updated_at" json:"updated_at" `
 }
 
 func (img *ProductImage) PreSave() {
-	now := time.Now()
-	img.CreatedAt = &now
+	img.CreatedAt = time.Now()
 	img.UpdatedAt = img.CreatedAt
 }
 
-// PreUpdate sets the update timestamp
 func (img *ProductImage) PreUpdate() {
-	now := time.Now()
-	img.UpdatedAt = &now
+	img.UpdatedAt = time.Now()
 }

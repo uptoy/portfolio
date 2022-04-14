@@ -4,6 +4,7 @@ import (
 	"context"
 	// "io"
 	// "mime/multipart"
+	"mime/multipart"
 	"time"
 
 	"github.com/google/uuid"
@@ -73,16 +74,10 @@ type CategoryService interface {
 	CategoryCount(ctx context.Context) (int, error)
 }
 
-// type ImageService interface {
-// 	ProductImageToS3(file *multipart.FileHeader, imageName string) error
-// 	ProductImageToDB(file *multipart.FileHeader, imageName string) error
-// 	// OrderList(ctx context.Context, userID uuid.UUID) ([]Order, error)
-// 	// OrderCreate(ctx context.Context, userID uuid.UUID, data *OrderRequestData) (*Order, error)
-// 	// OrderFindByID(ctx context.Context, orderId int64) (*Order, error)
-// 	// OrderGetDetails(ctx context.Context, orderId int64) ([]*OrderInfo, error)
-// 	// OrderCount(ctx context.Context) (int, error)
-// 	// OrderDetailsBulkInsert(ctx context.Context, items []*OrderDetail) error
-// }
+type MediaService interface {
+	FileUpload(file *multipart.FileHeader) (string, error)
+	RemoteUpload(url Url) (string, error)
+}
 
 type OrderRepository interface {
 	OrderList(ctx context.Context, userID uuid.UUID) ([]Order, error)
@@ -138,7 +133,7 @@ type ProductRepository interface {
 }
 type ProductService interface {
 	ProductList(ctx context.Context) ([]Product, error)
-	ProductCreate(ctx context.Context, p *Product, filepaths []string) (*Product, error)
+	ProductCreate(ctx context.Context, p *Product, files []*multipart.FileHeader) (*Product, error)
 	ProductFindByID(ctx context.Context, id int64) (*Product, error)
 	ProductUpdate(ctx context.Context, id int64, p *Product) (*Product, error)
 	ProductDelete(ctx context.Context, id int64) (*Product, error)

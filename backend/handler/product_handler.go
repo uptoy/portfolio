@@ -17,8 +17,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"os"
-	"path/filepath"
+	// "os"
+	// "path/filepath"
 )
 
 func (h *Handler) ProductList(c *gin.Context) {
@@ -41,18 +41,51 @@ func (h *Handler) ProductList(c *gin.Context) {
 func (h *Handler) ProductCreate(c *gin.Context) {
 	form, _ := c.MultipartForm()
 	files := form.File["file"]
-	name := form.Value["name"]
-	fmt.Println("name", name)
-	fmt.Println("form", form)
-	configPath := filepath.Join(".", "images")
-	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		err = os.MkdirAll(configPath, os.ModePerm)
+	value := form.Value
+	product_name := value["product_name"][0]
+	slug := value["slug"][0]
+	brand := value["brand"][0]
+	price, _ := strconv.Atoi(value["price"][0])
+	category_id, _ := strconv.Atoi(value["category_id"][0])
+	count_in_stock, _ := strconv.Atoi(value["category_id"][0])
+	description := value["description"][0]
+	average_rating, _ := strconv.Atoi(value["average_rating"][0])
+
+	json := model.Product{
+		ProductName:   product_name,
+		Slug:          slug,
+		Brand:         brand,
+		Price:         int64(price),
+		CategoryId:    int64(category_id),
+		CountInStock:  int64(count_in_stock),
+		Description:   description,
+		AverageRating: int64(average_rating),
 	}
-	for _, file := range files {
-		log.Println(file.Filename)
-		dist := filepath.Join(configPath, file.Filename)
-		c.SaveUploadedFile(file, dist)
+	fmt.Println("json", json)
+	fmt.Println("files", files)
+	ctx := c.Request.Context()
+	product, err := h.ProductService.ProductCreate(ctx, &json, files)
+	if err != nil {
+		log.Printf("Failed to create product: %v\n", err.Error())
+		c.JSON(apperrors.Status(err), gin.H{
+			"error": err,
+		})
+		return
 	}
+	c.JSON(http.StatusOK, gin.H{
+		"product": product,
+		"form":    form,
+	})
+	// configPath := filepath.Join(".", "images")
+	// if _, err := os.Stat(configPath); os.IsNotExist(err) {
+	// 	err = os.MkdirAll(configPath, os.ModePerm)
+	// }
+	// for _, file := range files {
+	// log.Println(file.Filename)
+	// dist := filepath.Join(configPath, file.Filename)
+	// c.SaveUploadedFile(file, file.Filename)
+	// }
+
 	//image
 	// form, err := c.MultipartForm()
 	// if err := c.ShouldBindJSON(&json); err != nil {
@@ -74,16 +107,6 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 	// if err := c.ShouldBindJSON(&json); err != nil {
 	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	// 	return
-	// }
-	// json = model.Product{
-	// 	ProductName:   json.ProductName,
-	// 	Slug:          json.Slug,
-	// 	Brand:         json.Brand,
-	// 	Price:         json.Price,
-	// 	CategoryId:    json.CategoryId,
-	// 	CountInStock:  json.CountInStock,
-	// 	Description:   json.Description,
-	// 	AverageRating: json.AverageRating,
 	// }
 
 	// form, _ := c.MultipartForm()
@@ -109,12 +132,6 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 	// 	return
 	// }
 	// c.String(http.StatusOK, fmt.Sprintf("'%s' uploaded!", file.Filename))
-	c.JSON(http.StatusOK, gin.H{
-		"product": name,
-		"form":    form,
-		// "files": files,
-	})
-
 }
 
 func (h *Handler) ProductFindByID(c *gin.Context) {

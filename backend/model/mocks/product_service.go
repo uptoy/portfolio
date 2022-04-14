@@ -6,16 +6,15 @@ import (
 	"backend/model"
 	// "github.com/google/uuid"
 	"github.com/stretchr/testify/mock"
+	"mime/multipart"
 )
 
 type MockProductService struct {
 	mock.Mock
 }
 
-func (m *MockProductService) ProductCreate(ctx context.Context, p *model.Product, filepaths []string) (*model.Product, error) {
-	ret := m.Called(ctx, p, filepaths)
-
-	// first value passed to "Return"
+func (m *MockProductService) ProductCreate(ctx context.Context, p *model.Product, files []*multipart.FileHeader) (*model.Product, error) {
+	ret := m.Called(ctx, p, files)
 	var r0 *model.Product
 	if ret.Get(0) != nil {
 		// we can just return this if we know we won't be passing function to "Return"
