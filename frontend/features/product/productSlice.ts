@@ -132,7 +132,7 @@ export const productsSlice = createSlice({
       state.products.push(action.payload)
     })
     builder.addCase(deleteProduct.fulfilled, (state, action) => {
-      state.products = state.products.filter((product) => product.id !== action.payload)
+      // state.products = state.products.filter((product) => product.id !== action.payload)
     })
     builder.addCase(updateProduct.fulfilled, (state, action) => {
       state.products = state.products.map((product) =>

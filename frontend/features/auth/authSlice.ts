@@ -100,7 +100,7 @@ export const fetchCurrentUser = createAsyncThunk(
   async (_, {rejectWithValue}) => {
     try {
       const response = await AuthAPI.getCurrentUser()
-      const user = response.data.data
+      const user = response.data.user
       Cookies.set("currentUser", JSON.stringify(user))
       return user
     } catch (err) {
@@ -118,7 +118,7 @@ export const updateProfile = createAsyncThunk(
   async (fields: {name: string; email: string}, {rejectWithValue}) => {
     try {
       const response = await AuthAPI.updateProfile(fields)
-      const user = response.data.data.user
+      const user = response.data.user
       Cookies.set("currentUser", JSON.stringify(user))
       return user
     } catch (err) {
@@ -136,7 +136,7 @@ export const updateSettings = createAsyncThunk(
   async (fields: {language: string; currency: string; theme: string}, {rejectWithValue}) => {
     try {
       const response = await AuthAPI.updateSettings(fields)
-      const user = response.data.data
+      const user = response.data.user
       Cookies.set("currentUser", JSON.stringify(user))
       return user
     } catch (err) {

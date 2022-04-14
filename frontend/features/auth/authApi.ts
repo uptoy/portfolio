@@ -16,7 +16,7 @@ export const forgotPassword = (email: string) => {
 export const resetPassword = (fields: {
   email: string
   password: string
-  password_confirmation: string
+  password_confirm: string
   token: string
 }) => {
   return apiClient.post("/api/reset-password", fields)

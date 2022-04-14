@@ -1,15 +1,14 @@
 import React, {useState} from "react"
 import {makeStyles} from "@material-ui/styles"
-import {AdminLayout} from "components/Dashboard"
+import {AdminLayout} from "components/dashboard"
 import theme from "theme"
 import {Button, Fab, Drawer, Grid, TextField} from "@material-ui/core"
 import AddIcon from "@material-ui/icons/Add"
 import SearchIcon from "@material-ui/icons/Search"
 import {pink} from "@material-ui/core/colors"
-import {CategoryList} from "components/Category"
-import {CategoryManageModal} from "components/Category"
-import DeleteModal from "components/Modal/DeleteModal"
-// import { setSelectedModal } from '../slice';
+import {CategoryList, CategoryManageModal} from "components/category"
+import {useAppDispatch, useAppSelector} from "app/hooks"
+import {setSelectedModal} from "features/category/categorySlice"
 
 const pink500 = pink["500"]
 
@@ -95,37 +94,40 @@ export default function AdminCategoryList() {
     setState({...state, [anchor]: open})
   }
   // Modal
-  const [open, setOpen] = React.useState(false)
-  const handleOpen = () => {
-    setOpen(true)
-  }
-  const handleClose = () => {
-    setOpen(false)
-  }
-  const [open1, setOpen1] = useState(false)
-  const handleDeleteOpen = () => {
-    setOpen1(true)
-  }
-  const handleDeleteClose = () => {
-    setOpen1(false)
-  }
+  // const [open, setOpen] = React.useState(false)
+  // const [open1, setOpen1] = useState(false)
+  // const handleOpen = () => {
+  //   setOpen(true)
+  // }
+  // const handleClose = () => {
+  //   setOpen(false)
+  // }
+
+  // const handleDeleteOpen = () => {
+  //   setOpen1(true)
+  // }
+  // const handleDeleteClose = () => {
+  //   setOpen1(false)
+  // }
   // Modal
+  const dispatch = useAppDispatch()
+  const {selectedModal} = useAppSelector((state) => state.category)
 
   return (
     <AdminLayout>
-      <Fab size="small" color="secondary" className={classes.fab} onClick={handleOpen}>
+      <Fab
+        size="small"
+        color="secondary"
+        className={classes.fab}
+        onClick={() => dispatch(setSelectedModal("manageCategoryModal"))}
+      >
         <AddIcon />
       </Fab>
       <Fab size="small" className={classes.fabSearch} onClick={toggleDrawer("right", true)}>
         <SearchIcon />
       </Fab>
       <CategoryList
-        open={open}
-        open1={open1}
-        handleOpen={handleOpen}
-        handleDeleteOpen={handleDeleteOpen}
       />
-      {/* {selectedModal === "manageCategoryModal" && <CategoryManageModal />} */}
       <Drawer anchor="right" open={state["right"]} onClose={toggleDrawer("right", false)}>
         <Grid container className={classes.searchDrawer} spacing={1}>
           <Grid item xs={12} className={classes.searchField}>
@@ -161,8 +163,7 @@ export default function AdminCategoryList() {
           </Grid>
         </Grid>
       </Drawer>
-      <CategoryManageModal open={open} handleClose={handleClose} />
-      <DeleteModal open={open1} handleClose={handleDeleteClose} />
+      {selectedModal === "manageCategoryModal" && <CategoryManageModal />}
     </AdminLayout>
   )
 }

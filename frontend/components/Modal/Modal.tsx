@@ -1,17 +1,15 @@
-import { Typography } from "@material-ui/core"
+import {Typography} from "@material-ui/core"
 import Backdrop from "@material-ui/core/Backdrop"
 import Fade from "@material-ui/core/Fade"
 import IconButton from "@material-ui/core/IconButton"
 import MaterialModal from "@material-ui/core/Modal"
-import { Theme } from "@material-ui/core/styles"
-import { makeStyles } from "@material-ui/styles"
-
+import {makeStyles} from "@material-ui/styles"
 import CloseIcon from "@material-ui/icons/Close"
 import React from "react"
 import ReactDOM from "react-dom"
-import theme from "theme"
+import {Theme} from "@material-ui/core/styles"
 
-const useStyles: any = makeStyles(() => ({
+const useStyles: any = makeStyles((theme: Theme) => ({
   modal: {
     display: "flex",
     alignItems: "center",
@@ -24,29 +22,31 @@ const useStyles: any = makeStyles(() => ({
     marginBottom: 10,
   },
   paper: {
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-    borderRadius: 6,
-    width: "90%",
-    [theme.breakpoints.up("md")]: {
-      width: 600,
-    },
+    position: "absolute",
+    width: 450,
+    backgroundColor: "white",
+    padding: "2em",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
   },
   closeContainer: {
     display: "flex",
     justifyContent: "flex-end",
+    position: "absolute",
+    top: "3%",
+    left: "90%",
   },
 }))
 
 interface Props {
   isVisible: boolean
   onClose(): void
-  title: string
+  name: string
   withClose?: boolean
 }
 
-const Modal: React.FC<Props> = ({ title, isVisible, onClose, children, withClose = true }) => {
+const Modal: React.FC<Props> = ({name, isVisible, onClose, children, withClose = true}) => {
   const classes = useStyles()
 
   return (
@@ -67,7 +67,7 @@ const Modal: React.FC<Props> = ({ title, isVisible, onClose, children, withClose
               <Fade in={isVisible}>
                 <div className={classes.paper}>
                   <div className={classes.modalHeader}>
-                    <Typography variant="h6">{title}</Typography>
+                    <Typography variant="h6">{name}</Typography>
                     {withClose && (
                       <div className={classes.closeContainer}>
                         <IconButton aria-label="close" onClick={onClose}>

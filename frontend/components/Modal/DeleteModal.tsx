@@ -8,6 +8,7 @@ import theme from "theme"
 interface IProps {
   open: boolean
   handleClose(): void
+  handleDelete(): void
 }
 
 const useStyles: any = makeStyles(() =>
@@ -38,7 +39,9 @@ const DeleteModal = (props: IProps) => {
           <Button variant="contained" style={{marginRight: "1em"}} onClick={props.handleClose}>
             Back
           </Button>
-          <Button variant="contained">Save</Button>
+          <Button variant="contained" onClick={props.handleDelete}>
+            Save
+          </Button>
         </div>
       </SimpleModal>
     </>

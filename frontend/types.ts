@@ -158,12 +158,6 @@ export interface IOrder {
   updatedAt?: string
 }
 
-export interface ICategory {
-  id: string
-  title: string
-  user_id: string
-}
-
 // export interface IUser {
 //   id: string
 //   name: string
@@ -237,16 +231,9 @@ export interface IOrder {
   updatedAt?: string
 }
 
-export interface ICategory {
-  id: string
-  title: string
-  user_id: string
-}
-
 export interface Category {
   id: number
-  title: string
-  user_id: string
+  category_name: string
 }
 
 export interface Product {
@@ -268,10 +255,10 @@ export interface Wishlist {
 }
 
 export interface User {
-  uid: string;
-  name: string;
-  email: string;
-  profile_url: string;
+  uid: string
+  name: string
+  email: string
+  profile_url: string
   // language: string;
   // theme: string;
   // currency: string;
