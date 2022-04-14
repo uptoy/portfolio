@@ -2,19 +2,8 @@ package service
 
 import (
 	"backend/model"
-	"fmt"
-	// "fmt"
-	// "fmt"
-
-	// "bytes"
 	"context"
-	"io"
-
-	// "io/ioutil"
-	// "log"
-	// "github.com/google/uuid"
 	"mime/multipart"
-	// "path/filepath"
 )
 
 type productService struct {
@@ -70,27 +59,51 @@ func (s *productService) ProductCreate(ctx context.Context, p *model.Product, fi
 		if err := s.ProductImageRepository.BulkInsert(ctx, images); err != nil {
 			return nil, err
 		}
+		p.Images = images
+		return p, nil
 	}
 	return p, nil
 }
 
 func (s *productService) ProductFindByID(ctx context.Context, id int64) (*model.Product, error) {
 	product, err := s.ProductRepository.ProductFindByID(ctx, id)
-	categoryId := product.CategoryId
-	fmt.Println(categoryId)
-	images, _ := s.ProductImageRepository.GetAll(ctx, id)
-	product.Images = images
-	// product.Category = category.
 	if err != nil {
 		return nil, err
 	}
+	images, err := s.ProductImageRepository.GetAll(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	product.Images = images
 	return product, nil
 }
 
-func (s *productService) ProductUpdate(ctx context.Context, id int64, p *model.Product) (*model.Product, error) {
+func (s *productService) ProductUpdate(ctx context.Context, id int64, p *model.Product, files []*multipart.FileHeader) (*model.Product, error) {
 	product, err := s.ProductRepository.ProductUpdate(ctx, id, p)
 	if err != nil {
 		return nil, err
+	}
+	if len(files) > 0 {
+		images := make([]*model.ProductImage, 0)
+		for _, file := range files {
+			image_url, err := NewMediaService(&MediaServiceConfig{}).FileUpload(file)
+			if err != nil {
+				return nil, err
+			}
+			images = append(images, &model.ProductImage{
+				ProductId: model.NewInt64(product.Id),
+				URL:       model.NewString(image_url),
+			})
+		}
+		for _, img := range images {
+			img.PreUpdate()
+		}
+		productId := product.Id
+		if err := s.ProductImageRepository.Update(ctx, productId, images); err != nil {
+			return nil, err
+		}
+		p.Images = images
+		return p, nil
 	}
 	return product, nil
 }
@@ -100,6 +113,11 @@ func (s *productService) ProductDelete(ctx context.Context, id int64) (*model.Pr
 	if err != nil {
 		return nil, err
 	}
+	images, err := s.ProductImageRepository.GetAll(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	product.Images = images
 	return product, nil
 }
 
@@ -108,6 +126,12 @@ func (s *productService) ProductFindByName(ctx context.Context, name string) (*m
 	if err != nil {
 		return nil, err
 	}
+	productId := product.Id
+	images, err := s.ProductImageRepository.GetAll(ctx, productId)
+	if err != nil {
+		return nil, err
+	}
+	product.Images = images
 	return product, nil
 }
 
@@ -149,9 +173,4 @@ func (s *productService) ProductListByIDS(ctx context.Context, ids []int64) ([]*
 		return nil, err
 	}
 	return products, nil
-}
-
-//s3
-func (s *productService) UploadImage(data io.Reader, filename string, cloudEnvURI string) error {
-	return nil
 }

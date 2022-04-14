@@ -108,7 +108,8 @@ type ProductImageRepository interface {
 	Save(ctx context.Context, productId int64, image *ProductImage) (*ProductImage, error)
 	Get(ctx context.Context, productId, id int64) (*ProductImage, error)
 	GetAll(ctx context.Context, productId int64) ([]*ProductImage, error)
-	Update(ctx context.Context, productId, id int64, image *ProductImage) (*ProductImage, error)
+	Update(ctx context.Context, productId int64, images []*ProductImage) error
+	// BulkInsertUpdate(ctx context.Context, images []*ProductImage) error
 	Delete(ctx context.Context, productId, id int64) error
 	BulkDelete(ctx context.Context, pid int64, ids []int) error
 	// FileUpload(file File) (string, error)
@@ -136,7 +137,7 @@ type ProductService interface {
 	ProductList(ctx context.Context) ([]Product, error)
 	ProductCreate(ctx context.Context, p *Product, files []*multipart.FileHeader) (*Product, error)
 	ProductFindByID(ctx context.Context, id int64) (*Product, error)
-	ProductUpdate(ctx context.Context, id int64, p *Product) (*Product, error)
+	ProductUpdate(ctx context.Context, id int64, p *Product, files []*multipart.FileHeader) (*Product, error)
 	ProductDelete(ctx context.Context, id int64) (*Product, error)
 	ProductFindByName(ctx context.Context, name string) (*Product, error)
 	BulkDelete(ctx context.Context) ([]Product, error)

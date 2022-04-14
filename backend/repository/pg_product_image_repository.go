@@ -65,12 +65,17 @@ func (r *pGProductImageRepository) GetAll(ctx context.Context, productId int64) 
 	return imgs, nil
 }
 
-func (r *pGProductImageRepository) Update(ctx context.Context, productId, id int64, image *model.ProductImage) (*model.ProductImage, error) {
-	q := `UPDATE product_image SET url=:url, created_at=:created_at, updated_at=:updated_at WHERE id=:id AND product_id=:product_id`
-	if _, err := r.DB.NamedExecContext(ctx, q, map[string]interface{}{"product_id": productId, "id": id, "url": image.URL, "created_at": image.CreatedAt, "updated_at": image.UpdatedAt}); err != nil {
-		return nil, err
+func (r *pGProductImageRepository) Update(ctx context.Context, productId int64, images []*model.ProductImage) error {
+	q := `UPDATE product_image SET url=:url, created_at=:created_at, updated_at=:updated_at WHERE product_id=:product_id`
+	// if _, err := r.DB.NamedExecContext(ctx, q, map[string]interface{}{"product_id": productId, "id": id, "url": image.URL, "created_at": image.CreatedAt, "updated_at": image.UpdatedAt}); err != nil {
+	// 	return nil, err
+	// }
+	_, err := r.DB.NamedQueryContext(ctx, q, images)
+	if err != nil {
+		return err
 	}
-	return image, nil
+	// defer rows.Close()
+	return nil
 }
 
 func (r *pGProductImageRepository) Delete(ctx context.Context, productId, id int64) error {

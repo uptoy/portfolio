@@ -74,8 +74,8 @@ func (m *MockProductService) ProductFindByName(ctx context.Context, productName 
 	return r0, r1
 }
 
-func (m *MockProductService) ProductUpdate(ctx context.Context, productId int64, p *model.Product) (*model.Product, error) {
-	ret := m.Called(ctx, productId, p)
+func (m *MockProductService) ProductUpdate(ctx context.Context, id int64, p *model.Product, files []*multipart.FileHeader) (*model.Product, error) {
+	ret := m.Called(ctx, id, p, files)
 	var r0 *model.Product
 	if ret.Get(0) != nil {
 		r0 = ret.Get(0).(*model.Product)
