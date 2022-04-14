@@ -5,7 +5,7 @@ import (
 	"backend/model/mocks"
 	"bytes"
 	"encoding/json"
-	"fmt"
+	// "fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -42,18 +42,18 @@ func TestForgotPassword(t *testing.T) {
 		request, err := http.NewRequest(http.MethodPost, "/forgot", bytes.NewBuffer(reqBody))
 		request.Header.Set("Content-Type", "application/json")
 		mockAuthService.On("ForgotPassword", mock.AnythingOfType("*context.emptyCtx"), mockReset).Return(nil)
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		assert.NoError(t, err)
 		router.ServeHTTP(rr, request)
 		respBody, err := json.Marshal(gin.H{
 			"message": "Check your mail",
 		})
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		assert.NoError(t, err)
 		assert.Equal(t, http.StatusOK, rr.Code)
-		fmt.Println("http.StatusOK", http.StatusOK)
+		// fmt.Println("http.StatusOK", http.StatusOK)
 		assert.Equal(t, respBody, rr.Body.Bytes())
-		fmt.Println(string(respBody))
-		fmt.Println(rr.Body.String())
+		// fmt.Println(string(respBody))
+		// fmt.Println(rr.Body.String())
 	})
 }

@@ -2,7 +2,7 @@ package handler
 
 import (
 	"backend/model"
-	"fmt"
+	// "fmt"
 	// "log"
 	"strconv"
 
@@ -61,8 +61,8 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 		Description:   description,
 		AverageRating: int64(average_rating),
 	}
-	fmt.Println("json", json)
-	fmt.Println("files", files)
+	// fmt.Println("json", json)
+	// fmt.Println("files", files)
 	ctx := c.Request.Context()
 	product, err := h.ProductService.ProductCreate(ctx, &json, files)
 	if err != nil {
@@ -141,7 +141,7 @@ func (h *Handler) ProductFindByID(c *gin.Context) {
 	p, err := h.ProductService.ProductFindByID(ctx, uid)
 	if err != nil {
 		log.Fatal("err", err)
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -160,7 +160,7 @@ func (h *Handler) ProductUpdate(c *gin.Context) {
 	uid, err := strconv.ParseInt(id, 0, 64)
 	if err != nil {
 		log.Fatal("err", err)
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		return
 	}
 	p1 := &model.Product{
@@ -194,7 +194,7 @@ func (h *Handler) ProductDelete(c *gin.Context) {
 	uid, err := strconv.ParseInt(id, 0, 64)
 	if err != nil {
 		log.Fatal("err", err)
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		return
 	}
 	p, err := h.ProductService.ProductDelete(ctx, uid)
@@ -282,7 +282,7 @@ func (h *Handler) ProductJoin(c *gin.Context) {
 	p, err := h.ProductService.ProductFindByIDJoin(ctx, uid)
 	if err != nil {
 		log.Fatal("err", err)
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -295,7 +295,7 @@ func (h *Handler) ProductCount(c *gin.Context) {
 	result, err := h.ProductService.ProductCount(ctx)
 	if err != nil {
 		log.Fatal("err", err)
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{

@@ -3,7 +3,7 @@ package service
 // // skipTest(t)
 import (
 	"context"
-	"fmt"
+	// "fmt"
 	"testing"
 
 	"backend/model"
@@ -102,8 +102,8 @@ func TestWishlistGet(t *testing.T) {
 		ctx := context.TODO()
 		wishlist, err := ws.WishlistGet(ctx, mockUser.UID)
 		assert.NoError(t, err)
-		fmt.Println("mockProductList[0]", mockProductList[0])
-		fmt.Println("mockProductList[1]", mockProductList[1])
+		// fmt.Println("mockProductList[0]", mockProductList[0])
+		// fmt.Println("mockProductList[1]", mockProductList[1])
 		assert.Equal(t, mockProductList[0].Id, wishlist[0].Id)
 		assert.Equal(t, mockProductList[1].Id, wishlist[1].Id)
 		mockWishlistRepository.AssertExpectations(t)
@@ -151,7 +151,7 @@ func TestWishlistDelete(t *testing.T) {
 		ctx := context.TODO()
 		wishlist, err := ws.WishlistDelete(ctx, mockUser.UID, mockProduct2.Id)
 		assert.NoError(t, err)
-		fmt.Println("mockProductList[0]", mockProductList[0])
+		// fmt.Println("mockProductList[0]", mockProductList[0])
 		assert.Equal(t, mockProductList[0].Id, wishlist[0].Id)
 		mockWishlistRepository.AssertExpectations(t)
 	})

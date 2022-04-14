@@ -2,10 +2,13 @@ package service
 
 import (
 	"backend/model"
+	// "fmt"
+	// "fmt"
 
 	// "bytes"
 	"context"
 	"io"
+
 	// "io/ioutil"
 	// "log"
 	// "github.com/google/uuid"
@@ -16,7 +19,7 @@ import (
 type productService struct {
 	ProductRepository      model.ProductRepository
 	ProductImageRepository model.ProductImageRepository
-	MediaRepository        model.ProductImageRepository
+	// MediaRepository        model.ProductImageRepository
 }
 
 type ProductServiceConfig struct {
@@ -53,10 +56,11 @@ func (s *productService) ProductCreate(ctx context.Context, p *model.Product, fi
 				return nil, err
 			}
 			images = append(images, &model.ProductImage{
-				ProductId: product.Id,
-				URL:       image_url,
+				ProductId: model.NewInt64(product.Id),
+				URL:       model.NewString(image_url),
 			})
 		}
+
 		for _, img := range images {
 			img.PreSave()
 		}

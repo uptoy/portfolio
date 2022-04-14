@@ -5,7 +5,7 @@ import (
 	"backend/model/mocks"
 	"bytes"
 	"encoding/json"
-	"fmt"
+	// "fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -60,20 +60,20 @@ func TestProductList(t *testing.T) {
 		p := []model.Product{p1, p2}
 		mockProductService.On("ProductList", mock.AnythingOfType("*context.emptyCtx")).Return(p, nil)
 		request, err := http.NewRequest(http.MethodGet, "/products", nil)
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		assert.NoError(t, err)
 		router.ServeHTTP(rr, request)
 
 		respBody, err := json.Marshal(gin.H{
 			"data": p,
 		})
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		assert.NoError(t, err)
 		assert.Equal(t, http.StatusOK, rr.Code)
-		fmt.Println("http.StatusOK", http.StatusOK)
+		// fmt.Println("http.StatusOK", http.StatusOK)
 		assert.Equal(t, respBody, rr.Body.Bytes())
-		fmt.Println(string(respBody))
-		fmt.Println(rr.Body.String())
+		// fmt.Println(string(respBody))
+		// fmt.Println(rr.Body.String())
 	})
 }
 
@@ -112,24 +112,24 @@ func TestProductCreate(t *testing.T) {
 			"created_at":     json1.CreatedAt,
 			"updated_at":     json1.UpdatedAt,
 		})
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		assert.NoError(t, err)
 		mockProductService.On("ProductCreate", mock.AnythingOfType("*context.emptyCtx"), mock.AnythingOfType("*model.Product")).Return(json1, nil)
 		request, err := http.NewRequest(http.MethodPost, "/products", bytes.NewBuffer(reqBody))
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		assert.NoError(t, err)
 		router.ServeHTTP(rr, request)
 		respBody, err := json.Marshal(gin.H{
 			"product": json1,
 		})
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		assert.NoError(t, err)
 
 		assert.Equal(t, http.StatusOK, rr.Code)
-		fmt.Println("http.StatusOK", http.StatusOK)
+		// fmt.Println("http.StatusOK", http.StatusOK)
 		assert.Equal(t, respBody, rr.Body.Bytes())
-		fmt.Println(string(respBody))
-		fmt.Println(rr.Body.String())
+		// fmt.Println(string(respBody))
+		// fmt.Println(rr.Body.String())
 	})
 }
 
@@ -159,19 +159,19 @@ func TestProductFindByID(t *testing.T) {
 		sid := strconv.Itoa(int(json1.Id))
 		mockProductService.On("ProductFindByID", mock.AnythingOfType("*context.emptyCtx"), json1.Id).Return(json1, nil)
 		request, err := http.NewRequest(http.MethodGet, "/products/"+sid, nil)
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		assert.NoError(t, err)
 		router.ServeHTTP(rr, request)
 		respBody, err := json.Marshal(gin.H{
 			"product": json1,
 		})
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		assert.NoError(t, err)
 		assert.Equal(t, http.StatusOK, rr.Code)
-		fmt.Println("http.StatusOK", http.StatusOK)
+		// fmt.Println("http.StatusOK", http.StatusOK)
 		assert.Equal(t, respBody, rr.Body.Bytes())
-		fmt.Println(string(respBody))
-		fmt.Println(rr.Body.String())
+		// fmt.Println(string(respBody))
+		// fmt.Println(rr.Body.String())
 	})
 }
 
@@ -201,19 +201,19 @@ func TestProductFindByName(t *testing.T) {
 		name := json1.ProductName
 		mockProductService.On("ProductFindByName", mock.AnythingOfType("*context.emptyCtx"), json1.ProductName).Return(json1, nil)
 		request, err := http.NewRequest(http.MethodGet, "/products/search/"+name, nil)
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		assert.NoError(t, err)
 		router.ServeHTTP(rr, request)
 		respBody, err := json.Marshal(gin.H{
 			"product": json1,
 		})
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		assert.NoError(t, err)
 		assert.Equal(t, http.StatusOK, rr.Code)
-		fmt.Println("http.StatusOK", http.StatusOK)
+		// fmt.Println("http.StatusOK", http.StatusOK)
 		assert.Equal(t, respBody, rr.Body.Bytes())
-		fmt.Println(string(respBody))
-		fmt.Println(rr.Body.String())
+		// fmt.Println(string(respBody))
+		// fmt.Println(rr.Body.String())
 	})
 }
 
@@ -253,24 +253,24 @@ func TestProductUpdate(t *testing.T) {
 			"created_at":     json1.CreatedAt,
 			"updated_at":     json1.UpdatedAt,
 		})
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		assert.NoError(t, err)
 		sid := strconv.Itoa(int(json1.Id))
 		mockProductService.On("ProductUpdate", mock.AnythingOfType("*context.emptyCtx"), json1.Id, mock.AnythingOfType("*model.Product")).Return(json1, nil)
 		request, err := http.NewRequest(http.MethodPut, "/products/"+sid, bytes.NewBuffer(reqBody))
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		assert.NoError(t, err)
 		router.ServeHTTP(rr, request)
 		respBody, err := json.Marshal(gin.H{
 			"product": json1,
 		})
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		assert.NoError(t, err)
 		assert.Equal(t, http.StatusOK, rr.Code)
-		fmt.Println("http.StatusOK", http.StatusOK)
+		// fmt.Println("http.StatusOK", http.StatusOK)
 		assert.Equal(t, respBody, rr.Body.Bytes())
-		fmt.Println(string(respBody))
-		fmt.Println(rr.Body.String())
+		// fmt.Println(string(respBody))
+		// fmt.Println(rr.Body.String())
 	})
 }
 
@@ -301,18 +301,18 @@ func TestProductDelete(t *testing.T) {
 		sid := strconv.Itoa(int(json1.Id))
 		mockProductService.On("ProductDelete", mock.AnythingOfType("*context.emptyCtx"), json1.Id).Return(json1, nil)
 		request, err := http.NewRequest(http.MethodDelete, "/products/"+sid, nil)
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		assert.NoError(t, err)
 		router.ServeHTTP(rr, request)
 		respBody, err := json.Marshal(gin.H{
 			"product": json1,
 		})
-		fmt.Println("err", err)
+		// fmt.Println("err", err)
 		assert.NoError(t, err)
 		assert.Equal(t, http.StatusOK, rr.Code)
-		fmt.Println("http.StatusOK", http.StatusOK)
+		// fmt.Println("http.StatusOK", http.StatusOK)
 		assert.Equal(t, respBody, rr.Body.Bytes())
-		fmt.Println(string(respBody))
-		fmt.Println(rr.Body.String())
+		// fmt.Println(string(respBody))
+		// fmt.Println(rr.Body.String())
 	})
 }

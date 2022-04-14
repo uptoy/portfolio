@@ -27,12 +27,14 @@ func NewProductRepository(db *sqlx.DB) model.ProductRepository {
 }
 
 func (r *pGProductRepository) ProductCreate(ctx context.Context, p *model.Product) (*model.Product, error) {
-	product := model.Product{}
-	query := `INSERT INTO products (product_name, slug, brand, price, category_id, count_in_stock, description,average_rating) VALUES ($1, $2,$3, $4,$5,$6, $7,$8) RETURNING *`
-	if err := r.DB.GetContext(ctx, &product, query, p.ProductName, p.Slug, p.Brand, p.Price, p.CategoryId, p.CountInStock, p.Description, p.AverageRating); err != nil {
+	var id int64
+	// product := model.Product{}
+	query := `INSERT INTO products (product_name, slug, brand, price, category_id, count_in_stock, description,average_rating) VALUES ($1, $2,$3, $4,$5,$6, $7,$8) RETURNING id`
+	if err := r.DB.QueryRowContext(ctx, query, p.ProductName, p.Slug, p.Brand, p.Price, p.CategoryId, p.CountInStock, p.Description, p.AverageRating).Scan(&id); err != nil {
 		log.Printf("Could not create a product : %v. Reason: %v\n", p.ProductName, err)
 		return nil, apperrors.NewInternal()
 	}
+	p.Id = id
 	return p, nil
 }
 

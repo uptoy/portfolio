@@ -75,18 +75,20 @@ type ProductReview struct {
 
 
 type ProductImage struct {
-	ID        int64     `db:"id" json:"id"`
-	ProductId int64     `db:"product_id" json:"product_id"`
-	URL       string    `db:"url" json:"url"`
-	CreatedAt time.Time `db:"created_at" json:"created_at" `
-	UpdatedAt time.Time `db:"updated_at" json:"updated_at" `
+	ID        *int64     `db:"id" json:"id"`
+	ProductId *int64     `db:"product_id" json:"product_id"`
+	URL       *string    `db:"url" json:"url"`
+	CreatedAt *time.Time `db:"created_at" json:"created_at" `
+	UpdatedAt *time.Time `db:"updated_at" json:"updated_at" `
 }
 
 func (img *ProductImage) PreSave() {
-	img.CreatedAt = time.Now()
+	now := time.Now()
+	img.CreatedAt = &now
 	img.UpdatedAt = img.CreatedAt
 }
 
 func (img *ProductImage) PreUpdate() {
-	img.UpdatedAt = time.Now()
+	now := time.Now()
+	img.UpdatedAt = &now
 }

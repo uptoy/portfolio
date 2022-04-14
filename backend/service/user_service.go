@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"fmt"
+	// "fmt"
 	"log"
 
 	"backend/model"
@@ -62,12 +62,12 @@ func (s *userService) Signup(ctx context.Context, u *model.User) (*model.User, e
 	}
 	uid := user.UID
 
-	cart, err := s.CartRepository.CartCreate(ctx, uid)
+	_, err = s.CartRepository.CartCreate(ctx, uid)
 	if err != nil {
 		log.Printf("Unable to signup user for email: %v\n", u.Email)
 		return nil, apperrors.NewInternal()
 	}
-	fmt.Println("cart", cart)
+	// fmt.Println("cart", cart)
 	return user, nil
 }
 

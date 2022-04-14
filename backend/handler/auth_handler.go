@@ -6,7 +6,7 @@ import (
 
 	"backend/model"
 	"backend/model/apperrors"
-	"fmt"
+	// "fmt"
 	"github.com/gin-gonic/gin"
 	"net/smtp"
 )
@@ -20,7 +20,7 @@ func (h *Handler) ForgotPassword(c *gin.Context) {
 		log.Println(forgot.Email)
 	}
 	email := forgot.Email
-	fmt.Println("email", email)
+	// fmt.Println("email", email)
 	ctx := c.Request.Context()
 	token, err := h.TokenService.ForgotPasswordToken(ctx, email, "")
 	// fmt.Println("token", token)
@@ -37,7 +37,7 @@ func (h *Handler) ForgotPassword(c *gin.Context) {
 		Email: email,
 		Token: token,
 	}
-	fmt.Println("passwordReset", passwordReset)
+	// fmt.Println("passwordReset", passwordReset)
 
 	err1 := h.AuthService.ForgotPassword(ctx, &passwordReset)
 	if err1 != nil {
