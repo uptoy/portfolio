@@ -4,7 +4,6 @@ import (
 	"backend/model"
 	"backend/model/apperrors"
 
-
 	// "fmt"
 	"log"
 	"net/http"
@@ -165,6 +164,28 @@ func (h *Handler) ReviewBulkDelete(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"data": result,
+	})
+}
+
+func (h *Handler) ReviewCount(c *gin.Context) {
+	ctx := c.Request.Context()
+	pid := c.Param("id")
+	productId, _ := strconv.ParseInt(pid, 0, 64)
+	result, err := h.ReviewService.Count(ctx, productId)
+	count := strconv.Itoa(result)
+	reviews := "reviews count " + count
+
+	if err != nil {
+		log.Printf("Unable to find reviews: %v", err)
+		e := apperrors.NewNotFound("reviews", "err")
+
+		c.JSON(e.Status(), gin.H{
+			"error": e,
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"data": reviews,
 	})
 }
 

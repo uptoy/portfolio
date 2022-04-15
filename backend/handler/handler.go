@@ -128,6 +128,7 @@ func NewHandler(c *Config) {
 		products.DELETE("/:id/reviews/delete", h.ReviewBulkDelete)
 		products.POST("/:id/reviews", h.ReviewCreate)
 		products.GET("/:id/reviews", h.ReviewGetAll)
+		products.GET("/:id/reviews/count", h.ReviewCount)
 		products.GET("/:id/reviews/:rid", h.ReviewGet)
 		products.PUT("/:id/reviews/:rid", h.ReviewUpdate)
 		products.DELETE("/:id/reviews/:rid", h.ReviewDelete)

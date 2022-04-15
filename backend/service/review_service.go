@@ -74,6 +74,13 @@ func (s *reviewService) BulkDelete(ctx context.Context, product_id int64, ids []
 	return reviews, nil
 }
 
+func (s *reviewService) Count(ctx context.Context, productId int64) (int, error) {
+	count, err := s.ReviewRepository.Count(ctx, productId)
+	if err != nil {
+		return count, err
+	}
+	return count, nil
+}
 
 // func (s *reviewService) ReviewList(ctx context.Context, productId int64, userId uuid.UUID) ([]model.Review, error) {
 // 	reviews, err := s.ReviewRepository.ReviewList(ctx, productId, userId)

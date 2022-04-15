@@ -112,6 +112,16 @@ func (r *pGReviewRepository) BulkDelete(ctx context.Context, product_id int64, i
 	return reviews, nil
 }
 
+func (r *pGReviewRepository) Count(ctx context.Context, productId int64) (int, error) {
+	var n int
+	query := "SELECT COUNT(*) FROM product_review  WHERE product_id = $1"
+	err := r.DB.GetContext(ctx, &n, query, productId)
+	if err != nil {
+		return n, err
+	}
+	return n, nil
+}
+
 // func (r *pGReviewRepository) ReviewList(ctx context.Context, productId int64, usereview_id uuid.UUID) ([]model.Review, error) {
 // 	reviews := []model.Review{}
 // 	query1 := `SELECT EXISTS (SELECT * FROM reviews where product_id = $1 and user_id = $2)`
