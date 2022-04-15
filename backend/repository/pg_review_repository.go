@@ -47,12 +47,12 @@ func (r *pGReviewRepository) ReviewCreate(ctx context.Context, product_id int64,
 // Get gets one review by id
 func (r *pGReviewRepository) Get(ctx context.Context, product_id, review_id int64) (*model.ProductReview, error) {
 	q := `SELECT
-	r.*,
-	u.id AS user_id,
+	pr.*,
+	u.uid AS user_id,
 	u.name AS name,
-	FROM product_review r
-	LEFT JOIN users u ON r.user_id = u.id
-	WHERE r.product_id = $1 AND r.id = $2`
+	FROM product_review pr
+	LEFT JOIN users u ON pr.user_id = u.uid
+	WHERE pr.product_id = $1 AND r.id = $2`
 	var rj reviewJoin
 	if err := r.DB.Get(&rj, q, product_id, review_id); err != nil {
 		return nil, err
@@ -61,23 +61,19 @@ func (r *pGReviewRepository) Get(ctx context.Context, product_id, review_id int6
 }
 
 // GetAll returns all reviews
-func (r *pGReviewRepository) GetAll(ctx context.Context, product_id int64) ([]*model.ProductReview, error) {
-	q := `SELECT
-	r.*,
-	u.id AS user_id,
-	u.name AS name,
-	FROM product_review r
-	LEFT JOIN users u ON r.user_id = u.id
-	WHERE r.product_id = $1`
+func (r *pGReviewRepository) GetAll(ctx context.Context, productId int64) ([]*model.ProductReview, error) {
+	query := `SELECT pr.*,u.name FROM product_review pr LEFT JOIN users u ON pr.user_id = u.uid WHERE product_id = $1`
 
 	var rj []reviewJoin
-	if err := r.DB.Select(&rj, q, product_id); err != nil {
+	if err := r.DB.SelectContext(ctx, &rj, query, productId); err != nil {
 		return nil, err
 	}
+	fmt.Println("rj", rj)
 	var reviews = make([]*model.ProductReview, 0)
 	for _, x := range rj {
 		reviews = append(reviews, x.ToReview())
 	}
+	fmt.Println("reviews", reviews)
 	return reviews, nil
 }
 

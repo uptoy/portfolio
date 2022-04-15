@@ -4,30 +4,38 @@ import (
 	"backend/model"
 	"backend/model/apperrors"
 
+
 	// "fmt"
 	"log"
 	"net/http"
 	"strconv"
+	// "time"
+	"fmt"
+	// "mime/multipart"
+
+	// "backend/utils"
+	// "math/rand"
 
 	"github.com/gin-gonic/gin"
+	// "github.com/google/uuid"
 	// "github.com/google/uuid"
 )
 
 func (h *Handler) ReviewBulkInsert(c *gin.Context) {
-	ctx := c.Request.Context()
-	reviews := []model.ProductReview{}
-	result, err := h.ReviewService.ReviewBulkInsert(ctx, reviews)
-	if err != nil {
-		log.Printf("Unable to find reviews: %v", err)
-		e := apperrors.NewNotFound("reviews", "err")
+	// ctx := c.Request.Context()
+	// reviews := []model.ProductReview{}
+	// result, err := h.ReviewService.ReviewBulkInsert(ctx, reviews)
+	// if err != nil {
+	// 	log.Printf("Unable to find reviews: %v", err)
+	// 	e := apperrors.NewNotFound("reviews", "err")
 
-		c.JSON(e.Status(), gin.H{
-			"error": e,
-		})
-		return
-	}
+	// 	c.JSON(e.Status(), gin.H{
+	// 		"error": e,
+	// 	})
+	// 	return
+	// }
 	c.JSON(http.StatusOK, gin.H{
-		"data": result,
+		"data": "review",
 	})
 }
 func (h *Handler) ReviewCreate(c *gin.Context) {
@@ -158,6 +166,65 @@ func (h *Handler) ReviewBulkDelete(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"data": result,
 	})
+}
+
+func (h *Handler) SeedReview(c *gin.Context) {
+	// randText := utils.RandStringRunes()
+	// rand.Seed(time.Now().UnixNano())
+	// randInt := int64(rand.Intn(100) + 1)
+	// rating := int64(rand.Intn(5) + 1)
+	// categoryId := int64(rand.Intn(5) + 1)
+	// uid, _ := uuid.NewRandom()
+	// productId := int64(rand.Intn(23) + 1)
+	ctx := c.Request.Context()
+
+	//! User
+	// u := &model.User{
+	// 	Name:     randText,
+	// 	Email:    randText,
+	// 	Password: "password",
+	// }
+
+	// result, _ := h.UserService.Signup(ctx, u)
+	//! Category
+	// category := &model.Category{
+	// 	CategoryName: randText,
+	// }
+	// result1, _ := h.CategoryService.CategoryCreate(ctx, category)
+	// fmt.Println(result1)
+	// categoryId := result1.ID
+	//! Product
+	// product := &model.Product{
+	// 	// Id:            productId,
+	// 	ProductName:   randText,
+	// 	Slug:          randText,
+	// 	Brand:         randText,
+	// 	Price:         randInt,
+	// 	CategoryId:    categoryId,
+	// 	CountInStock:  randInt,
+	// 	Description:   randText,
+	// 	AverageRating: rating,
+	// }
+	// image := utils.RandImage()
+	// var files []*multipart.FileHeader
+	// result2, _ := h.ProductService.ProductCreate(ctx, product, files)
+	// fmt.Println(result2)
+	// productId := result2.Id
+	// review := &model.ProductReview{
+	// 	UserID:    result.UID,
+	// 	ProductID: productId,
+	// 	Rating:    int64(rating),
+	// 	Title:     randText,
+	// 	Comment:   randText,
+	// }
+	//! Review
+	// result3, _ := h.ReviewService.ReviewCreate(ctx, productId, review)
+	result4, _ := h.ReviewService.GetAll(ctx, 4)
+	fmt.Println(result4)
+	c.JSON(http.StatusOK, gin.H{
+		"data": result4,
+	})
+
 }
 
 // func (h *Handler) ConfirmCreateReviewFlow(c *gin.Context) {

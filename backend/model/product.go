@@ -56,7 +56,7 @@ type ProductReview struct {
 	ID        int64     `json:"id" db:"id"`
 	UserID    uuid.UUID `json:"user_id" db:"user_id"`
 	ProductID int64     `json:"product_id" db:"product_id"`
-	Rating    int       `json:"rating" db:"rating"`
+	Rating    int64       `json:"rating" db:"rating"`
 	Title     string    `json:"title" db:"title"`
 	Comment   string    `json:"comment" db:"comment"`
 	CreatedAt time.Time `json:"created_at" db:"created_at"`

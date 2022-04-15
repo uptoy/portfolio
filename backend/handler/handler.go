@@ -207,6 +207,11 @@ func NewHandler(c *Config) {
 		//     serveWs(c.Writer, c.Request, roomId)
 		//  })
 	}
+	seed := api.Group("/seed")
+	{
+		seed.POST("", h.SeedReview)
+
+	}
 	// image := api.Group("/image")
 	// {
 	// image.POST("", h.ImageLocalSaveMulti)

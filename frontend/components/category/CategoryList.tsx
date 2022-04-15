@@ -28,7 +28,6 @@ const CategoryList = () => {
     dispatch(fetchCategories())
   }, [])
   const {categories, status, error} = useAppSelector((state) => state.category)
-  console.log("categories", categories)
   if (status === "loading") {
     return (
       <div className={classes.loadingContainer}>
