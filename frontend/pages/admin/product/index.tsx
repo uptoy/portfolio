@@ -1,7 +1,8 @@
-import React, {useState} from "react"
 import {makeStyles} from "@material-ui/styles"
 import {AdminLayout} from "components/Dashboard"
 import theme from "theme"
+import React, {useEffect, useState} from "react"
+import {ImageUpload} from "../../../components/Product/ImageUpload"
 import {
   Paper,
   Button,
@@ -130,7 +131,8 @@ export default function AdminProductList() {
 
   return (
     <AdminLayout>
-      <Fab size="small" color="secondary" className={classes.fab} onClick={handleOpen}>
+      <ImageUpload />
+      {/* <Fab size="small" color="secondary" className={classes.fab} onClick={handleOpen}>
         <AddIcon />
       </Fab>
       <Fab size="small" className={classes.fabSearch} onClick={toggleDrawer("right", true)}>
@@ -205,7 +207,7 @@ export default function AdminProductList() {
         </Grid>
       </Drawer>
       <ProductManageModal open={open} handleClose={handleClose} />
-      <DeleteModal open={open1} handleClose={handleDeleteClose} />
+      <DeleteModal open={open1} handleClose={handleDeleteClose} /> */}
     </AdminLayout>
   )
 }
