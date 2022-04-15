@@ -23,7 +23,7 @@ const useStyles: any = makeStyles((theme: Theme) => ({
   },
   paper: {
     position: "absolute",
-    width: 450,
+    width: "80%",
     backgroundColor: "white",
     padding: "2em",
     top: "50%",

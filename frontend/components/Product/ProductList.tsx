@@ -1,4 +1,4 @@
-import {List, Divider, CardContent, Card, CircularProgress} from "@material-ui/core"
+import {CircularProgress} from "@material-ui/core"
 import React, {useEffect} from "react"
 import {createStyles} from "@material-ui/core/styles"
 import {makeStyles} from "@material-ui/styles"
@@ -6,9 +6,21 @@ import ProductItem from "./ProductItem"
 import {useAppDispatch, useAppSelector} from "app/hooks"
 import {fetchProducts} from "features/product/productSlice"
 import theme from "theme"
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@material-ui/core"
 
 const useStyles: any = makeStyles(() =>
   createStyles({
+    container: {
+      height: "83%",
+    },
     list: {
       width: "100%",
       margin: 0,
@@ -28,7 +40,7 @@ const ProductList = () => {
     dispatch(fetchProducts())
   }, [])
   const {products, status, error} = useAppSelector((state) => state.product)
-  console.log("products", products)
+  console.log(products[0])
   if (status === "loading") {
     return (
       <div className={classes.loadingContainer}>
@@ -39,20 +51,26 @@ const ProductList = () => {
   return (
     <>
       {products && (
-        <Card>
-          <CardContent>
-            <List dense className={classes.list}>
+        <TableContainer component={Paper} className={classes.container}>
+          <Table className={classes.table} aria-label="product table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Image</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell align="center">Category</TableCell>
+                <TableCell align="center">Price</TableCell>
+                <TableCell >Brand</TableCell>
+                <TableCell align="center">Stock </TableCell>
+                <TableCell align="center">Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {products.map((product) => (
-                <>
-                  <div key={product?.id}>
-                    <ProductItem product={product} />
-                    <Divider component="li" />
-                  </div>
-                </>
+                <ProductItem key={product.id} product={product} />
               ))}
-            </List>
-          </CardContent>
-        </Card>
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
       {error && <p>Oops, something went wrong</p>}
     </>

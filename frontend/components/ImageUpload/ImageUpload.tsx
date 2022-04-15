@@ -3,7 +3,7 @@ import React from "react"
 import ImageUploading, {ImageListType} from "react-images-uploading"
 import AddIcon from "@material-ui/icons/Add"
 import CancelIcon from "@material-ui/icons/Cancel"
-import axios from 'axios'
+import axios from "axios"
 
 const useStyles: any = makeStyles(() => ({
   upload: {
@@ -27,6 +27,9 @@ const useStyles: any = makeStyles(() => ({
     display: "flex",
     width: "100%",
     padding: "1em 0",
+    marginTop: "0.2em",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
   cancel: {
     position: "absolute",

@@ -12,7 +12,7 @@ const useStyles: any = makeStyles(() => ({
   container: {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
-    // marginTop: "3em",
+    maxWidth: "none",
   },
   content: {
     flexGrow: 1,
@@ -37,7 +37,7 @@ export default function AdminLayout({children}: any) {
       <CssBaseline />
       <AdminHeader open={open} onClick={handleDrawerOpen} />
       <AdminSidebar open={open} onClick={handleDrawerClose} />
-      <Container maxWidth="xl" className={classes.container}>
+      <Container className={classes.container}>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           {children}

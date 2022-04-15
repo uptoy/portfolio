@@ -9,18 +9,26 @@ export interface Product {
   slug: string
   brand: string
   price: number
-  category_id: string
+  category_id: number
   count_in_stock: number
   description: string
   average_rating: number
-  createdAt?: string
-  updatedAt?: string
-  // image: string
+  createdAt?: Date | null
+  updatedAt?: Date | null
+  images: Image[]
   // quantity: number
   // rating?: number
   // numReviews?: number
   // reviews?: IReview[]
 }
+export interface Image {
+  id: number
+  product_id: number
+  url: string
+  createdAt?: Date | null
+  updatedAt?: Date | null
+}
+
 export type Status = "idle" | "loading" | "succeed" | "failed"
 
 export interface DateRange {

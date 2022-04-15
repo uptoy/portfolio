@@ -4,7 +4,9 @@ import {makeStyles} from "@material-ui/styles"
 import TextField from "@material-ui/core/TextField"
 import {unwrapResult} from "@reduxjs/toolkit"
 import {useState} from "react"
+import {Image} from "types"
 import {useForm, Controller} from "react-hook-form"
+import {ImageUpload} from "components/ImageUpload/ImageUpload"
 import toast from "react-hot-toast"
 import {
   setSelectedModal,
@@ -14,31 +16,43 @@ import {
   fetchProducts,
 } from "features/product/productSlice"
 
+import TextareaAutosize from "@material-ui/core/TextareaAutosize"
+
 import {useAppDispatch, useAppSelector} from "app/hooks"
 import Modal from "components/Modal/Modal"
 
 interface FormData {
-  id: number
+  id: string
   product_name: string
   slug: string
   brand: string
-  price: number
+  price: string
   category_id: string
-  count_in_stock: number
+  count_in_stock: string
   description: string
-  average_rating: number
-  createdAt?: string
-  updatedAt?: string
+  average_rating: string
+  createdAt?: Date | null
+  updatedAt?: Date | null
+  images: Image[]
 }
 
 const useStyles: any = makeStyles(() => ({
   input: {
-    marginBottom: 20,
+    margin: "16px 0px",
   },
   buttonContainer: {
     display: "flex",
     justifyContent: "flex-end",
-    marginTop: 20,
+    // marginTop: 20,
+  },
+  textarea: {
+    width: "100%",
+    margin: "16px 0px",
+    opacity: "0.7",
+    fontSize: "1em",
+    padding: "16.5px 14px",
+    borderWidth: "1.25px",
+    borderRadius: "5px",
   },
 }))
 
@@ -47,12 +61,18 @@ const ProductManageModal = () => {
 
   const {selectedProduct, selectedModal} = useAppSelector((state) => state.product)
 
+  // image number?
   const defaultValues = {
-    id: selectedProduct?.id || 0,
+    id: selectedProduct?.id.toString() || "",
     product_name: selectedProduct?.product_name || "",
     slug: selectedProduct?.slug || "",
     brand: selectedProduct?.brand || "",
-    price: selectedProduct?.price || 0,
+    price: selectedProduct?.price.toString() || "",
+    category_id: selectedProduct?.category_id.toString() || "",
+    count_in_stock: selectedProduct?.count_in_stock.toString() || "",
+    description: selectedProduct?.description || "",
+    average_rating: selectedProduct?.average_rating.toString() || "",
+    images: selectedProduct?.images || [],
   }
 
   const {handleSubmit, control} = useForm<FormData>({
@@ -68,22 +88,32 @@ const ProductManageModal = () => {
   const onSubmit = async (formData: FormData) => {
     try {
       setIsSubmitting(true)
+      const fields = {
+        ...formData,
+        id: Number(formData.id),
+        price: Number(formData.price),
+        category_id: Number(formData.category_id),
+        count_in_stock: Number(formData.count_in_stock),
+        average_rating: Number(formData.average_rating),
+      }
 
       if (selectedProduct) {
-        const results = await dispatch(updateProduct({id: selectedProduct.id, fields: formData}))
+        const results = await dispatch(updateProduct({id: selectedProduct.id, fields}))
         unwrapResult(results)
         toast.success("You have successfully updated  product")
       } else {
-        const results = await dispatch(addProduct(formData))
+        const results = await dispatch(addProduct(fields))
         unwrapResult(results)
         toast.success("You have successfully added new product")
       }
+      setIsSubmitting(false)
     } catch (error) {
       toast.error(error.message)
       setIsSubmitting(false)
     }
     handleCloseProductModal()
     dispatch(fetchProducts())
+    dispatch(setSelectedModal(null))
   }
 
   const handleCloseProductModal = () => {
@@ -98,29 +128,139 @@ const ProductManageModal = () => {
       onClose={handleCloseProductModal}
     >
       <form noValidate onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="product_name"
-          control={control}
-          defaultValue=""
-          rules={{
-            required: "Product Name is required field",
-          }}
-          render={({field: {onChange, value}, fieldState: {error}}) => (
-            <TextField
-              className={classes.input}
-              margin="normal"
-              onChange={onChange}
-              value={value}
-              fullWidth
-              id="product_name"
-              label="Product Name"
+        <div style={{display: "flex", width: "100%"}}>
+          <div style={{width: "50%"}}>
+            <Controller
               name="product_name"
-              autoComplete="true"
-              error={Boolean(error)}
-              helperText={error?.message}
+              control={control}
+              defaultValue=""
+              rules={{
+                required: "Product Name is required field",
+              }}
+              render={({field: {onChange, value}, fieldState: {error}}) => (
+                <TextField
+                  className={classes.input}
+                  margin="normal"
+                  onChange={onChange}
+                  value={value}
+                  fullWidth
+                  id="product_name"
+                  label="Product Name"
+                  name="product_name"
+                  error={Boolean(error)}
+                  helperText={error?.message}
+                />
+              )}
             />
-          )}
-        />
+            <Controller
+              name="brand"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: "Brand is required field",
+              }}
+              render={({field: {onChange, value}, fieldState: {error}}) => (
+                <TextField
+                  margin="normal"
+                  onChange={onChange}
+                  value={value}
+                  fullWidth
+                  id="brand"
+                  label="brand"
+                  name="brand"
+                  error={Boolean(error)}
+                  helperText={error?.message}
+                />
+              )}
+            />
+            <Controller
+              name="price"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: "Price is required field",
+              }}
+              render={({field: {onChange, value}, fieldState: {error}}) => (
+                <TextField
+                  margin="normal"
+                  onChange={onChange}
+                  value={value}
+                  fullWidth
+                  id="price"
+                  label="price"
+                  name="price"
+                  error={Boolean(error)}
+                  helperText={error?.message}
+                />
+              )}
+            />
+            <Controller
+              name="category_id"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: "Category is required field",
+              }}
+              render={({field: {onChange, value}, fieldState: {error}}) => (
+                <TextField
+                  margin="normal"
+                  onChange={onChange}
+                  value={value}
+                  fullWidth
+                  id="category"
+                  label="category"
+                  name="category"
+                  error={Boolean(error)}
+                  helperText={error?.message}
+                />
+              )}
+            />
+            <Controller
+              name="count_in_stock"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: "Stock is required field",
+              }}
+              render={({field: {onChange, value}, fieldState: {error}}) => (
+                <TextField
+                  margin="normal"
+                  onChange={onChange}
+                  value={value}
+                  fullWidth
+                  id="stock"
+                  label="stock"
+                  name="stock"
+                  error={Boolean(error)}
+                  helperText={error?.message}
+                />
+              )}
+            />
+          </div>
+          <div style={{width: "50%", marginLeft: "1em"}}>
+            <Controller
+              name="description"
+              control={control}
+              defaultValue=""
+              // rules={{
+              //   required: "Description is required field",
+              // }}
+              render={({field: {onChange, value}}) => (
+                <TextareaAutosize
+                  id="description"
+                  value={value}
+                  name="description"
+                  aria-label="minimum height"
+                  minRows={5}
+                  placeholder="description"
+                  onChange={onChange}
+                  className={classes.textarea}
+                />
+              )}
+            />
+            <ImageUpload />
+          </div>
+        </div>
         <div className={classes.buttonContainer}>
           <Button
             type="submit"
