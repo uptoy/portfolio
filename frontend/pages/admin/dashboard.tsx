@@ -1,12 +1,12 @@
 import React from "react"
 import clsx from "clsx"
-import { makeStyles } from "@material-ui/styles"
+import {makeStyles} from "@material-ui/styles"
 import Box from "@material-ui/core/Box"
 
 import Grid from "@material-ui/core/Grid"
 import Paper from "@material-ui/core/Paper"
-import { Chart, Deposits, Orders, AdminLayout } from "components/Dashboard"
-import { Copyright } from "components"
+import {Chart, Deposits, Orders, AdminLayout} from "components/dashboard"
+import {Copyright} from "components"
 import theme from "theme"
 
 const useStyles: any = makeStyles(() => ({

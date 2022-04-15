@@ -6,7 +6,7 @@
 // import Container from "@material-ui/core/Container"
 // import Grid from "@material-ui/core/Grid"
 // import Paper from "@material-ui/core/Paper"
-// import { Chart, Deposits, Orders, DashboardSidebar, DashboardHeader } from "components/Dashboard"
+// import { Chart, Deposits, Orders, DashboardSidebar, DashboardHeader } from "components/dashboard"
 // import { Copyright } from "components"
 // import theme from "theme"
 

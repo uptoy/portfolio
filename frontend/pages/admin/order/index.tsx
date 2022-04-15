@@ -1,6 +1,6 @@
 import React from "react"
 import {makeStyles} from "@material-ui/styles"
-import {AdminLayout} from "components/Dashboard"
+import {AdminLayout} from "components/dashboard"
 import theme from "theme"
 import {
   Paper,
@@ -194,7 +194,7 @@ export default function AdminOrderList() {
           </Grid>
         </Grid>
       </Drawer>
-      <CategoryManageModal open={open} handleClose={handleClose}/>
+      <CategoryManageModal open={open} handleClose={handleClose} />
     </AdminLayout>
   )
 }

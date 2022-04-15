@@ -7,20 +7,16 @@ import {Button} from "@material-ui/core"
 import {unwrapResult} from "@reduxjs/toolkit"
 import {useState} from "react"
 import toast from "react-hot-toast"
-import {
-  deleteCategory,
-  setSelectedCategory,
-  setSelectedModal,
-} from "features/category/categorySlice"
-import {Category} from "types"
+import {deleteProduct, setSelectedProduct, setSelectedModal} from "features/product/productSlice"
+import {Product} from "types"
 import {useAppDispatch} from "app/hooks"
 
 interface IProps {
-  category: Category
+  product: Product
 }
 
 const useStyles: any = makeStyles(() => ({
-  categoryItem: {
+  productItem: {
     padding: "15px 0",
   },
   actionContainer: {
@@ -29,39 +25,38 @@ const useStyles: any = makeStyles(() => ({
   },
 }))
 
-const CategoryItem: React.FC<IProps> = ({category}) => {
+const ProductItem: React.FC<IProps> = ({product}) => {
   const classes = useStyles()
-
   const dispatch = useAppDispatch()
-
-  const [isCategoryDeleting, setIsCategoryDeleting] = useState(false)
+  const [isProductDeleting, setIsProductDeleting] = useState(false)
   const [open, setOpen] = useState(false)
+  // const handleDeleteClose = () => {
+  //   setOpen(!open)
+  // }
   const handleDeleteOpen = () => {
     setOpen(!open)
   }
 
   const handleEdit = () => {
-    dispatch(setSelectedModal("manageCategoryModal"))
-    dispatch(setSelectedCategory(category))
+    dispatch(setSelectedModal("manageProductModal"))
+    dispatch(setSelectedProduct(product))
   }
 
   const handleDelete = async () => {
     try {
-      setIsCategoryDeleting(true)
-      const result = await dispatch(deleteCategory(category.id))
+      setIsProductDeleting(true)
+      const result = await dispatch(deleteProduct(product.id))
       unwrapResult(result)
-      toast.success("Successfully category deleted")
+      toast.success("Successfully product deleted")
     } catch (error) {
-      toast.error(
-        "Sorry we were'nt able to delete this category right now. Please try again later."
-      )
-      setIsCategoryDeleting(false)
+      toast.error("Sorry we were'nt able to delete this product right now. Please try again later.")
+      setIsProductDeleting(false)
     }
   }
 
   return (
-    <ListItem className={classes.categoryItem} disabled={isCategoryDeleting}>
-      <ListItemText primary={category?.category_name} />
+    <ListItem className={classes.productItem} disabled={isProductDeleting}>
+      <ListItemText primary={product?.product_name} />
       <div className={classes.actionContainer}>
         <Button
           variant="contained"
@@ -80,4 +75,4 @@ const CategoryItem: React.FC<IProps> = ({category}) => {
   )
 }
 
-export default CategoryItem
+export default ProductItem

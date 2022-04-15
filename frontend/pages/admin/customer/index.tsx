@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 import {makeStyles} from "@material-ui/styles"
-import {AdminLayout} from "components/Dashboard"
+import {AdminLayout} from "components/dashboard"
 import theme from "theme"
 import {
   Paper,

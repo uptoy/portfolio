@@ -63,23 +63,6 @@ export function ImageUpload() {
       const res = await axios.post("/api/upload", formData, {
         headers: {"content-type": "multipart/form-data"},
       })
-      // const result = await fetch(`${window.location.origin}/${props.object_type}/${props.id}/upload_image`, {
-      //   method: "put",
-      //   // headers: { "X-CSRF-Token": document.getElementsByName("csrf-token")[0].getAttribute("content") },
-      //   body: formData,
-      // })
-      // const reader = result.body.getReader()
-      // const decoder = new TextDecoder()
-      // let resultText = ""
-      // let flag = false
-      // while (!flag) {
-      //   const data = await reader.read()
-      //   flag = data.done
-      //   resultText += decoder.decode(data.value)
-      // }
-      // const resultObj = JSON.parse(resultText)
-      // setImages(resultObj.map(o => o.image.url))
-      // setImageObjects(resultObj)
     } catch (e) {
       console.log(e)
     }

@@ -39,9 +39,8 @@ const DeleteModal = (props: IProps) => {
           <Button variant="contained" style={{marginRight: "1em"}} onClick={props.handleClose}>
             Back
           </Button>
-          <Button variant="contained" onClick={props.handleDelete}>
-            Delete
-          </Button>
+          {/* <Button variant="contained" onClick={props.handleDelete}> */}
+          <Button variant="contained">Delete</Button>
         </div>
       </SimpleModal>
     </>

@@ -1,3 +1,26 @@
+export interface Category {
+  id: number
+  category_name: string
+}
+
+export interface Product {
+  id: number
+  product_name: string
+  slug: string
+  brand: string
+  price: number
+  category_id: string
+  count_in_stock: number
+  description: string
+  average_rating: number
+  createdAt?: string
+  updatedAt?: string
+  // image: string
+  // quantity: number
+  // rating?: number
+  // numReviews?: number
+  // reviews?: IReview[]
+}
 export type Status = "idle" | "loading" | "succeed" | "failed"
 
 export interface DateRange {
@@ -12,24 +35,6 @@ export interface IReview {
   rating: number
   createdAt: string
   comment: string
-}
-
-export interface IProduct {
-  _id: string
-  quantity: number
-  name: string
-  slug: string
-  category: string
-  image: string
-  price: number
-  brand: string
-  rating: number
-  countInStock: number
-  description: string
-  numReviews: number
-  createdAt?: string
-  updatedAt: string
-  reviews: IReview[]
 }
 
 // export interface IReviews {
@@ -231,16 +236,11 @@ export interface IOrder {
   updatedAt?: string
 }
 
-export interface Category {
-  id: number
-  category_name: string
-}
-
-export interface Product {
-  id: number
-  title: string
-  user_id: string
-}
+// export interface Product {
+//   id: number
+//   title: string
+//   user_id: string
+// }
 
 export interface Cart {
   id: number

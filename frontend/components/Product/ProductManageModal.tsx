@@ -1,96 +1,140 @@
-import SimpleModal from "components/Modal/SimpleModal"
-import {TextField, Button, Select, MenuItem, FormControl} from "@material-ui/core"
+import Button from "@material-ui/core/Button"
+import CircularProgress from "@material-ui/core/CircularProgress"
 import {makeStyles} from "@material-ui/styles"
-import {createStyles} from "@material-ui/core/styles"
-import React, {useState} from "react"
-import theme from "theme"
+import TextField from "@material-ui/core/TextField"
+import {unwrapResult} from "@reduxjs/toolkit"
+import {useState} from "react"
+import {useForm, Controller} from "react-hook-form"
+import toast from "react-hot-toast"
+import {
+  setSelectedModal,
+  addProduct,
+  setSelectedProduct,
+  updateProduct,
+  fetchProducts,
+} from "features/product/productSlice"
 
-interface IProps {
-  open: boolean
-  handleClose(): void
+import {useAppDispatch, useAppSelector} from "app/hooks"
+import Modal from "components/Modal/Modal"
+
+interface FormData {
+  id: number
+  product_name: string
+  slug: string
+  brand: string
+  price: number
+  category_id: string
+  count_in_stock: number
+  description: string
+  average_rating: number
+  createdAt?: string
+  updatedAt?: string
 }
 
-const useStyles: any = makeStyles(() =>
-  createStyles({
-    submit_container: {
-      marginLeft: "auto",
-      marginTop: "1em",
-      width: "9.5em",
-    },
-    formControl: {
-      margin: theme.spacing(1, 0),
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    },
-  })
-)
+const useStyles: any = makeStyles(() => ({
+  input: {
+    marginBottom: 20,
+  },
+  buttonContainer: {
+    display: "flex",
+    justifyContent: "flex-end",
+    marginTop: 20,
+  },
+}))
 
-// create
-// edit
-const ProductManageModal = (props: IProps) => {
+const ProductManageModal = () => {
   const classes = useStyles()
-  const [age, setAge] = React.useState("")
-  const handleChange = (event: any) => {
-    setAge(event.target.value)
+
+  const {selectedProduct, selectedModal} = useAppSelector((state) => state.product)
+
+  const defaultValues = {
+    id: selectedProduct?.id || 0,
+    product_name: selectedProduct?.product_name || "",
+    slug: selectedProduct?.slug || "",
+    brand: selectedProduct?.brand || "",
+    price: selectedProduct?.price || 0,
+  }
+
+  const {handleSubmit, control} = useForm<FormData>({
+    defaultValues,
+  })
+
+  const dispatch = useAppDispatch()
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const productManageModalTitle = selectedProduct ? "Edit Product" : "Add New Product"
+
+  const onSubmit = async (formData: FormData) => {
+    try {
+      setIsSubmitting(true)
+
+      if (selectedProduct) {
+        const results = await dispatch(updateProduct({id: selectedProduct.id, fields: formData}))
+        unwrapResult(results)
+        toast.success("You have successfully updated  product")
+      } else {
+        const results = await dispatch(addProduct(formData))
+        unwrapResult(results)
+        toast.success("You have successfully added new product")
+      }
+    } catch (error) {
+      toast.error(error.message)
+      setIsSubmitting(false)
+    }
+    handleCloseProductModal()
+    dispatch(fetchProducts())
+  }
+
+  const handleCloseProductModal = () => {
+    dispatch(setSelectedModal(null))
+    dispatch(setSelectedProduct(null))
   }
 
   return (
-    <>
-      <SimpleModal open={props.open} handleClose={props.handleClose}>
-        <p style={{textAlign: "left"}}>Add New Product</p>
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="product_name"
-          label="Product Name"
+    <Modal
+      name={productManageModalTitle}
+      isVisible={selectedModal === "manageProductModal"}
+      onClose={handleCloseProductModal}
+    >
+      <form noValidate onSubmit={handleSubmit(onSubmit)}>
+        <Controller
           name="product_name"
-          autoFocus
+          control={control}
+          defaultValue=""
+          rules={{
+            required: "Product Name is required field",
+          }}
+          render={({field: {onChange, value}, fieldState: {error}}) => (
+            <TextField
+              className={classes.input}
+              margin="normal"
+              onChange={onChange}
+              value={value}
+              fullWidth
+              id="product_name"
+              label="Product Name"
+              name="product_name"
+              autoComplete="true"
+              error={Boolean(error)}
+              helperText={error?.message}
+            />
+          )}
         />
-        <FormControl fullWidth className={classes.formControl}>
-          <Select
-            value={age}
-            onChange={handleChange}
-            displayEmpty
-            className={classes.selectEmpty}
-            inputProps={{"aria-label": "Without label"}}
+        <div className={classes.buttonContainer}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            size="large"
+            disableElevation
+            disabled={isSubmitting}
           >
-            <MenuItem value="" disabled>
-              Category
-            </MenuItem>
-            <MenuItem value={10}>Category1</MenuItem>
-            <MenuItem value={20}>Category2</MenuItem>
-            <MenuItem value={30}>Category3</MenuItem>
-          </Select>
-        </FormControl>
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="price"
-          label="Price"
-          name="price"
-        />
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="stock"
-          label="stock"
-          name="stock"
-        />
-        <div className={classes.submit_container}>
-          <Button variant="contained" style={{marginRight: "1em"}} onClick={props.handleClose}>
-            Back
+            {isSubmitting ? <CircularProgress size={25} /> : "Submit"}
           </Button>
-          <Button variant="contained">Save</Button>
         </div>
-      </SimpleModal>
-    </>
+      </form>
+    </Modal>
   )
 }
 

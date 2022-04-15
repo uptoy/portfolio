@@ -1,16 +1,14 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
 import {AxiosError} from "axios"
-
 import * as ProductAPI from "./productApi"
 import {Product} from "types"
-
 import {Status} from "types"
 
 interface InitialState {
   status: Status
   products: Product[]
   error: string | null | undefined
-  selectedProducts: null | Product
+  selectedProduct: null | Product
   selectedModal: null | string
 }
 
@@ -18,7 +16,7 @@ const initialState: InitialState = {
   status: "idle",
   products: [],
   error: null,
-  selectedProducts: null,
+  selectedProduct: null,
   selectedModal: null,
 }
 
@@ -44,7 +42,7 @@ export const fetchProducts = createAsyncThunk("products", async (_, {rejectWithV
 
 export const deleteProduct = createAsyncThunk(
   "products/delete",
-  async (id: string, {rejectWithValue}) => {
+  async (id: number, {rejectWithValue}) => {
     try {
       await ProductAPI.deleteProduct(id)
       return id
@@ -62,7 +60,7 @@ export const deleteProduct = createAsyncThunk(
 
 export const updateProduct = createAsyncThunk(
   "products/update",
-  async ({id, fields}: {id: string; fields: {title: string}}, {rejectWithValue}) => {
+  async ({id, fields}: {id: number; fields: Product}, {rejectWithValue}) => {
     try {
       const response = await ProductAPI.updateProduct(id, fields)
       return response.data.data
@@ -80,12 +78,7 @@ export const updateProduct = createAsyncThunk(
 
 export const addProduct = createAsyncThunk(
   "products/add",
-  async (
-    fields: {
-      title: string
-    },
-    {rejectWithValue}
-  ) => {
+  async (fields: Product, {rejectWithValue}) => {
     try {
       const response = await ProductAPI.addProduct(fields)
       return response.data.data
@@ -109,7 +102,7 @@ export const productsSlice = createSlice({
       state.selectedModal = action.payload
     },
     setSelectedProduct: (state, action) => {
-      state.selectedProducts = action.payload
+      state.selectedProduct = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -132,7 +125,7 @@ export const productsSlice = createSlice({
       state.products.push(action.payload)
     })
     builder.addCase(deleteProduct.fulfilled, (state, action) => {
-      // state.products = state.products.filter((product) => product.id !== action.payload)
+      state.products = state.products.filter((product) => product.id !== action.payload)
     })
     builder.addCase(updateProduct.fulfilled, (state, action) => {
       state.products = state.products.map((product) =>

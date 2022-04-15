@@ -3,11 +3,11 @@ import Assessment from "@material-ui/icons/Assessment"
 import Face from "@material-ui/icons/Face"
 import ThumbUp from "@material-ui/icons/ThumbUp"
 import ShoppingCart from "@material-ui/icons/ShoppingCart"
-import { makeStyles } from "@material-ui/styles"
-import { Grid } from "@material-ui/core"
-import { LineBarChart, BrowserUsage, InfoBox, NewOrders, MonthlySales } from "components/Admin"
-import { cyan, pink, purple, orange, grey } from "@material-ui/core/colors"
-import { AdminLayout } from "components/Dashboard"
+import {makeStyles} from "@material-ui/styles"
+import {Grid} from "@material-ui/core"
+import {LineBarChart, BrowserUsage, InfoBox, NewOrders, MonthlySales} from "components/Admin"
+import {cyan, pink, purple, orange, grey} from "@material-ui/core/colors"
+import {AdminLayout} from "components/dashboard"
 import Data from "data"
 
 const cyan600 = cyan["600"]
@@ -37,7 +37,7 @@ const AdminDashboard = () => {
   return (
     <AdminLayout>
       <div className={classes.content}>
-        <Grid container  spacing={3}>
+        <Grid container spacing={3}>
           <Grid item className={classes.cell} xs={12} md={3}>
             <InfoBox Icon={ShoppingCart} spanBgColor={pink600} title="Total Profit" value="1500k" />
           </Grid>
