@@ -15,7 +15,7 @@ import { makeStyles } from "@material-ui/styles"
 import { Layout } from "components/organisms"
 import { Rating } from "components"
 import { mainFeaturedPost } from "utils/seed"
-import { products } from "utils/seed"
+// import { products } from "utils/seed"
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"
 import { red, common } from "@material-ui/core/colors"
 import Link from "components/Link"
@@ -63,9 +63,9 @@ export default function CategoryDetail() {
         {/* End hero unit */}
         <Grid container spacing={4}>
           {products.map((product) => (
-            <Grid item key={product._id} xs={12} sm={6} md={4}>
+            <Grid item key={product.id} xs={12} sm={6} md={4}>
               <Card className={classes.card}>
-                <Link href={`/product/${product._id}`}>
+                <Link href={`/product/${product.id}`}>
                   <CardMedia
                     className={classes.cardMedia}
                     image="https://source.unsplash.com/random"

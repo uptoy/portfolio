@@ -14,6 +14,7 @@ type productJoin struct {
 	*CategoryJoin
 }
 
+
 // CategoryJoin is temp join type
 type CategoryJoin struct {
 	CID        int64     `db:"category_id"`
@@ -24,7 +25,7 @@ type CategoryJoin struct {
 
 func (pj *productJoin) ToProduct() *model.Product {
 	return &model.Product{
-		Id:     pj.Id,
+		Id:            pj.Id,
 		ProductName:   pj.ProductName,
 		Slug:          pj.Slug,
 		Brand:         pj.Brand,
@@ -68,6 +69,7 @@ func (rj *reviewJoin) ToReview() *model.ProductReview {
 		},
 	}
 }
+
 type UserJoin struct {
 	UID        uuid.UUID `db:"uid" json:"uid"`
 	Name       string    `db:"name" json:"name"`

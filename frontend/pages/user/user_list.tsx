@@ -66,7 +66,7 @@ const UserList = () => {
     email: "email",
     password: "password",
     isAdmin: true,
-    _id: "_id1",
+    id: "_id1",
     createdAt: "createdAt",
     updatedAt: "updatedAt",
   }
@@ -75,7 +75,7 @@ const UserList = () => {
     email: "email2",
     password: "password",
     isAdmin: false,
-    _id: "_id2",
+    id: "_id2",
     createdAt: "createdAt2",
     updatedAt: "updatedAt2",
   }
@@ -102,8 +102,8 @@ const UserList = () => {
       </thead>
       <tbody>
         {users.map((user) => (
-          <tr key={user._id}>
-            <td>{user._id}</td>
+          <tr key={user.id}>
+            <td>{user.id}</td>
             <td>{user.name}</td>
             <td>
               <a href={`mailto:${user.email}`}>{user.email}</a>
@@ -117,7 +117,7 @@ const UserList = () => {
               </div>
               <div
                 className="btn-sm"
-                // onClick={(e) => deleteHandler(user._id, e)}
+                // onClick={(e) => deleteHandler(user.id, e)}
                 onClick={() => {}}
               >
                 <i className="fas fa-trash"></i>

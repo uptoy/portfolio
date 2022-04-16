@@ -53,7 +53,7 @@ const useStyles: any = makeStyles(() => ({
 export function ImageUpload() {
   const classes = useStyles()
   const [images, setImages] = React.useState([])
-  const maxNumber = 6
+  const maxNumber = 5
   //alert
 
   const onChange = async (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {

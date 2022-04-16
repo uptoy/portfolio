@@ -59,8 +59,8 @@ const OrderHistory: NextPage = () => {
                   </TableHead>
                   <TableBody>
                     {(orders as IOrder[]).map((order) => (
-                      <TableRow key={order._id}>
-                        <TableCell>{order._id?.substring(20, 24)}</TableCell>
+                      <TableRow key={order.id}>
+                        <TableCell>{order.id?.substring(20, 24)}</TableCell>
                         <TableCell>{order.createdAt}</TableCell>
                         <TableCell>${order.totalPrice}</TableCell>
                         <TableCell>
@@ -72,7 +72,7 @@ const OrderHistory: NextPage = () => {
                             : "not delivered"}
                         </TableCell>
                         <TableCell>
-                          <NextLink href={`/order/${order._id}`} passHref>
+                          <NextLink href={`/order/${order.id}`} passHref>
                             <Button variant="contained">Details</Button>
                           </NextLink>
                         </TableCell>

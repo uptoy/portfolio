@@ -71,7 +71,7 @@ const Favorite: NextPage = () => {
                 </TableHead>
                 <TableBody>
                   {cartItems.map((item) => (
-                    <TableRow key={item._id}>
+                    <TableRow key={item.id}>
                       <TableCell>
                         <NextLink href={`/product/${item.slug}`} passHref>
                           <Link>

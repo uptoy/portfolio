@@ -121,7 +121,7 @@ type ProductImageRepository interface {
 // }
 
 type ProductRepository interface {
-	ProductList(ctx context.Context) ([]Product, error)
+	ProductList(ctx context.Context) ([]*Product, error)
 	ProductCreate(ctx context.Context, p *Product) (*Product, error)
 	ProductFindByID(ctx context.Context, id int64) (*Product, error)
 	ProductUpdate(ctx context.Context, id int64, p *Product) (*Product, error)
@@ -129,12 +129,12 @@ type ProductRepository interface {
 	ProductFindByName(ctx context.Context, name string) (*Product, error)
 	BulkDelete(ctx context.Context) ([]Product, error)
 	BulkInsert(ctx context.Context, products []Product) ([]Product, error)
-	ProductFindByIDJoin(ctx context.Context, productId int64) (*Product, error)
+	// ProductFindByIDJoin(ctx context.Context, productId int64) (*Product, error)
 	ProductCount(ctx context.Context) (int, error)
 	ProductListByIDS(ctx context.Context, ids []int64) ([]*Product, error)
 }
 type ProductService interface {
-	ProductList(ctx context.Context) ([]Product, error)
+	ProductList(ctx context.Context) ([]*Product, error)
 	ProductCreate(ctx context.Context, p *Product, files []*multipart.FileHeader) (*Product, error)
 	ProductFindByID(ctx context.Context, id int64) (*Product, error)
 	ProductUpdate(ctx context.Context, id int64, p *Product, files []*multipart.FileHeader) (*Product, error)
@@ -142,7 +142,7 @@ type ProductService interface {
 	ProductFindByName(ctx context.Context, name string) (*Product, error)
 	BulkDelete(ctx context.Context) ([]Product, error)
 	BulkInsert(ctx context.Context, products []Product) ([]Product, error)
-	ProductFindByIDJoin(ctx context.Context, productId int64) (*Product, error)
+	// ProductFindByIDJoin(ctx context.Context, productId int64) (*Product, error)
 	ProductCount(ctx context.Context) (int, error)
 	ProductListByIDS(ctx context.Context, ids []int64) ([]*Product, error)
 }

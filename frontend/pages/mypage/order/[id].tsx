@@ -98,7 +98,7 @@ const OrderDetail = () => {
                       </TableHead>
                       <TableBody>
                         {orderItems.map((item) => (
-                          <TableRow key={item._id}>
+                          <TableRow key={item.id}>
                             <TableCell>
                               <Image
                                 src={item.image}

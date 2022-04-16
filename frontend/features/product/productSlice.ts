@@ -40,6 +40,25 @@ export const fetchProducts = createAsyncThunk("products", async (_, {rejectWithV
   }
 })
 
+export const fetchProductById = createAsyncThunk(
+  "products/get",
+  async (id: number, {rejectWithValue}) => {
+    try {
+      const response = await ProductAPI.getProductFindByID(id)
+      // console.log(response.data.data)
+      return response.data.data
+    } catch (err) {
+      const error: AxiosError<ValidationErrors> = err
+
+      if (!error.response) {
+        throw error
+      }
+
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
 export const deleteProduct = createAsyncThunk(
   "products/delete",
   async (id: number, {rejectWithValue}) => {
@@ -120,6 +139,9 @@ export const productsSlice = createSlice({
         state.error = action.error.message
       }
       state.status = "failed"
+    })
+    builder.addCase(fetchProductById.fulfilled, (state, action) => {
+      state.products = state.products.filter((product) => product.id !== action.payload)
     })
     builder.addCase(addProduct.fulfilled, (state, action) => {
       state.products.push(action.payload)

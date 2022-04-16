@@ -100,7 +100,7 @@ const ProductReview = ({ productId }: any) => {
       {!products[0].reviews.length && <h4>No Reviews</h4>}
       <div>
         {products[0].reviews.map((review) => (
-          <div key={review._id}>
+          <div key={review.id}>
             <strong>{review.username}</strong>
             <p>{review.createdAt}</p>
             <Rating value={products[0].rating} />

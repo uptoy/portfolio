@@ -1,7 +1,7 @@
 import React from "react"
-import { makeStyles } from "@material-ui/styles"
-import { Swiper, SwiperSlide } from "swiper/react"
-import { Navigation } from "swiper"
+import {makeStyles} from "@material-ui/styles"
+import {Swiper, SwiperSlide} from "swiper/react"
+import {Navigation} from "swiper"
 
 import "swiper/css"
 import "swiper/css/free-mode"
@@ -44,10 +44,6 @@ const Carousel = (props: Props) => {
       <div className={classes.swiperBox}>
         <p>{props.title}</p>
         <Swiper
-          style={{
-            "--swiper-navigation-color": "#fff",
-            "--swiper-pagination-color": "#fff",
-          }}
           slidesPerView={5}
           spaceBetween={10}
           slidesPerGroup={5}
@@ -56,8 +52,8 @@ const Carousel = (props: Props) => {
           navigation={true}
           modules={[Navigation]}
         >
-          {images.map((image) => (
-            <SwiperSlide>
+          {images.map((image, index) => (
+            <SwiperSlide key={index}>
               <img className={classes.img} src={image} />
             </SwiperSlide>
           ))}

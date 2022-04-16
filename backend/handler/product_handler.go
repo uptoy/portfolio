@@ -2,6 +2,7 @@ package handler
 
 import (
 	"backend/model"
+	// "fmt"
 	"strconv"
 
 	"backend/model/apperrors"
@@ -13,7 +14,7 @@ import (
 
 func (h *Handler) ProductList(c *gin.Context) {
 	ctx := c.Request.Context()
-	p, err := h.ProductService.ProductList(ctx)
+	products, err := h.ProductService.ProductList(ctx)
 	if err != nil {
 		log.Printf("Unable to find products: %v", err)
 		e := apperrors.NewNotFound("products", "err")
@@ -22,10 +23,24 @@ func (h *Handler) ProductList(c *gin.Context) {
 		})
 		return
 	}
+	for _, product := range products {
+		productId := product.Id
+		reviews, err := h.ReviewService.GetAll(ctx, productId)
+		if err != nil {
+			log.Printf("Unable to find reviews: %v", err)
+			e := apperrors.NewNotFound("products", "err")
+			c.JSON(e.Status(), gin.H{
+				"error": e,
+			})
+			return
+		}
+		product.Reviews = reviews
+	}
 	c.JSON(http.StatusOK, gin.H{
-		"data": p,
+		"data": products,
 	})
 }
+
 func (h *Handler) ProductCreate(c *gin.Context) {
 	form, _ := c.MultipartForm()
 	files := form.File["file"]
@@ -35,7 +50,7 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 	brand := value["brand"][0]
 	price, _ := strconv.Atoi(value["price"][0])
 	category_id, _ := strconv.Atoi(value["category_id"][0])
-	count_in_stock, _ := strconv.Atoi(value["category_id"][0])
+	count_in_stock, _ := strconv.Atoi(value["count_in_stock"][0])
 	description := value["description"][0]
 	average_rating, _ := strconv.Atoi(value["average_rating"][0])
 
@@ -59,7 +74,7 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"product": product,
+		"data": product,
 	})
 }
 
@@ -77,20 +92,18 @@ func (h *Handler) ProductFindByID(c *gin.Context) {
 		})
 		return
 	}
-	categoryId := p.CategoryId
-	category, err := h.CategoryService.CategoryFindByID(ctx, categoryId)
+	reviews, err := h.ReviewService.GetAll(ctx, uid)
+	p.Reviews = reviews
 	if err != nil {
-		log.Printf("Unable to get category: %v", err)
-		e := apperrors.NewNotFound("product", "err")
-
+		log.Printf("Unable to find reviews: %v", err)
+		e := apperrors.NewNotFound("products", "err")
 		c.JSON(e.Status(), gin.H{
 			"error": e,
 		})
 		return
 	}
-	p.Category = category
 	c.JSON(http.StatusOK, gin.H{
-		"product": p,
+		"data": p,
 	})
 }
 
@@ -247,21 +260,6 @@ func (h *Handler) ProductBulkInsert(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"products": result,
-	})
-}
-
-func (h *Handler) ProductJoin(c *gin.Context) {
-	id := c.Param("id")
-	uid, _ := strconv.ParseInt(id, 0, 64)
-	ctx := c.Request.Context()
-	p, err := h.ProductService.ProductFindByIDJoin(ctx, uid)
-	if err != nil {
-		log.Fatal("err", err)
-		// fmt.Println("err", err)
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"product": p,
 	})
 }
 

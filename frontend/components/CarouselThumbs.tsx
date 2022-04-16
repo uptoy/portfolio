@@ -1,7 +1,7 @@
-import React, { useState } from "react"
-import { makeStyles } from "@material-ui/styles"
-import { Swiper, SwiperSlide } from "swiper/react"
-import { FreeMode, Navigation, Thumbs } from "swiper"
+import React, {useState} from "react"
+import {makeStyles} from "@material-ui/styles"
+import {Swiper, SwiperSlide} from "swiper/react"
+import {FreeMode, Navigation, Thumbs} from "swiper"
 import "swiper/css"
 import "swiper/css/free-mode"
 import "swiper/css/navigation"
@@ -48,19 +48,19 @@ const CarouselThumbs = () => {
     <>
       <div className={classes.swiperBox}>
         <Swiper
-          style={{
-            "--swiper-navigation-color": "#fff",
-            "--swiper-pagination-color": "#fff",
-          }}
+          // style={{
+          //   "--swiper-navigation-color": "#fff",
+          //   "--swiper-pagination-color": "#fff",
+          // }}
           loop={true}
           spaceBetween={10}
           navigation={true}
-          thumbs={{ swiper: thumbsSwiper }}
+          thumbs={{swiper: thumbsSwiper}}
           modules={[FreeMode, Navigation, Thumbs]}
           className={`mySwiper2 ${classes.mySwiper2}`}
         >
-          {images.map((image) => (
-            <SwiperSlide className={classes.swiperSlide}>
+          {images.map((image, index) => (
+            <SwiperSlide key={index} className={classes.swiperSlide}>
               <img className={classes.img} src={image} />
             </SwiperSlide>
           ))}

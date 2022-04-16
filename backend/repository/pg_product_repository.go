@@ -5,7 +5,7 @@ import (
 	"backend/model/apperrors"
 	"context"
 
-	"fmt"
+	// "fmt"
 
 	// "database/sql"
 	"log"
@@ -37,24 +37,34 @@ func (r *pGProductRepository) ProductCreate(ctx context.Context, p *model.Produc
 	return p, nil
 }
 
-func (r *pGProductRepository) ProductList(ctx context.Context) ([]model.Product, error) {
-	products := []model.Product{}
-	query := "SELECT * FROM products"
-	if err := r.DB.SelectContext(ctx, &products, query); err != nil {
-		log.Printf("Unable to get product with name: %v. Err: %v\n", products, err)
-		return nil, apperrors.NewNotFound("product_name", "products")
+func (r *pGProductRepository) ProductList(ctx context.Context) ([]*model.Product, error) {
+	var pj []productJoin
+	q := `
+	SELECT DISTINCT ON (p.id)
+	p.*,
+	c.category_name
+	FROM products p
+	LEFT JOIN categories c ON p.category_id = c.id;
+	`
+	if err := r.DB.SelectContext(ctx, &pj, q); err != nil {
+		log.Printf("Unable to get product with name: %v. Err: %v\n", "", err)
+	}
+	products := make([]*model.Product, 0)
+	for _, x := range pj {
+		products = append(products, x.ToProduct())
 	}
 	return products, nil
 }
 func (r *pGProductRepository) ProductFindByID(ctx context.Context, productId int64) (*model.Product, error) {
-	product := model.Product{}
-	query := "SELECT * FROM products WHERE id=$1"
-	if err := r.DB.GetContext(ctx, &product, query, productId); err != nil {
-		log.Printf("Unable to get product with name: %v. Err: %v\n", product.ProductName, err)
-		id := strconv.Itoa(int(productId))
-		return nil, apperrors.NewNotFound("product_id", id)
+	var pj productJoin
+	q := `
+		SELECT products.*,categories.* FROM products LEFT JOIN categories ON products.category_id = categories.id WHERE products.id = $1;
+		`
+	if err := r.DB.GetContext(ctx, &pj, q, productId); err != nil {
+		log.Printf("Unable to get product with name: %v. Err: %v\n", "", err)
 	}
-	return &product, nil
+	product := pj.ToProduct()
+	return product, nil
 }
 
 // ProductSearch
@@ -123,21 +133,6 @@ func (r *pGProductRepository) BulkInsert(ctx context.Context, products []model.P
 		log.Printf("Unable to bulk insert product: %v. Err: %v\n", products, err)
 	}
 	return products, nil
-}
-
-func (r *pGProductRepository) ProductFindByIDJoin(ctx context.Context, productId int64) (*model.Product, error) {
-
-	var pj productJoin
-	q := `
-	SELECT products.*,categories.* FROM products LEFT JOIN categories ON products.category_id = categories.id WHERE products.id = $1;
-	`
-	if err := r.DB.GetContext(ctx, &pj, q, productId); err != nil {
-		log.Printf("Unable to get product with name: %v. Err: %v\n", "", err)
-	}
-	fmt.Println("pj", pj)
-
-	product := pj.ToProduct()
-	return product, nil
 }
 
 func (r *pGProductRepository) ProductCount(ctx context.Context) (int, error) {

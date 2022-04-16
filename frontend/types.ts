@@ -38,8 +38,8 @@ export interface DateRange {
 }
 
 export interface IReview {
-  _id: string
-  username: string
+  id: number
+  name: string
   rating: number
   createdAt: string
   comment: string
@@ -55,7 +55,7 @@ export interface IOrderItems {
   quantity: number
   image: string
   price: number
-  _id?: string
+  id?: string
 }
 
 export interface IPaymentResult {
@@ -78,7 +78,7 @@ export interface IOrder {
   isDelivered: boolean
   paidAt?: string
   deliveredAt?: string
-  _id?: string
+  id?: string
   createdAt?: string
   updatedAt?: string
 }
@@ -112,7 +112,7 @@ export type UserSubmitForm = {
 //   email: string
 //   password: string
 //   isAdmin: boolean
-//   _id: string
+//   id: string
 //   createdAt: string
 //   updatedAt?: string
 // }
@@ -126,7 +126,7 @@ export interface IOrderItems {
   quantity: number
   image: string
   price: number
-  _id?: string
+  id?: string
 }
 
 export interface IUser {
@@ -134,7 +134,7 @@ export interface IUser {
   email: string
   password: string
   isAdmin: boolean
-  _id: string
+  id: string
   createdAt: string
   updatedAt: string
 }
@@ -144,7 +144,7 @@ export interface IOrderItems {
   quantity: number
   image: string
   price: number
-  _id?: string
+  id?: string
 }
 export interface IPaymentResult {
   id: string
@@ -166,7 +166,7 @@ export interface IOrder {
   isDelivered: boolean
   paidAt?: string
   deliveredAt?: string
-  _id?: string
+  id?: string
   createdAt?: string
   updatedAt?: string
 }
@@ -185,7 +185,7 @@ export interface IOrder {
 //   email: string
 //   password: string
 //   isAdmin: boolean
-//   _id: string
+//   id: string
 //   createdAt: string
 //   updatedAt?: string
 // }
@@ -199,7 +199,7 @@ export interface IOrderItems {
   quantity: number
   image: string
   price: number
-  _id?: string
+  id?: string
 }
 
 export interface IUser {
@@ -207,7 +207,7 @@ export interface IUser {
   email: string
   password: string
   isAdmin: boolean
-  _id: string
+  id: string
   createdAt: string
   updatedAt: string
 }
@@ -217,7 +217,7 @@ export interface IOrderItems {
   quantity: number
   image: string
   price: number
-  _id?: string
+  id?: string
 }
 export interface IPaymentResult {
   id: string
@@ -239,7 +239,7 @@ export interface IOrder {
   isDelivered: boolean
   paidAt?: string
   deliveredAt?: string
-  _id?: string
+  id?: string
   createdAt?: string
   updatedAt?: string
 }

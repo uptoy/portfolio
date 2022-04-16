@@ -42,8 +42,8 @@ func (r *pGProductImageRepository) Save(ctx context.Context, productId int64, im
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
-	image.ID = model.NewInt64(id)
-	image.ProductId = model.NewInt64(productId)
+	// image.ID = model.NewInt64(id)
+	// image.ProductId = model.NewInt64(productId)
 	return image, nil
 }
 

@@ -1,12 +1,12 @@
 import {
   IOrder,
-  IProduct,
+  Product,
   IOrderItems,
   IReview,
   IUser,
   IPaymentResult,
   ShippingAddressType,
-  ICategory,
+  Category,
 } from "types"
 
 //User
@@ -15,7 +15,7 @@ export const user1: IUser = {
   email: "email",
   password: "password",
   isAdmin: true,
-  _id: "_id1",
+  id: "_id1",
   createdAt: "createdAt:2022,0309,2141",
   updatedAt: "updatedAt:2022,0309,2141",
 }
@@ -24,7 +24,7 @@ export const user2: IUser = {
   email: "email2",
   password: "password",
   isAdmin: false,
-  _id: "_id2",
+  id: "_id2",
   createdAt: "createdAt:2022,0309,2141",
   updatedAt: "updatedAt:2022,0309,2141",
 }
@@ -32,29 +32,29 @@ export const users: IUser[] = [user1, user2]
 
 //Review
 export const review1: IReview = {
-  _id: "_id",
-  username: user1.name,
+  id: 1,
+  name: user1.name,
   rating: 4,
   createdAt: "createdAt:2022,0309,2141",
   comment: "text1text1text1",
 }
 export const review2 = {
-  _id: "_id",
-  username: user2.name,
+  id: 3,
+  name: user2.name,
   rating: 4,
   createdAt: "createdAt:2022,0309,2141",
   comment: "text2text2text2",
 }
 export const review3: IReview = {
-  _id: "_id2",
-  username: user1.name,
+  id: 3,
+  name: user1.name,
   rating: 3,
   createdAt: "createdAt:2022,0309,2141",
   comment: "text3text3text3",
 }
 export const review4 = {
-  _id: "_id4",
-  username: user2.name,
+  id: 4,
+  name: user2.name,
   rating: 4,
   createdAt: "createdAt:2022,0309,2141",
   comment: "text4text4text4",
@@ -63,126 +63,126 @@ export const reviews1: IReview[] = [review1, review2]
 export const reviews2: IReview[] = [review3, review4]
 
 //Product
-export const product1: IProduct = {
-  _id: "1",
-  quantity: 1,
-  name: "name1",
-  slug: "slug1",
-  category: "category",
-  image: "http://placehold.jp/150x150.png",
-  price: 10000,
-  brand: "brand",
-  rating: 3,
-  countInStock: 1,
-  numReviews: reviews1.length,
-  description: "desc",
-  createdAt: "createdAt",
-  updatedAt: "updatedAt",
-  reviews: reviews1,
-}
-export const product2: IProduct = {
-  _id: "2",
-  quantity: 2,
-  name: "name2",
-  slug: "slug2",
-  category: "category2",
-  image: "http://placehold.jp/150x150.png",
-  price: 2,
-  brand: "brand2",
-  rating: 2,
-  countInStock: 2,
-  numReviews: reviews2.length,
-  description: "desc2",
-  createdAt: "createdAt2",
-  updatedAt: "updatedAt2",
-  reviews: reviews2,
-}
+// export const product1: Product = {
+//   id: "1",
+//   quantity: 1,
+//   name: "name1",
+//   slug: "slug1",
+//   category: "category",
+//   image: "http://placehold.jp/150x150.png",
+//   price: 10000,
+//   brand: "brand",
+//   rating: 3,
+//   countInStock: 1,
+//   numReviews: reviews1.length,
+//   description: "desc",
+//   createdAt: "createdAt",
+//   updatedAt: "updatedAt",
+//   reviews: reviews1,
+// }
+// export const product2: Product = {
+//   id: "2",
+//   quantity: 2,
+//   name: "name2",
+//   slug: "slug2",
+//   category: "category2",
+//   image: "http://placehold.jp/150x150.png",
+//   price: 2,
+//   brand: "brand2",
+//   rating: 2,
+//   countInStock: 2,
+//   numReviews: reviews2.length,
+//   description: "desc2",
+//   createdAt: "createdAt2",
+//   updatedAt: "updatedAt2",
+//   reviews: reviews2,
+// }
 
-export const product3: IProduct = {
-  _id: "3",
-  quantity: 3,
-  name: "name3",
-  slug: "slug3",
-  category: "category3",
-  image: "http://placehold.jp/150x150.png",
-  price: 30,
-  brand: "brand3",
-  rating: 5,
-  countInStock: 3,
-  numReviews: reviews2.length,
-  description: "desc3",
-  createdAt: "createdAt3",
-  updatedAt: "updatedAt3",
-  reviews: reviews2,
-}
+// export const product3: IProduct = {
+//   id: "3",
+//   quantity: 3,
+//   name: "name3",
+//   slug: "slug3",
+//   category: "category3",
+//   image: "http://placehold.jp/150x150.png",
+//   price: 30,
+//   brand: "brand3",
+//   rating: 5,
+//   countInStock: 3,
+//   numReviews: reviews2.length,
+//   description: "desc3",
+//   createdAt: "createdAt3",
+//   updatedAt: "updatedAt3",
+//   reviews: reviews2,
+// }
 
-export const product4: IProduct = {
-  _id: "4",
-  quantity: 4,
-  name: "name4",
-  slug: "slug4",
-  category: "category4",
-  image: "http://placehold.jp/150x150.png",
-  price: 4,
-  brand: "brand4",
-  rating: 4000,
-  countInStock: 4,
-  numReviews: reviews1.length,
-  description: "desc4",
-  createdAt: "createdAt4",
-  updatedAt: "updatedAt4",
-  reviews: reviews1,
-}
+// export const product4: IProduct = {
+//   id: "4",
+//   quantity: 4,
+//   name: "name4",
+//   slug: "slug4",
+//   category: "category4",
+//   image: "http://placehold.jp/150x150.png",
+//   price: 4,
+//   brand: "brand4",
+//   rating: 4000,
+//   countInStock: 4,
+//   numReviews: reviews1.length,
+//   description: "desc4",
+//   createdAt: "createdAt4",
+//   updatedAt: "updatedAt4",
+//   reviews: reviews1,
+// }
 
-export const product5: IProduct = {
-  _id: "5",
-  quantity: 5,
-  name: "name5",
-  slug: "slug5",
-  category: "category5",
-  image: "http://placehold.jp/150x150.png",
-  price: 50,
-  brand: "brand5",
-  rating: 5,
-  countInStock: 5,
-  numReviews: reviews2.length,
-  description: "desc5",
-  createdAt: "createdAt5",
-  updatedAt: "updatedAt5",
-  reviews: reviews2,
-}
+// export const product5: IProduct = {
+//   id: "5",
+//   quantity: 5,
+//   name: "name5",
+//   slug: "slug5",
+//   category: "category5",
+//   image: "http://placehold.jp/150x150.png",
+//   price: 50,
+//   brand: "brand5",
+//   rating: 5,
+//   countInStock: 5,
+//   numReviews: reviews2.length,
+//   description: "desc5",
+//   createdAt: "createdAt5",
+//   updatedAt: "updatedAt5",
+//   reviews: reviews2,
+// }
 
-export const product6: IProduct = {
-  _id: "6",
-  quantity: 6,
-  name: "name6",
-  slug: "slug6",
-  category: "category6",
-  image: "http://placehold.jp/150x150.png",
-  price: 600,
-  brand: "brand6",
-  rating: 1,
-  countInStock: 6,
-  numReviews: reviews1.length,
-  description: "desc6",
-  createdAt: "createdAt6",
-  updatedAt: "updatedAt6",
-  reviews: reviews1,
-}
-export const products: IProduct[] = [
-  product1,
-  product2,
-  product3,
-  product4,
-  product5,
-  product6,
-  product1,
-  product2,
-  product3,
-  product4,
-  product5,
-  product6,
-]
+// export const product6: IProduct = {
+//   id: "6",
+//   quantity: 6,
+//   name: "name6",
+//   slug: "slug6",
+//   category: "category6",
+//   image: "http://placehold.jp/150x150.png",
+//   price: 600,
+//   brand: "brand6",
+//   rating: 1,
+//   countInStock: 6,
+//   numReviews: reviews1.length,
+//   description: "desc6",
+//   createdAt: "createdAt6",
+//   updatedAt: "updatedAt6",
+//   reviews: reviews1,
+// }
+// export const products: IProduct[] = [
+//   product1,
+//   product2,
+//   product3,
+//   product4,
+//   product5,
+//   product6,
+//   product1,
+//   product2,
+//   product3,
+//   product4,
+//   product5,
+//   product6,
+// ]
 
 //Payment
 export const paymentResult: IPaymentResult = {
@@ -202,14 +202,14 @@ export const shippingAddress: ShippingAddressType = {
 
 //OrderItem
 export const item1: IOrderItems = {
-  _id: "1",
+  id: "1",
   name: "name1",
   quantity: 1,
   price: 100,
   image: "http://placehold.jp/150x150.png",
 }
 const item2: IOrderItems = {
-  _id: "2",
+  id: "2",
   name: "name2",
   quantity: 2,
   price: 200,
@@ -225,7 +225,7 @@ export const order1: IOrder = {
   paymentMethod: "paymentMethod",
   paymentResult: paymentResult,
   itemsPrice: 1,
-  _id: "_id",
+  id: "id",
   createdAt: "createdAt",
   shippingPrice: 1,
   taxPrice: 1,
@@ -243,7 +243,7 @@ export const order2: IOrder = {
   paymentMethod: "paymentMethod",
   paymentResult: paymentResult,
   itemsPrice: 1,
-  _id: "_id",
+  id: "id",
   createdAt: "createdAt",
   shippingPrice: 1,
   taxPrice: 1,
@@ -257,17 +257,15 @@ export const order2: IOrder = {
 export const orders: IOrder[] = [order1, order2]
 
 //Product
-const category1: ICategory = {
-  id: "id1",
-  title: "title1",
-  user_id: "user_id1",
+const category1: Category = {
+  id: 1,
+  category_name: "title1",
 }
-const category2: ICategory = {
-  id: "id2",
-  title: "title2",
-  user_id: "user_id2",
+const category2: Category = {
+  id: 2,
+  category_name: "title1",
 }
-export const categories: ICategory[] = [category1, category2]
+export const categories: Category[] = [category1, category2]
 
 //ProductTop
 export const mainFeaturedPost = {

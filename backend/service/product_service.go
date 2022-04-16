@@ -3,6 +3,7 @@ package service
 import (
 	"backend/model"
 	"context"
+	// "fmt"
 	"mime/multipart"
 )
 
@@ -10,12 +11,14 @@ type productService struct {
 	ProductRepository      model.ProductRepository
 	ProductImageRepository model.ProductImageRepository
 	CategoryRepository     model.CategoryRepository
+	ReviewRepository       model.ReviewRepository
 }
 
 type ProductServiceConfig struct {
 	ProductRepository      model.ProductRepository
 	ProductImageRepository model.ProductImageRepository
 	CategoryRepository     model.CategoryRepository
+	ReviewRepository       model.ReviewRepository
 }
 
 func NewProductService(c *ProductServiceConfig) model.ProductService {
@@ -23,13 +26,22 @@ func NewProductService(c *ProductServiceConfig) model.ProductService {
 		ProductRepository:      c.ProductRepository,
 		ProductImageRepository: c.ProductImageRepository,
 		CategoryRepository:     c.CategoryRepository,
+		ReviewRepository:       c.ReviewRepository,
 	}
 }
 
-func (s *productService) ProductList(ctx context.Context) ([]model.Product, error) {
+func (s *productService) ProductList(ctx context.Context) ([]*model.Product, error) {
 	products, err := s.ProductRepository.ProductList(ctx)
 	if err != nil {
 		return products, err
+	}
+	for _, product := range products {
+		productId := product.Id
+		images, err := s.ProductImageRepository.GetAll(ctx, productId)
+		if err != nil {
+			return nil, err
+		}
+		product.Images = images
 	}
 	return products, nil
 }
@@ -48,8 +60,10 @@ func (s *productService) ProductCreate(ctx context.Context, p *model.Product, fi
 				return nil, err
 			}
 			images = append(images, &model.ProductImage{
-				ProductId: model.NewInt64(product.Id),
-				URL:       model.NewString(image_url),
+				// ProductId: model.NewInt64(product.Id),
+				// URL:       model.NewString(image_url),
+				ProductId: product.Id,
+				URL:       image_url,
 			})
 		}
 
@@ -70,9 +84,9 @@ func (s *productService) ProductFindByID(ctx context.Context, id int64) (*model.
 	if err != nil {
 		return nil, err
 	}
-	images, err := s.ProductImageRepository.GetAll(ctx, id)
-	if err != nil {
-		return nil, err
+	images, err1 := s.ProductImageRepository.GetAll(ctx, id)
+	if err1 != nil {
+		return nil, err1
 	}
 	product.Images = images
 	return product, nil
@@ -91,8 +105,10 @@ func (s *productService) ProductUpdate(ctx context.Context, id int64, p *model.P
 				return nil, err
 			}
 			images = append(images, &model.ProductImage{
-				ProductId: model.NewInt64(product.Id),
-				URL:       model.NewString(image_url),
+				// ProductId: model.NewInt64(product.Id),
+				// URL:       model.NewString(image_url),
+				ProductId: product.Id,
+				URL:       image_url,
 			})
 		}
 		for _, img := range images {
@@ -102,7 +118,7 @@ func (s *productService) ProductUpdate(ctx context.Context, id int64, p *model.P
 		if err := s.ProductImageRepository.Update(ctx, productId, images); err != nil {
 			return nil, err
 		}
-		p.Images = images
+		// p.Images = images
 		return p, nil
 	}
 	return product, nil
@@ -113,9 +129,9 @@ func (s *productService) ProductDelete(ctx context.Context, id int64) (*model.Pr
 	if err != nil {
 		return nil, err
 	}
-	images, err := s.ProductImageRepository.GetAll(ctx, id)
-	if err != nil {
-		return nil, err
+	images, err1 := s.ProductImageRepository.GetAll(ctx, id)
+	if err1 != nil {
+		return nil, err1
 	}
 	product.Images = images
 	return product, nil
@@ -127,9 +143,9 @@ func (s *productService) ProductFindByName(ctx context.Context, name string) (*m
 		return nil, err
 	}
 	productId := product.Id
-	images, err := s.ProductImageRepository.GetAll(ctx, productId)
-	if err != nil {
-		return nil, err
+	images, err1 := s.ProductImageRepository.GetAll(ctx, productId)
+	if err1 != nil {
+		return nil, err1
 	}
 	product.Images = images
 	return product, nil
@@ -151,13 +167,13 @@ func (s *productService) BulkInsert(ctx context.Context, products []model.Produc
 	return products, nil
 }
 
-func (s *productService) ProductFindByIDJoin(ctx context.Context, productId int64) (*model.Product, error) {
-	product, err := s.ProductRepository.ProductFindByIDJoin(ctx, productId)
-	if err != nil {
-		return nil, err
-	}
-	return product, nil
-}
+// func (s *productService) ProductFindByIDJoin(ctx context.Context, productId int64) (*model.Product, error) {
+// 	product, err := s.ProductRepository.ProductFindByIDJoin(ctx, productId)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return product, nil
+// }
 
 func (s *productService) ProductCount(ctx context.Context) (int, error) {
 	count, err := s.ProductRepository.ProductCount(ctx)
