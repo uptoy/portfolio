@@ -100,12 +100,12 @@ const UserDetail = () => {
                         {orderItems.map((item) => (
                           <TableRow key={item.id}>
                             <TableCell>
-                              <Image
+                              {/* <Image
                                 src={item.image}
                                 alt={item.name}
                                 width={50}
                                 height={50}
-                              ></Image>
+                              ></Image> */}
                             </TableCell>
                             <TableCell>
                               <Typography>{item.name}</Typography>

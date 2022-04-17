@@ -1,5 +1,7 @@
 import {configureStore, ThunkAction, Action} from "@reduxjs/toolkit"
 import {createWrapper} from "next-redux-wrapper"
+// import withRedux from "next-redux-wrapper";
+
 import addressReducer from "features/address/addressSlice"
 import authReducer from "features/auth/authSlice"
 import categoryReducer from "features/category/categorySlice"
@@ -19,9 +21,6 @@ export function makeStore() {
       auth: authReducer,
       cart: cartReducer,
       category: categoryReducer,
-      ///
-      // kanye: kanyeReducer,
-      ///
       order: orderReducer,
       product: productReducer,
       review: reviewReducer,

@@ -1,6 +1,7 @@
-import React, { useState } from "react"
-// import { ErrorMessage } from "components/Message/ErrorMessage"
+import React, {useState} from "react"
+import ErrorMessage from "components/Message/ErrorMessage"
 import Rating from "components/Rating"
+import {Product} from "types"
 import {
   Link,
   Select,
@@ -12,9 +13,9 @@ import {
   CircularProgress,
   Typography,
 } from "@material-ui/core"
-import { makeStyles } from "@material-ui/styles"
+import {makeStyles} from "@material-ui/styles"
 import theme from "theme"
-import { products } from "utils/seed"
+// import { products } from "utils/seed"
 
 const useStyles: any = makeStyles(() => ({
   typography: {
@@ -35,7 +36,8 @@ const useStyles: any = makeStyles(() => ({
   },
 }))
 
-const ProductReview = ({ productId }: any) => {
+// const ProductReview = ({productId}: any) => {
+const ProductReview = (product: Product) => {
   const [initialLoading, setInitialLoading] = useState(true)
   const [title, setTitle] = useState("")
   const [text, setText] = useState("")
@@ -92,97 +94,102 @@ const ProductReview = ({ productId }: any) => {
   return loading ? (
     <p>Loding....</p>
   ) : error ? (
-    // <ErrorMessage header={"Something went wrong"} message={error} />
-    <>error</>
+    <ErrorMessage header={"Something went wrong"} message={error} />
   ) : (
     <>
-      <h2>Reviews({products[0].reviews.length})</h2>
-      {!products[0].reviews.length && <h4>No Reviews</h4>}
-      <div>
-        {products[0].reviews.map((review) => (
-          <div key={review.id}>
-            <strong>{review.username}</strong>
-            <p>{review.createdAt}</p>
-            <Rating value={products[0].rating} />
-            <p>{review.comment}</p>
+      <>
+        {/* <h2>Reviews({product.reviews?.length})</h2>
+        {product.reviews?.length && <h4>No Reviews</h4>} */}
+        saaaa
+      </>
+      {/* <div>
+
+          <div>
+            {product.reviews?.map((review: any) => (
+              <div key={review.id}>
+                <strong>{review.username}</strong>
+                <p>{review.createdAt}</p>
+                <Rating value={product.rating} />
+                <p>{review.comment}</p>
+              </div>
+            ))}
+            <h2>Write a Customer Review</h2>
+            {userInfo ? (
+              <form>
+                <TextField
+                  variant="outlined"
+                  type="text"
+                  margin="normal"
+                  placeholder="Write a title"
+                  required
+                  fullWidth
+                  id="title"
+                  label="Write a title"
+                  name="title"
+                  autoComplete="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+                <TextField
+                  variant="outlined"
+                  type="text"
+                  margin="normal"
+                  placeholder="Write a comment"
+                  required
+                  fullWidth
+                  id="comment"
+                  label="Write a comment"
+                  name="comment"
+                  autoComplete="comment"
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                />
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel id="demo-simple-select-outlined-label">Rating</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    onChange={(e) => setRating(e.target.value)}
+                    autoWidth
+                    value={rating}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value="1">1 - Poor</MenuItem>
+                    <MenuItem value="2">2 - Fair</MenuItem>
+                    <MenuItem value="3">3 - Good</MenuItem>
+                    <MenuItem value="4">4 - Very Good</MenuItem>
+                    <MenuItem value="5">5 - Excellent</MenuItem>
+                  </Select>
+                </FormControl>
+                <div>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    disabled={createReviewLoading}
+                    className={classes.button}
+                  >
+                    {createReviewLoading ? (
+                      <CircularProgress color="inherit" className={classes.prgressColor} />
+                    ) : (
+                      <>Submit</>
+                    )}
+                  </Button>
+                </div>
+              </form>
+            ) : (
+              <>
+                <Typography>Please</Typography>
+                <Link href="#" onClick={() => {}}>
+                  sign in
+                </Link>
+                <Typography>to write a review</Typography>
+              </>
+            )}
           </div>
-        ))}
-        <h2>Write a Customer Review</h2>
-        {userInfo ? (
-          <form>
-            <TextField
-              variant="outlined"
-              type="text"
-              margin="normal"
-              placeholder="Write a title"
-              required
-              fullWidth
-              id="title"
-              label="Write a title"
-              name="title"
-              autoComplete="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <TextField
-              variant="outlined"
-              type="text"
-              margin="normal"
-              placeholder="Write a comment"
-              required
-              fullWidth
-              id="comment"
-              label="Write a comment"
-              name="comment"
-              autoComplete="comment"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-            />
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel id="demo-simple-select-outlined-label">Rating</InputLabel>
-              <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                onChange={(e) => setRating(e.target.value)}
-                autoWidth
-                value={rating}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value="1">1 - Poor</MenuItem>
-                <MenuItem value="2">2 - Fair</MenuItem>
-                <MenuItem value="3">3 - Good</MenuItem>
-                <MenuItem value="4">4 - Very Good</MenuItem>
-                <MenuItem value="5">5 - Excellent</MenuItem>
-              </Select>
-            </FormControl>
-            <div>
-              <Button
-                variant="contained"
-                color="primary"
-                type="submit"
-                disabled={createReviewLoading}
-                className={classes.button}
-              >
-                {createReviewLoading ? (
-                  <CircularProgress color="inherit" className={classes.prgressColor} />
-                ) : (
-                  <>Submit</>
-                )}
-              </Button>
-            </div>
-          </form>
-        ) : (
-          <>
-            <Typography>Please</Typography>
-            <Link href="#" onClick={() => {}}>
-              sign in
-            </Link>
-            <Typography>to write a review</Typography>
-          </>
-        )}
-      </div>
+        </div> */}
     </>
   )
 }

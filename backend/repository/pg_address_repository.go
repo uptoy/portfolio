@@ -5,7 +5,6 @@ import (
 	// "backend/model/apperrors"
 	"context"
 	// "log"
-
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
@@ -51,22 +50,17 @@ func (r *pGAddressRepository) AddressCreate(ctx context.Context, userId uuid.UUI
 	for rows.Next() {
 		rows.Scan(&id)
 	}
-
 	address.ID = id
 	return address, nil
 }
-
-// Get gets the address
 func (r *pGAddressRepository) AddressGet(ctx context.Context, userID uuid.UUID, addressID int64) (*model.Address, error) {
 	q := `SELECT a.* FROM address a LEFT JOIN user_address ua ON a.id = ua.address_id WHERE ua.user_id = $1 AND a.id = $2`
 	var addr model.Address
 	if err := r.DB.Get(&addr, q, userID, addressID); err != nil {
 		return nil, err
 	}
-
 	return &addr, nil
 }
-
 // GetAll gets the all user's addresses
 func (r *pGAddressRepository) AddressList(ctx context.Context, userID uuid.UUID) ([]*model.Address, error) {
 	q := `SELECT a.* FROM address a LEFT JOIN user_address ua ON a.id = ua.address_id WHERE ua.user_id = $1`

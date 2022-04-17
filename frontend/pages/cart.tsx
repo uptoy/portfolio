@@ -18,12 +18,12 @@ import {
   ListItem,
   Typography,
   Card,
-  Paper
+  Paper,
 } from "@material-ui/core"
 import Image from "next/image"
 import {useRouter} from "next/router"
 import NextLink from "next/link"
-import {IProduct} from "types"
+import {Product} from "types"
 import {makeStyles} from "@material-ui/styles"
 import theme from "theme"
 import {products} from "utils/seed"
@@ -41,9 +41,9 @@ const Cart: NextPage = () => {
   const classes = useStyles()
   const router = useRouter()
   const cartItems = products
-  const updateCartHandler = async (item: IProduct, quantity: number) => {}
+  const updateCartHandler = async (item: Product, quantity: number) => {}
 
-  const removeItemHandler = (item: IProduct) => {}
+  const removeItemHandler = (item: Product) => {}
 
   const checkoutHandler = () => {
     router.push("/checkout")
@@ -75,17 +75,17 @@ const Cart: NextPage = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {cartItems.map((item) => (
+                      {cartItems.map((item: any) => (
                         <TableRow key={item.id}>
                           <TableCell>
                             <NextLink href={`/product/${item.slug}`} passHref>
                               <Link>
-                                <Image
+                                {/* <Image
                                   src={item.image}
                                   alt={item.name}
                                   width={50}
                                   height={50}
-                                ></Image>
+                                ></Image> */}
                               </Link>
                             </NextLink>
                           </TableCell>

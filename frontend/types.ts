@@ -4,22 +4,30 @@ export interface Category {
 }
 
 export interface Product {
-  id: number
-  product_name: string
-  slug: string
-  brand: string
-  price: number
-  category_id: number
+  id?: number
+  product_name?: string
+  slug?: string
+  brand?: string
+  price?: number
+  category_id?: number
   count_in_stock: number
-  description: string
+  description?: string
   average_rating: number
   createdAt?: Date | null
   updatedAt?: Date | null
   images: Image[]
+  reviews?: Review[]
   // quantity: number
   // rating?: number
   // numReviews?: number
   // reviews?: IReview[]
+}
+export interface Review {
+  id: number
+  name: string
+  rating: number
+  createdAt: string
+  comment: string
 }
 export interface Image {
   id: number
@@ -28,7 +36,6 @@ export interface Image {
   createdAt?: Date | null
   updatedAt?: Date | null
 }
-
 export type Status = "idle" | "loading" | "succeed" | "failed"
 
 export interface DateRange {
@@ -37,13 +44,7 @@ export interface DateRange {
   end_date: string
 }
 
-export interface IReview {
-  id: number
-  name: string
-  rating: number
-  createdAt: string
-  comment: string
-}
+
 
 // export interface IReviews {
 //   name: string

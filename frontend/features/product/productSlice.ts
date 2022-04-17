@@ -7,6 +7,7 @@ import {Status} from "types"
 interface InitialState {
   status: Status
   products: Product[]
+  product: Product
   error: string | null | undefined
   selectedProduct: null | Product
   selectedModal: null | string
@@ -15,6 +16,11 @@ interface InitialState {
 const initialState: InitialState = {
   status: "idle",
   products: [],
+  product: {
+    average_rating: 1,
+    count_in_stock:0,
+    images:[]
+  },
   error: null,
   selectedProduct: null,
   selectedModal: null,
@@ -140,9 +146,24 @@ export const productsSlice = createSlice({
       }
       state.status = "failed"
     })
-    builder.addCase(fetchProductById.fulfilled, (state, action) => {
-      state.products = state.products.filter((product) => product.id !== action.payload)
+    builder.addCase(fetchProductById.pending, (state) => {
+      state.status = "loading"
     })
+    builder.addCase(fetchProductById.fulfilled, (state, action) => {
+      state.product = action.payload
+    })
+    builder.addCase(fetchProductById.rejected, (state, action: any) => {
+      if (action.payload) {
+        state.error = action.payload.message
+      } else {
+        state.error = action.error.message
+      }
+      state.status = "failed"
+    })
+    // builder.addCase(fetchProductById.fulfilled, (state, action) => {
+    //   console.log(state.products)
+    //   // state.products = state.products.filter((product) => product.id !== action.payload)
+    // })
     builder.addCase(addProduct.fulfilled, (state, action) => {
       state.products.push(action.payload)
     })
