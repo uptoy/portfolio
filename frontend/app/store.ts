@@ -1,7 +1,6 @@
 import {configureStore, ThunkAction, Action} from "@reduxjs/toolkit"
 import {createWrapper} from "next-redux-wrapper"
 // import withRedux from "next-redux-wrapper";
-
 import addressReducer from "features/address/addressSlice"
 import authReducer from "features/auth/authSlice"
 import categoryReducer from "features/category/categorySlice"
@@ -10,7 +9,6 @@ import cartReducer from "features/cart/cartSlice"
 import orderReducer from "features/order/orderSlice"
 import productReducer from "features/product/productSlice"
 import reviewReducer from "features/review/reviewSlice"
-// import kanyeReducer from "features/kanyeSlice"
 import {useDispatch, useSelector, TypedUseSelectorHook} from "react-redux"
 import Cookies from "js-cookie"
 
