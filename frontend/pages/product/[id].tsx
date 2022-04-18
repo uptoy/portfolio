@@ -1,4 +1,5 @@
 import Link from "next/link"
+import useSWR from "swr"
 
 const postsUrl = `https://jsonplaceholder.typicode.com/posts`
 const usersUrl = `https://jsonplaceholder.typicode.com/users`
