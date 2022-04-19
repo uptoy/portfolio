@@ -1,25 +1,25 @@
-import React from 'react'
-import useSWR from 'swr'
+import React from "react";
+import useSWR from "swr";
 
-import CustomLink from './CustomLink'
-import Maybe from './Maybe'
-import NavLink from './NavLink'
-import { usePageDispatch } from 'lib/context/PageContext'
-import checkLogin from 'lib/utils/checkLogin'
-import storage from 'lib/utils/storage'
+import CustomLink from "./CustomLink";
+import Maybe from "./Maybe";
+import NavLink from "./NavLink";
+import { usePageDispatch } from "lib/context/PageContext";
+import checkLogin from "lib/utils/checkLogin";
+import storage from "lib/utils/storage";
 
 const Navbar = () => {
-  const setPage = usePageDispatch()
-  const { data: currentUser } = useSWR('user', storage)
-  const isLoggedIn = checkLogin(currentUser)
+  const setPage = usePageDispatch();
+  const { data: currentUser } = useSWR("user", storage);
+  const isLoggedIn = checkLogin(currentUser);
 
-  const handleClick = React.useCallback(() => setPage(0), [])
+  const handleClick = React.useCallback(() => setPage(0), []);
 
   return (
     <nav className="navbar navbar-light">
       <div className="container">
         <CustomLink className="navbar-brand" href="/" as="/">
-          <span onClick={handleClick}>Home</span>
+          <span onClick={handleClick}>conduit</span>
         </CustomLink>
         <ul className="nav navbar-nav pull-xs-right">
           <li className="nav-item">
@@ -64,7 +64,7 @@ const Navbar = () => {
         </ul>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

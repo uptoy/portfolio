@@ -4,12 +4,12 @@ import useSWR from "swr";
 
 import Comment from "./Comment";
 import CommentInput from "./CommentInput";
-import ErrorMessage from "components/common/ErrorMessage";
-import LoadingSpinner from "components/common/LoadingSpinner";
+import ErrorMessage from "../common/ErrorMessage";
+import LoadingSpinner from "../common/LoadingSpinner";
 
-import { CommentType } from "lib/types/commentType";
-import { SERVER_BASE_URL } from "lib/utils/constant";
-import fetcher from "lib/utils/fetcher";
+import { CommentType } from "../../lib/types/commentType";
+import { SERVER_BASE_URL } from "../../lib/utils/constant";
+import fetcher from "../../lib/utils/fetcher";
 
 const CommentList = () => {
   const router = useRouter();

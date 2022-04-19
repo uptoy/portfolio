@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 
-import ArticleActions from './ArticleActions'
-import CustomImage from 'components/common/CustomImage'
-import CustomLink from 'components/common/CustomLink'
+import ArticleActions from "./ArticleActions";
+import CustomImage from "../common/CustomImage";
+import CustomLink from "../common/CustomLink";
 
-const ArticleMeta = ({ article }: any) => {
-  // if (!article) return
+const ArticleMeta = ({ article }) => {
+  if (!article) return;
 
   return (
     <div className="article-meta">
@@ -31,7 +31,7 @@ const ArticleMeta = ({ article }: any) => {
 
       <ArticleActions article={article} />
     </div>
-  )
-}
+  );
+};
 
-export default ArticleMeta
+export default ArticleMeta;

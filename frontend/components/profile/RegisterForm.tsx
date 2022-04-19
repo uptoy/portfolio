@@ -2,8 +2,8 @@ import Router from "next/router";
 import React from "react";
 import { mutate } from "swr";
 
-import ListErrors from "components/common/ListErrors";
-import UserAPI from "lib/api/user";
+import ListErrors from "../common/ListErrors";
+import UserAPI from "../../lib/api/user";
 
 const RegisterForm = () => {
   const [isLoading, setLoading] = React.useState(false);
@@ -13,19 +13,19 @@ const RegisterForm = () => {
   const [password, setPassword] = React.useState("");
 
   const handleUsernameChange = React.useCallback(
-    (e: any) => setUsername(e.target.value),
+    (e) => setUsername(e.target.value),
     []
   );
   const handleEmailChange = React.useCallback(
-    (e: any) => setEmail(e.target.value),
+    (e) => setEmail(e.target.value),
     []
   );
   const handlePasswordChange = React.useCallback(
-    (e: any) => setPassword(e.target.value),
+    (e) => setPassword(e.target.value),
     []
   );
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 

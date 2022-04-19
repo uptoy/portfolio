@@ -1,10 +1,10 @@
-import React from 'react'
+import React from "react";
 
-import NavLink from 'components/common/NavLink'
-import { usePageDispatch } from 'lib/context/PageContext'
+import NavLink from "../common/NavLink";
+import { usePageDispatch } from "../../lib/context/PageContext";
 
-const ProfileTab = ({ profile }: any) => {
-  const setPage = usePageDispatch()
+const ProfileTab = ({ profile }) => {
+  const setPage = usePageDispatch();
   return (
     <ul className="nav nav-pills outline-active">
       <li className="nav-item">
@@ -24,7 +24,7 @@ const ProfileTab = ({ profile }: any) => {
         </NavLink>
       </li>
     </ul>
-  )
-}
+  );
+};
 
-export default ProfileTab
+export default ProfileTab;

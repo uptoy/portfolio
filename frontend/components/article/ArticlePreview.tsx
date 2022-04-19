@@ -1,33 +1,33 @@
-import axios from 'axios'
-import Link from 'next/link'
-import Router from 'next/router'
-import React from 'react'
-import useSWR from 'swr'
+import axios from "axios";
+import Link from "next/link";
+import Router from "next/router";
+import React from "react";
+import useSWR from "swr";
 
-import CustomLink from 'components/common/CustomLink'
-import CustomImage from 'components/common/CustomImage'
-import { usePageDispatch } from 'lib/context/PageContext'
-import checkLogin from 'lib/utils/checkLogin'
-import { SERVER_BASE_URL } from 'lib/utils/constant'
-import storage from 'lib/utils/storage'
+import CustomLink from "../common/CustomLink";
+import CustomImage from "../common/CustomImage";
+import { usePageDispatch } from "../../lib/context/PageContext";
+import checkLogin from "../../lib/utils/checkLogin";
+import { SERVER_BASE_URL } from "../../lib/utils/constant";
+import storage from "../../lib/utils/storage";
 
-const FAVORITED_CLASS = 'btn btn-sm btn-primary'
-const NOT_FAVORITED_CLASS = 'btn btn-sm btn-outline-primary'
+const FAVORITED_CLASS = "btn btn-sm btn-primary";
+const NOT_FAVORITED_CLASS = "btn btn-sm btn-outline-primary";
 
-const ArticlePreview = ({ article }: any) => {
-  const setPage = usePageDispatch()
+const ArticlePreview = ({ article }) => {
+  const setPage = usePageDispatch();
 
-  const [preview, setPreview] = React.useState(article)
-  const [hover, setHover] = React.useState(false)
-  const [currentIndex, setCurrentIndex] = React.useState(-1)
+  const [preview, setPreview] = React.useState(article);
+  const [hover, setHover] = React.useState(false);
+  const [currentIndex, setCurrentIndex] = React.useState(-1);
 
-  const { data: currentUser } = useSWR('user', storage)
-  const isLoggedIn = checkLogin(currentUser)
+  const { data: currentUser } = useSWR("user", storage);
+  const isLoggedIn = checkLogin(currentUser);
 
-  const handleClickFavorite = async (slug: any) => {
+  const handleClickFavorite = async (slug) => {
     if (!isLoggedIn) {
-      Router.push(`/user/login`)
-      return
+      Router.push(`/user/login`);
+      return;
     }
 
     setPreview({
@@ -36,7 +36,7 @@ const ArticlePreview = ({ article }: any) => {
       favoritesCount: preview.favorited
         ? preview.favoritesCount - 1
         : preview.favoritesCount + 1,
-    })
+    });
 
     try {
       if (preview.favorited) {
@@ -44,7 +44,7 @@ const ArticlePreview = ({ article }: any) => {
           headers: {
             Authorization: `Token ${currentUser?.token}`,
           },
-        })
+        });
       } else {
         await axios.post(
           `${SERVER_BASE_URL}/articles/${slug}/favorite`,
@@ -53,8 +53,8 @@ const ArticlePreview = ({ article }: any) => {
             headers: {
               Authorization: `Token ${currentUser?.token}`,
             },
-          },
-        )
+          }
+        );
       }
     } catch (error) {
       setPreview({
@@ -63,14 +63,14 @@ const ArticlePreview = ({ article }: any) => {
         favoritesCount: preview.favorited
           ? preview.favoritesCount - 1
           : preview.favoritesCount + 1,
-      })
+      });
     }
-  }
+  };
 
-  // if (!article) return
+  if (!article) return;
 
   return (
-    <div className="article-preview" style={{ padding: '1.5rem 0.5rem' }}>
+    <div className="article-preview" style={{ padding: "1.5rem 0.5rem" }}>
       <div className="article-meta">
         <CustomLink
           href="/profile/[pid]"
@@ -115,30 +115,30 @@ const ArticlePreview = ({ article }: any) => {
         <h1>{preview.title}</h1>
         <p>{preview.description}</p>
         <span>Read more...</span>
-        <ul className="tag-list" style={{ maxWidth: '100%' }}>
-          {preview.tagList.map((tag: any, index: any) => {
+        <ul className="tag-list" style={{ maxWidth: "100%" }}>
+          {preview.tagList.map((tag, index) => {
             return (
               <Link href={`/?tag=${tag}`} as={`/?tag=${tag}`} key={index}>
                 <li
                   className="tag-default tag-pill tag-outline"
                   onClick={(e) => e.stopPropagation()}
                   onMouseOver={() => {
-                    setHover(true)
-                    setCurrentIndex(index)
+                    setHover(true);
+                    setCurrentIndex(index);
                   }}
                   onMouseLeave={() => {
-                    setHover(false)
-                    setCurrentIndex(-1)
+                    setHover(false);
+                    setCurrentIndex(-1);
                   }}
                   style={{
                     borderColor:
-                      hover && currentIndex === index ? '#5cb85c' : 'initial',
+                      hover && currentIndex === index ? "#5cb85c" : "initial",
                   }}
                 >
                   <span
                     style={{
                       color:
-                        hover && currentIndex === index ? '#5cb85c' : 'inherit',
+                        hover && currentIndex === index ? "#5cb85c" : "inherit",
                     }}
                     onClick={() => setPage(0)}
                   >
@@ -146,12 +146,12 @@ const ArticlePreview = ({ article }: any) => {
                   </span>
                 </li>
               </Link>
-            )
+            );
           })}
         </ul>
       </CustomLink>
     </div>
-  )
-}
+  );
+};
 
-export default ArticlePreview
+export default ArticlePreview;

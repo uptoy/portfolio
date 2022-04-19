@@ -1,36 +1,36 @@
-import Router, { useRouter } from 'next/router'
-import React from 'react'
-import useSWR, { mutate } from 'swr'
+import Router, { useRouter } from "next/router";
+import React from "react";
+import useSWR, { trigger } from "swr";
 
-import CustomLink from 'components/common/CustomLink'
-import checkLogin from 'lib/utils/checkLogin'
-import ArticleAPI from 'lib/api/article'
-import { SERVER_BASE_URL } from 'lib/utils/constant'
-import storage from 'lib/utils/storage'
-import Maybe from 'components/common/Maybe'
+import CustomLink from "../common/CustomLink";
+import checkLogin from "../../lib/utils/checkLogin";
+import ArticleAPI from "../../lib/api/article";
+import { SERVER_BASE_URL } from "../../lib/utils/constant";
+import storage from "../../lib/utils/storage";
+import Maybe from "../common/Maybe";
 
-const ArticleActions = ({ article }: any) => {
-  const { data: currentUser } = useSWR('user', storage)
-  const isLoggedIn = checkLogin(currentUser)
-  const router = useRouter()
+const ArticleActions = ({ article }) => {
+  const { data: currentUser } = useSWR("user", storage);
+  const isLoggedIn = checkLogin(currentUser);
+  const router = useRouter();
   const {
     query: { pid },
-  } = router
+  } = router;
 
   const handleDelete = async () => {
-    if (!isLoggedIn) return
+    if (!isLoggedIn) return;
 
-    const result = window.confirm('Do you really want to delete it?')
+    const result = window.confirm("Do you really want to delete it?");
 
-    if (!result) return
+    if (!result) return;
 
-    await ArticleAPI.delete(pid, currentUser?.token)
-    mutate(`${SERVER_BASE_URL}/articles/${pid}`)
-    Router.push(`/`)
-  }
+    await ArticleAPI.delete(pid, currentUser?.token);
+    trigger(`${SERVER_BASE_URL}/articles/${pid}`);
+    Router.push(`/`);
+  };
 
   const canModify =
-    isLoggedIn && currentUser?.username === article?.author?.username
+    isLoggedIn && currentUser?.username === article?.author?.username;
 
   return (
     <Maybe test={canModify}>
@@ -51,7 +51,7 @@ const ArticleActions = ({ article }: any) => {
         </button>
       </span>
     </Maybe>
-  )
-}
+  );
+};
 
-export default ArticleActions
+export default ArticleActions;

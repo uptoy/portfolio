@@ -4,8 +4,7 @@ const useIsMounted = () => {
   const isMounted = React.useRef(false);
   React.useEffect(() => {
     isMounted.current = true;
-    return
-    // return () => (isMounted.current = false);
+    return () => (isMounted.current = false);
   }, []);
   return isMounted.current;
 };

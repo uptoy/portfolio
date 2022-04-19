@@ -1,32 +1,32 @@
-import axios from 'axios'
-import { useRouter } from 'next/router'
-import React from 'react'
-import useSWR,{mutate} from 'swr'
+import axios from "axios";
+import { useRouter } from "next/router";
+import React from "react";
+import useSWR, { trigger } from "swr";
 
-import CustomImage from 'components/common/CustomImage'
-import CustomLink from 'components/common/CustomLink'
-import checkLogin from 'lib/utils/checkLogin'
-import { SERVER_BASE_URL } from 'lib/utils/constant'
-import storage from 'lib/utils/storage'
+import CustomImage from "../common/CustomImage";
+import CustomLink from "../common/CustomLink";
+import checkLogin from "../../lib/utils/checkLogin";
+import { SERVER_BASE_URL } from "../../lib/utils/constant";
+import storage from "../../lib/utils/storage";
 
 const CommentInput = () => {
-  const { data: currentUser } = useSWR('user', storage)
-  const isLoggedIn = checkLogin(currentUser)
-  const router = useRouter()
+  const { data: currentUser } = useSWR("user", storage);
+  const isLoggedIn = checkLogin(currentUser);
+  const router = useRouter();
   const {
     query: { pid },
-  } = router
+  } = router;
 
-  const [content, setContent] = React.useState('')
-  const [isLoading, setLoading] = React.useState(false)
+  const [content, setContent] = React.useState("");
+  const [isLoading, setLoading] = React.useState(false);
 
-  const handleChange = React.useCallback((e: any) => {
-    setContent(e.target.value)
-  }, [])
+  const handleChange = React.useCallback((e) => {
+    setContent(e.target.value);
+  }, []);
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault()
-    setLoading(true)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
     await axios.post(
       `${SERVER_BASE_URL}/articles/${encodeURIComponent(String(pid))}/comments`,
       JSON.stringify({
@@ -36,15 +36,15 @@ const CommentInput = () => {
       }),
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Token ${encodeURIComponent(currentUser?.token)}`,
         },
-      },
-    )
-    setLoading(false)
-    setContent('')
-    mutate(`${SERVER_BASE_URL}/articles/${pid}/comments`)
-  }
+      }
+    );
+    setLoading(false);
+    setContent("");
+    trigger(`${SERVER_BASE_URL}/articles/${pid}/comments`);
+  };
 
   if (!isLoggedIn) {
     return (
@@ -58,7 +58,7 @@ const CommentInput = () => {
         </CustomLink>
         &nbsp;to add comments on this article.
       </p>
-    )
+    );
   }
 
   return (
@@ -84,7 +84,7 @@ const CommentInput = () => {
         </button>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default CommentInput
+export default CommentInput;

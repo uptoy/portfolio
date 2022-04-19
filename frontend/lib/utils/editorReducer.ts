@@ -1,33 +1,33 @@
-const editorReducer = (state: any, action: any) => {
+const editorReducer = (state, action) => {
   switch (action.type) {
-    case 'SET_TITLE':
+    case "SET_TITLE":
       return {
         ...state,
-        title: action.text,
-      }
-    case 'SET_DESCRIPTION':
+        title: action.text
+      };
+    case "SET_DESCRIPTION":
       return {
         ...state,
-        description: action.text,
-      }
-    case 'SET_BODY':
+        description: action.text
+      };
+    case "SET_BODY":
       return {
         ...state,
-        body: action.text,
-      }
-    case 'ADD_TAG':
+        body: action.text
+      };
+    case "ADD_TAG":
       return {
         ...state,
-        tagList: state.tagList.concat(action.tag),
-      }
-    case 'REMOVE_TAG':
+        tagList: state.tagList.concat(action.tag)
+      };
+    case "REMOVE_TAG":
       return {
         ...state,
-        tagList: state.tagList.filter((tag: any) => tag !== action.tag),
-      }
+        tagList: state.tagList.filter(tag => tag !== action.tag)
+      };
     default:
-      throw new Error('Unhandled action')
+      throw new Error("Unhandled action");
   }
-}
+};
 
-export default editorReducer
+export default editorReducer;

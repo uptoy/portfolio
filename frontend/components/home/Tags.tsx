@@ -1,25 +1,25 @@
-import React from 'react'
+import React from "react";
 
-import CustomLink from 'components/common/CustomLink'
-import LoadingSpinner from 'components/common/LoadingSpinner'
-import { usePageDispatch } from 'lib/context/PageContext'
-import useSWR from 'swr'
-import { SERVER_BASE_URL } from 'lib/utils/constant'
-import fetcher from 'lib/utils/fetcher'
-import ErrorMessage from 'components/common/ErrorMessage'
+import CustomLink from "../common/CustomLink";
+import LoadingSpinner from "../common/LoadingSpinner";
+import { usePageDispatch } from "../../lib/context/PageContext";
+import useSWR from "swr";
+import { SERVER_BASE_URL } from "../../lib/utils/constant";
+import fetcher from "../../lib/utils/fetcher";
+import ErrorMessage from "../common/ErrorMessage";
 
 const Tags = () => {
-  const setPage = usePageDispatch()
-  const handleClick = React.useCallback(() => setPage(0), [])
-  const { data, error } = useSWR(`${SERVER_BASE_URL}/tags`, fetcher)
+  const setPage = usePageDispatch();
+  const handleClick = React.useCallback(() => setPage(0), []);
+  const { data, error } = useSWR(`${SERVER_BASE_URL}/tags`, fetcher);
 
-  if (error) return <ErrorMessage message="Cannot load popular tags..." />
-  if (!data) return <LoadingSpinner />
+  if (error) return <ErrorMessage message="Cannot load popular tags..." />;
+  if (!data) return <LoadingSpinner />;
 
-  const { tags } = data
+  const { tags } = data;
   return (
     <div className="tag-list">
-      {tags?.map((tag: any) => (
+      {tags?.map((tag) => (
         <CustomLink
           key={tag}
           href={`/?tag=${tag}`}
@@ -30,7 +30,7 @@ const Tags = () => {
         </CustomLink>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default Tags
+export default Tags;

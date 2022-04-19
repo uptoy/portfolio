@@ -1,18 +1,18 @@
-import React from 'react'
-import useSWR from 'swr'
+import React from "react";
+import useSWR from "swr";
 
-import CustomLink from 'components/common/CustomLink'
-import CustomImage from 'components/common/CustomImage'
-import Maybe from 'components/common/Maybe'
-import DeleteButton from './DeleteButton'
-import checkLogin from 'lib/utils/checkLogin'
-import storage from 'lib/utils/storage'
+import CustomLink from "../common/CustomLink";
+import CustomImage from "../common/CustomImage";
+import Maybe from "../common/Maybe";
+import DeleteButton from "./DeleteButton";
+import checkLogin from "../../lib/utils/checkLogin";
+import storage from "../../lib/utils/storage";
 
-const Comment = ({ comment }: any) => {
-  const { data: currentUser } = useSWR('user', storage)
-  const isLoggedIn = checkLogin(currentUser)
+const Comment = ({ comment }) => {
+  const { data: currentUser } = useSWR("user", storage);
+  const isLoggedIn = checkLogin(currentUser);
   const canModify =
-    isLoggedIn && currentUser?.username === comment?.author?.username
+    isLoggedIn && currentUser?.username === comment?.author?.username;
 
   return (
     <div className="card">
@@ -47,7 +47,7 @@ const Comment = ({ comment }: any) => {
         </Maybe>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Comment
+export default Comment;

@@ -1,33 +1,33 @@
-import React from 'react'
+import React from "react";
 
-const TagInput = ({ tagList, addTag, removeTag }: any) => {
-  const [tag, setTag] = React.useState('')
+const TagInput = ({ tagList, addTag, removeTag }) => {
+  const [tag, setTag] = React.useState("");
 
-  const changeTagInput = (e: any) => setTag(e.target.value)
+  const changeTagInput = (e) => setTag(e.target.value);
 
-  const handleTagInputKeyDown = (e: any) => {
+  const handleTagInputKeyDown = (e) => {
     switch (e.keyCode) {
       case 13: // Enter
       case 9: // Tab
       case 188: // Comma
-        if (e.keyCode !== 9) e.preventDefault()
-        handleAddTag()
-        break
+        if (e.keyCode !== 9) e.preventDefault();
+        handleAddTag();
+        break;
       default:
-        break
+        break;
     }
-  }
+  };
 
   const handleAddTag = () => {
     if (!!tag) {
-      addTag(tag)
-      setTag('')
+      addTag(tag);
+      setTag("");
     }
-  }
+  };
 
-  const handleRemoveTag = (tag: any) => {
-    removeTag(tag)
-  }
+  const handleRemoveTag = (tag) => {
+    removeTag(tag);
+  };
 
   return (
     <>
@@ -43,7 +43,7 @@ const TagInput = ({ tagList, addTag, removeTag }: any) => {
         />
 
         <div className="tag-list">
-          {tagList.map((tag: any, index: any) => (
+          {tagList.map((tag, index) => (
             <span className="tag-default tag-pill" key={index}>
               <i
                 className="ion-close-round"
@@ -55,7 +55,7 @@ const TagInput = ({ tagList, addTag, removeTag }: any) => {
         </div>
       </fieldset>
     </>
-  )
-}
+  );
+};
 
-export default TagInput
+export default TagInput;
