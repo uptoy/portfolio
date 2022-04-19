@@ -1,123 +1,34 @@
-import React, {useState, useEffect} from "react"
-import theme from "theme"
-import {Rating, Carousel} from "components"
-import {MainFeaturedPost} from "components/ProductTop"
-import {
-  Typography,
-  Grid,
-  Container,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  CircularProgress,
-} from "@material-ui/core"
-import {makeStyles} from "@material-ui/styles"
-import {Layout} from "components/organisms"
-import {mainFeaturedPost} from "utils/seed"
-// import {products} from "utils/seed"
-import {red, common} from "@material-ui/core/colors"
-import Link from "components/Link"
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"
-import FavoriteIcon from "@material-ui/icons/Favorite"
-import {useAppDispatch, useAppSelector} from "app/hooks"
-import {fetchProducts} from "features/product/productSlice"
+import Head from "next/head";
+import React from "react";
 
-const useStyles: any = makeStyles(() => ({
-  cardGrid: {
-    padding: theme.spacing(4, 0),
-  },
-  card: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-  },
-  cardMedia: {
-    paddingTop: "80%",
-  },
-  cardContent: {
-    flexGrow: 1,
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(0.25),
-  },
-  cardActions: {
-    justifyContent: "space-between",
-  },
-  numReviews: {
-    marginLeft: theme.spacing(1),
-    color: common.black,
-  },
-  favorite: {
-    minWidth: 30,
-    color: red[500],
-    marginRight: theme.spacing(1),
-    fontSize: "2em",
-  },
-}))
+import Banner from "../components/home/Banner";
+import MainView from "../components/home/MainView";
+import Tags from "../components/home/Tags";
 
-export default function Index() {
-  const classes = useStyles()
-  const [state, setState] = useState(false)
-  const handleClick = () => {
-    setState(!state)
-  }
-  const dispatch = useAppDispatch()
-  useEffect(() => {
-    dispatch(fetchProducts())
-  }, [])
-  const {products, status, error} = useAppSelector((state) => state.product)
-  if (status === "loading") {
-    return (
-      <div className={classes.loadingContainer}>
-        <CircularProgress />
+const Home = () => (
+  <>
+    <Head>
+      <title>HOME | NEXT REALWORLD</title>
+      <meta
+        name="description"
+        content="Next.js + SWR codebase containing realworld examples (CRUD, auth, advanced patterns, etc) that adheres to the realworld spec and API"
+      />
+    </Head>
+    <div className="home-page">
+      <Banner />
+      <div className="container page">
+        <div className="row">
+          <MainView />
+          <div className="col-md-3">
+            <div className="sidebar">
+              <p>Popular Tags</p>
+              <Tags />
+            </div>
+          </div>
+        </div>
       </div>
-    )
-  }
+    </div>
+  </>
+);
 
-  console.log("products", products)
-  return (
-    <Layout>
-      <MainFeaturedPost post={mainFeaturedPost} />
-      <Container className={classes.cardGrid} maxWidth="xl">
-        <Grid container spacing={4}>
-          {products.map((product) => (
-            <Grid item key={product.id} xs={12} sm={6} md={4}>
-              <Card className={classes.card}>
-                <Link href={`/product/${product.id}`}>
-                  <CardMedia
-                    className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
-                    title="Image title"
-                  />
-                </Link>
-                <CardContent className={classes.cardContent}>
-                  <Typography>{product.product_name}</Typography>
-                  <Typography>
-                    {"$ "}
-                    {product.price}
-                  </Typography>
-                </CardContent>
-                <CardActions className={classes.cardActions}>
-                  <Button size="small" color="primary">
-                    <Rating value={product.average_rating} />
-                    {/* <Typography className={classes.numReviews}>({product.numReviews})</Typography> */}
-                  </Button>
-                  <div onClick={handleClick}>
-                    {state ? (
-                      <FavoriteIcon className={classes.favorite} />
-                    ) : (
-                      <FavoriteBorderIcon className={classes.favorite} />
-                    )}
-                  </div>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-        <Carousel title="Ralated Product" />
-        <Carousel title="Popular products" />
-      </Container>
-    </Layout>
-  )
-}
+export default Home;
