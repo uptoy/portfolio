@@ -5,9 +5,9 @@ import (
 	"crypto/rsa"
 	"log"
 
+	"github.com/google/uuid"
 	"backend/model"
 	"backend/model/apperrors"
-	"github.com/google/uuid"
 )
 
 // tokenService used for injecting an implementation of TokenRepository

@@ -2,9 +2,11 @@ package service
 
 import (
 	"context"
-	// "fmt"
-	// "fmt"
+	"fmt"
 	"log"
+	// "mime/multipart"
+	// "net/url"
+	// "path"
 
 	"backend/model"
 	"backend/model/apperrors"
@@ -55,7 +57,6 @@ func (s *userService) Signup(ctx context.Context, u *model.User) (*model.User, e
 	// now I realize why I originally used Signup(ctx, email, password)
 	// then created a user. It's somewhat un-natural to mutate the user here
 	u.Password = pw
-
 	user, err := s.UserRepository.Create(ctx, u)
 	if err != nil {
 		log.Printf("Unable to signup user for email: %v\n", u.Email)
@@ -63,12 +64,19 @@ func (s *userService) Signup(ctx context.Context, u *model.User) (*model.User, e
 	}
 	uid := user.UID
 
-	_, err = s.CartRepository.CartCreate(ctx, uid)
+	// If we get around to adding events, we'd Publish it here
+	cart, err := s.CartRepository.CartCreate(ctx, uid)
 	if err != nil {
 		log.Printf("Unable to signup user for email: %v\n", u.Email)
 		return nil, apperrors.NewInternal()
 	}
-	// fmt.Println("cart", cart)
+	fmt.Println("cart", cart)
+	// err := s.EventsBroker.PublishUserUpdated(u, true)
+
+	// if err != nil {
+	// 	return nil, apperrors.NewInternal()
+	// }
+
 	return user, nil
 }
 
@@ -79,14 +87,12 @@ func (s *userService) Signup(ctx context.Context, u *model.User) (*model.User, e
 func (s *userService) Signin(ctx context.Context, u *model.User) (*model.User, error) {
 	uFetched, err := s.UserRepository.FindByEmail(ctx, u.Email)
 
-	// // Will return NotAuthorized to client to omit details of why
+	// Will return NotAuthorized to client to omit details of why
 	if err != nil {
 		return nil, apperrors.NewAuthorization("Invalid email and password combination")
 	}
 
-	// fmt.Println("uFetched.Password",uFetched.Password)
-	// fmt.Println("u.Password",u.Password)
-	// // verify password - we previously created this method
+	// verify password - we previously created this method
 	match, err := comparePasswords(uFetched.Password, u.Password)
 
 	if err != nil {
@@ -97,7 +103,7 @@ func (s *userService) Signin(ctx context.Context, u *model.User) (*model.User, e
 		return nil, apperrors.NewAuthorization("Invalid email and password combination")
 	}
 
-	// *u = *uFetched
+	*u = *uFetched
 	return uFetched, nil
 }
 
@@ -109,7 +115,22 @@ func (s *userService) UpdateDetails(ctx context.Context, u *model.User) error {
 		return err
 	}
 
+	// // Publish user updated
+	// err = s.EventsBroker.PublishUserUpdated(u, false)
+	// if err != nil {
+	// 	return apperrors.NewInternal()
+	// }
+
 	return nil
+}
+
+func (s *userService) FindByEmail(ctx context.Context, email string) (*model.User, error) {
+	result, err := s.UserRepository.FindByEmail(ctx, email)
+
+	if err != nil {
+		return result, err
+	}
+	return result, err
 }
 
 func (s *userService) Count(ctx context.Context) (int, error) {
@@ -123,14 +144,6 @@ func (s *userService) Count(ctx context.Context) (int, error) {
 
 func (s *userService) GetList(ctx context.Context) ([]*model.User, error) {
 	result, err := s.UserRepository.GetList(ctx)
-	if err != nil {
-		return result, err
-	}
-	return result, err
-}
-
-func (s *userService) FindByEmail(ctx context.Context, email string) (*model.User, error) {
-	result, err := s.UserRepository.FindByEmail(ctx, email)
 	if err != nil {
 		return result, err
 	}

@@ -6,9 +6,9 @@ import (
 	"log"
 	"time"
 
-	"backend/model"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/google/uuid"
+	"backend/model"
 )
 
 // idTokenCustomClaims holds structure of jwt claims of idToken
@@ -39,24 +39,6 @@ func generateIDToken(u *model.User, key *rsa.PrivateKey, exp int64) (string, err
 		return "", err
 	}
 
-	return ss, nil
-}
-
-func generateForgotPasswordToken(email string, key *rsa.PrivateKey, exp int64) (string, error) {
-	unixTime := time.Now().Unix()
-	tokenExp := unixTime + exp
-	claims := idTokenCustomClaims{
-		StandardClaims: jwt.StandardClaims{
-			IssuedAt:  unixTime,
-			ExpiresAt: tokenExp,
-		},
-	}
-	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
-	ss, err := token.SignedString(key)
-	if err != nil {
-		log.Println("Failed to forgot password token string")
-		return "", err
-	}
 	return ss, nil
 }
 
@@ -161,4 +143,22 @@ func validateRefreshToken(tokenString string, key string) (*refreshTokenCustomCl
 	}
 
 	return claims, nil
+}
+
+func generateForgotPasswordToken(email string, key *rsa.PrivateKey, exp int64) (string, error) {
+	unixTime := time.Now().Unix()
+	tokenExp := unixTime + exp
+	claims := idTokenCustomClaims{
+		StandardClaims: jwt.StandardClaims{
+			IssuedAt:  unixTime,
+			ExpiresAt: tokenExp,
+		},
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
+	ss, err := token.SignedString(key)
+	if err != nil {
+		log.Println("Failed to forgot password token string")
+		return "", err
+	}
+	return ss, nil
 }

@@ -35,32 +35,35 @@ func (h *Handler) CartGet(c *gin.Context) {
 }
 
 func (h *Handler) CartAddItem(c *gin.Context) {
-	ctx := c.Request.Context()
-	authUser := c.MustGet("user").(*model.User)
-	userId := authUser.UID
-	cartId, err := h.CartService.CartGetId(ctx, userId)
-	if err != nil {
-		log.Printf("Failed to get cart id: %v\n", err.Error())
-		c.JSON(apperrors.Status(err), gin.H{
-			"error": err,
-		})
-		return
-	}
-	var json model.CartItem
-	if err := c.ShouldBindJSON(&json); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	json = model.CartItem{
-		CartId:    cartId,
-		ProductId: json.ProductId,
-		Quantity:  json.Quantity,
-	}
-	cart, err := h.CartService.CartAddItem(ctx, &json)
-	if err != nil {
-		c.IndentedJSON(http.StatusInternalServerError, err)
-	}
-	c.IndentedJSON(http.StatusAccepted, cart)
+	// ctx := c.Request.Context()
+	// authUser := c.MustGet("user").(*model.User)
+	// userId := authUser.UID
+	// cartId, err := h.CartService.CartGetId(ctx, userId)
+	// if err != nil {
+	// 	log.Printf("Failed to get cart id: %v\n", err.Error())
+	// 	c.JSON(apperrors.Status(err), gin.H{
+	// 		"error": err,
+	// 	})
+	// 	return
+	// }
+	// var json model.CartItem
+	// if err := c.ShouldBindJSON(&json); err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	// 	return
+	// }
+	// json = model.CartItem{
+	// 	CartId:    cartId,
+	// 	ProductId: json.ProductId,
+	// 	Quantity:  json.Quantity,
+	// }
+	// cart, err := h.CartService.CartAddItem(ctx, &json)
+	// if err != nil {
+	// 	c.IndentedJSON(http.StatusInternalServerError, err)
+	// }
+	// c.IndentedJSON(http.StatusAccepted, cart)
+	c.JSON(http.StatusOK, gin.H{
+		"cart": "OK",
+	})
 }
 
 func (h *Handler) CartDeleteItem(c *gin.Context) {

@@ -1,12 +1,13 @@
 package handler
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"backend/model"
 	"backend/model/apperrors"
-	"github.com/gin-gonic/gin"
 )
 
 // signinReq is not exported
@@ -27,9 +28,9 @@ func (h *Handler) Signin(c *gin.Context) {
 		Email:    req.Email,
 		Password: req.Password,
 	}
-
 	ctx := c.Request.Context()
-	result, err := h.UserService.Signin(ctx, u)
+	user,err := h.UserService.Signin(ctx, u)
+	fmt.Println(user)
 
 	if err != nil {
 		log.Printf("Failed to sign in user: %v\n", err.Error())
@@ -52,6 +53,5 @@ func (h *Handler) Signin(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"tokens": tokens,
-		"user":   result,
 	})
 }

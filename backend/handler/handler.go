@@ -197,10 +197,10 @@ func NewHandler(c *Config) {
 		address.PUT("/:id", h.AddressUserUpdate)
 		address.DELETE("/:id", h.AddressUserDelete)
 	}
-	chat := api.Group("/chat")
+	// chat := api.Group("/chat")
 	{
 		// chat.GET("", h.ChatRoom)
-		chat.GET("/ws", h.WsEndpoint)
+		// chat.GET("/ws", h.WsEndpoint)
 		// chat.GET("/room/:roomId",)
 		//  router.GET("/ws/:roomId", func(c *gin.Context) {
 		//     roomId := c.Param("roomId")

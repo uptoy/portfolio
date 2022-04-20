@@ -1,11 +1,13 @@
 package handler
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"backend/model"
 	"backend/model/apperrors"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,6 +16,7 @@ import (
 func (h *Handler) Me(c *gin.Context) {
 	// A *model.User will eventually be added to context in middleware
 	user, exists := c.Get("user")
+	fmt.Println("user", user)
 
 	// This shouldn't happen, as our middleware ought to throw an error.
 	// This is an extra safety measure
