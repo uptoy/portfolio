@@ -33,7 +33,6 @@ func (pj *productJoin) ToProduct() *model.Product {
 		CategoryId:    pj.CategoryId,
 		CountInStock:  pj.CountInStock,
 		Description:   pj.Description,
-		AverageRating: pj.AverageRating,
 		CreatedAt:     pj.CreatedAt,
 		UpdatedAt:     pj.UpdatedAt,
 		Category: &model.Category{

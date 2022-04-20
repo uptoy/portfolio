@@ -125,6 +125,7 @@ func (m *MockProductService) BulkDelete(ctx context.Context) ([]model.Product, e
 	}
 	return r0, r1
 }
+
 // func (m *MockProductService) ProductFindByIDJoin(ctx context.Context, productId int64) (*model.Product, error) {
 // 	ret := m.Called(ctx, productId)
 // 	var r0 *model.Product
@@ -162,5 +163,19 @@ func (m *MockProductService) ProductListByIDS(ctx context.Context, ids []int64) 
 		r1 = ret.Get(1).(error)
 	}
 	return r0, r1
+
+}
+
+func (m *MockProductService) ImageBulkInsert(ctx context.Context, images []*model.ProductImage) (error) {
+	ret := m.Called(ctx, images)
+	// var r0 []*model.ProductImage
+	// if ret.Get(0) != nil {
+	// 	r0 = ret.Get(0).([]*model.ProductImage)
+	// }
+	var r1 error
+	if ret.Get(1) != nil {
+		r1 = ret.Get(1).(error)
+	}
+	return r1
 
 }

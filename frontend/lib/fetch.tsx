@@ -1,4 +1,10 @@
-export default async function fetcher(url:any) {
-  const res = await fetch(url)
-  return res.json()
-}
+import axios from "axios"
+import apiClient from "lib/apiClient"
+const fetcher = (url: string) => apiClient.get(url).then((res) => res.data)
+
+export default fetcher
+
+// export default async function fetcher(url: string) {
+//   const res = await axios.get(url).then((res) => res.data)
+//   return res.json()
+// }

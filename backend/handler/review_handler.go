@@ -12,9 +12,9 @@ import (
 	// "fmt"
 	// "mime/multipart"
 
-	"backend/utils"
-	"math/rand"
-	"time"
+	// "backend/utils"
+	// "math/rand"
+	// "time"
 
 	"github.com/gin-gonic/gin"
 	// "github.com/google/uuid"
@@ -190,69 +190,69 @@ func (h *Handler) ReviewCount(c *gin.Context) {
 	})
 }
 
-func (h *Handler) SeedReview(c *gin.Context) {
-	randText := utils.RandStringRunes()
-	rand.Seed(time.Now().UnixNano())
-	// randInt := int64(rand.Intn(100) + 1)
-	rating := int64(rand.Intn(5) + 1)
-	// categoryId := int64(rand.Intn(5) + 1)
-	// uid, _ := uuid.NewRandom()
-	// productId := int64(rand.Intn(23) + 1)
-	// productId := int64(25)
-	ctx := c.Request.Context()
+// func (h *Handler) SeedReview(c *gin.Context) {
+// 	randText := utils.RandStringRunes()
+// 	rand.Seed(time.Now().UnixNano())
+// 	// randInt := int64(rand.Intn(100) + 1)
+// 	rating := int64(rand.Intn(5) + 1)
+// 	// categoryId := int64(rand.Intn(5) + 1)
+// 	// uid, _ := uuid.NewRandom()
+// 	// productId := int64(rand.Intn(23) + 1)
+// 	// productId := int64(25)
+// 	ctx := c.Request.Context()
 
-	//! User
-	// u := &model.User{
-	// 	Name:     randText,
-	// 	Email:    randText,
-	// 	Password: "password",
-	// }
-	result, _ := h.UserService.FindByEmail(ctx, "JaOHAe5gisomfHsntld0")
-	userId := result.UID
+// 	//! User
+// 	// u := &model.User{
+// 	// 	Name:     randText,
+// 	// 	Email:    randText,
+// 	// 	Password: "password",
+// 	// }
+// 	result, _ := h.UserService.FindByEmail(ctx, "JaOHAe5gisomfHsntld0")
+// 	userId := result.UID
 
-	// result, _ := h.UserService.Signup(ctx, u)
-	//! Category
-	// category := &model.Category{
-	// 	CategoryName: randText,
-	// }
-	// result1, _ := h.CategoryService.CategoryCreate(ctx, category)
-	// fmt.Println(result1)
-	// categoryId := result1.ID
-	//! Product
-	// product := &model.Product{
-	// 	// Id:            productId,
-	// 	ProductName:   randText,
-	// 	Slug:          randText,
-	// 	Brand:         randText,
-	// 	Price:         randInt,
-	// 	CategoryId:    categoryId,
-	// 	CountInStock:  randInt,
-	// 	Description:   randText,
-	// 	AverageRating: rating,
-	// }
-	// image := utils.RandImage()
-	// var files []*multipart.FileHeader
-	// result2, _ := h.ProductService.ProductCreate(ctx, product, files)
-	// fmt.Println(result2)
-	productId := int64(25)
-	review := &model.ProductReview{
-		UserID:    userId,
-		ProductID: productId,
-		Rating:    rating,
-		Title:     randText,
-		Comment:   randText,
-	}
-	//! Review
-	// fmt.Println("review",review)
-	result3, _ := h.ReviewService.ReviewCreate(ctx, productId, review)
-	result4, _ := h.ReviewService.GetAll(ctx, productId)
-	// fmt.Println(result4)
-	c.JSON(http.StatusOK, gin.H{
-		"data":  result3,
-		"data1": result4,
-	})
+// 	// result, _ := h.UserService.Signup(ctx, u)
+// 	//! Category
+// 	// category := &model.Category{
+// 	// 	CategoryName: randText,
+// 	// }
+// 	// result1, _ := h.CategoryService.CategoryCreate(ctx, category)
+// 	// fmt.Println(result1)
+// 	// categoryId := result1.ID
+// 	//! Product
+// 	// product := &model.Product{
+// 	// 	// Id:            productId,
+// 	// 	ProductName:   randText,
+// 	// 	Slug:          randText,
+// 	// 	Brand:         randText,
+// 	// 	Price:         randInt,
+// 	// 	CategoryId:    categoryId,
+// 	// 	CountInStock:  randInt,
+// 	// 	Description:   randText,
+// 	// 	AverageRating: rating,
+// 	// }
+// 	// image := utils.RandImage()
+// 	// var files []*multipart.FileHeader
+// 	// result2, _ := h.ProductService.ProductCreate(ctx, product, files)
+// 	// fmt.Println(result2)
+// 	productId := int64(25)
+// 	review := &model.ProductReview{
+// 		UserID:    userId,
+// 		ProductID: productId,
+// 		Rating:    rating,
+// 		Title:     randText,
+// 		Comment:   randText,
+// 	}
+// 	//! Review
+// 	// fmt.Println("review",review)
+// 	result3, _ := h.ReviewService.ReviewCreate(ctx, productId, review)
+// 	result4, _ := h.ReviewService.GetAll(ctx, productId)
+// 	// fmt.Println(result4)
+// 	c.JSON(http.StatusOK, gin.H{
+// 		"data":  result3,
+// 		"data1": result4,
+// 	})
 
-}
+// }
 
 // func (h *Handler) ConfirmCreateReviewFlow(c *gin.Context) {
 // 	ctx := c.Request.Context()

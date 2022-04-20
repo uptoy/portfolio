@@ -120,7 +120,7 @@ func (r *pGCategoryRepository) BulkDelete(ctx context.Context) ([]model.Category
 }
 
 func (r *pGCategoryRepository) BulkInsert(ctx context.Context, categories []model.Category) ([]model.Category, error) {
-	query := "INSERT INTO categories (category_name,created_at,updated_at) values (:category_name,:created_at,:updated_at)"
+	query := "INSERT INTO categories (category_name,created_at,updated_at) values (:category_name,:created_at,:updated_at) RETURNING *"
 	for _, category := range categories {
 		category.PreSave()
 	}

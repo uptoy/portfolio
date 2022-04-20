@@ -51,7 +51,6 @@ func (h *Handler) WishlistCreate(c *gin.Context) {
 		CategoryId:    json.CategoryId,
 		CountInStock:  json.CountInStock,
 		Description:   json.Description,
-		AverageRating: json.AverageRating,
 	}
 	user, exists := c.Get("user")
 	if !exists {

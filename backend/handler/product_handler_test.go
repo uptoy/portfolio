@@ -40,7 +40,6 @@ func TestProductList(t *testing.T) {
 			CategoryId:    1,
 			CountInStock:  1,
 			Description:   "description1",
-			AverageRating: 1,
 			CreatedAt:     time.Now(),
 			UpdatedAt:     time.Now(),
 		}
@@ -53,7 +52,6 @@ func TestProductList(t *testing.T) {
 			CategoryId:    2,
 			CountInStock:  2,
 			Description:   "description2",
-			AverageRating: 2,
 			CreatedAt:     time.Now(),
 			UpdatedAt:     time.Now(),
 		}
@@ -96,7 +94,6 @@ func TestProductCreate(t *testing.T) {
 			CategoryId:    1,
 			CountInStock:  1,
 			Description:   "desc",
-			AverageRating: 1,
 			CreatedAt:     time.Now(),
 			UpdatedAt:     time.Now(),
 		}
@@ -108,7 +105,6 @@ func TestProductCreate(t *testing.T) {
 			"category_id":    json1.CategoryId,
 			"count_in_stock": json1.CountInStock,
 			"description":    json1.Description,
-			"average_rating": json1.AverageRating,
 			"created_at":     json1.CreatedAt,
 			"updated_at":     json1.UpdatedAt,
 		})
@@ -152,7 +148,6 @@ func TestProductFindByID(t *testing.T) {
 			CategoryId:    1,
 			CountInStock:  1,
 			Description:   "desc",
-			AverageRating: 1,
 			CreatedAt:     time.Now(),
 			UpdatedAt:     time.Now(),
 		}
@@ -194,7 +189,6 @@ func TestProductFindByName(t *testing.T) {
 			CategoryId:    1,
 			CountInStock:  1,
 			Description:   "desc",
-			AverageRating: 1,
 			CreatedAt:     time.Now(),
 			UpdatedAt:     time.Now(),
 		}
@@ -237,7 +231,6 @@ func TestProductUpdate(t *testing.T) {
 			CategoryId:    1,
 			CountInStock:  1,
 			Description:   "desc",
-			AverageRating: 1,
 			CreatedAt:     time.Now(),
 			UpdatedAt:     time.Now(),
 		}
@@ -249,7 +242,6 @@ func TestProductUpdate(t *testing.T) {
 			"category_id":    json1.CategoryId,
 			"count_in_stock": json1.CountInStock,
 			"description":    json1.Description,
-			"average_rating": json1.AverageRating,
 			"created_at":     json1.CreatedAt,
 			"updated_at":     json1.UpdatedAt,
 		})
@@ -294,7 +286,6 @@ func TestProductDelete(t *testing.T) {
 			CategoryId:    1,
 			CountInStock:  1,
 			Description:   "desc",
-			AverageRating: 1,
 			CreatedAt:     time.Now(),
 			UpdatedAt:     time.Now(),
 		}

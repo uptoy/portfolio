@@ -16,21 +16,15 @@ import {
 import {makeStyles} from "@material-ui/styles"
 import {Layout} from "components/organisms"
 import {mainFeaturedPost} from "utils/seed"
-// import { products } from "utils/seed"
 import {red, common} from "@material-ui/core/colors"
 import Link from "components/Link"
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"
 import FavoriteIcon from "@material-ui/icons/Favorite"
-import Image from "next/image"
+import {Product} from "types"
+import fetcher from "lib/fetch"
+import {useProducts} from "lib/api/product"
 
-async function fetcher(url: any) {
-  const res = await fetch(url)
-  return res.json()
-}
 
-function useProjects() {
-  return useSWR("http://localhost:8080/api/products", fetcher)
-}
 
 const useStyles: any = makeStyles(() => ({
   cardGrid: {
@@ -70,7 +64,7 @@ export default function Index() {
   const handleClick = () => {
     setState(!state)
   }
-  const {data, error} = useProjects()
+  const {data, error} = useProducts()
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
   const products = data.data
@@ -82,7 +76,7 @@ export default function Index() {
         <Container className={classes.cardGrid} maxWidth="xl">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {products.map((product: any) => (
+            {products.map((product: Product) => (
               <Grid item key={product.id} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <Link href={`/product/${product.id}`}>
@@ -93,7 +87,7 @@ export default function Index() {
                     />
                   </Link>
                   <CardContent className={classes.cardContent}>
-                    <Typography>{product.name}</Typography>
+                    <Typography>{product.product_name}</Typography>
                     <Typography>
                       {"$ "}
                       {product.price}
@@ -101,8 +95,10 @@ export default function Index() {
                   </CardContent>
                   <CardActions className={classes.cardActions}>
                     <Button size="small" color="primary">
-                      <Rating value={product.rating} />
-                      <Typography className={classes.numReviews}>({product.numReviews})</Typography>
+                      <Rating value={product.reviews[0].rating} />
+                      <Typography className={classes.numReviews}>
+                        ({product.reviews.length})
+                      </Typography>
                     </Button>
                     <div onClick={handleClick}>
                       {state ? (

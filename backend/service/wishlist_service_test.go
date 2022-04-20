@@ -25,7 +25,6 @@ func TestWishlistCreate(t *testing.T) {
 			CategoryId:    1,
 			CountInStock:  1,
 			Description:   "description",
-			AverageRating: 5,
 		}
 		mockProduct2 := model.Product{
 			Id:     1,
@@ -36,7 +35,6 @@ func TestWishlistCreate(t *testing.T) {
 			CategoryId:    2,
 			CountInStock:  1,
 			Description:   "description1",
-			AverageRating: 5,
 		}
 		mockProductList := []model.Product{mockProduct0, mockProduct2}
 		uid, _ := uuid.NewRandom()
@@ -73,7 +71,6 @@ func TestWishlistGet(t *testing.T) {
 			CategoryId:    1,
 			CountInStock:  1,
 			Description:   "description",
-			AverageRating: 5,
 		}
 		mockProduct2 := model.Product{
 			Id:     1,
@@ -84,7 +81,6 @@ func TestWishlistGet(t *testing.T) {
 			CategoryId:    2,
 			CountInStock:  1,
 			Description:   "description1",
-			AverageRating: 5,
 		}
 		mockProductList := []model.Product{mockProduct0, mockProduct2}
 		uid, _ := uuid.NewRandom()
@@ -121,7 +117,6 @@ func TestWishlistDelete(t *testing.T) {
 			CategoryId:    1,
 			CountInStock:  1,
 			Description:   "description",
-			AverageRating: 5,
 		}
 		mockProduct2 := model.Product{
 			Id:     1,
@@ -132,7 +127,6 @@ func TestWishlistDelete(t *testing.T) {
 			CategoryId:    2,
 			CountInStock:  1,
 			Description:   "description1",
-			AverageRating: 5,
 		}
 		mockProductList := []model.Product{mockProduct1}
 		uid, _ := uuid.NewRandom()

@@ -1,11 +1,12 @@
-import React, { useState } from "react"
-import { makeStyles } from "@material-ui/styles"
-import { Swiper, SwiperSlide } from "swiper/react"
-import { FreeMode, Navigation, Thumbs } from "swiper"
+import React, {useState} from "react"
+import {makeStyles} from "@material-ui/styles"
+import {Swiper, SwiperSlide} from "swiper/react"
+import {FreeMode, Navigation, Thumbs} from "swiper"
 import "swiper/css"
 import "swiper/css/free-mode"
 import "swiper/css/navigation"
 import "swiper/css/thumbs"
+import {Image} from "types"
 
 const useStyles: any = makeStyles(() => ({
   swiperBox: {
@@ -29,13 +30,19 @@ const useStyles: any = makeStyles(() => ({
   },
 }))
 
-const CarouselThumbs = () => {
-  const images = [
+interface IProps {
+  images: Image[]
+}
+
+const CarouselThumbs: React.FC<IProps> = ({images}) => {
+  const images1 = [
     "https://swiperjs.com/demos/images/nature-1.jpg",
     "https://swiperjs.com/demos/images/nature-2.jpg",
     "https://swiperjs.com/demos/images/nature-3.jpg",
     "https://swiperjs.com/demos/images/nature-4.jpg",
     "https://swiperjs.com/demos/images/nature-5.jpg",
+  ]
+  const images2 = [
     "https://swiperjs.com/demos/images/nature-6.jpg",
     "https://swiperjs.com/demos/images/nature-7.jpg",
     "https://swiperjs.com/demos/images/nature-8.jpg",
@@ -48,20 +55,20 @@ const CarouselThumbs = () => {
     <>
       <div className={classes.swiperBox}>
         <Swiper
-          style={{
-            "--swiper-navigation-color": "#fff",
-            "--swiper-pagination-color": "#fff",
-          }}
+          // style={{
+          //   "--swiper-navigation-color": "#fff",
+          //   "--swiper-pagination-color": "#fff",
+          // }}
           loop={true}
           spaceBetween={10}
           navigation={true}
-          thumbs={{ swiper: thumbsSwiper }}
+          thumbs={{swiper: thumbsSwiper}}
           modules={[FreeMode, Navigation, Thumbs]}
           className={`mySwiper2 ${classes.mySwiper2}`}
         >
-          {images.map((image) => (
-            <SwiperSlide className={classes.swiperSlide}>
-              <img className={classes.img} src={image} />
+          {images.map((image, index) => (
+            <SwiperSlide key={index} className={classes.swiperSlide}>
+              <img className={classes.img} src={image.url} />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -75,9 +82,9 @@ const CarouselThumbs = () => {
           modules={[FreeMode, Navigation, Thumbs]}
           className={`mySwiper ${classes.mySwiper}`}
         >
-          {images.map((image) => (
-            <SwiperSlide className={classes.swiperSlide}>
-              <img className={classes.img} src={image} />
+          {images.map((image, index) => (
+            <SwiperSlide key={index} className={classes.swiperSlide}>
+              <img className={classes.img} src={image.url} />
             </SwiperSlide>
           ))}
         </Swiper>

@@ -3,7 +3,6 @@ package service
 import (
 	"backend/model"
 	"context"
-	"fmt"
 )
 
 type reviewService struct {
@@ -28,8 +27,6 @@ func (s *reviewService) ReviewBulkInsert(ctx context.Context, reviews []model.Pr
 	return review, nil
 }
 func (s *reviewService) ReviewCreate(ctx context.Context, productId int64, review *model.ProductReview) (*model.ProductReview, error) {
-	fmt.Println("review", review)
-	fmt.Println("productId", productId)
 	review, err := s.ReviewRepository.ReviewCreate(ctx, productId, review)
 	if err != nil {
 		return nil, err

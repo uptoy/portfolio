@@ -167,13 +167,13 @@ func (s *productService) BulkInsert(ctx context.Context, products []model.Produc
 	return products, nil
 }
 
-// func (s *productService) ProductFindByIDJoin(ctx context.Context, productId int64) (*model.Product, error) {
-// 	product, err := s.ProductRepository.ProductFindByIDJoin(ctx, productId)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return product, nil
-// }
+func (s *productService) ImageBulkInsert(ctx context.Context, images []*model.ProductImage) error {
+	err := s.ProductImageRepository.BulkInsert(ctx, images)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 func (s *productService) ProductCount(ctx context.Context) (int, error) {
 	count, err := s.ProductRepository.ProductCount(ctx)

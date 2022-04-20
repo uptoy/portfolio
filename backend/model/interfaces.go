@@ -145,6 +145,7 @@ type ProductService interface {
 	// ProductFindByIDJoin(ctx context.Context, productId int64) (*Product, error)
 	ProductCount(ctx context.Context) (int, error)
 	ProductListByIDS(ctx context.Context, ids []int64) ([]*Product, error)
+	ImageBulkInsert(ctx context.Context, images []*ProductImage) (error)
 }
 
 type ReviewService interface {

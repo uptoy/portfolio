@@ -18,15 +18,17 @@ import {
   ListItem,
   Typography,
   Card,
-  Paper
+  Paper,
+  CircularProgress,
 } from "@material-ui/core"
 import Image from "next/image"
 import {useRouter} from "next/router"
 import NextLink from "next/link"
-import {IProduct} from "types"
+import {Product} from "types"
 import {makeStyles} from "@material-ui/styles"
 import theme from "theme"
-import {products} from "utils/seed"
+import {useCart} from "lib/api/product"
+// import {products} from "utils/seed"
 
 const useStyles: any = makeStyles(() => ({
   checkout: {
@@ -40,10 +42,16 @@ const useStyles: any = makeStyles(() => ({
 const Cart: NextPage = () => {
   const classes = useStyles()
   const router = useRouter()
-  const cartItems = products
-  const updateCartHandler = async (item: IProduct, quantity: number) => {}
+  // const updateCartHandler = async (item: Product, quantity: number) => {}
+  const removeItemHandler = (item: Product) => {}
 
-  const removeItemHandler = (item: IProduct) => {}
+  const {data, error} = useCart(id)
+  if (error) return <div>failed to load</div>
+  if (!data) return <CircularProgress color="secondary" />
+  const product = data.data
+  if (!product) {
+    return <div>Product Not Found</div>
+  }
 
   const checkoutHandler = () => {
     router.push("/checkout")
@@ -75,8 +83,8 @@ const Cart: NextPage = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {cartItems.map((item) => (
-                        <TableRow key={item._id}>
+                      {cartItems.map((item: Product) => (
+                        <TableRow key={item.id}>
                           <TableCell>
                             <NextLink href={`/product/${item.slug}`} passHref>
                               <Link>

@@ -52,7 +52,6 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 	category_id, _ := strconv.Atoi(value["category_id"][0])
 	count_in_stock, _ := strconv.Atoi(value["count_in_stock"][0])
 	description := value["description"][0]
-	average_rating, _ := strconv.Atoi(value["average_rating"][0])
 
 	json := model.Product{
 		ProductName:   product_name,
@@ -62,7 +61,6 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 		CategoryId:    int64(category_id),
 		CountInStock:  int64(count_in_stock),
 		Description:   description,
-		AverageRating: int64(average_rating),
 	}
 	ctx := c.Request.Context()
 	product, err := h.ProductService.ProductCreate(ctx, &json, files)
@@ -118,7 +116,6 @@ func (h *Handler) ProductUpdate(c *gin.Context) {
 	category_id, _ := strconv.Atoi(value["category_id"][0])
 	count_in_stock, _ := strconv.Atoi(value["category_id"][0])
 	description := value["description"][0]
-	average_rating, _ := strconv.Atoi(value["average_rating"][0])
 
 	json := model.Product{
 		ProductName:   product_name,
@@ -128,7 +125,6 @@ func (h *Handler) ProductUpdate(c *gin.Context) {
 		CategoryId:    int64(category_id),
 		CountInStock:  int64(count_in_stock),
 		Description:   description,
-		AverageRating: int64(average_rating),
 	}
 	ctx := c.Request.Context()
 	param := c.Param("id")
@@ -245,7 +241,6 @@ func (h *Handler) ProductBulkInsert(c *gin.Context) {
 			CategoryId:    json.CategoryId,
 			CountInStock:  json.CountInStock,
 			Description:   json.Description,
-			AverageRating: json.AverageRating,
 		},
 		)
 	}

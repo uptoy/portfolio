@@ -37,7 +37,6 @@ func TestWishlistGet(t *testing.T) {
 			CategoryId:    1,
 			CountInStock:  1,
 			Description:   "description1",
-			AverageRating: 1,
 			CreatedAt:     time.Now(),
 			UpdatedAt:     time.Now(),
 		}
@@ -49,7 +48,6 @@ func TestWishlistGet(t *testing.T) {
 			CategoryId:    2,
 			CountInStock:  2,
 			Description:   "description2",
-			AverageRating: 2,
 			CreatedAt:     time.Now(),
 			UpdatedAt:     time.Now(),
 		}
@@ -99,7 +97,6 @@ func TestWishlistCreate(t *testing.T) {
 			CategoryId:    1,
 			CountInStock:  1,
 			Description:   "description1",
-			AverageRating: 1,
 			CreatedAt:     time.Now(),
 			UpdatedAt:     time.Now(),
 		}
@@ -112,7 +109,6 @@ func TestWishlistCreate(t *testing.T) {
 			CategoryId:    2,
 			CountInStock:  2,
 			Description:   "description2",
-			AverageRating: 2,
 			CreatedAt:     time.Now(),
 			UpdatedAt:     time.Now(),
 		}
@@ -163,7 +159,6 @@ func TestWishlistDelete(t *testing.T) {
 			CategoryId:    1,
 			CountInStock:  1,
 			Description:   "description1",
-			AverageRating: 1,
 			CreatedAt:     time.Now(),
 			UpdatedAt:     time.Now(),
 		}
@@ -176,7 +171,6 @@ func TestWishlistDelete(t *testing.T) {
 			CategoryId:    2,
 			CountInStock:  2,
 			Description:   "description2",
-			AverageRating: 2,
 			CreatedAt:     time.Now(),
 			UpdatedAt:     time.Now(),
 		}

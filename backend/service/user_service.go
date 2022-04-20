@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	// "fmt"
+	// "fmt"
 	"log"
 
 	"backend/model"
@@ -78,12 +79,14 @@ func (s *userService) Signup(ctx context.Context, u *model.User) (*model.User, e
 func (s *userService) Signin(ctx context.Context, u *model.User) (*model.User, error) {
 	uFetched, err := s.UserRepository.FindByEmail(ctx, u.Email)
 
-	// Will return NotAuthorized to client to omit details of why
+	// // Will return NotAuthorized to client to omit details of why
 	if err != nil {
 		return nil, apperrors.NewAuthorization("Invalid email and password combination")
 	}
 
-	// verify password - we previously created this method
+	// fmt.Println("uFetched.Password",uFetched.Password)
+	// fmt.Println("u.Password",u.Password)
+	// // verify password - we previously created this method
 	match, err := comparePasswords(uFetched.Password, u.Password)
 
 	if err != nil {
@@ -94,7 +97,7 @@ func (s *userService) Signin(ctx context.Context, u *model.User) (*model.User, e
 		return nil, apperrors.NewAuthorization("Invalid email and password combination")
 	}
 
-	*u = *uFetched
+	// *u = *uFetched
 	return uFetched, nil
 }
 

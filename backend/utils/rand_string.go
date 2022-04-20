@@ -2,15 +2,15 @@ package utils
 
 import (
 	"math/rand"
-	"time"
 	"strings"
+	"time"
 )
 
-func RandStringRunes() string {
+func RandStringRunes(n int) string {
 	rand.Seed(time.Now().Unix())
 	var output strings.Builder
 	charSet := "abcdedfghijklmnopqrstABCDEFGHIJKLMNOP0123456789"
-	length := 20
+	length := n
 	for i := 0; i < length; i++ {
 		random := rand.Intn(len(charSet))
 		randomChar := charSet[random]

@@ -1,13 +1,19 @@
-import React, { useState } from "react"
-import { Grid, List, ListItem, Typography, Card, Button } from "@material-ui/core"
-import { Link, Rating, CarouselThumbs, ProductReview, Carousel } from "components"
+import React, {useState} from "react"
+import {CircularProgress, Grid, List, ListItem, Typography, Card, Button} from "@material-ui/core"
+import {Link, Rating, CarouselThumbs, ProductReview, Carousel} from "components"
 import Layout from "components/organisms/Layout"
-import { useRouter } from "next/router"
-import { products } from "utils/seed"
+import {useRouter} from "next/router"
 import theme from "theme"
-import { makeStyles } from "@material-ui/styles"
-import { Select, FormControl, MenuItem } from "@material-ui/core"
+import {makeStyles} from "@material-ui/styles"
+import {Select, FormControl, MenuItem} from "@material-ui/core"
 import Container from "@material-ui/core/Container"
+import {useProductDetail} from "lib/api/product"
+import {useCartAddItem} from "lib/api/cart"
+import axios from "axios"
+import useSWR from "swr"
+import apiClient from "lib/apiClient"
+import fetcher from "lib/fetch"
+import {CartItem} from "types"
 
 const useStyles: any = makeStyles(() => ({
   gridContainer: {
@@ -33,40 +39,56 @@ const useStyles: any = makeStyles(() => ({
   container: {
     marginTop: theme.spacing(3),
   },
+  prgressColor: {
+    color: "#fff",
+  },
 }))
 
 const ProductDetail: React.ReactNode = () => {
-  const product = products[0]
   const [qty, setQty] = useState(1)
   const router = useRouter()
   // const { state, dispatch } = useContext(StoreContext)
   const classes = useStyles()
-
+  const id = router.query.id as string
+  const {data, error} = useProductDetail(id)
+  if (error) return <div>failed to load</div>
+  if (!data) return <CircularProgress color="secondary" />
+  const product = data.data
   if (!product) {
     return <div>Product Not Found</div>
   }
 
+  const images = data.data.images
+  const reviews = data.data.reviews
+  const countInStock = data.data.count_in_stock
+
   const addToCartHandler = async () => {
-    // const existItem = state.cart.cartItems.find((x) => x._id === product._id)
-    // const quantity = existItem ? existItem.quantity + 1 : 1
-    // const { data } = await axios.get(`/api/products/${product._id}`)
-    // if (data.countInStock < quantity) {
-    //   window.alert('Sorry. Product is out of stock')
-    //   return
-    // }
-    // dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } })
-    // router.push('/cart')
+    console.log("qty", qty)
+    const cartItem: CartItem = {
+      product_id: Number(id),
+      quantity: qty,
+    }
+    useCartAddItem(cartItem)
+    if (countInStock < qty) {
+      window.alert("Sorry. Product is out of stock")
+      return
+    }
+    router.push("/cart")
+    console.log("cartItem", cartItem)
   }
-  const productId = "1"
-  const handleChange = (event: any) => {
-    setQty(event.target.value)
+
+  const handleChange = (e: any) => {
+    setQty(e.target.value)
   }
+  const average = (arr: any) => arr.reduce((a: any, b: any) => a + b, 0) / arr.length
+  const averageNum = average(product.reviews.map((review: any) => review.rating))
+
   return (
     <Layout>
       <Container maxWidth="xl" className={classes.container}>
         <Grid container my={6} className={classes.gridContainer}>
           <Grid item xs>
-            <CarouselThumbs />
+            <CarouselThumbs images={images} />
           </Grid>
           {/* Center */}
           <Grid item xs={4}>
@@ -78,12 +100,12 @@ const ProductDetail: React.ReactNode = () => {
               </ListItem>
               <ListItem>
                 <Rating
-                  value={product.rating}
+                  value={averageNum}
                   text={`${product.reviews ? product.reviews.length : 0} reviews`}
                 />
               </ListItem>
               <ListItem>
-                <Typography>Category: {product.category}</Typography>
+                <Typography>Category: {product.category.category_name}</Typography>
               </ListItem>
               <ListItem>
                 <Typography>Brand: {product.brand}</Typography>
@@ -113,18 +135,16 @@ const ProductDetail: React.ReactNode = () => {
                       <Typography>Status</Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <Typography>
-                        {product.countInStock > 0 ? "In stock" : "Unavailable"}
-                      </Typography>
+                      <Typography>{countInStock > 0 ? "In stock" : "Unavailable"}</Typography>
                     </Grid>
                   </Grid>
                 </ListItem>
                 <ListItem>
-                  <Grid container style={{ alignItems: "center" }}>
+                  <Grid container style={{alignItems: "center"}}>
                     <Grid item xs={6}>
                       <Typography>Quantity</Typography>
                     </Grid>
-                    {product.countInStock > 0 && (
+                    {countInStock > 0 && (
                       <Grid item xs={6}>
                         <FormControl>
                           <Select
@@ -132,7 +152,7 @@ const ProductDetail: React.ReactNode = () => {
                             onChange={handleChange}
                             displayEmpty
                             className={classes.selectEmpty}
-                            inputProps={{ "aria-label": "Without label" }}
+                            inputProps={{"aria-label": "Without label"}}
                           >
                             <MenuItem value={1}>1</MenuItem>
                             <MenuItem value={2}>2</MenuItem>
@@ -144,22 +164,15 @@ const ProductDetail: React.ReactNode = () => {
                   </Grid>
                 </ListItem>
                 <ListItem>
-                  <Link href="/cart">
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      color="primary"
-                      onClick={addToCartHandler}
-                    >
-                      Add to cart
-                    </Button>
-                  </Link>
+                  <Button fullWidth variant="contained" color="primary" onClick={addToCartHandler}>
+                    Add to cart
+                  </Button>
                 </ListItem>
               </List>
             </Card>
           </Grid>
         </Grid>
-        <ProductReview productId={productId} />
+        <ProductReview reviews={reviews} />
         <Carousel title="Ralated Product" />
         <Carousel title="Popular products" />
       </Container>
@@ -168,16 +181,3 @@ const ProductDetail: React.ReactNode = () => {
 }
 
 export default ProductDetail
-
-// export const getServerSideProps = async (context: any) => {
-//   const { params } = context
-//   const { slug } = params
-//   await db.connect()
-//   const product = await Product.findOne({ slug }).lean()
-//   await db.disconnect()
-//   return {
-//     props: {
-//       product: db.convertDocToObj(product),
-//     },
-//   }
-// }

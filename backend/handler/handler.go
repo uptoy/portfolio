@@ -122,12 +122,11 @@ func NewHandler(c *Config) {
 		products.DELETE("/delete", h.ProductBulkDelete)
 		products.POST("/insert", h.ProductBulkInsert)
 		products.GET("/count", h.ProductCount)
-
 		products.GET("/search/:name", h.ProductFindByName)
 		products.GET("/:id/reviews/insert", h.ReviewBulkInsert)
 		products.DELETE("/:id/reviews/delete", h.ReviewBulkDelete)
 		products.POST("/:id/reviews", h.ReviewCreate)
-		products.GET("/:id/reviews", h.ReviewGetAll)
+		// products.GET("/:id/reviews", h.ReviewGetAll)
 		products.GET("/:id/reviews/count", h.ReviewCount)
 		products.GET("/:id/reviews/:rid", h.ReviewGet)
 		products.PUT("/:id/reviews/:rid", h.ReviewUpdate)
@@ -210,7 +209,10 @@ func NewHandler(c *Config) {
 	}
 	seed := api.Group("/seed")
 	{
-		seed.POST("", h.SeedReview)
+		seed.POST("/category", h.SeedCategory)
+		seed.POST("/product", h.SeedProduct)
+		seed.POST("/image", h.SeedProductImage)
+		seed.POST("/review", h.SeedReview)
 
 	}
 	// image := api.Group("/image")

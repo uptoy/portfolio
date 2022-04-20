@@ -28,8 +28,8 @@ func NewProductRepository(db *sqlx.DB) model.ProductRepository {
 
 func (r *pGProductRepository) ProductCreate(ctx context.Context, p *model.Product) (*model.Product, error) {
 	var id int64
-	query := `INSERT INTO products (product_name, slug, brand, price, category_id, count_in_stock, description,average_rating) VALUES ($1, $2,$3, $4,$5,$6, $7,$8) RETURNING id`
-	if err := r.DB.QueryRowContext(ctx, query, p.ProductName, p.Slug, p.Brand, p.Price, p.CategoryId, p.CountInStock, p.Description, p.AverageRating).Scan(&id); err != nil {
+	query := `INSERT INTO products (product_name, slug, brand, price, category_id, count_in_stock, description,average_rating) VALUES ($1, $2,$3, $4,$5,$6, $7) RETURNING id`
+	if err := r.DB.QueryRowContext(ctx, query, p.ProductName, p.Slug, p.Brand, p.Price, p.CategoryId, p.CountInStock, p.Description).Scan(&id); err != nil {
 		log.Printf("Could not create a product : %v. Reason: %v\n", p.ProductName, err)
 		return nil, apperrors.NewInternal()
 	}
@@ -82,10 +82,10 @@ func (r *pGProductRepository) ProductFindByName(ctx context.Context, productName
 func (r *pGProductRepository) ProductUpdate(ctx context.Context, productId int64, p *model.Product) (*model.Product, error) {
 	query := `
 	UPDATE products
-	SET product_name = $2,slug = $3,brand = $4, price = $5,category_id = $6,count_in_stock = $7,description = $8,average_rating = $9
+	SET product_name = $2,slug = $3,brand = $4, price = $5,category_id = $6,count_in_stock = $7,description = $8
 	WHERE id=$1
 	RETURNING *;`
-	if err := r.DB.GetContext(ctx, p, query, productId, p.ProductName, p.Slug, p.Brand, p.Price, p.CategoryId, p.CountInStock, p.Description, p.AverageRating); err != nil {
+	if err := r.DB.GetContext(ctx, p, query, productId, p.ProductName, p.Slug, p.Brand, p.Price, p.CategoryId, p.CountInStock, p.Description); err != nil {
 		log.Printf("Unable to update product: %v. Err: %v\n", p.ProductName, err)
 		id := strconv.Itoa(int(productId))
 		return nil, apperrors.NewNotFound("product_id", id)
@@ -127,7 +127,7 @@ func (r *pGProductRepository) BulkDelete(ctx context.Context) ([]model.Product, 
 }
 
 func (r *pGProductRepository) BulkInsert(ctx context.Context, products []model.Product) ([]model.Product, error) {
-	query := "INSERT INTO categories (category_name,slug,brand,price,category_id,count_in_stock,description,average_rating,created_at,updated_at) values (:category_name,:slug,:brand,:price,:category_id,:count_in_stock,:description,:average_rating,:created_at,:updated_at)"
+	query := "INSERT INTO products (product_name,slug,brand,price,category_id,count_in_stock,description,created_at,updated_at) values (:product_name,:slug,:brand,:price,:category_id,:count_in_stock,:description,:created_at,:updated_at)"
 	_, err := r.DB.NamedExecContext(ctx, query, products)
 	if err != nil {
 		log.Printf("Unable to bulk insert product: %v. Err: %v\n", products, err)

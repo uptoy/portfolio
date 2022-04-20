@@ -3,7 +3,7 @@ CREATE TABLE product_image (
   product_id INTEGER NOT NULL,
   url TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT (now()),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT (now()),
-  FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT (now())
+  -- FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
 );
 
