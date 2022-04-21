@@ -1,32 +1,41 @@
-import React from 'react'
-import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
-import Grid from '@material-ui/core/Grid'
-import Box from '@material-ui/core/Box'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import Typography from '@material-ui/core/Typography'
-import Container from '@material-ui/core/Container'
-import Link from '../../components/Link'
-import { makeStyles } from '@material-ui/styles'
-import Copyright from 'components/Copyright'
-import theme from 'theme'
+import {SubmitHandler, useForm} from "react-hook-form"
+import React from "react"
+import {SignUpCredentials} from "yub/type"
+import {signUpFormSchema} from "yub/schema"
+import {yupResolver} from "@hookform/resolvers/yup"
+import {useAuth} from "context/AuthContext"
+import {
+  Avatar,
+  Button,
+  TextField,
+  FormControlLabel,
+  Typography,
+  Container,
+  Box,
+  Grid,
+  Checkbox,
+} from "@material-ui/core"
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
+import Link from "components/Link"
+import {makeStyles} from "@material-ui/styles"
+import Copyright from "components/Copyright"
+import theme from "theme"
+
+
+
 const useStyles: any = makeStyles(() => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -36,10 +45,23 @@ const useStyles: any = makeStyles(() => ({
 
 export default function SignUp() {
   const classes = useStyles()
+  const {signUp} = useAuth()
+  // const [loading, setLoading] = useState(false)
+  const {
+    register,
+    formState: {errors},
+    handleSubmit,
+  } = useForm<SignUpCredentials>({
+    resolver: yupResolver(signUpFormSchema),
+  })
+  const handleSignUp: SubmitHandler<SignUpCredentials> = async (formData) => {
+    // setLoading(true)
+    await signUp(formData)
+    // setLoading(false)
+  }
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -47,29 +69,18 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form noValidate onSubmit={handleSubmit(handleSignUp)}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="fname"
-                name="firstName"
+                // name="Name"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="Name"
+                label="Name"
                 autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
+                {...register("name")}
               />
             </Grid>
             <Grid item xs={12}>
@@ -79,8 +90,8 @@ export default function SignUp() {
                 fullWidth
                 id="email"
                 label="Email Address"
-                name="email"
                 autoComplete="email"
+                {...register("email")}
               />
             </Grid>
             <Grid item xs={12}>
@@ -88,11 +99,21 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                name="password"
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
+                {...register("password")}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                label="Password Confirm"
+                type="password"
+                id="password_confirm"
+                {...register('confirmPassword')}
               />
             </Grid>
             <Grid item xs={12}>

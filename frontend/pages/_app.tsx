@@ -6,7 +6,7 @@ import CssBaseline from "@material-ui/core/CssBaseline"
 import theme from "theme"
 import "styles/globals.css"
 // import Layout from "components/common/Layout";
-import ContextProvider from "lib/context"
+import ContextProvider from "context"
 
 export default function MyApp(props: AppProps) {
   const {Component, pageProps} = props
