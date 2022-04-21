@@ -20,11 +20,10 @@ import {red, common} from "@material-ui/core/colors"
 import Link from "components/Link"
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"
 import FavoriteIcon from "@material-ui/icons/Favorite"
-import {Product} from "types"
-import fetcher from "lib/fetch"
-import {useProducts} from "lib/api/product"
-
-
+import {Product} from "@types"
+import {Products} from "services/api/product"
+import {fetcher} from "services/fetcher"
+import {useAuth} from "context/AuthContext"
 
 const useStyles: any = makeStyles(() => ({
   cardGrid: {
@@ -64,7 +63,10 @@ export default function Index() {
   const handleClick = () => {
     setState(!state)
   }
-  const {data, error} = useProducts()
+  const {data, error} = Products()
+
+  const {user} = useAuth()
+  console.log(user)
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
   const products = data.data
@@ -74,12 +76,11 @@ export default function Index() {
       <Layout>
         <MainFeaturedPost post={mainFeaturedPost} />
         <Container className={classes.cardGrid} maxWidth="xl">
-          {/* End hero unit */}
           <Grid container spacing={4}>
             {products.map((product: Product) => (
               <Grid item key={product.id} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
-                  <Link href={`/product/${product.id}`}>
+                  <Link href={`/products/${product.id}`}>
                     <CardMedia
                       className={classes.cardMedia}
                       image={product.images[0].url}

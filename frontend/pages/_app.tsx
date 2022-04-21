@@ -5,7 +5,6 @@ import {ThemeProvider} from "@material-ui/core/styles"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import theme from "theme"
 import "styles/globals.css"
-// import Layout from "components/common/Layout";
 import ContextProvider from "context"
 
 export default function MyApp(props: AppProps) {
@@ -27,9 +26,8 @@ export default function MyApp(props: AppProps) {
       </Head>
       <ThemeProvider theme={theme}>
         <ContextProvider>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <Component {...pageProps} />
+        <CssBaseline />
+        <Component {...pageProps} />
         </ContextProvider>
       </ThemeProvider>
     </React.Fragment>

@@ -19,16 +19,15 @@ import {
   Typography,
   Card,
   Paper,
-  CircularProgress,
 } from "@material-ui/core"
 import Image from "next/image"
 import {useRouter} from "next/router"
 import NextLink from "next/link"
-import {Product} from "types"
+import {Product} from "@types"
+import { Circular } from "components/common/Circular"
 import {makeStyles} from "@material-ui/styles"
 import theme from "theme"
-import {useCart} from "lib/api/product"
-// import {products} from "utils/seed"
+import {CartGet} from "services/api/cart"
 
 const useStyles: any = makeStyles(() => ({
   checkout: {
@@ -44,10 +43,10 @@ const Cart: NextPage = () => {
   const router = useRouter()
   // const updateCartHandler = async (item: Product, quantity: number) => {}
   const removeItemHandler = (item: Product) => {}
-
-  const {data, error} = useCart(id)
+  const {data, error} = CartGet()
+  // console.log(data)
   if (error) return <div>failed to load</div>
-  if (!data) return <CircularProgress color="secondary" />
+  if (!data) return <Circular />
   const product = data.data
   if (!product) {
     return <div>Product Not Found</div>
@@ -59,7 +58,7 @@ const Cart: NextPage = () => {
   return (
     <Layout>
       <Paper style={{padding: 30, marginTop: 50}}>
-        <Typography>Shopping Cart</Typography>
+        {/* <Typography>Shopping Cart</Typography>
         {cartItems.length === 0 ? (
           <div>
             Cart is empty.{" "}
@@ -163,7 +162,7 @@ const Cart: NextPage = () => {
               </Card>
             </Grid>
           </Grid>
-        )}
+        )} */}
       </Paper>
     </Layout>
   )

@@ -1,9 +1,10 @@
 import React from "react"
 import useSWR from "swr"
 import {CustomLink, NavLink} from "components/common"
-import {usePageDispatch} from "lib/context/PageContext"
-import checkLogin from "lib/utils/checkLogin"
-import storage from "lib/utils/storage"
+// import {usePageDispatch} from "lib/context/PageContext"
+// import checkLogin from "lib/utils/checkLogin"
+// import storage from "lib/utils/storage"
+import {useAuth} from "context/AuthContext"
 import {alpha} from "@material-ui/core/styles"
 import {makeStyles} from "@material-ui/styles"
 import Link from "components/Link"
@@ -85,11 +86,14 @@ const useStyles: any = makeStyles(() => ({
 
 // export default function PrimarySearchAppBar(props: HeaderProps) {
 export default function CommonHeader() {
-  const setPage = usePageDispatch()
-  const {data: currentUser} = useSWR("user", storage)
-  const isLoggedIn = checkLogin(currentUser)
+  const {user, isAuthenticated} = useAuth()
+  console.log("user", user)
+  console.log("isAuthenticated", isAuthenticated)
+  // const setPage = usePageDispatch()
+  // const {data: currentUser} = useSWR("/me", storage)
+  // const isLoggedIn = checkLogin(currentUser)
 
-  const handleClick = React.useCallback(() => setPage(0), [])
+  // const handleClick = React.useCallback(() => setPage(0), [])
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
@@ -217,7 +221,7 @@ export default function CommonHeader() {
             </Badge>
           </IconButton>
 
-          {isLoggedIn ? (
+          {isAuthenticated ? (
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -227,12 +231,13 @@ export default function CommonHeader() {
               color="inherit"
             >
               <AccountCircle />
-              <NavLink
-                href={`/profile/${currentUser?.username}`}
-                as={`/profile/${currentUser?.username}`}
+              <p>{user?.name}</p>
+              {/* <NavLink
+                href={`/profile/${user?.name}`}
+                as={`/profile/${user?.name}`}
               >
-                <span onClick={handleClick}>{currentUser?.username}</span>
-              </NavLink>
+                <span >{user?.name}</span>
+              </NavLink> */}
             </IconButton>
           ) : (
             <IconButton
@@ -246,12 +251,12 @@ export default function CommonHeader() {
               <AccountCircle />
               <div>
                 <li className="nav-item">
-                  <NavLink href="/user/login" as="/user/login">
+                  <NavLink href="/auth/signin" as="/auth/signin">
                     Sign in
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink href="/user/register" as="/user/register">
+                  <NavLink href="/auth/signup" as="/auth/signup">
                     Sign up
                   </NavLink>
                 </li>

@@ -1,6 +1,6 @@
 import { Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
-import CircularProgress from '@material-ui/core/CircularProgress'
+import {Circular} from "components/common/Circular"
 import { Theme } from '@material-ui/core/styles'
 import { makeStyles } from '@material-ui/styles'
 
@@ -52,7 +52,7 @@ const ConfirmDialog: React.FC<Props> = ({
           disableElevation
           disabled={isConfirming}
         >
-          {isConfirming ? <CircularProgress size={20} /> : 'Okay'}
+          {isConfirming ? <Circular /> : 'Okay'}
         </Button>
       </div>
     </Modal>

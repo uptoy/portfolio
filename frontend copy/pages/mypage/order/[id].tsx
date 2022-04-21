@@ -6,13 +6,13 @@ import {
   TableRow,
   TableContainer,
   TableHead,
-  CircularProgress,
   Grid,
   List,
   ListItem,
   Typography,
   Card,
 } from '@material-ui/core'
+import {Circular} from "components/common/Circular"
 import Image from 'next/image'
 import * as React from 'react'
 import { Layout } from 'components/organisms'
@@ -45,7 +45,7 @@ const OrderDetail = () => {
         Order {orderId}
       </Typography>
       {loading ? (
-        <CircularProgress />
+        <Circular />
       ) : error ? (
         <Typography>{error}</Typography>
       ) : (
@@ -178,7 +178,7 @@ const OrderDetail = () => {
                 {!isPaid && (
                   <ListItem>
                     {isPending ? (
-                      <CircularProgress />
+                      <Circular />
                     ) : (
                       <div>
                         PayPalButtons

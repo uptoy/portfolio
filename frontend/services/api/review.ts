@@ -1,32 +1,30 @@
 import useSWR from "swr"
-import fetcher from "lib/fetch"
-import {SERVER_BASE_URL} from "../utils/constant"
-import apiClient from "lib/apiClient"
-import {Review} from "types"
-import axios from "axios"
+import fetcher from "services/fetcher"
+import {api} from "services/apiClient"
+import {Review} from "@types"
 
-export const useReviewDetail = (productId: string, reviewId: string) => {
+export const ReviewDetail = (productId: string, reviewId: string) => {
   return useSWR(`products/${productId}/reviews/${reviewId}`, fetcher)
 }
 
-export const useProductFindByName = (name: string) => {
+export const ProductFindByName = (name: string) => {
   return useSWR(`/products/search/${name}`, fetcher)
 }
 
-export const useReviewCount = (id: string) => {
+export const ReviewCount = (id: string) => {
   return useSWR(`/${id}/reviews/count`, fetcher)
 }
 
-export const useReviewAdd = (id: string, review: Review) => {
-  return apiClient.post(`/products/${id}/reviews`, review)
+export const ReviewAdd = (id: string, review: Review) => {
+  return api.post(`/products/${id}/reviews`, review)
 }
 
-export const useReviewUpdate = (productId: string, reviewId: string, review: Review) => {
-  return apiClient.put(`/products/${productId}/reviews/${reviewId}`, review)
+export const ReviewUpdate = (productId: string, reviewId: string, review: Review) => {
+  return api.put(`/products/${productId}/reviews/${reviewId}`, review)
 }
 
-export const useProductDelete = (productId: string, reviewId: string) => {
-  return apiClient.delete(`/products/${productId}/reviews/${reviewId}`)
+export const ProductDelete = (productId: string, reviewId: string) => {
+  return api.delete(`/products/${productId}/reviews/${reviewId}`)
 }
 
 // export const getCart = () => {

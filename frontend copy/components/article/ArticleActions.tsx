@@ -4,7 +4,7 @@ import useSWR, { trigger } from "swr";
 
 import CustomLink from "../common/CustomLink";
 import checkLogin from "../../lib/utils/checkLogin";
-import ArticleAPI from "../../lib/api/article";
+import ArticleAPI from "../../../frontend/services/api/article";
 import { SERVER_BASE_URL } from "../../lib/utils/constant";
 import storage from "../../lib/utils/storage";
 import Maybe from "../common/Maybe";

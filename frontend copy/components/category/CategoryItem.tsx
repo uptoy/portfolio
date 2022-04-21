@@ -15,7 +15,7 @@ import {useState} from "react"
 import toast from "react-hot-toast"
 
 // import { deleteCategory, setSelectedCategory, setSelectedModal } from '../../slice';
-import {ICategory} from "types"
+import {Category} from "@types"
 
 // import { useAppDispatch, useAppSelector } from 'app/hooks';
 

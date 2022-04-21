@@ -15,9 +15,9 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  CircularProgress,
 } from "@material-ui/core"
 import { MypageLayout } from "components/organisms/mypage"
+import {Circular} from "components/common/Circular"
 import { useForm } from "react-hook-form"
 
 const OrderHistory: NextPage = () => {
@@ -41,7 +41,7 @@ const OrderHistory: NextPage = () => {
           </ListItem>
           <ListItem>
             {loading ? (
-              <CircularProgress />
+              <Circular />
             ) : error ? (
               <Typography>{error}</Typography>
             ) : (

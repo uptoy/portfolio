@@ -1,6 +1,5 @@
 import Card from "@material-ui/core/Card"
 import CardContent from "@material-ui/core/CardContent"
-import CircularProgress from "@material-ui/core/CircularProgress"
 import Divider from "@material-ui/core/Divider"
 import List from "@material-ui/core/List"
 import {createStyles} from "@material-ui/core/styles"

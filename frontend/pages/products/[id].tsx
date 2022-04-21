@@ -1,19 +1,18 @@
 import React, {useState} from "react"
 import {CircularProgress, Grid, List, ListItem, Typography, Card, Button} from "@material-ui/core"
-import {Link, Rating, CarouselThumbs, ProductReview, Carousel} from "components"
+import {Rating, CarouselThumbs, ProductReview, Carousel} from "components"
 import Layout from "components/organisms/Layout"
 import {useRouter} from "next/router"
 import theme from "theme"
 import {makeStyles} from "@material-ui/styles"
 import {Select, FormControl, MenuItem} from "@material-ui/core"
 import Container from "@material-ui/core/Container"
-import {useProductDetail} from "lib/api/product"
-import {useCartAddItem} from "lib/api/cart"
+import {Circular} from "components/common/Circular"
+import {ProductFindById} from "services/api/product"
+import {CartAddItem} from "services/api/cart"
 import axios from "axios"
 import useSWR from "swr"
-import apiClient from "lib/apiClient"
-import fetcher from "lib/fetch"
-import {CartItem} from "types"
+import {CartItem} from "@types"
 
 const useStyles: any = makeStyles(() => ({
   gridContainer: {
@@ -47,12 +46,11 @@ const useStyles: any = makeStyles(() => ({
 const ProductDetail: React.ReactNode = () => {
   const [qty, setQty] = useState(1)
   const router = useRouter()
-  // const { state, dispatch } = useContext(StoreContext)
   const classes = useStyles()
   const id = router.query.id as string
-  const {data, error} = useProductDetail(id)
+  const {data, error} = ProductFindById(id)
   if (error) return <div>failed to load</div>
-  if (!data) return <CircularProgress color="secondary" />
+  if (!data) return <Circular />
   const product = data.data
   if (!product) {
     return <div>Product Not Found</div>
@@ -63,18 +61,18 @@ const ProductDetail: React.ReactNode = () => {
   const countInStock = data.data.count_in_stock
 
   const addToCartHandler = async () => {
-    console.log("qty", qty)
+    // console.log("qty", qty)
     const cartItem: CartItem = {
       product_id: Number(id),
       quantity: qty,
     }
-    useCartAddItem(cartItem)
+    CartAddItem(cartItem)
     if (countInStock < qty) {
       window.alert("Sorry. Product is out of stock")
       return
     }
     router.push("/cart")
-    console.log("cartItem", cartItem)
+    // console.log("cartItem", cartItem)
   }
 
   const handleChange = (e: any) => {

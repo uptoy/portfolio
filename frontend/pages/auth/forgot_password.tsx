@@ -73,7 +73,7 @@ export default function ForgotPassword() {
             fullWidth
             id="email"
             label="Email Address"
-            name="email"
+            // name="email"
             autoComplete="email"
             autoFocus
             {...register("email")}

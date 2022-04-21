@@ -1,9 +1,10 @@
 import {SubmitHandler, useForm} from "react-hook-form"
-import React from "react"
+import React, {useState} from "react"
 import {SignUpCredentials} from "yub/type"
 import {signUpFormSchema} from "yub/schema"
 import {yupResolver} from "@hookform/resolvers/yup"
 import {useAuth} from "context/AuthContext"
+import toast from "react-hot-toast"
 import {
   Avatar,
   Button,
@@ -20,8 +21,6 @@ import Link from "components/Link"
 import {makeStyles} from "@material-ui/styles"
 import Copyright from "components/Copyright"
 import theme from "theme"
-
-
 
 const useStyles: any = makeStyles(() => ({
   paper: {
@@ -46,7 +45,7 @@ const useStyles: any = makeStyles(() => ({
 export default function SignUp() {
   const classes = useStyles()
   const {signUp} = useAuth()
-  // const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
   const {
     register,
     formState: {errors},
@@ -55,9 +54,16 @@ export default function SignUp() {
     resolver: yupResolver(signUpFormSchema),
   })
   const handleSignUp: SubmitHandler<SignUpCredentials> = async (formData) => {
-    // setLoading(true)
-    await signUp(formData)
-    // setLoading(false)
+    try {
+      setLoading(true)
+      await signUp(formData)
+      toast.success("Successfully category deleted")
+      setLoading(false)
+    } catch (error) {
+      toast.error(
+        "Sorry we were'nt able to delete this category right now. Please try again later."
+      )
+    }
   }
 
   return (
@@ -69,17 +75,15 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form noValidate onSubmit={handleSubmit(handleSignUp)}>
+        <form noValidate onSubmit={handleSubmit(handleSignUp)} style={{marginTop: "1em"}}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
-                // name="Name"
                 variant="outlined"
                 required
                 fullWidth
-                id="Name"
                 label="Name"
-                autoFocus
+                autoComplete="email"
                 {...register("name")}
               />
             </Grid>
@@ -113,14 +117,14 @@ export default function SignUp() {
                 label="Password Confirm"
                 type="password"
                 id="password_confirm"
-                {...register('confirmPassword')}
+                {...register("confirmPassword")}
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
                 label="I want to receive inspiration, marketing promotions and updates via email."
-              />
+              /> */}
             </Grid>
           </Grid>
           <Button
