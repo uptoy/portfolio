@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, {useEffect, useState} from "react"
 import type {NextPage} from "next"
 import Link from "@material-ui/core/Link"
 import {Layout} from "components/organisms"
@@ -24,10 +24,11 @@ import Image from "next/image"
 import {useRouter} from "next/router"
 import NextLink from "next/link"
 import {Product} from "@types"
-import { Circular } from "components/common/Circular"
+import {Circular} from "components/common/Circular"
 import {makeStyles} from "@material-ui/styles"
 import theme from "theme"
 import {CartGet} from "services/api/cart"
+import {useAuth} from "context/AuthContext"
 
 const useStyles: any = makeStyles(() => ({
   checkout: {
@@ -41,13 +42,22 @@ const useStyles: any = makeStyles(() => ({
 const Cart: NextPage = () => {
   const classes = useStyles()
   const router = useRouter()
+  const {user, isAuthenticated} = useAuth()
+  console.log("cart isAuthenticated", isAuthenticated)
+  console.log("cart user", user)
+
   // const updateCartHandler = async (item: Product, quantity: number) => {}
   const removeItemHandler = (item: Product) => {}
   const {data, error} = CartGet()
-  // console.log(data)
-  if (error) return <div>failed to load</div>
+  error && (
+    <div>
+      <div>failed to load</div>
+      <div>Please Signin</div>
+    </div>
+  )
   if (!data) return <Circular />
   const product = data.data
+  console.log("cart product", product)
   if (!product) {
     return <div>Product Not Found</div>
   }

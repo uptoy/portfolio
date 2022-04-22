@@ -3,22 +3,10 @@ package handler
 import (
 	"backend/model"
 	"backend/model/apperrors"
-
-	// "fmt"
 	"log"
 	"net/http"
 	"strconv"
-
-	// "fmt"
-	// "mime/multipart"
-
-	// "backend/utils"
-	// "math/rand"
-	// "time"
-
 	"github.com/gin-gonic/gin"
-	// "github.com/google/uuid"
-	// "github.com/google/uuid"
 )
 
 func (h *Handler) ReviewBulkInsert(c *gin.Context) {
@@ -39,26 +27,35 @@ func (h *Handler) ReviewBulkInsert(c *gin.Context) {
 	})
 }
 func (h *Handler) ReviewCreate(c *gin.Context) {
+	ctx := c.Request.Context()
+	id := c.Param("id")
+	productId, _ := strconv.ParseInt(id, 0, 64)
 	var json model.ProductReview
 	if err := c.ShouldBindJSON(&json); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	user, exists := c.Get("user")
+	if !exists {
+		log.Printf("Unable to extract user from request context for unknown reason: %v\n", c)
+		err := apperrors.NewInternal()
+		c.JSON(err.Status(), gin.H{
+			"error": err,
+		})
+		return
+	}
+	uid := user.(*model.User).UID
 	review := model.ProductReview{
-		UserID:    json.UserID,
+		UserID:    uid,
 		ProductID: json.ProductID,
 		Rating:    json.Rating,
 		Title:     json.Title,
-		Comment:   json.Title,
+		Comment:   json.Comment,
 	}
-	ctx := c.Request.Context()
-	id := c.Param("id")
-	product_id, _ := strconv.ParseInt(id, 0, 64)
-	result, err := h.ReviewService.ReviewCreate(ctx, product_id, &review)
+	result, err := h.ReviewService.ReviewCreate(ctx, productId, &review)
 	if err != nil {
 		log.Printf("Unable to find reviews: %v", err)
 		e := apperrors.NewNotFound("reviews", "err")
-
 		c.JSON(e.Status(), gin.H{
 			"error": e,
 		})

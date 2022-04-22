@@ -3,11 +3,13 @@ package handler
 import (
 	"backend/model"
 	"backend/utils"
+	"fmt"
+
+	"backend/model/apperrors"
 	"log"
 	"math/rand"
-
-	"fmt"
 	"time"
+
 	// "backend/utils"
 	// "math/rand"
 	"net/http"
@@ -77,7 +79,7 @@ func (h *Handler) SeedProductImage(c *gin.Context) {
 	productId := 1
 	images1 := make([]*model.ProductImage, 0)
 	for _, url := range productImageUrlList1 {
-		fmt.Print("url", url)
+		// fmt.Print("url", url)
 		images1 = append(images1, &model.ProductImage{
 			ProductId: int64(productId),
 			URL:       url,
@@ -99,7 +101,7 @@ func (h *Handler) SeedProductImage(c *gin.Context) {
 	productId2 := 2
 	images2 := make([]*model.ProductImage, 0)
 	for _, url := range productImageUrlList2 {
-		fmt.Print("url", url)
+		// fmt.Print("url", url)
 		images2 = append(images1, &model.ProductImage{
 			ProductId: int64(productId2),
 			URL:       url,
@@ -113,26 +115,42 @@ func (h *Handler) SeedProductImage(c *gin.Context) {
 
 func (h *Handler) SeedReview(c *gin.Context) {
 	ctx := c.Request.Context()
-	randText := utils.RandStringRunes(5)
+	randText := utils.RandStringRunes(10)
+	randName := randText + "name"
+	randEmail := randText + "@email.com"
 	u := model.User{
-		Email:    randText + "@email.com",
+		Name:     randName,
+		Email:    randEmail,
 		Password: "password",
 	}
-	_, err := h.UserService.Signup(ctx, &u)
+	user, err := h.UserService.Signup(ctx, &u)
 	if err != nil {
-		log.Printf("Failed to sign up user: %v\n", err.Error())
+		log.Printf("Failed to create tuser: %v\n", err.Error())
+		c.JSON(apperrors.Status(err), gin.H{
+			"error": err,
+		})
 		return
 	}
-	user, err1 := h.UserService.Signin(ctx, &u)
+	u1 := model.User{
+		Name:     user.Name,
+		Email:    user.Email,
+		Password: "password",
+	}
+	fmt.Println(u)
+	user1, err1 := h.UserService.Signin(ctx, &u1)
 	if err1 != nil {
-		log.Printf("Failed to sign up user: %v\n", err.Error())
+		log.Printf("Failed to create tokens for user: %v\n", err.Error())
+
+		c.JSON(apperrors.Status(err1), gin.H{
+			"error": err,
+		})
 		return
 	}
-	uuid := user.UID
+	uuid := user1.UID
 	rand.Seed(time.Now().UnixNano())
 	rating := int64(rand.Intn(5) + 1)
 	productId := int64(rand.Intn(2) + 1)
-	// productId := int64(rand.Intn(2) + 1)
+	// // // productId := int64(rand.Intn(2) + 1)
 	review := model.ProductReview{
 		UserID:    uuid,
 		ProductID: productId,
@@ -140,9 +158,10 @@ func (h *Handler) SeedReview(c *gin.Context) {
 		Title:     "Delicious",
 		Comment:   "It was very delicious.I could eat what you disliked.",
 	}
+	fmt.Println("review")
 	result2, _ := h.ReviewService.ReviewCreate(ctx, productId, &review)
 
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusAccepted, gin.H{
 		"ok": result2,
 	})
 }

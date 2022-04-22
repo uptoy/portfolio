@@ -20,8 +20,16 @@ func NewWishlistService(c *WishlistServiceConfig) model.WishlistService {
 	}
 }
 
-func (s *wishlistService) WishlistCreate(ctx context.Context, userId uuid.UUID, productId int64) ([]*model.Product, error) {
-	wishlist, err := s.WishlistRepository.WishlistCreate(ctx, userId, productId)
+func (s *wishlistService) WishlistCreate(ctx context.Context, userId uuid.UUID) (*model.Wishlist, error) {
+	wishlist, err := s.WishlistRepository.WishlistCreate(ctx, userId)
+	if err != nil {
+		return wishlist, err
+	}
+	return wishlist, nil
+}
+
+func (s *wishlistService) WishlistAddItem(ctx context.Context, userId uuid.UUID, productId int64) ([]*model.Product, error) {
+	wishlist, err := s.WishlistRepository.WishlistAddItem(ctx, userId, productId)
 	if err != nil {
 		return wishlist, err
 	}
@@ -34,8 +42,8 @@ func (s *wishlistService) WishlistGet(ctx context.Context, userId uuid.UUID) ([]
 	}
 	return wishlist, nil
 }
-func (s *wishlistService) WishlistDelete(ctx context.Context, userId uuid.UUID, productId int64) ([]*model.Product, error) {
-	wishlist, err := s.WishlistRepository.WishlistDelete(ctx, userId, productId)
+func (s *wishlistService) WishlistDeleteItem(ctx context.Context, userId uuid.UUID, productId int64) ([]*model.Product, error) {
+	wishlist, err := s.WishlistRepository.WishlistDeleteItem(ctx, userId, productId)
 	if err != nil {
 		return wishlist, err
 	}

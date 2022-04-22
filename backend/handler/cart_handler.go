@@ -18,17 +18,32 @@ import (
 )
 
 func (h *Handler) CartGet(c *gin.Context) {
-	ctx := c.Request.Context()
-	authUser := c.MustGet("user").(*model.User)
-	userId := authUser.UID
-	cart, err := h.CartService.CartGet(ctx, userId)
-	if err != nil {
-		log.Printf("Failed to cart delete item: %v\n", err.Error())
-		c.JSON(apperrors.Status(err), gin.H{
+	// A *model.User will eventually be added to context in middleware
+	user, exists := c.Get("user")
+	// fmt.Println("user", user)
+
+	if !exists {
+		log.Printf("Unable to extract user from request context for unknown reason: %v\n", c)
+		err := apperrors.NewInternal()
+		c.JSON(err.Status(), gin.H{
 			"error": err,
+		})
+
+		return
+	}
+	uid := user.(*model.User).UID
+	ctx := c.Request.Context()
+	cart, err := h.CartService.CartGet(ctx, uid)
+	if err != nil {
+		log.Printf("Unable to find user's cart: %v\n%v", uid, err)
+		e := apperrors.NewNotFound("user", uid.String())
+
+		c.JSON(e.Status(), gin.H{
+			"error": e,
 		})
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"cart": cart,
 	})

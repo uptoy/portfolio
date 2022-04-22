@@ -35,7 +35,7 @@ type AuthService interface {
 }
 type CartRepository interface {
 	CartCreate(ctx context.Context, userID uuid.UUID) (*Cart, error)
-	CartGet(ctx context.Context, userID uuid.UUID) ([]CartItem, error)
+	CartGet(ctx context.Context, userID uuid.UUID) (*Cart, error)
 	CartGetId(ctx context.Context, userId uuid.UUID) (int64, error)
 	CartAddItem(ctx context.Context, cartItem *CartItem) (*Cart, error)
 	CartDeleteItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
@@ -44,7 +44,7 @@ type CartRepository interface {
 }
 type CartService interface {
 	CartCreate(ctx context.Context, userID uuid.UUID) (*Cart, error)
-	CartGet(ctx context.Context, userID uuid.UUID) ([]CartItem, error)
+	CartGet(ctx context.Context, userID uuid.UUID) (*Cart, error)
 	CartGetId(ctx context.Context, userId uuid.UUID) (int64, error)
 	CartAddItem(ctx context.Context, cartItem *CartItem) (*Cart, error)
 	CartDeleteItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
@@ -219,14 +219,16 @@ type UserService interface {
 
 type WishlistService interface {
 	WishlistGet(ctx context.Context, userId uuid.UUID) ([]*Product, error)
-	WishlistCreate(ctx context.Context, userId uuid.UUID, productId int64) ([]*Product, error)
-	WishlistDelete(ctx context.Context, userId uuid.UUID, productId int64) ([]*Product, error)
+	WishlistCreate(ctx context.Context, userId uuid.UUID) (*Wishlist, error)
+	WishlistAddItem(ctx context.Context, userId uuid.UUID, productId int64) ([]*Product, error)
+	WishlistDeleteItem(ctx context.Context, userId uuid.UUID, productId int64) ([]*Product, error)
 	WishlistClear(ctx context.Context, userId uuid.UUID) error
 }
 
 type WishlistRepository interface {
 	WishlistGet(ctx context.Context, userId uuid.UUID) ([]*Product, error)
-	WishlistCreate(ctx context.Context, userId uuid.UUID, productId int64) ([]*Product, error)
-	WishlistDelete(ctx context.Context, userId uuid.UUID, productId int64) ([]*Product, error)
+	WishlistCreate(ctx context.Context, userId uuid.UUID) (*Wishlist, error)
+	WishlistAddItem(ctx context.Context, userId uuid.UUID, productId int64) ([]*Product, error)
+	WishlistDeleteItem(ctx context.Context, userId uuid.UUID, productId int64) ([]*Product, error)
 	WishlistClear(ctx context.Context, userId uuid.UUID) error
 }

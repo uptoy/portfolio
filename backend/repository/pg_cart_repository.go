@@ -33,21 +33,31 @@ func (r *pGCartRepository) CartCreate(ctx context.Context, userID uuid.UUID) (*m
 }
 
 // Create reaches out to database SQLX api
-func (r *pGCartRepository) CartGet(ctx context.Context, userID uuid.UUID) ([]model.CartItem, error) {
-	cartItems := []model.CartItem{}
-	query := `
-	SELECT products.*, cart_item.quantity, products.price * cart_item.quantity) AS SUBTOTAL FROM users
-	JOIN cart ON users.user_id = cart.user_id
-	JOIN cart_item ON cart.id = cart_item.cart_id
-	JOIN products ON products.id = cart_item.product_id
-	Where users.uid = $1
 
-	`
-	if err := r.DB.SelectContext(ctx, &cartItems, query, userID); err != nil {
-		log.Printf("Unable to get user's cart: %v. Err: %v\n", cartItems, err)
-		return nil, apperrors.NewNotFound("user's cart", "user's cart")
+func (r *pGCartRepository) CartGet(ctx context.Context, userID uuid.UUID) (*model.Cart, error) {
+	cart := &model.Cart{}
+	query := "SELECT * FROM carts WHERE user_id=$1"
+	// we need to actually check errors as it could be something other than not found
+	if err := r.DB.GetContext(ctx, cart, query, userID); err != nil {
+		return cart, apperrors.NewNotFound("uid", userID.String())
 	}
-	return cartItems, nil
+
+	return cart, nil
+	// cartItems := []model.CartItem{}
+	// // query := `
+	// // SELECT products.*, cart_item.quantity, products.price * cart_item.quantity) AS SUBTOTAL FROM users
+	// // JOIN cart ON users.user_id = cart.user_id
+	// // JOIN cart_item ON cart.id = cart_item.cart_id
+	// // JOIN products ON products.id = cart_item.product_id
+	// // Where users.uid = $1
+
+	// // `
+	// query :=`	SELECT * FROM carts WHERE user_id=$1"`
+	// if err := r.DB.SelectContext(ctx, &cartItems, query, userID); err != nil {
+	// 	log.Printf("Unable to get user's cart: %v. Err: %v\n", cartItems, err)
+	// 	return nil, apperrors.NewNotFound("user's cart", "user's cart")
+	// }
+	// return cartItems, nil
 }
 
 func (r *pGCartRepository) CartGetId(ctx context.Context, userId uuid.UUID) (int64, error) {

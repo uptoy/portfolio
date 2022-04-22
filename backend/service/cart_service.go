@@ -29,7 +29,7 @@ func (s *cartService) CartCreate(ctx context.Context, userID uuid.UUID) (*model.
 	return cart, nil
 }
 
-func (s *cartService) CartGet(ctx context.Context, userID uuid.UUID) ([]model.CartItem, error) {
+func (s *cartService) CartGet(ctx context.Context, userID uuid.UUID) (*model.Cart, error) {
 	var err error
 	cart, err := s.CartRepository.CartGet(ctx, userID)
 	if err != nil {

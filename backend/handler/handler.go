@@ -103,11 +103,6 @@ func NewHandler(c *Config) {
 		// api.POST("/forgot", h.ForgotPassword)
 	}
 	//こちらがテスト実行される
-	api.POST("/signup", h.Signup)
-	api.POST("/signin", h.Signin)
-	api.POST("/tokens", h.Tokens)
-	api.POST("/forgot", h.ForgotPassword)
-	api.POST("/reset", h.ResetPassword)
 	users := api.Group("/users")
 	{
 		users.GET("", h.UserList)
@@ -125,7 +120,7 @@ func NewHandler(c *Config) {
 		products.GET("/search/:name", h.ProductFindByName)
 		products.GET("/:id/reviews/insert", h.ReviewBulkInsert)
 		products.DELETE("/:id/reviews/delete", h.ReviewBulkDelete)
-		products.POST("/:id/reviews", h.ReviewCreate)
+		products.POST("/:id/reviews", middleware.AuthUser(h.TokenService), h.ReviewCreate)
 		// products.GET("/:id/reviews", h.ReviewGetAll)
 		products.GET("/:id/reviews/count", h.ReviewCount)
 		products.GET("/:id/reviews/:rid", h.ReviewGet)
@@ -166,36 +161,37 @@ func NewHandler(c *Config) {
 	}
 	wishlist := api.Group("/wishlist")
 	{
-		wishlist.GET("", h.WishlistGet)
-		wishlist.POST("", h.WishlistCreate)
-		wishlist.DELETE("/:product_id", h.WishlistDelete)
-		wishlist.DELETE("/clear", h.WishlistClear)
+		wishlist.GET("/create", middleware.AuthUser(h.TokenService), h.WishlistCreate)
+		wishlist.GET("", middleware.AuthUser(h.TokenService), h.WishlistGet)
+		wishlist.POST("/:product_id", middleware.AuthUser(h.TokenService), h.WishlistAddItem)
+		wishlist.DELETE("/:product_id", middleware.AuthUser(h.TokenService), h.WishlistDeleteItem)
+		wishlist.DELETE("/clear", middleware.AuthUser(h.TokenService), h.WishlistClear)
 	}
 	cart := api.Group("/cart")
 	{
-		cart.GET("", h.CartGet)
-		cart.POST("/add", h.CartAddItem)
-		cart.DELETE("/:id", h.CartDeleteItem)
-		cart.PUT("/inc", h.CartIncrementItem)
-		cart.PUT("/dec", h.CartDecrementItem)
+		cart.GET("", middleware.AuthUser(h.TokenService), h.CartGet)
+		cart.POST("/add", middleware.AuthUser(h.TokenService), h.CartAddItem)
+		cart.DELETE("/:id", middleware.AuthUser(h.TokenService), h.CartDeleteItem)
+		cart.PUT("/inc", middleware.AuthUser(h.TokenService), h.CartIncrementItem)
+		cart.PUT("/dec", middleware.AuthUser(h.TokenService), h.CartDecrementItem)
 	}
 	api.POST("/payment", h.Payment)
 	order := api.Group("/orders")
 	{
-		order.POST("", h.OrderCreate)
-		order.GET("", h.OrderList)
-		order.GET("/:id", h.OrderFindByID)
-		order.GET("/:id/detail", h.OrderGetDetails)
-		order.GET("/count", h.OrderCount)
+		order.POST("", middleware.AuthUser(h.TokenService), h.OrderCreate)
+		order.GET("", middleware.AuthUser(h.TokenService), h.OrderList)
+		order.GET("/:id", middleware.AuthUser(h.TokenService), h.OrderFindByID)
+		order.GET("/:id/detail", middleware.AuthUser(h.TokenService), h.OrderGetDetails)
+		order.GET("/count", middleware.AuthUser(h.TokenService), h.OrderCount)
 
 	}
 	address := api.Group("/address")
 	{
-		address.POST("", h.AddressUserCreate)
-		address.GET("", h.AddressListUserGet)
-		address.GET("/:id", h.AddressUserGet)
-		address.PUT("/:id", h.AddressUserUpdate)
-		address.DELETE("/:id", h.AddressUserDelete)
+		address.POST("", middleware.AuthUser(h.TokenService), h.AddressUserCreate)
+		address.GET("", middleware.AuthUser(h.TokenService), h.AddressListUserGet)
+		address.GET("/:id", middleware.AuthUser(h.TokenService), h.AddressUserGet)
+		address.PUT("/:id", middleware.AuthUser(h.TokenService), h.AddressUserUpdate)
+		address.DELETE("/:id", middleware.AuthUser(h.TokenService), h.AddressUserDelete)
 	}
 	// chat := api.Group("/chat")
 	{

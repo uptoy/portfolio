@@ -1,5 +1,5 @@
 import useSWR from "swr"
-import fetcher from "services/fetcher"
+import {fetcher} from "services/fetcher"
 import {api} from "services/apiClient"
 import {Product} from "@types"
 

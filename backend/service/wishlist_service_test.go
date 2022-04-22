@@ -14,34 +14,34 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestWishlistCreate(t *testing.T) {
+func TestWishlistAddItem(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		mockProduct0 := model.Product{
-			Id:     0,
-			ProductName:   "product_name",
-			Slug:          "slug",
-			Brand:         "brand",
-			Price:         1,
-			CategoryId:    1,
-			CountInStock:  1,
-			Description:   "description",
+			Id:           0,
+			ProductName:  "product_name",
+			Slug:         "slug",
+			Brand:        "brand",
+			Price:        1,
+			CategoryId:   1,
+			CountInStock: 1,
+			Description:  "description",
 		}
 		mockProduct2 := model.Product{
-			Id:     1,
-			ProductName:   "product_name1",
-			Slug:          "slug1",
-			Brand:         "brand1",
-			Price:         1,
-			CategoryId:    2,
-			CountInStock:  1,
-			Description:   "description1",
+			Id:           1,
+			ProductName:  "product_name1",
+			Slug:         "slug1",
+			Brand:        "brand1",
+			Price:        1,
+			CategoryId:   2,
+			CountInStock: 1,
+			Description:  "description1",
 		}
 		mockProductList := []model.Product{mockProduct0, mockProduct2}
 		uid, _ := uuid.NewRandom()
 		mockUser := &model.User{
-			UID: uid,
-			Name:   "name",
-			Email:  "email@email.com",
+			UID:   uid,
+			Name:  "name",
+			Email: "email@email.com",
 		}
 		mockWishlistRepository := new(mocks.MockWishlistRepository)
 		ws := NewWishlistService(&WishlistServiceConfig{
@@ -63,24 +63,24 @@ func TestWishlistCreate(t *testing.T) {
 func TestWishlistGet(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		mockProduct0 := model.Product{
-			Id:     0,
-			ProductName:   "product_name",
-			Slug:          "slug",
-			Brand:         "brand",
-			Price:         1,
-			CategoryId:    1,
-			CountInStock:  1,
-			Description:   "description",
+			Id:           0,
+			ProductName:  "product_name",
+			Slug:         "slug",
+			Brand:        "brand",
+			Price:        1,
+			CategoryId:   1,
+			CountInStock: 1,
+			Description:  "description",
 		}
 		mockProduct2 := model.Product{
-			Id:     1,
-			ProductName:   "product_name1",
-			Slug:          "slug1",
-			Brand:         "brand1",
-			Price:         1,
-			CategoryId:    2,
-			CountInStock:  1,
-			Description:   "description1",
+			Id:           1,
+			ProductName:  "product_name1",
+			Slug:         "slug1",
+			Brand:        "brand1",
+			Price:        1,
+			CategoryId:   2,
+			CountInStock: 1,
+			Description:  "description1",
 		}
 		mockProductList := []model.Product{mockProduct0, mockProduct2}
 		uid, _ := uuid.NewRandom()
@@ -109,24 +109,24 @@ func TestWishlistGet(t *testing.T) {
 func TestWishlistDelete(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		mockProduct1 := model.Product{
-			Id:     0,
-			ProductName:   "product_name",
-			Slug:          "slug",
-			Brand:         "brand",
-			Price:         1,
-			CategoryId:    1,
-			CountInStock:  1,
-			Description:   "description",
+			Id:           0,
+			ProductName:  "product_name",
+			Slug:         "slug",
+			Brand:        "brand",
+			Price:        1,
+			CategoryId:   1,
+			CountInStock: 1,
+			Description:  "description",
 		}
 		mockProduct2 := model.Product{
-			Id:     1,
-			ProductName:   "product_name1",
-			Slug:          "slug1",
-			Brand:         "brand1",
-			Price:         1,
-			CategoryId:    2,
-			CountInStock:  1,
-			Description:   "description1",
+			Id:           1,
+			ProductName:  "product_name1",
+			Slug:         "slug1",
+			Brand:        "brand1",
+			Price:        1,
+			CategoryId:   2,
+			CountInStock: 1,
+			Description:  "description1",
 		}
 		mockProductList := []model.Product{mockProduct1}
 		uid, _ := uuid.NewRandom()
@@ -143,7 +143,7 @@ func TestWishlistDelete(t *testing.T) {
 		productId2 := mockProduct2.Id
 		mockWishlistRepository.On("WishlistDelete", mock.AnythingOfType("*context.emptyCtx"), userId, productId2).Return(mockProductList, nil)
 		ctx := context.TODO()
-		wishlist, err := ws.WishlistDelete(ctx, mockUser.UID, mockProduct2.Id)
+		wishlist, err := ws.WishlistDeleteItem(ctx, mockUser.UID, mockProduct2.Id)
 		assert.NoError(t, err)
 		// fmt.Println("mockProductList[0]", mockProductList[0])
 		assert.Equal(t, mockProductList[0].Id, wishlist[0].Id)

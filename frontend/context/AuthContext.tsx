@@ -42,6 +42,20 @@ export function AuthProvider({children}: AuthProviderProps) {
   useEffect(() => {
     let cookies = parseCookies()
     let token = cookies["token"]
+    if (token) {
+      me().then((user) => {
+        setUser(user)
+      })
+    }
+    //   api.get('auth/me').then(response => {
+    //     const { username, email, roles, permissions } = response.data;
+
+    //     setUser({ username, email, roles, permissions });
+    //   })
+    //   .catch(() => {
+    //     signOut();
+    //   });
+    // }
     // if (token) {
     //   me().then((response) => {
     //     setUser(response.user)
@@ -51,7 +65,7 @@ export function AuthProvider({children}: AuthProviderProps) {
 
   const signUp = async ({email, name, password, confirmPassword}: SignUpCredentials) => {
     try {
-      const {data} = await api.post("/signup", {
+      const {data} = await api.post("/auth/signup", {
         email,
         name,
         password,
@@ -59,12 +73,13 @@ export function AuthProvider({children}: AuthProviderProps) {
       })
       const {tokens, user} = data
       const token = tokens.idToken
-      // const refreshToken = tokens.refreshToken
-      console.log("data", data)
-      console.log("token", tokens.idToken)
-      console.log("user", user)
+      const refreshToken = tokens.refreshToken
 
       setCookie(undefined, "token", token, {
+        maxAge: 60 * 60 * 24, // 1 day
+        path: "/",
+      })
+      setCookie(undefined, "refreshToken", refreshToken, {
         maxAge: 60 * 60 * 24 * 30, // 1 Month
         path: "/",
       })
@@ -81,11 +96,16 @@ export function AuthProvider({children}: AuthProviderProps) {
 
   const signIn = async ({email, password}: SignInCredentials) => {
     try {
-      const res = await api.post("/signin", {
+      const {data} = await api.post("/auth/signin", {
         email,
         password,
       })
-      const {token, refreshToken, user} = res.data
+      const {tokens, user} = data
+      const token = tokens.idToken
+      const refreshToken = tokens.refreshToken
+      console.log("data", data)
+      console.log("token", tokens.idToken)
+      console.log("user", user)
       setCookie(undefined, "token", token, {
         maxAge: 60 * 60 * 1, // 1 hour
         path: "/", // global
@@ -96,7 +116,7 @@ export function AuthProvider({children}: AuthProviderProps) {
       })
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`
       setUser(user)
-      Router.push("/dashboard")
+      Router.push("/")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message)
@@ -114,7 +134,7 @@ export function AuthProvider({children}: AuthProviderProps) {
 
   const forgotPassword = async ({email}: ForgotPasswordCredentials) => {
     try {
-      await api.post("/forgot_password", {email})
+      await api.post("/auth/forgot_password", {email})
       toast.success("Sent you an email so please check it.")
       Router.push("/dashboard")
     } catch (error) {
@@ -134,7 +154,7 @@ export function AuthProvider({children}: AuthProviderProps) {
         confirmPassword,
       })
       toast.success("Success reset password")
-      Router.push("/dashboard")
+      Router.push("/")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message)
@@ -145,8 +165,8 @@ export function AuthProvider({children}: AuthProviderProps) {
   }
   const me = async () => {
     try {
-      const res = await api.get(`/detail`)
-      return res.data
+      const res = await api.get(`/auth/me`)
+      return res.data.user
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message)

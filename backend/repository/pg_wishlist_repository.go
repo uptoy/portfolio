@@ -22,9 +22,22 @@ func NewWishlistRepository(db *sqlx.DB) model.WishlistRepository {
 	}
 }
 
-func (r *pGWishlistRepository) WishlistCreate(ctx context.Context, userId uuid.UUID, productId int64) ([]*model.Product, error) {
+
+func (r *pGWishlistRepository) WishlistCreate(ctx context.Context, userId uuid.UUID) (*model.Wishlist, error) {
+	wishlist := model.Wishlist{}
+	query := `INSERT INTO product_wishlist (user_id) VALUES ($1) RETURNING *`
+	if err := r.DB.GetContext(ctx, &wishlist, query, userId); err != nil {
+		log.Printf("Could not create a wishlist : %v. Reason: %v\n", userId, err)
+		return nil, apperrors.NewInternal()
+	}
+	return &wishlist, nil
+}
+
+
+
+func (r *pGWishlistRepository) WishlistAddItem(ctx context.Context, userId uuid.UUID, productId int64) ([]*model.Product, error) {
 	wishlist := []*model.Product{}
-	query := `INSERT INTO wishlists (user_id, product_id) VALUES  ($1, $2) RETURNING *`
+	query := `INSERT INTO product_wishlist (user_id, product_id) VALUES  ($1, $2) RETURNING *`
 	if err := r.DB.GetContext(ctx, wishlist, query, userId, productId); err != nil {
 		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
 			log.Printf("Could not create a userId: %v. Reason: %v\n", userId, err.Code.Name())
@@ -41,7 +54,7 @@ func (r *pGWishlistRepository) WishlistGet(ctx context.Context, userId uuid.UUID
 	c.name AS category_name,
 	FROM products p
 	LEFT JOIN categories c ON p.category_id = c.id
-	LEFT JOIN wishlists w ON p.id = w.product_id
+	LEFT JOIN product_wishlist w ON p.id = w.product_id
 	LEFT JOIN users u ON u.uid = w.user_id
 	WHERE u.uid = $1
 	ORDER BY p.id DESC
@@ -58,9 +71,9 @@ func (r *pGWishlistRepository) WishlistGet(ctx context.Context, userId uuid.UUID
 
 	return wishlist, nil
 }
-func (r *pGWishlistRepository) WishlistDelete(ctx context.Context, userId uuid.UUID, productId int64) ([]*model.Product, error) {
+func (r *pGWishlistRepository) WishlistDeleteItem(ctx context.Context, userId uuid.UUID, productId int64) ([]*model.Product, error) {
 	wishlist := []*model.Product{}
-	query := "DELETE FROM wishlists WHERE user_id=$1 AND product_id=$2 VALUES  ($1, $2) RETURNING *"
+	query := "DELETE FROM product_wishlist WHERE user_id=$1 AND product_id=$2 VALUES  ($1, $2) RETURNING *"
 	if err := r.DB.GetContext(ctx, wishlist, query, userId, productId); err != nil {
 		log.Printf("Unable to get product: %v. Err: %v\n", wishlist, err)
 		return nil, apperrors.NewNotFound("wishlist", "userId")
@@ -69,7 +82,7 @@ func (r *pGWishlistRepository) WishlistDelete(ctx context.Context, userId uuid.U
 }
 func (r *pGWishlistRepository) WishlistClear(ctx context.Context, userId uuid.UUID) error {
 	wishlist := []*model.Product{}
-	query := "DELETE FROM wishlists WHERE user_id=$1  VALUES  ($1)"
+	query := "DELETE FROM product_wishlist WHERE user_id=$1  VALUES  ($1)"
 	if err := r.DB.GetContext(ctx, wishlist, query, userId); err != nil {
 		log.Printf("Unable to get product: %v. Err: %v\n", wishlist, err)
 		return apperrors.NewNotFound("wishlist", "userId")

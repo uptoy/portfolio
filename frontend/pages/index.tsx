@@ -22,6 +22,7 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"
 import FavoriteIcon from "@material-ui/icons/Favorite"
 import {Product} from "@types"
 import {Products} from "services/api/product"
+import {Wishlist} from "services/api/wishlist"
 import {fetcher} from "services/fetcher"
 import {useAuth} from "context/AuthContext"
 
@@ -58,18 +59,21 @@ const useStyles: any = makeStyles(() => ({
 }))
 
 export default function Index() {
+  const {user} = useAuth()
+  console.log("index user", user)
   const classes = useStyles()
   const [state, setState] = useState(false)
   const handleClick = () => {
     setState(!state)
   }
+  //products
   const {data, error} = Products()
-
-  const {user} = useAuth()
-  console.log(user)
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
   const products = data.data
+  //user
+
+  //wishlist
 
   return (
     <>

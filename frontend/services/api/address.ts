@@ -1,6 +1,6 @@
 import {Address} from "@types"
 import useSWR from "swr"
-import fetcher from "services/fetcher"
+import {fetcher} from "services/fetcher"
 import {api} from "services/apiClient"
 
 export const AddressListUserGet = () => {
@@ -22,4 +22,3 @@ export const AddressUserUpdate = (id: string, address: Address) => {
 export const AddressUserDelete = (id: string) => {
   return api.delete(`/address/${id}`)
 }
-

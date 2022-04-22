@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"fmt"
+	// "fmt"
 	"log"
 	// "mime/multipart"
 	// "net/url"
@@ -17,23 +17,26 @@ import (
 // userService acts as a struct for injecting an implementation of UserRepository
 // for use in service methods
 type userService struct {
-	UserRepository model.UserRepository
-	CartRepository model.CartRepository
+	UserRepository     model.UserRepository
+	CartRepository     model.CartRepository
+	WishlistRepository model.WishlistRepository
 }
 
 // USConfig will hold repositories that will eventually be injected into this
 // this service layer
 type USConfig struct {
-	UserRepository model.UserRepository
-	CartRepository model.CartRepository
+	UserRepository     model.UserRepository
+	CartRepository     model.CartRepository
+	WishlistRepository model.WishlistRepository
 }
 
 // NewUserService is a factory function for
 // initializing a UserService with its repository layer dependencies
 func NewUserService(c *USConfig) model.UserService {
 	return &userService{
-		UserRepository: c.UserRepository,
-		CartRepository: c.CartRepository,
+		UserRepository:     c.UserRepository,
+		CartRepository:     c.CartRepository,
+		WishlistRepository: c.WishlistRepository,
 	}
 }
 
@@ -65,17 +68,12 @@ func (s *userService) Signup(ctx context.Context, u *model.User) (*model.User, e
 	uid := user.UID
 
 	// If we get around to adding events, we'd Publish it here
-	cart, err := s.CartRepository.CartCreate(ctx, uid)
-	if err != nil {
-		log.Printf("Unable to signup user for email: %v\n", u.Email)
+	_, err1 := s.CartRepository.CartCreate(ctx, uid)
+	// fmt.Println(cart)
+	if err1 != nil {
+		log.Printf("Unable to create cart: %v\n", u.Name)
 		return nil, apperrors.NewInternal()
 	}
-	fmt.Println("cart", cart)
-	// err := s.EventsBroker.PublishUserUpdated(u, true)
-
-	// if err != nil {
-	// 	return nil, apperrors.NewInternal()
-	// }
 
 	return user, nil
 }
@@ -94,7 +92,6 @@ func (s *userService) Signin(ctx context.Context, u *model.User) (*model.User, e
 
 	// verify password - we previously created this method
 	match, err := comparePasswords(uFetched.Password, u.Password)
-
 	if err != nil {
 		return nil, apperrors.NewInternal()
 	}
