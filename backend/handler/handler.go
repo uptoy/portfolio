@@ -161,7 +161,7 @@ func NewHandler(c *Config) {
 	}
 	wishlist := api.Group("/wishlist")
 	{
-		wishlist.POST("/create", middleware.AuthUser(h.TokenService), h.WishlistCreate)
+		wishlist.POST("", middleware.AuthUser(h.TokenService), h.WishlistCreate)
 		wishlist.GET("", middleware.AuthUser(h.TokenService), h.WishlistGet)
 		wishlist.DELETE("/:id", middleware.AuthUser(h.TokenService), h.WishlistDelete)
 		// wishlist.POST("/:product_id", middleware.AuthUser(h.TokenService), h.WishlistAddItem)

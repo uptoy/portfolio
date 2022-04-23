@@ -21,7 +21,7 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"
 import FavoriteIcon from "@material-ui/icons/Favorite"
 import {Product} from "@types"
 import {Products} from "services/api/product"
-import {WishlistGet} from "services/api/wishlist"
+import {WishlistGet, WishlistCreate} from "services/api/wishlist"
 import {useAuth} from "context/AuthContext"
 import {Review} from "@types"
 import {Average} from "utils/average"
@@ -58,23 +58,31 @@ const useStyles: any = makeStyles(() => ({
   },
 }))
 
+
+
 export default function Index() {
   const {user} = useAuth()
   const classes = useStyles()
   const [state, setState] = useState(false)
-  const handleClick = () => {
-    setState(!state)
-  }
   //products
   const {data, error} = Products()
   const {data: data1, error: error1} = WishlistGet()
+  console.log("index wishlist", data1)
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
+  // if (error1) return <div>failed to load</div>
+  // if (!data1) return <div>loading...</div>
   const products = data.data
   //user
   const averageNum = Average(products[0].reviews.map((review: Review) => review.rating))
   //wishlist
 
+  const handleClick = (product: Product) => {
+    console.log("index product",product)
+    WishlistCreate(product)
+
+    setState(!state)
+  }
   return (
     <>
       <Layout>
@@ -84,7 +92,7 @@ export default function Index() {
             {products.map((product: Product) => (
               <Grid item key={product.id} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
-                  <Link href={`/products/${product.id}`}>
+                  <Link href={`/products/${String(product.id)}`}>
                     <CardMedia
                       className={classes.cardMedia}
                       image={product.images[0].url}
@@ -105,7 +113,7 @@ export default function Index() {
                         ({product.reviews.length})
                       </Typography>
                     </Button>
-                    <div onClick={handleClick}>
+                    <div onClick={() => handleClick(product)}>
                       {state ? (
                         <FavoriteIcon className={classes.favorite} />
                       ) : (

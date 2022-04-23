@@ -3,7 +3,6 @@ package repository
 import (
 	"backend/model"
 	"context"
-	"fmt"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
@@ -19,7 +18,6 @@ func NewProductImageRepository(db *sqlx.DB) model.ProductImageRepository {
 }
 
 func (r *pGProductImageRepository) BulkInsert(ctx context.Context, images []*model.ProductImage) error {
-	fmt.Println("images", images)
 	q := `INSERT INTO product_image (product_id, url, created_at, updated_at) VALUES(:product_id, :url, :created_at, :updated_at)`
 	if _, err := r.DB.NamedExecContext(ctx, q, images); err != nil {
 		return err

@@ -88,7 +88,7 @@ const useStyles: any = makeStyles(() => ({
 // export default function PrimarySearchAppBar(props: HeaderProps) {
 export default function CommonHeader() {
   // const { sections, title } = props
-  const {user, isAuthenticated} = useAuth()
+  const {user, isAuthenticated, signOut} = useAuth()
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [anchorEl1, setAnchorEl1] = React.useState(null)
@@ -158,8 +158,8 @@ export default function CommonHeader() {
       <MenuItem onClick={handleMenuClose}>
         <Link href="/mypage/contact">Contact</Link>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <Link href="/auth/signout">LogOut</Link>
+      <MenuItem onClick={signOut}>
+        <Link href="/auth/signout">SignOut</Link>
       </MenuItem>
     </Menu>
   )
@@ -338,7 +338,7 @@ export default function CommonHeader() {
                   }}
                 >
                   <div className={classes.authText}>
-                    <p style={{marginBottom: 2,marginTop:0}}>Hello Guest</p>
+                    <p style={{marginBottom: 2, marginTop: 0}}>Hello Guest</p>
                     <p style={{margin: 0}}>Please Signin</p>
                   </div>
                   <ArrowDropDownIcon />

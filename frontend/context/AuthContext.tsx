@@ -43,24 +43,14 @@ export function AuthProvider({children}: AuthProviderProps) {
     let cookies = parseCookies()
     let token = cookies["token"]
     if (token) {
-      me().then((user) => {
-        setUser(user)
-      })
+      me()
+        .then((user) => {
+          setUser(user)
+        })
+        .catch(() => {
+          signOut()
+        })
     }
-    //   api.get('auth/me').then(response => {
-    //     const { username, email, roles, permissions } = response.data;
-
-    //     setUser({ username, email, roles, permissions });
-    //   })
-    //   .catch(() => {
-    //     signOut();
-    //   });
-    // }
-    // if (token) {
-    //   me().then((response) => {
-    //     setUser(response.user)
-    //   })
-    // }
   }, [])
 
   const signUp = async ({email, name, password, confirmPassword}: SignUpCredentials) => {
@@ -128,6 +118,17 @@ export function AuthProvider({children}: AuthProviderProps) {
   const signOut = async () => {
     destroyCookie(undefined, "token")
     destroyCookie(undefined, "refreshToken")
+    try {
+      await api.post("/auth/signout")
+      toast.success("Success SignOut")
+      Router.push("/")
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data.message)
+      } else {
+        toast.error("Error sign out")
+      }
+    }
     setUser({} as User)
     Router.push("/")
   }

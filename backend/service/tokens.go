@@ -4,11 +4,12 @@ import (
 	"crypto/rsa"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
+	"backend/model"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/google/uuid"
-	"backend/model"
 )
 
 // idTokenCustomClaims holds structure of jwt claims of idToken
@@ -97,8 +98,9 @@ func generateRefreshToken(uid uuid.UUID, key string, exp int64) (*refreshTokenDa
 // validateIDToken returns the token's claims if the token is valid
 func validateIDToken(tokenString string, key *rsa.PublicKey) (*idTokenCustomClaims, error) {
 	claims := &idTokenCustomClaims{}
+	tokenTrim := strings.TrimSpace(tokenString)
 
-	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(tokenTrim, claims, func(token *jwt.Token) (interface{}, error) {
 		return key, nil
 	})
 

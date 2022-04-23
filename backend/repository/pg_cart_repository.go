@@ -37,12 +37,13 @@ func (r *pGCartRepository) CartGet(ctx context.Context, userID uuid.UUID) ([]*mo
 	q := `
 	SELECT
 	p.*,
-	c.quantity
-	FROM cart_item c
-	LEFT JOIN products p ON c.product_id = p.id;
+	ci.quantity
+	FROM cart_item ci
+	LEFT JOIN products p ON ci.product_id = p.id
+	LEFT JOIN carts c ON ci.cart_id = c.id
+	WHERE c.user_id = $1
 	`
-
-	if err := r.DB.SelectContext(ctx, &cartItem, q); err != nil {
+	if err := r.DB.SelectContext(ctx, &cartItem, q, userID); err != nil {
 		log.Printf("Unable to get product with name: %v. Err: %v\n", "", err)
 	}
 	cartItems := make([]*model.CartItem, 0)
@@ -51,49 +52,35 @@ func (r *pGCartRepository) CartGet(ctx context.Context, userID uuid.UUID) ([]*mo
 	}
 	return cartItems, nil
 }
+
 //ok
-func (r *pGCartRepository) CartAddItem(ctx context.Context, cartItem *model.CartItem) (*model.Cart, error) {
-	cart := model.Cart{}
+func (r *pGCartRepository) CartAddItem(ctx context.Context, cartItem *model.CartItem) (*model.CartItem, error) {
 	cartId := cartItem.CartId
 	query :=
-	`
+		`
 	INSERT INTO cart_item (cart_id, product_id, quantity) VALUES ($1, $2,$3) RETURNING *
 	`
 	if err := r.DB.GetContext(ctx, &cartItem, query, cartId, cartItem.ProductId, cartItem.Quantity); err != nil {
 		log.Printf("Unable to add cart item: %v. Err: %v\n", cartItem, err)
 		return nil, apperrors.NewNotFound("Unable to add cart item", string(cartItem.CartId))
 	}
-		// query1 :=
-	// 	`
-	// INSERT INTO cart_item(cart_id, product_id, quantity)
-	// VALUES($1, $2, $3) ON CONFLICT (cart_id, product_id)
-	// DO UPDATE SET quantity = cart_item.quantity + 1 RETURNING *
-	// `
-	// query2 :=
-	// 	`
-	// 	SELECT products.*, cart_item.quantity, (products.price * cart_item.quantity) AS SUBTOTAL FROM cart_item JOIN products ON cart_item.product_id = products.product_id WHERE cart_item.cart_id = $1
-	// `
-	// if err := r.DB.SelectContext(ctx, &cart, query2, cartId); err != nil {
-	// 	log.Printf("Unable to add cart item: %v. Err: %v\n", cart, err)
-	// 	return nil, apperrors.NewNotFound("Unable to add cart item", string(cartItem.CartId))
-	// }
-	return &cart, nil
+	return cartItem, nil
 }
 
-func (r *pGCartRepository) CartDeleteItem(ctx context.Context, cartId int64, productId int64) ([]model.CartItem, error) {
-	cartItems := []model.CartItem{}
+func (r *pGCartRepository) CartDeleteItem(ctx context.Context, cartId int64, productId int64) (*model.CartItem, error) {
+	cartItem := model.CartItem{}
 	query :=
 		`
 		DELETE FROM cart_item Where cart_id = $1 AND product_id = $2 RETURNING *
 	`
-	if err := r.DB.GetContext(ctx, &cartItems, query, cartId, productId); err != nil {
-		log.Printf("Unable to get user's cart: %v. Err: %v\n", cartItems, err)
+	if err := r.DB.GetContext(ctx, &cartItem, query, cartId, productId); err != nil {
+		log.Printf("Unable to get user's cart: %v. Err: %v\n", cartItem, err)
 		return nil, apperrors.NewNotFound("user's cart", "user's cart")
 	}
-	return cartItems, nil
+	return &cartItem, nil
 }
 
-func (r *pGCartRepository) CartIncrementItem(ctx context.Context, cartId int64, productId int64) ([]model.CartItem, error) {
+func (r *pGCartRepository) CartIncrementItem(ctx context.Context, cartId int64, productId int64) (*model.CartItem, error) {
 	cartItem := model.CartItem{}
 	query :=
 		`
@@ -103,7 +90,6 @@ func (r *pGCartRepository) CartIncrementItem(ctx context.Context, cartId int64, 
 		log.Printf("Unable to get user's cart: %v. Err: %v\n", cartItem, err)
 		return nil, apperrors.NewNotFound("user's cart", "user's cart")
 	}
-	result := []model.CartItem{}
 	query1 :=
 		`
 	SELECT products.*, cart_item.quantity,(products.price * cart_item.quantity) as SUBTOTAL
@@ -111,23 +97,37 @@ func (r *pGCartRepository) CartIncrementItem(ctx context.Context, cartId int64, 
 	ON cart_item.product_id = products.product_id
 	WHERE cart_item.cart_id = $1
 	`
-	if err := r.DB.GetContext(ctx, &result, query1, cartId); err != nil {
-		log.Printf("Unable to get user's cart: %v. Err: %v\n", result, err)
+	if err := r.DB.GetContext(ctx, &cartItem, query1, cartId); err != nil {
+		log.Printf("Unable to get user's cart: %v. Err: %v\n", cartItem, err)
 		return nil, apperrors.NewNotFound("user's cart", "user's cart")
 	}
-	return result, nil
+	return &cartItem, nil
 }
-func (r *pGCartRepository) CartDecrementItem(ctx context.Context, cartId int64, productId int64) ([]model.CartItem, error) {
-	var cartItems = []model.CartItem{}
+func (r *pGCartRepository) CartDecrementItem(ctx context.Context, cartId int64, productId int64) (*model.CartItem, error) {
+	cartItem := model.CartItem{}
 	query :=
 		`
 		UPDATE cart_item SET quantity = quantity - 1 WHERE cart_item.cart_id = $1 AND cart_item.product_id = $2 RETURNING *
 	`
-	if err := r.DB.GetContext(ctx, &cartItems, query, cartId, productId); err != nil {
-		log.Printf("Unable to get user's cart: %v. Err: %v\n", cartItems, err)
+	if err := r.DB.GetContext(ctx, &cartItem, query, cartId, productId); err != nil {
+		log.Printf("Unable to get user's cart: %v. Err: %v\n", cartItem, err)
 		return nil, apperrors.NewNotFound("user's cart", "user's cart")
 	}
-	return cartItems, nil
+	return &cartItem, nil
+}
+
+func (r *pGCartRepository) CartGetId(ctx context.Context, userId uuid.UUID) (int64, error) {
+	cart := model.Cart{}
+	query :=
+		`
+	SELECT * FROM carts WHERE user_id=$1"
+	`
+	if err := r.DB.GetContext(ctx, &cart, query, userId); err != nil {
+		log.Printf("Unable to  get cart id: %v. Err: %v\n", cart, err)
+		return cart.Id, apperrors.NewNotFound("Unable to get cart id", string(cart.Id))
+	}
+	cart_id := cart.Id
+	return cart_id, nil
 }
 
 // func (r *pGCartRepository) CartRemoveItem(ctx context.Context, userId uuid.UUID, productId uuid.UUID) (*model.Cart, error) {
@@ -171,17 +171,3 @@ func (r *pGCartRepository) CartDecrementItem(ctx context.Context, cartId int64, 
 // 	return nil, apperrors.NewNotFound("user's cart", "user's cart")
 // }
 // return cartItems, nil
-
-// func (r *pGCartRepository) CartGetId(ctx context.Context, userId uuid.UUID) (int64, error) {
-// 	cart := model.Cart{}
-// 	query :=
-// 		`
-// 	SELECT * FROM carts WHERE user_id=$1"
-// 	`
-// 	if err := r.DB.GetContext(ctx, &cart, query, userId); err != nil {
-// 		log.Printf("Unable to  get cart id: %v. Err: %v\n", cart, err)
-// 		return cart.Id, apperrors.NewNotFound("Unable to get cart id", string(cart.Id))
-// 	}
-// 	cart_id := cart.Id
-// 	return cart_id, nil
-// }

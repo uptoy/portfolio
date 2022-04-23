@@ -25,6 +25,7 @@ func (h *Handler) WishlistGet(c *gin.Context) {
 	uid := user.(*model.User).UID
 	ctx := c.Request.Context()
 	wishlist, err := h.WishlistService.WishlistGet(ctx, uid)
+	fmt.Println("wishlist", wishlist)
 	if err != nil {
 		log.Printf("Unable to find wishlist: %v", err)
 		e := apperrors.NewNotFound("wishlist", "err")
@@ -139,15 +140,14 @@ func (h *Handler) WishlistGet(c *gin.Context) {
 // }
 
 func (h *Handler) WishlistCreate(c *gin.Context) {
-	type wishlistReq struct {
-		ProductId string `json:"product_id" binding:"required"`
-	}
-	var req wishlistReq
+	fmt.Println("Handler WishlistCreate")
 
-	if ok := bindData(c, &req); !ok {
+	var json model.Product
+	if err := c.ShouldBindJSON(&json); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	productId, _ := strconv.ParseInt(req.ProductId, 0, 64)
+	productId := json.Id
 	user, exists := c.Get("user")
 	if !exists {
 		log.Printf("Unable to extract user from request context for unknown reason: %v\n", c)
@@ -158,7 +158,6 @@ func (h *Handler) WishlistCreate(c *gin.Context) {
 		return
 	}
 	uid := user.(*model.User).UID
-	fmt.Println("uid", uid)
 	ctx := c.Request.Context()
 	_, err := h.WishlistService.WishlistCreate(ctx, uid, productId)
 	if err != nil {
@@ -170,7 +169,7 @@ func (h *Handler) WishlistCreate(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"data": "OK",
+		"data": "create wishlist",
 	})
 }
 

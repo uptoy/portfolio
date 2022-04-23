@@ -4,7 +4,6 @@ import (
 	"backend/model"
 	"backend/model/apperrors"
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/jmoiron/sqlx"
@@ -40,7 +39,6 @@ func (r *pGReviewRepository) ReviewCreate(ctx context.Context, product_id int64,
 		log.Printf("Could not create product review : %v. Reason: %v\n", review.ProductID, err)
 		return nil, apperrors.NewInternal()
 	}
-	fmt.Println("#############repo review#############",review)
 	return review, nil
 }
 

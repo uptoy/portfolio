@@ -1,91 +1,98 @@
 package handler
 
 import (
-	// 	"log"
-	// "bytes"
-	// "context"
-	"net/http"
-	"strconv"
-	// "time"
-
 	"backend/model"
 	"backend/model/apperrors"
-	// "errors"
 	"log"
+	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
-	// "github.com/google/uuid"
 )
 
 func (h *Handler) CartGet(c *gin.Context) {
-	// A *model.User will eventually be added to context in middleware
 	user, exists := c.Get("user")
-	// fmt.Println("user", user)
-
 	if !exists {
 		log.Printf("Unable to extract user from request context for unknown reason: %v\n", c)
 		err := apperrors.NewInternal()
 		c.JSON(err.Status(), gin.H{
 			"error": err,
 		})
-
 		return
 	}
-	uid := user.(*model.User).UID
+	userId := user.(*model.User).UID
 	ctx := c.Request.Context()
-	cart, err := h.CartService.CartGet(ctx, uid)
+	cart, err := h.CartService.CartGet(ctx, userId)
 	if err != nil {
-		log.Printf("Unable to find user's cart: %v\n%v", uid, err)
-		e := apperrors.NewNotFound("user", uid.String())
+		log.Printf("Unable to find user's cart: %v\n%v", userId, err)
+		e := apperrors.NewNotFound("user", userId.String())
 
 		c.JSON(e.Status(), gin.H{
 			"error": e,
 		})
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{
 		"cart": cart,
 	})
 }
 
 func (h *Handler) CartAddItem(c *gin.Context) {
-	// ctx := c.Request.Context()
-	// authUser := c.MustGet("user").(*model.User)
-	// userId := authUser.UID
-	// cartId, err := h.CartService.CartGetId(ctx, userId)
-	// if err != nil {
-	// 	log.Printf("Failed to get cart id: %v\n", err.Error())
-	// 	c.JSON(apperrors.Status(err), gin.H{
-	// 		"error": err,
-	// 	})
-	// 	return
-	// }
-	// var json model.CartItem
-	// if err := c.ShouldBindJSON(&json); err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	// 	return
-	// }
-	// json = model.CartItem{
-	// 	CartId:    cartId,
-	// 	ProductId: json.ProductId,
-	// 	Quantity:  json.Quantity,
-	// }
-	// cart, err := h.CartService.CartAddItem(ctx, &json)
-	// if err != nil {
-	// 	c.IndentedJSON(http.StatusInternalServerError, err)
-	// }
-	// c.IndentedJSON(http.StatusAccepted, cart)
+	user, exists := c.Get("user")
+	if !exists {
+		log.Printf("Unable to extract user from request context for unknown reason: %v\n", c)
+		err := apperrors.NewInternal()
+		c.JSON(err.Status(), gin.H{
+			"error": err,
+		})
+		return
+	}
+	userId := user.(*model.User).UID
+	ctx := c.Request.Context()
+	cartId, err := h.CartService.CartGetId(ctx, userId)
+	if err != nil {
+		log.Printf("Failed to get cart: %v\n", err.Error())
+		c.JSON(apperrors.Status(err), gin.H{
+			"error": err,
+		})
+		return
+	}
+	var json model.CartItem
+	if err := c.ShouldBindJSON(&json); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	json = model.CartItem{
+		CartId:    cartId,
+		ProductId: json.ProductId,
+		Quantity:  json.Quantity,
+	}
+	cartItem, err := h.CartService.CartAddItem(ctx, &json)
+	if err != nil {
+		log.Printf("Failed to add cart item: %v\n", err.Error())
+		c.JSON(apperrors.Status(err), gin.H{
+			"error": err,
+		})
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{
-		"cart": "OK",
+		"item": cartItem,
 	})
 }
 
 func (h *Handler) CartDeleteItem(c *gin.Context) {
+	user, exists := c.Get("user")
+	if !exists {
+		log.Printf("Unable to extract user from request context for unknown reason: %v\n", c)
+		err := apperrors.NewInternal()
+		c.JSON(err.Status(), gin.H{
+			"error": err,
+		})
+		return
+	}
+	userId := user.(*model.User).UID
 	ctx := c.Request.Context()
 	id := c.Param("id")
-	authUser := c.MustGet("user").(*model.User)
-	userId := authUser.UID
 	productId, err := strconv.ParseInt(id, 0, 64)
 	if err != nil {
 		log.Printf("Failed to get product id: %v\n", err.Error())
@@ -102,7 +109,7 @@ func (h *Handler) CartDeleteItem(c *gin.Context) {
 		})
 		return
 	}
-	cart, err := h.CartService.CartDeleteItem(ctx, cartId, productId)
+	cartItem, err := h.CartService.CartDeleteItem(ctx, cartId, productId)
 	if err != nil {
 		log.Printf("Failed to cart delete item: %v\n", err.Error())
 		c.JSON(apperrors.Status(err), gin.H{
@@ -111,15 +118,22 @@ func (h *Handler) CartDeleteItem(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"cart": cart,
+		"item": cartItem,
 	})
 }
 func (h *Handler) CartIncrementItem(c *gin.Context) {
+	user, exists := c.Get("user")
+	if !exists {
+		log.Printf("Unable to extract user from request context for unknown reason: %v\n", c)
+		err := apperrors.NewInternal()
+		c.JSON(err.Status(), gin.H{
+			"error": err,
+		})
+		return
+	}
+	userId := user.(*model.User).UID
 	ctx := c.Request.Context()
-	id := c.Param("id")
-	authUser := c.MustGet("user").(*model.User)
-	userId := authUser.UID
-	productId, err := strconv.ParseInt(id, 0, 64)
+	productId, err := strconv.ParseInt(c.Param("id"), 0, 64)
 	if err != nil {
 		log.Printf("Failed to get product id: %v\n", err.Error())
 		c.JSON(apperrors.Status(err), gin.H{
@@ -135,7 +149,7 @@ func (h *Handler) CartIncrementItem(c *gin.Context) {
 		})
 		return
 	}
-	cart, err := h.CartService.CartIncrementItem(ctx, cartId, productId)
+	cartItem, err := h.CartService.CartIncrementItem(ctx, cartId, productId)
 	if err != nil {
 		log.Printf("Failed to get cart id: %v\n", err.Error())
 		c.JSON(apperrors.Status(err), gin.H{
@@ -144,15 +158,22 @@ func (h *Handler) CartIncrementItem(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"cart": cart,
+		"item": cartItem,
 	})
 }
 func (h *Handler) CartDecrementItem(c *gin.Context) {
+	user, exists := c.Get("user")
+	if !exists {
+		log.Printf("Unable to extract user from request context for unknown reason: %v\n", c)
+		err := apperrors.NewInternal()
+		c.JSON(err.Status(), gin.H{
+			"error": err,
+		})
+		return
+	}
+	userId := user.(*model.User).UID
 	ctx := c.Request.Context()
-	id := c.Param("id")
-	authUser := c.MustGet("user").(*model.User)
-	userId := authUser.UID
-	productId, err := strconv.ParseInt(id, 0, 64)
+	productId, err := strconv.ParseInt(c.Param("id"), 0, 64)
 	if err != nil {
 		log.Printf("Failed to get product id: %v\n", err.Error())
 		c.JSON(apperrors.Status(err), gin.H{
@@ -168,7 +189,7 @@ func (h *Handler) CartDecrementItem(c *gin.Context) {
 		})
 		return
 	}
-	cart, err := h.CartService.CartDecrementItem(ctx, cartId, productId)
+	cartItem, err := h.CartService.CartDecrementItem(ctx, cartId, productId)
 	if err != nil {
 		log.Printf("Failed to get cart id: %v\n", err.Error())
 		c.JSON(apperrors.Status(err), gin.H{
@@ -177,9 +198,8 @@ func (h *Handler) CartDecrementItem(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"cart": cart,
+		"item": cartItem,
 	})
-
 }
 
 // func (h *Handler) RemoveCartItem(c *gin.Context) {

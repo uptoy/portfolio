@@ -29,7 +29,7 @@ func (s *cartService) CartCreate(ctx context.Context, userID uuid.UUID) (*model.
 	return cart, nil
 }
 
-func (s *cartService) CartGet(ctx context.Context, userID uuid.UUID) (*model.Cart, error) {
+func (s *cartService) CartGet(ctx context.Context, userID uuid.UUID) ([]*model.CartItem, error) {
 	var err error
 	cart, err := s.CartRepository.CartGet(ctx, userID)
 	if err != nil {
@@ -47,7 +47,7 @@ func (s *cartService) CartGetId(ctx context.Context, userID uuid.UUID) (int64, e
 	return cartId, nil
 }
 
-func (s *cartService) CartAddItem(ctx context.Context, cartItem *model.CartItem) (*model.Cart, error) {
+func (s *cartService) CartAddItem(ctx context.Context, cartItem *model.CartItem) (*model.CartItem, error) {
 	cart, err := s.CartRepository.CartAddItem(ctx, cartItem)
 	if err != nil {
 		return cart, err
@@ -55,25 +55,25 @@ func (s *cartService) CartAddItem(ctx context.Context, cartItem *model.CartItem)
 	return cart, err
 }
 
-func (r *cartService) CartDeleteItem(ctx context.Context, cartId int64, productId int64) ([]model.CartItem, error) {
-	cartItems, err := r.CartRepository.CartDeleteItem(ctx, cartId, productId)
+func (r *cartService) CartDeleteItem(ctx context.Context, cartId int64, productId int64) (*model.CartItem, error) {
+	cartItem, err := r.CartRepository.CartDeleteItem(ctx, cartId, productId)
 	if err != nil {
 		return nil, err
 	}
-	return cartItems, err
+	return cartItem, err
 }
 
-func (r *cartService) CartIncrementItem(ctx context.Context, cartId int64, productId int64) ([]model.CartItem, error) {
-	cartItems, err := r.CartRepository.CartIncrementItem(ctx, cartId, productId)
+func (r *cartService) CartIncrementItem(ctx context.Context, cartId int64, productId int64) (*model.CartItem, error) {
+	cartItem, err := r.CartRepository.CartIncrementItem(ctx, cartId, productId)
 	if err != nil {
 		return nil, err
 	}
-	return cartItems, err
+	return cartItem, err
 }
-func (r *cartService) CartDecrementItem(ctx context.Context, cartId int64, productId int64) ([]model.CartItem, error) {
-	cartItems, err := r.CartRepository.CartDecrementItem(ctx, cartId, productId)
+func (r *cartService) CartDecrementItem(ctx context.Context, cartId int64, productId int64) (*model.CartItem, error) {
+	cartItem, err := r.CartRepository.CartDecrementItem(ctx, cartId, productId)
 	if err != nil {
 		return nil, err
 	}
-	return cartItems, err
+	return cartItem, err
 }

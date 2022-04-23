@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"backend/model"
@@ -28,7 +27,6 @@ func NewUserRepository(db *sqlx.DB) model.UserRepository {
 
 // Create reaches out to database SQLX api
 func (r *pGUserRepository) Create(ctx context.Context, u *model.User) (*model.User, error) {
-	fmt.Println()
 	query := "INSERT INTO users (name,email, password) VALUES ($1, $2, $3) RETURNING *"
 
 	if err := r.DB.GetContext(ctx, u, query, u.Name, u.Email, u.Password); err != nil {

@@ -15,7 +15,7 @@ export interface Category {
   }
 
   export interface Product {
-    id?: number
+    id: number
     product_name?: string
     slug?: string
     brand?: string
