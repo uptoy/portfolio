@@ -25,6 +25,7 @@ import {WishlistGet, WishlistCreate} from "services/api/wishlist"
 import {useAuth} from "context/AuthContext"
 import {Review} from "@types"
 import {Average} from "utils/average"
+import {useRouter} from "next/router"
 
 const useStyles: any = makeStyles(() => ({
   cardGrid: {
@@ -58,30 +59,47 @@ const useStyles: any = makeStyles(() => ({
   },
 }))
 
-
-
 export default function Index() {
   const {user} = useAuth()
   const classes = useStyles()
-  const [state, setState] = useState(false)
+
   //products
   const {data, error} = Products()
   const {data: data1, error: error1} = WishlistGet()
-  console.log("index wishlist", data1)
+  const [state, setState] = useState(data1.data)
+  // const [wishlist, setWishlist] = useState(data1)
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
-  // if (error1) return <div>failed to load</div>
-  // if (!data1) return <div>loading...</div>
+  console.log(data1.data)
+  console.log("state", state)
+  const ids = state.map((p: any) => p.id)
+  console.log("ids", ids)
+  // const numbers = [1, 2, 3, 4, 5]
+  // const doubled = data1.map((number) => console.log(number))
+  // console.log(doubled)
+  // console.log("wishlist", wishlist)
+  // const wishlist = data1.data
+  // console.log("data1", data1)
+  // if (error1) {
+  //   const router = useRouter()
+  //   router.push("/")
+  // }
+  // console.log("wishlist", wishlist)
+  // console.log(ids.includes(product.id))
+
   const products = data.data
   //user
   const averageNum = Average(products[0].reviews.map((review: Review) => review.rating))
   //wishlist
-
   const handleClick = (product: Product) => {
-    console.log("index product",product)
-    WishlistCreate(product)
-
-    setState(!state)
+    console.log("product", product)
+    const result = WishlistCreate(product)
+    result.then((res) => {
+      const fetchData = res.data.data
+      console.log("fetchData", fetchData)
+      setState(fetchData)
+    })
+    // setState(!state)
   }
   return (
     <>
@@ -114,7 +132,11 @@ export default function Index() {
                       </Typography>
                     </Button>
                     <div onClick={() => handleClick(product)}>
-                      {state ? (
+                      {}
+                      {/* {if (wishlist.find((w: any) => w.id == product.id) {
+
+                      }} */}
+                      {ids.includes(product.id) ? (
                         <FavoriteIcon className={classes.favorite} />
                       ) : (
                         <FavoriteBorderIcon className={classes.favorite} />

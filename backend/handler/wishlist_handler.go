@@ -159,7 +159,7 @@ func (h *Handler) WishlistCreate(c *gin.Context) {
 	}
 	uid := user.(*model.User).UID
 	ctx := c.Request.Context()
-	_, err := h.WishlistService.WishlistCreate(ctx, uid, productId)
+	wishlist, err := h.WishlistService.WishlistCreate(ctx, uid, productId)
 	if err != nil {
 		log.Printf("Unable to find wishlist: %v", err)
 		e := apperrors.NewNotFound("wishlist", "err")
@@ -169,7 +169,7 @@ func (h *Handler) WishlistCreate(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"data": "create wishlist",
+		"data": wishlist,
 	})
 }
 
@@ -190,7 +190,7 @@ func (h *Handler) WishlistDelete(c *gin.Context) {
 	productId, _ := strconv.ParseInt(c.Param("id"), 0, 64)
 	fmt.Println("uid", uid)
 	ctx := c.Request.Context()
-	_, err := h.WishlistService.WishlistDelete(ctx, uid, productId)
+	wishlist, err := h.WishlistService.WishlistDelete(ctx, uid, productId)
 	if err != nil {
 		log.Printf("Unable to find wishlist: %v", err)
 		e := apperrors.NewNotFound("wishlist", "err")
@@ -200,6 +200,6 @@ func (h *Handler) WishlistDelete(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"data": "OK",
+		"data": wishlist,
 	})
 }

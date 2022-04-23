@@ -219,16 +219,16 @@ type UserService interface {
 
 type WishlistService interface {
 	WishlistGet(ctx context.Context, userId uuid.UUID) ([]*Product, error)
-	WishlistCreate(ctx context.Context, userId uuid.UUID, productId int64) (*Wishlist, error)
-	WishlistDelete(ctx context.Context, userId uuid.UUID, productId int64) (*Wishlist, error)
+	WishlistCreate(ctx context.Context, userId uuid.UUID, productId int64) ([]*Product, error)
+	WishlistDelete(ctx context.Context, userId uuid.UUID, productId int64) ([]*Product, error)
 	// WishlistAddItem(ctx context.Context, userId uuid.UUID, productId int64) ([]*Product, error)
 	// WishlistClear(ctx context.Context, userId uuid.UUID) error
 }
 
 type WishlistRepository interface {
 	WishlistGet(ctx context.Context, userId uuid.UUID) ([]*Product, error)
-	WishlistCreate(ctx context.Context, userId uuid.UUID, productId int64) (*Wishlist, error)
-	WishlistDelete(ctx context.Context, userId uuid.UUID, productId int64) (*Wishlist, error)
+	WishlistCreate(ctx context.Context, userId uuid.UUID, productId int64) ([]*Product, error)
+	WishlistDelete(ctx context.Context, userId uuid.UUID, productId int64) ([]*Product, error)
 	// WishlistGet(ctx context.Context, userId uuid.UUID) ([]*Product, error)
 	// WishlistCreate(ctx context.Context, userId uuid.UUID) (*Wishlist, error)
 	// WishlistAddItem(ctx context.Context, userId uuid.UUID, productId int64) ([]*Product, error)
