@@ -2,7 +2,6 @@ import React, {useState} from "react"
 import theme from "theme"
 import {Rating, Carousel} from "components"
 import {MainFeaturedPost} from "components/productTop"
-import useSWR from "swr"
 import {
   Typography,
   Grid,
@@ -22,9 +21,10 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"
 import FavoriteIcon from "@material-ui/icons/Favorite"
 import {Product} from "@types"
 import {Products} from "services/api/product"
-import {Wishlist} from "services/api/wishlist"
-import {fetcher} from "services/fetcher"
+import {WishlistGet} from "services/api/wishlist"
 import {useAuth} from "context/AuthContext"
+import {Review} from "@types"
+import {Average} from "utils/average"
 
 const useStyles: any = makeStyles(() => ({
   cardGrid: {
@@ -60,7 +60,6 @@ const useStyles: any = makeStyles(() => ({
 
 export default function Index() {
   const {user} = useAuth()
-  console.log("index user", user)
   const classes = useStyles()
   const [state, setState] = useState(false)
   const handleClick = () => {
@@ -68,11 +67,12 @@ export default function Index() {
   }
   //products
   const {data, error} = Products()
+  const {data: data1, error: error1} = WishlistGet()
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
   const products = data.data
   //user
-
+  const averageNum = Average(products[0].reviews.map((review: Review) => review.rating))
   //wishlist
 
   return (
@@ -100,7 +100,7 @@ export default function Index() {
                   </CardContent>
                   <CardActions className={classes.cardActions}>
                     <Button size="small" color="primary">
-                      <Rating value={product.reviews[0].rating} />
+                      <Rating value={averageNum} />
                       <Typography className={classes.numReviews}>
                         ({product.reviews.length})
                       </Typography>

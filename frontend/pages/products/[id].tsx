@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import {CircularProgress, Grid, List, ListItem, Typography, Card, Button} from "@material-ui/core"
+import {Grid, List, ListItem, Typography, Card, Button} from "@material-ui/core"
 import {Rating, CarouselThumbs, ProductReview, Carousel} from "components"
 import Layout from "components/organisms/Layout"
 import {useRouter} from "next/router"
@@ -10,9 +10,9 @@ import Container from "@material-ui/core/Container"
 import {Circular} from "components/common/Circular"
 import {ProductFindById} from "services/api/product"
 import {CartAddItem} from "services/api/cart"
-import axios from "axios"
-import useSWR from "swr"
-import {CartItem} from "@types"
+import {CartItem, Review} from "@types"
+import {Average} from "utils/average"
+
 
 const useStyles: any = makeStyles(() => ({
   gridContainer: {
@@ -72,14 +72,12 @@ const ProductDetail: React.ReactNode = () => {
       return
     }
     router.push("/cart")
-    // console.log("cartItem", cartItem)
   }
 
   const handleChange = (e: any) => {
     setQty(e.target.value)
   }
-  const average = (arr: any) => arr.reduce((a: any, b: any) => a + b, 0) / arr.length
-  const averageNum = average(product.reviews.map((review: any) => review.rating))
+  const averageNum = Average(product.reviews.map((review: Review) => review.rating))
 
   return (
     <Layout>

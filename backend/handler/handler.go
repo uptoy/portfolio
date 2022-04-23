@@ -161,11 +161,12 @@ func NewHandler(c *Config) {
 	}
 	wishlist := api.Group("/wishlist")
 	{
-		wishlist.GET("/create", middleware.AuthUser(h.TokenService), h.WishlistCreate)
+		wishlist.POST("/create", middleware.AuthUser(h.TokenService), h.WishlistCreate)
 		wishlist.GET("", middleware.AuthUser(h.TokenService), h.WishlistGet)
-		wishlist.POST("/:product_id", middleware.AuthUser(h.TokenService), h.WishlistAddItem)
-		wishlist.DELETE("/:product_id", middleware.AuthUser(h.TokenService), h.WishlistDeleteItem)
-		wishlist.DELETE("/clear", middleware.AuthUser(h.TokenService), h.WishlistClear)
+		wishlist.DELETE("/:id", middleware.AuthUser(h.TokenService), h.WishlistDelete)
+		// wishlist.POST("/:product_id", middleware.AuthUser(h.TokenService), h.WishlistAddItem)
+		// wishlist.DELETE("/:product_id", middleware.AuthUser(h.TokenService), h.WishlistDeleteItem)
+		// wishlist.DELETE("/clear", middleware.AuthUser(h.TokenService), h.WishlistClear)
 	}
 	cart := api.Group("/cart")
 	{

@@ -338,7 +338,7 @@ export default function CommonHeader() {
                   }}
                 >
                   <div className={classes.authText}>
-                    <p style={{marginBottom: 2}}>Hello Guest</p>
+                    <p style={{marginBottom: 2,marginTop:0}}>Hello Guest</p>
                     <p style={{margin: 0}}>Please Signin</p>
                   </div>
                   <ArrowDropDownIcon />
