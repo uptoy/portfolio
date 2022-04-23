@@ -35,21 +35,21 @@ type AuthService interface {
 }
 type CartRepository interface {
 	CartCreate(ctx context.Context, userID uuid.UUID) (*Cart, error)
-	CartGet(ctx context.Context, userID uuid.UUID) (*Cart, error)
-	CartGetId(ctx context.Context, userId uuid.UUID) (int64, error)
-	CartAddItem(ctx context.Context, cartItem *CartItem) (*Cart, error)
-	CartDeleteItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
-	CartIncrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
-	CartDecrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
+	CartGet(ctx context.Context, userID uuid.UUID) ([]*Product, error)
+	CartAddItem(ctx context.Context, cartItem *CartItem) (*CartItem, error)
+	CartDeleteItem(ctx context.Context, cartId int64, productId int64) (*CartItem, error)
+	CartIncrementItem(ctx context.Context, cartId int64, productId int64) (*CartItem, error)
+	CartDecrementItem(ctx context.Context, cartId int64, productId int64) (*CartItem, error)
+	// CartGetId(ctx context.Context, userId uuid.UUID) (int64, error)
 }
 type CartService interface {
 	CartCreate(ctx context.Context, userID uuid.UUID) (*Cart, error)
-	CartGet(ctx context.Context, userID uuid.UUID) (*Cart, error)
-	CartGetId(ctx context.Context, userId uuid.UUID) (int64, error)
-	CartAddItem(ctx context.Context, cartItem *CartItem) (*Cart, error)
-	CartDeleteItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
-	CartIncrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
-	CartDecrementItem(ctx context.Context, cartId int64, productId int64) ([]CartItem, error)
+	CartGet(ctx context.Context, cartId int64) ([]*CartItem, error)
+	// CartGetId(ctx context.Context, userId uuid.UUID) (int64, error)
+	CartAddItem(ctx context.Context, cartId int64, cartItem *CartItem) (*CartItem, error)
+	CartDeleteItem(ctx context.Context, cartId int64, productId int64) (*CartItem, error)
+	CartIncrementItem(ctx context.Context, cartId int64, productId int64) (*CartItem, error)
+	CartDecrementItem(ctx context.Context, cartId int64, productId int64) (*CartItem, error)
 }
 type CategoryRepository interface {
 	CategoryList(ctx context.Context) ([]Category, error)
@@ -220,7 +220,7 @@ type UserService interface {
 type WishlistService interface {
 	WishlistGet(ctx context.Context, userId uuid.UUID) ([]*Product, error)
 	WishlistCreate(ctx context.Context, userId uuid.UUID, productId int64) (*Wishlist, error)
-	WishlistDelete(ctx context.Context, userId uuid.UUID, productId int64)  (*Wishlist, error)
+	WishlistDelete(ctx context.Context, userId uuid.UUID, productId int64) (*Wishlist, error)
 	// WishlistAddItem(ctx context.Context, userId uuid.UUID, productId int64) ([]*Product, error)
 	// WishlistClear(ctx context.Context, userId uuid.UUID) error
 }

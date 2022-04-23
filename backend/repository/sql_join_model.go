@@ -14,7 +14,6 @@ type productJoin struct {
 	*CategoryJoin
 }
 
-
 // CategoryJoin is temp join type
 type CategoryJoin struct {
 	CID        int64     `db:"category_id"`
@@ -25,16 +24,16 @@ type CategoryJoin struct {
 
 func (pj *productJoin) ToProduct() *model.Product {
 	return &model.Product{
-		Id:            pj.Id,
-		ProductName:   pj.ProductName,
-		Slug:          pj.Slug,
-		Brand:         pj.Brand,
-		Price:         pj.Price,
-		CategoryId:    pj.CategoryId,
-		CountInStock:  pj.CountInStock,
-		Description:   pj.Description,
-		CreatedAt:     pj.CreatedAt,
-		UpdatedAt:     pj.UpdatedAt,
+		Id:           pj.Id,
+		ProductName:  pj.ProductName,
+		Slug:         pj.Slug,
+		Brand:        pj.Brand,
+		Price:        pj.Price,
+		CategoryId:   pj.CategoryId,
+		CountInStock: pj.CountInStock,
+		Description:  pj.Description,
+		CreatedAt:    pj.CreatedAt,
+		UpdatedAt:    pj.UpdatedAt,
 		Category: &model.Category{
 			ID:           pj.CID,
 			CategoryName: pj.CName,

@@ -1,9 +1,7 @@
 CREATE TABLE carts
 (
     id       SERIAL PRIMARY KEY,
-    user_id uuid UNIQUE NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT (now()),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT (now())
+    user_id uuid UNIQUE NOT NULL
 );
 
 

@@ -28,7 +28,7 @@ func NewProductRepository(db *sqlx.DB) model.ProductRepository {
 
 func (r *pGProductRepository) ProductCreate(ctx context.Context, p *model.Product) (*model.Product, error) {
 	var id int64
-	query := `INSERT INTO products (product_name, slug, brand, price, category_id, count_in_stock, description,average_rating) VALUES ($1, $2,$3, $4,$5,$6, $7) RETURNING id`
+	query := `INSERT INTO products (product_name, slug, brand, price, category_id, count_in_stock, description,average_rating) VALUES ($1, $2,$3, $4,$5,$6, $7) RETURNING *`
 	if err := r.DB.QueryRowContext(ctx, query, p.ProductName, p.Slug, p.Brand, p.Price, p.CategoryId, p.CountInStock, p.Description).Scan(&id); err != nil {
 		log.Printf("Could not create a product : %v. Reason: %v\n", p.ProductName, err)
 		return nil, apperrors.NewInternal()
