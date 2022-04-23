@@ -166,6 +166,48 @@ func (h *Handler) SeedReview(c *gin.Context) {
 	})
 }
 
+func (h *Handler) SeedWishlist(c *gin.Context) {
+	ctx := c.Request.Context()
+	randText := utils.RandStringRunes(10)
+	randName := randText + "name"
+	randEmail := randText + "@email.com"
+	u := model.User{
+		Name:     randName,
+		Email:    randEmail,
+		Password: "password",
+	}
+	user, err := h.UserService.Signup(ctx, &u)
+	if err != nil {
+		log.Printf("Failed to create tuser: %v\n", err.Error())
+		c.JSON(apperrors.Status(err), gin.H{
+			"error": err,
+		})
+		return
+	}
+	u1 := model.User{
+		Name:     user.Name,
+		Email:    user.Email,
+		Password: "password",
+	}
+	fmt.Println(u)
+	user1, err1 := h.UserService.Signin(ctx, &u1)
+	if err1 != nil {
+		log.Printf("Failed to create tokens for user: %v\n", err.Error())
+
+		c.JSON(apperrors.Status(err1), gin.H{
+			"error": err,
+		})
+		return
+	}
+	uuid := user1.UID
+	rand.Seed(time.Now().UnixNano())
+	productId := int64(rand.Intn(2) + 1)
+	result2, _ := h.WishlistService.WishlistCreate(ctx, uuid, productId)
+	c.JSON(http.StatusAccepted, gin.H{
+		"ok": result2,
+	})
+}
+
 // func (h *Handler) ReviewList(c *gin.Context) {
 // 	ctx := c.Request.Context()
 // 	user, exists := c.Get("user")

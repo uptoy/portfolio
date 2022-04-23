@@ -210,6 +210,7 @@ func NewHandler(c *Config) {
 		seed.POST("/product", h.SeedProduct)
 		seed.POST("/image", h.SeedProductImage)
 		seed.POST("/review", h.SeedReview)
+		seed.POST("/wishlist", h.SeedWishlist)
 
 	}
 	// image := api.Group("/image")
