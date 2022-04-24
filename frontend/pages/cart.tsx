@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react"
 import type {NextPage} from "next"
 import Link from "@material-ui/core/Link"
 import {Layout} from "components/organisms"
+import {GetServerSideProps} from "next"
 import {
   Button,
   CardContent,
@@ -39,10 +40,18 @@ const useStyles: any = makeStyles(() => ({
   },
 }))
 
-const Cart: NextPage = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const {user, isAuthenticated} = useAuth()
+  return {props: {user, isAuthenticated}}
+}
+
+const Cart: NextPage = ({props}: any) => {
   const classes = useStyles()
   const router = useRouter()
   const {user, isAuthenticated} = useAuth()
+  if (isAuthenticated == false) {
+    console.log("isAuthenticated",isAuthenticated)
+  }
   console.log("cart isAuthenticated", isAuthenticated)
   console.log("cart user", user)
 

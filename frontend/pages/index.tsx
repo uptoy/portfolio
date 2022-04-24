@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import theme from "theme"
 import {Rating, Carousel} from "components"
 import {MainFeaturedPost} from "components/productTop"
@@ -27,7 +27,7 @@ import {useAuth} from "context/AuthContext"
 import {Review} from "@types"
 import {Average} from "utils/average"
 import {useRouter} from "next/router"
-import {mutate} from "swr"
+import {api} from "services/apiClient"
 
 const useStyles: any = makeStyles(() => ({
   cardGrid: {
@@ -39,7 +39,7 @@ const useStyles: any = makeStyles(() => ({
     flexDirection: "column",
   },
   cardMedia: {
-    paddingTop: "80%", // 16:9
+    paddingTop: "80%",
   },
   cardContent: {
     flexGrow: 1,
@@ -61,7 +61,6 @@ const useStyles: any = makeStyles(() => ({
   },
 }))
 
-import {api} from "services/apiClient"
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const products = await api.get("/products").then((res) => res.data.data)
   return {props: {products}}
@@ -73,42 +72,47 @@ export default function Index({products}: any) {
   console.log("products", products)
   const router = useRouter()
   const {data, error, mutate} = WishlistGet()
-  const wishlist = data?.data
-  console.log("wishlist", wishlist)
   console.log("data", data?.data)
-  const wishlistIsList = wishlist?.map((p: any) => p.id)
+  // const wishlist = data === undefined ?? []
+  // console.log("wishlist", wishlist)
+  const wishlist = !data ? [] : data.data
+  console.log("wishlist", wishlist)
 
+  //auth時ok
+  // console.log("isAuthenticated", isAuthenticated)
+  // if (!data) isAuthenticated ?? <div>loading...</div>
+  // console.log("data", data?.data)
+
+  // if (error) return <div>failed to load</div>
+  // console.log("data", data)
+  // console.log("wishlist", data?.data)
+  // const wishlist = data?.data
+  const wishlistIsList = wishlist?.map((p: any) => p.id)
+  console.log("wishlistIsList", wishlistIsList)
+
+  console.log("isAuthenticated", isAuthenticated)
   const handleClick = (product: Product) => {
-    const wishlistHandler = async() => {
+    console.log("isAuthenticated", isAuthenticated)
+    const wishlistHandler = async () => {
       console.log("product", product)
-      console.log("data", data)
-      if (wishlistIsList.includes(product.id) == true) {
-        await WishlistDelete(String(product.id)).then((res) =>{
-        console.log("delete res", res.data)
-        mutate(res.data)})
+      if (wishlistIsList?.includes(product.id) == true) {
+        await WishlistDelete(String(product.id)).then((res) => {
+          console.log("delete res", res.data.data)
+          mutate(res.data)
+        })
       } else {
         await WishlistCreate(product).then((res) => {
-          console.log("create res", res.data)
+          console.log("create res", res.data.data)
           mutate(res.data)
         })
       }
     }
     isAuthenticated ? wishlistHandler() : router.push("/auth/signup")
   }
+  const averageNum = Average(products[0]?.reviews.map((review: Review) => review.rating))
   return (
     <>
       <Layout>
-        <button onClick={() => handleClick(products[0])}>button</button>
-        <button onClick={() => handleClick(products[1])}>button1</button>
-        {/* <div onClick={() => handleClick(product)}>
-          {ids?.includes(product.id) ? (
-            <FavoriteIcon className={classes.favorite} />
-          ) : (
-            <FavoriteBorderIcon className={classes.favorite} />
-          )}
-        </div> */}
-      </Layout>
-      {/* <Layout>
         <MainFeaturedPost post={mainFeaturedPost} />
         <Container className={classes.cardGrid} maxWidth="xl">
           <Grid container spacing={4}>
@@ -137,7 +141,7 @@ export default function Index({products}: any) {
                       </Typography>
                     </Button>
                     <div onClick={() => handleClick(product)}>
-                      {ids?.includes(product.id) ? (
+                      {wishlistIsList?.includes(product.id) ? (
                         <FavoriteIcon className={classes.favorite} />
                       ) : (
                         <FavoriteBorderIcon className={classes.favorite} />
@@ -151,7 +155,7 @@ export default function Index({products}: any) {
           <Carousel title="Ralated Product" />
           <Carousel title="Popular products" />
         </Container>
-      </Layout> */}
+      </Layout>
     </>
   )
 }

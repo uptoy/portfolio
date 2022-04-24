@@ -4,7 +4,6 @@ import (
 	"backend/model"
 	"backend/model/apperrors"
 	"context"
-	"fmt"
 	"log"
 	"time"
 
@@ -54,8 +53,6 @@ func (r *pGWishlistRepository) WishlistCreate(ctx context.Context, userId uuid.U
 }
 
 func (r *pGWishlistRepository) WishlistDelete(ctx context.Context, userId uuid.UUID, productId int64) ([]*model.Product, error) {
-	fmt.Println("userId", userId)
-	fmt.Println("productId", productId)
 	wishlist := model.Wishlist{}
 	query :=
 		`

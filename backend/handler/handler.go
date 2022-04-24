@@ -93,12 +93,12 @@ func NewHandler(c *Config) {
 		//auth
 		api.Use(middleware.Timeout(c.TimeoutDuration, apperrors.NewServiceUnavailable()))
 		api.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
-		api.POST("/signout", middleware.AuthUser(h.TokenService), h.Signout)
+		// api.POST("/signout", middleware.AuthUser(h.TokenService), h.Signout)
 		api.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
 	} else {
 		//こちらがテスト実行される
 		api.GET("/me", h.Me)
-		api.POST("/signout", h.Signout)
+		// api.POST("/signout", h.Signout)
 		api.PUT("/details", h.Details)
 		// api.POST("/forgot", h.ForgotPassword)
 	}
@@ -154,7 +154,7 @@ func NewHandler(c *Config) {
 		auth.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
 		auth.POST("/signup", h.Signup)
 		auth.POST("/signin", h.Signin)
-		auth.POST("/signout", h.Signout)
+		auth.POST("/signout", middleware.AuthUser(h.TokenService), h.Signout)
 		auth.POST("/tokens", h.Tokens)
 		auth.POST("/forgot_password", h.Sample)
 		auth.POST("/reset_password", h.Sample)

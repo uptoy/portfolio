@@ -70,7 +70,8 @@ func AuthUser(s model.TokenService) gin.HandlerFunc {
 			return
 		}
 		// validate ID token here
-		user, err := s.ValidateIDToken(idTokenHeader[1])
+		tokenTrim := strings.TrimSpace(idTokenHeader[1])
+		user, err := s.ValidateIDToken(tokenTrim)
 		if err != nil {
 			err := apperrors.NewAuthorization("Provided token is invalid")
 			c.JSON(err.Status(), gin.H{

@@ -145,6 +145,8 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	})
 	wishlistService := service.NewWishlistService(&service.WishlistServiceConfig{
 		WishlistRepository: wishlistRepository,
+		ReviewRepository: reviewRepository,
+		ProductImageRepository: productImageRepository,
 	})
 
 	// load rsa keys

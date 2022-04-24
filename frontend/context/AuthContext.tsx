@@ -1,5 +1,5 @@
 import {createContext, ReactNode, useEffect, useState, useContext} from "react"
-import Router from "next/router"
+import {useRouter} from "next/router"
 import {api} from "services/apiClient"
 import toast from "react-hot-toast"
 import {setCookie, parseCookies, destroyCookie} from "nookies"
@@ -12,7 +12,7 @@ import {
 import axios from "axios"
 import {mutate} from "swr"
 
-type User = {
+export type User = {
   name: string
   email: string
 }
@@ -35,6 +35,7 @@ type AuthContextType = {
 export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthProvider({children}: AuthProviderProps) {
+  const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
   // const [user, setUser] = useState({} as User)
 
@@ -50,6 +51,7 @@ export function AuthProvider({children}: AuthProviderProps) {
         })
         .catch(() => {
           signOut()
+          router.push("/")
         })
     }
   }, [])
@@ -63,8 +65,10 @@ export function AuthProvider({children}: AuthProviderProps) {
         confirmPassword,
       })
       const {tokens, user} = data
-      const token = tokens.idToken
-      const refreshToken = tokens.refreshToken
+      const token = tokens.idToken.trim()
+      console.log("token", token)
+      const refreshToken = tokens.refreshToken.trim()
+      console.log("refreshToken", refreshToken)
 
       setCookie(undefined, "token", token, {
         maxAge: 60 * 60 * 24, // 1 day
@@ -76,7 +80,6 @@ export function AuthProvider({children}: AuthProviderProps) {
       })
       setUser(user)
       // mutate("/wishlist")
-      Router.push("/")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message)
@@ -84,6 +87,7 @@ export function AuthProvider({children}: AuthProviderProps) {
         toast.error("Error creating account")
       }
     }
+    router.push("/")
   }
 
   const signIn = async ({email, password}: SignInCredentials) => {
@@ -93,8 +97,8 @@ export function AuthProvider({children}: AuthProviderProps) {
         password,
       })
       const {tokens, user} = data
-      const token = tokens.idToken
-      const refreshToken = tokens.refreshToken
+      const token = tokens.idToken.trim()
+      const refreshToken = tokens.refreshToken.trim()
       console.log("data", data)
       console.log("token", tokens.idToken)
       console.log("user", user)
@@ -108,7 +112,7 @@ export function AuthProvider({children}: AuthProviderProps) {
       })
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`
       setUser(user)
-      Router.push("/")
+      router.push("/")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message)
@@ -123,7 +127,8 @@ export function AuthProvider({children}: AuthProviderProps) {
     try {
       await api.post("/auth/signout")
       toast.success("Success SignOut")
-      Router.push("/")
+      setUser({} as User)
+      router.push("/auth/signout")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message)
@@ -131,15 +136,13 @@ export function AuthProvider({children}: AuthProviderProps) {
         toast.error("Error sign out")
       }
     }
-    setUser({} as User)
-    Router.push("/")
   }
 
   const forgotPassword = async ({email}: ForgotPasswordCredentials) => {
     try {
       await api.post("/auth/forgot_password", {email})
       toast.success("Sent you an email so please check it.")
-      Router.push("/dashboard")
+      router.push("/dashboard")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message)
@@ -157,7 +160,7 @@ export function AuthProvider({children}: AuthProviderProps) {
         confirmPassword,
       })
       toast.success("Success reset password")
-      Router.push("/")
+      router.push("/")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message)

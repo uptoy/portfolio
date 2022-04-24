@@ -7,16 +7,25 @@ import (
 )
 
 type wishlistService struct {
-	WishlistRepository model.WishlistRepository
+	WishlistRepository     model.WishlistRepository
+	ProductImageRepository model.ProductImageRepository
+	CategoryRepository     model.CategoryRepository
+	ReviewRepository       model.ReviewRepository
 }
 
 type WishlistServiceConfig struct {
-	WishlistRepository model.WishlistRepository
+	WishlistRepository     model.WishlistRepository
+	ProductImageRepository model.ProductImageRepository
+	CategoryRepository     model.CategoryRepository
+	ReviewRepository       model.ReviewRepository
 }
 
 func NewWishlistService(c *WishlistServiceConfig) model.WishlistService {
 	return &wishlistService{
-		WishlistRepository: c.WishlistRepository,
+		WishlistRepository:     c.WishlistRepository,
+		ProductImageRepository: c.ProductImageRepository,
+		CategoryRepository:     c.CategoryRepository,
+		ReviewRepository:       c.ReviewRepository,
 	}
 }
 
@@ -30,7 +39,15 @@ func (s *wishlistService) WishlistCreate(ctx context.Context, userId uuid.UUID, 
 func (s *wishlistService) WishlistGet(ctx context.Context, userId uuid.UUID) ([]*model.Product, error) {
 	wishlist, err := s.WishlistRepository.WishlistGet(ctx, userId)
 	if err != nil {
-		return wishlist, err
+		return nil, err
+	}
+	for _, product := range wishlist {
+		productId := product.Id
+		images, err := s.ProductImageRepository.GetAll(ctx, productId)
+		if err != nil {
+			return nil, err
+		}
+		product.Images = images
 	}
 	return wishlist, nil
 }
