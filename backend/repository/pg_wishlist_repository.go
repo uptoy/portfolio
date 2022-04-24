@@ -4,6 +4,7 @@ import (
 	"backend/model"
 	"backend/model/apperrors"
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -53,9 +54,15 @@ func (r *pGWishlistRepository) WishlistCreate(ctx context.Context, userId uuid.U
 }
 
 func (r *pGWishlistRepository) WishlistDelete(ctx context.Context, userId uuid.UUID, productId int64) ([]*model.Product, error) {
-	wishlist := &model.Wishlist{}
-	query := `DELETE FROM user_product WHERE user_id= $1  AND product_id= $2`
-	if err := r.DB.GetContext(ctx, wishlist, query, userId, productId); err != nil {
+	fmt.Println("userId", userId)
+	fmt.Println("productId", productId)
+	wishlist := model.Wishlist{}
+	query :=
+		`
+	DELETE FROM user_product Where user_id = $1 AND product_id = $2
+	`
+	_, err := r.DB.ExecContext(ctx, query, userId, productId)
+	if err != nil {
 		log.Printf("Unable to get product: %v. Err: %v\n", wishlist, err)
 		return nil, apperrors.NewNotFound("wishlist", "userId")
 	}
@@ -78,7 +85,6 @@ func (r *pGWishlistRepository) WishlistDelete(ctx context.Context, userId uuid.U
 	for _, x := range pj {
 		result = append(result, x.ToProduct())
 	}
-
 	return result, nil
 }
 

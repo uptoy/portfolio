@@ -188,7 +188,6 @@ func (h *Handler) WishlistDelete(c *gin.Context) {
 	}
 	uid := user.(*model.User).UID
 	productId, _ := strconv.ParseInt(c.Param("id"), 0, 64)
-	fmt.Println("uid", uid)
 	ctx := c.Request.Context()
 	wishlist, err := h.WishlistService.WishlistDelete(ctx, uid, productId)
 	if err != nil {

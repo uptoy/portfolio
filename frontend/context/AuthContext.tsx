@@ -10,6 +10,7 @@ import {
   ResetPasswordCredentials,
 } from "yub/type"
 import axios from "axios"
+import {mutate} from "swr"
 
 type User = {
   name: string
@@ -74,6 +75,7 @@ export function AuthProvider({children}: AuthProviderProps) {
         path: "/",
       })
       setUser(user)
+      // mutate("/wishlist")
       Router.push("/")
     } catch (error) {
       if (axios.isAxiosError(error)) {

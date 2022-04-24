@@ -2,6 +2,7 @@ import React, {useState} from "react"
 import theme from "theme"
 import {Rating, Carousel} from "components"
 import {MainFeaturedPost} from "components/productTop"
+import {GetServerSideProps} from "next"
 import {
   Typography,
   Grid,
@@ -21,11 +22,12 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"
 import FavoriteIcon from "@material-ui/icons/Favorite"
 import {Product} from "@types"
 import {Products} from "services/api/product"
-import {WishlistGet, WishlistCreate} from "services/api/wishlist"
+import {WishlistGet, WishlistCreate, WishlistDelete} from "services/api/wishlist"
 import {useAuth} from "context/AuthContext"
 import {Review} from "@types"
 import {Average} from "utils/average"
 import {useRouter} from "next/router"
+import {mutate} from "swr"
 
 const useStyles: any = makeStyles(() => ({
   cardGrid: {
@@ -59,55 +61,58 @@ const useStyles: any = makeStyles(() => ({
   },
 }))
 
-export default function Index() {
-  const {user} = useAuth()
+import {api} from "services/apiClient"
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const products = await api.get("/products").then((res) => res.data.data)
+  return {props: {products}}
+}
+
+export default function Index({products}: any) {
+  const {isAuthenticated} = useAuth()
   const classes = useStyles()
+  console.log("products", products)
+  const router = useRouter()
+  const {data, error, mutate} = WishlistGet()
+  const wishlist = data?.data
+  console.log("wishlist", wishlist)
+  console.log("data", data?.data)
+  const wishlistIsList = wishlist?.map((p: any) => p.id)
 
-  //products
-  const {data, error} = Products()
-  const {data: data1, error: error1} = WishlistGet()
-  const [state, setState] = useState(data1.data)
-  // const [wishlist, setWishlist] = useState(data1)
-  if (error) return <div>failed to load</div>
-  if (!data) return <div>loading...</div>
-  console.log(data1.data)
-  console.log("state", state)
-  const ids = state.map((p: any) => p.id)
-  console.log("ids", ids)
-  // const numbers = [1, 2, 3, 4, 5]
-  // const doubled = data1.map((number) => console.log(number))
-  // console.log(doubled)
-  // console.log("wishlist", wishlist)
-  // const wishlist = data1.data
-  // console.log("data1", data1)
-  // if (error1) {
-  //   const router = useRouter()
-  //   router.push("/")
-  // }
-  // console.log("wishlist", wishlist)
-  // console.log(ids.includes(product.id))
-
-  const products = data.data
-  //user
-  const averageNum = Average(products[0].reviews.map((review: Review) => review.rating))
-  //wishlist
   const handleClick = (product: Product) => {
-    console.log("product", product)
-    const result = WishlistCreate(product)
-    result.then((res) => {
-      const fetchData = res.data.data
-      console.log("fetchData", fetchData)
-      setState(fetchData)
-    })
-    // setState(!state)
+    const wishlistHandler = async() => {
+      console.log("product", product)
+      console.log("data", data)
+      if (wishlistIsList.includes(product.id) == true) {
+        await WishlistDelete(String(product.id)).then((res) =>{
+        console.log("delete res", res.data)
+        mutate(res.data)})
+      } else {
+        await WishlistCreate(product).then((res) => {
+          console.log("create res", res.data)
+          mutate(res.data)
+        })
+      }
+    }
+    isAuthenticated ? wishlistHandler() : router.push("/auth/signup")
   }
   return (
     <>
       <Layout>
+        <button onClick={() => handleClick(products[0])}>button</button>
+        <button onClick={() => handleClick(products[1])}>button1</button>
+        {/* <div onClick={() => handleClick(product)}>
+          {ids?.includes(product.id) ? (
+            <FavoriteIcon className={classes.favorite} />
+          ) : (
+            <FavoriteBorderIcon className={classes.favorite} />
+          )}
+        </div> */}
+      </Layout>
+      {/* <Layout>
         <MainFeaturedPost post={mainFeaturedPost} />
         <Container className={classes.cardGrid} maxWidth="xl">
           <Grid container spacing={4}>
-            {products.map((product: Product) => (
+            {products?.map((product: Product) => (
               <Grid item key={product.id} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <Link href={`/products/${String(product.id)}`}>
@@ -132,11 +137,7 @@ export default function Index() {
                       </Typography>
                     </Button>
                     <div onClick={() => handleClick(product)}>
-                      {}
-                      {/* {if (wishlist.find((w: any) => w.id == product.id) {
-
-                      }} */}
-                      {ids.includes(product.id) ? (
+                      {ids?.includes(product.id) ? (
                         <FavoriteIcon className={classes.favorite} />
                       ) : (
                         <FavoriteBorderIcon className={classes.favorite} />
@@ -150,22 +151,7 @@ export default function Index() {
           <Carousel title="Ralated Product" />
           <Carousel title="Popular products" />
         </Container>
-      </Layout>
-      {/* <ul>
-        {products.map((product: any) => (
-          <li key={product.id}>
-            {product.id}
-            {product.product_name}
-            {product.images.map((image: any) => (
-              <div>
-                <div>{image.id}</div>
-                <div>{image.url}</div>
-                <Image src={image.url} width={100} height={100} />
-              </div>
-            ))}
-          </li>
-        ))}
-      </ul> */}
+      </Layout> */}
     </>
   )
 }
@@ -220,3 +206,25 @@ export default function Index() {
   <Carousel title="Popular products" />
 </Container> */
 }
+
+// const [state, setState] = useState(wishlist?.data)
+// const [wishlist, setWishlist] = useState(wishlist)
+
+//wishlist ids
+// console.log("wishlist", wishlist)
+// const ids = wishlist?.map((p: any) => p.id)
+// console.log("ids", ids)
+// console.log("wishlist", wishlist)
+// const wishlist = wishlist.data
+// console.log("wishlist", wishlist)
+// if (error1) {
+//   const router = useRouter()
+//   router.push("/")
+// }
+// console.log("wishlist", wishlist)
+// console.log(ids.includes(product.id))
+
+// console.log("products", products)
+//user
+// const averageNum = Average(products[0]?.reviews.map((review: Review) => review.rating))
+//wishlist

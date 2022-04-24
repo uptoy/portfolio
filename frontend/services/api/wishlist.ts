@@ -11,6 +11,6 @@ export const WishlistCreate = (product: Product) => {
   return api.post("/wishlist", product)
 }
 
-export const WishlistDelete = (id: string) => {
+export const WishlistDelete =  (id: string) => {
   return api.delete(`/wishlist/${id}`)
 }
