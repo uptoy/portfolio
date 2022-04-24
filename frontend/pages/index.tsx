@@ -109,7 +109,7 @@ export default function Index({products}: any) {
     }
     isAuthenticated ? wishlistHandler() : router.push("/auth/signup")
   }
-  const averageNum = Average(products[0]?.reviews.map((review: Review) => review.rating))
+  // const averageNum = Average(products[0]?.reviews.map((review: Review) => review.rating))
   return (
     <>
       <Layout>
@@ -135,7 +135,7 @@ export default function Index({products}: any) {
                   </CardContent>
                   <CardActions className={classes.cardActions}>
                     <Button size="small" color="primary">
-                      <Rating value={averageNum} />
+                      <Rating value={Average(product.reviews.map((review: Review) => review.rating))} />
                       <Typography className={classes.numReviews}>
                         ({product.reviews.length})
                       </Typography>
