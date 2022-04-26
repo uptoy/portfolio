@@ -93,13 +93,16 @@ export default function Index({props}: any) {
   // axiosConfig["withCredentials"] = true
   // await axios.post(`http://localhost:2000/users/sign-in/`, userLogin, axiosConfig)
 
-  const instance = axios.create({
-    withCredentials: true,
-    baseURL: "http://localhost:8080/api",
-  })
+  // const instance = axios.create({
+  //   withCredentials: true,
+  //   baseURL: "http://localhost:8080/api",
+  // })
 
-  const res = instance.get("/auth/signup")
-  console.log("res", res)
+  // const res = instance.post("/auth/signup", {
+  //   email: "name2300@email.com",
+  //   name: "name2300",
+  //   password: "password",
+  // })
 
   return <div>aaa</div>
 }

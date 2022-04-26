@@ -59,14 +59,24 @@ export function AuthProvider({children}: AuthProviderProps) {
 
   const signUp = async ({email, name, password, confirmPassword}: SignUpCredentials) => {
     try {
+      // await fetch("http://localhost:8080/api/auth/signup", {
+      //   method: "POST",
+      //   headers: {"Content-Type": "application/json"},
+      //   body: JSON.stringify({
+      //     email,
+      //     name,
+      //     password,
+      //     confirmPassword,
+      //   }),
+      // })
       const {data} = await api.post("/auth/signup", {
-        email,
         name,
+        email,
         password,
         confirmPassword,
       })
       const {user} = data
-      let x = document.cookie;
+      // let x = document.cookie;
 
       // const token = tokens.idToken.trim()
       // console.log("token", token)
@@ -81,9 +91,21 @@ export function AuthProvider({children}: AuthProviderProps) {
       //   maxAge: 60 * 60 * 24 * 30, // 1 Month
       //   path: "/",
       // })
+      // await fetch("http://localhost:8081/api/register", {
+      //   method: "POST",
+      //   headers: {"Content-Type": "application/json"},
+      //   body: JSON.stringify({
+      //     first_name: firstName,
+      //     last_name: lastName,
+      //     email,
+      //     password,
+      //   }),
+      // })
+
       setUser(user)
-      console.log("cookies", x)
+      // console.log("cookies", x)
       // mutate("/wishlist")
+      router.push("/")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message)
@@ -92,7 +114,7 @@ export function AuthProvider({children}: AuthProviderProps) {
       }
       throw error
     }
-    router.push("/")
+
     // me().then((res) => console.log("res.data",setUser(res)))
   }
 

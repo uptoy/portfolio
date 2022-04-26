@@ -9,7 +9,6 @@ import (
 	"backend/model"
 	"backend/model/apperrors"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-contrib/cors"
 	// "strconv"
 )
 
@@ -78,17 +77,6 @@ func NewHandler(c *Config) {
 	// Create an account group
 	api := c.R.Group(c.BaseURL)
 	api.Static("images", "./images")
-	api.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"},
-		AllowMethods:     []string{"GET", "POST"},
-		AllowHeaders:     []string{"Content-Type"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		AllowOriginFunc: func(origin string) bool {
-			return origin == "http://localhost:3000"
-		},
-		MaxAge: 12 * time.Hour,
-	}))
 	if gin.Mode() != gin.TestMode {
 		//auth
 		api.Use(middleware.Timeout(c.TimeoutDuration, apperrors.NewServiceUnavailable()))
