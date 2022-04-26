@@ -30,7 +30,7 @@ const useStyles: any = makeStyles(() => ({
   },
 }))
 
-export default function SignUp() {
+export default function SignOut() {
   const classes = useStyles()
 
   return (

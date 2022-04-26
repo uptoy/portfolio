@@ -60,17 +60,21 @@ func AuthUser(s model.TokenService) gin.HandlerFunc {
 			return
 		}
 
-		idTokenHeader := strings.Split(h.IDToken, "Bearer ")
-		if len(idTokenHeader) < 2 {
-			err := apperrors.NewAuthorization("Must provide Authorization header with format `Bearer {token}`")
-			c.JSON(err.Status(), gin.H{
-				"error": err,
-			})
-			c.Abort()
-			return
-		}
+		// idTokenHeader := strings.Split(h.IDToken, "Bearer ")
+		// if len(idTokenHeader) < 2 {
+		// 	err := apperrors.NewAuthorization("Must provide Authorization header with format `Bearer {token}`")
+		// 	c.JSON(err.Status(), gin.H{
+		// 		"error": err,
+		// 	})
+		// 	c.Abort()
+		// 	return
+		// }
+		//   maxAge: 60 * 60 * 24, // 1 day
+		//   maxAge: 60 * 60 * 24 * 30, // 1 Month
+		accessToken, _ := c.Cookie("token")
+		refreshToken, _ := c.Cookie("token")
 		// validate ID token here
-		tokenTrim := strings.TrimSpace(idTokenHeader[1])
+		tokenTrim := strings.TrimSpace(accessToken)
 		user, err := s.ValidateIDToken(tokenTrim)
 		if err != nil {
 			err := apperrors.NewAuthorization("Provided token is invalid")
@@ -81,6 +85,8 @@ func AuthUser(s model.TokenService) gin.HandlerFunc {
 			return
 		}
 		c.Set("user", user)
+		c.SetCookie("token", accessToken, 60*60*24, "/", "localhost", false, true)
+		c.SetCookie("refreshToken", refreshToken, 60*60*24*30, "/", "localhost", false, true)
 		c.Next()
 	}
 }

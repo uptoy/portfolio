@@ -5,15 +5,16 @@ import {AuthTokenError} from "./errors/AuthTokenError"
 import {useAuth} from "context/AuthContext"
 
 export function getAPIClient(ctx?: any) {
-  let cookies = parseCookies(ctx)
+  // let cookies = parseCookies(ctx)
   let isRefreshing = false
   let failedRequestsQueue: any = []
   const api = axios.create({
     baseURL: "http://localhost:8080/api",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${cookies["token"]}`,
+      // Authorization: `Bearer ${cookies["token"]}`,
     },
+    withCredentials: true,
   })
   api.interceptors.request.use((config) => {
     return config
@@ -25,28 +26,30 @@ export function getAPIClient(ctx?: any) {
     (error: AxiosError) => {
       if (error.response?.status === 401) {
         if (error.response.data?.code === "token.expired") {
-          cookies = parseCookies(ctx)
-          const {"refreshToken": refreshToken} = cookies
+          // cookies = parseCookies(ctx)
+          // const {refreshToken: refreshToken} = cookies
+          // console.log("read from local storage:::::::::::::::", refreshToken)
           const originalConfig = error.config
           if (!isRefreshing) {
             isRefreshing = true
             api
-              .post("/refresh", {
-                refreshToken,
+              .post("/tokens", {
+                // refreshToken,
               })
               .then((response) => {
                 const {token} = response.data
-                setCookie(ctx, "token", token, {
-                  maxAge: 60 * 60 * 24 * 30, // 30 days
-                  path: "/", // global
-                })
-                setCookie(ctx, "refreshToken", response.data.refreshToken, {
-                  maxAge: 60 * 60 * 24 * 30, // 30 days
-                  path: "/", // global
-                })
-                api.defaults.headers.common["Authorization"] = `Bearer ${token}`
+                // setCookie(ctx, "token", token, {
+                //   maxAge: 60 * 60 * 24 * 30, // 30 days
+                //   path: "/", // global
+                // })
+                // setCookie(ctx, "refreshToken", response.data.refreshToken, {
+                //   maxAge: 60 * 60 * 24 * 30, // 30 days
+                //   path: "/", // global
+                // })
+                // api.defaults.headers.common["Authorization"] = `Bearer ${token}`
 
-                failedRequestsQueue.forEach((request: any) => request.onSuccess(token))
+                // failedRequestsQueue.forEach((request: any) => request.onSuccess(token))
+                failedRequestsQueue.forEach((request: any) => request.onSuccess())
                 failedRequestsQueue = []
               })
               .catch((err) => {
@@ -60,8 +63,9 @@ export function getAPIClient(ctx?: any) {
           //create a request queue
           return new Promise((resolve, reject) => {
             failedRequestsQueue.push({
-              onSuccess: (token: string) => {
-                api.defaults.headers.common["Authorization"] = `Bearer ${token}`
+              onSuccess: () => {
+                // onSuccess: (token: string) => {
+                // api.defaults.headers.common["Authorization"] = `Bearer ${token}`
                 resolve(api(originalConfig))
               },
               onFailure: (err: AxiosError) => {
@@ -78,9 +82,9 @@ export function getAPIClient(ctx?: any) {
     }
   )
 
-  if (cookies) {
-    api.defaults.headers.common["Authorization"] = `Bearer ${cookies["token"]}`
-  }
+  // if (cookies) {
+  //   api.defaults.headers.common["Authorization"] = `Bearer ${cookies["token"]}`
+  // }
 
   return api
 

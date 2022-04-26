@@ -41,20 +41,21 @@ export function AuthProvider({children}: AuthProviderProps) {
 
   const isAuthenticated = !!user
 
-  useEffect(() => {
-    let cookies = parseCookies()
-    let token = cookies["token"]
-    if (token) {
-      me()
-        .then((user) => {
-          setUser(user)
-        })
-        .catch(() => {
-          signOut()
-          router.push("/")
-        })
-    }
-  }, [])
+  // useEffect(() => {
+  // let cookies = parseCookies()
+  // let token = cookies["token"]
+  // if (token) {
+  // me()
+  //   .then((user) => {
+  //     setUser(user)
+  //   })
+  //   .catch((err) => {
+  //     console.log(err)
+  //     signOut()
+  //     router.push("/")
+  //   })
+  // }
+  // }, [])
 
   const signUp = async ({email, name, password, confirmPassword}: SignUpCredentials) => {
     try {
@@ -64,21 +65,24 @@ export function AuthProvider({children}: AuthProviderProps) {
         password,
         confirmPassword,
       })
-      const {tokens, user} = data
-      const token = tokens.idToken.trim()
-      console.log("token", token)
-      const refreshToken = tokens.refreshToken.trim()
-      console.log("refreshToken", refreshToken)
+      const {user} = data
+      let x = document.cookie;
 
-      setCookie(undefined, "token", token, {
-        maxAge: 60 * 60 * 24, // 1 day
-        path: "/",
-      })
-      setCookie(undefined, "refreshToken", refreshToken, {
-        maxAge: 60 * 60 * 24 * 30, // 1 Month
-        path: "/",
-      })
+      // const token = tokens.idToken.trim()
+      // console.log("token", token)
+      // const refreshToken = tokens.refreshToken.trim()
+      // console.log("refreshToken", refreshToken)
+
+      // setCookie(undefined, "token", token, {
+      //   maxAge: 60 * 60 * 24, // 1 day
+      //   path: "/",
+      // })
+      // setCookie(undefined, "refreshToken", refreshToken, {
+      //   maxAge: 60 * 60 * 24 * 30, // 1 Month
+      //   path: "/",
+      // })
       setUser(user)
+      console.log("cookies", x)
       // mutate("/wishlist")
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -86,8 +90,10 @@ export function AuthProvider({children}: AuthProviderProps) {
       } else {
         toast.error("Error creating account")
       }
+      throw error
     }
     router.push("/")
+    // me().then((res) => console.log("res.data",setUser(res)))
   }
 
   const signIn = async ({email, password}: SignInCredentials) => {
@@ -96,30 +102,33 @@ export function AuthProvider({children}: AuthProviderProps) {
         email,
         password,
       })
-      const {tokens, user} = data
-      const token = tokens.idToken.trim()
-      const refreshToken = tokens.refreshToken.trim()
-      console.log("data", data)
-      console.log("token", tokens.idToken)
+      const {user} = data
+      // const token = tokens.idToken.trim()
+      // const refreshToken = tokens.refreshToken.trim()
+      // console.log("data", data)
+      // console.log("token", tokens.idToken)
+      // console.log("user", user)
+      // setCookie(undefined, "token", token, {
+      //   maxAge: 60 * 60 * 1, // 1 hour
+      //   path: "/", // global
+      // })
+      // setCookie(undefined, "refreshToken", refreshToken, {
+      //   maxAge: 60 * 60 * 24 * 30, // 30 days
+      //   path: "/", // global
+      // })
+      // api.defaults.headers.common["Authorization"] = `Bearer ${token}`
       console.log("user", user)
-      setCookie(undefined, "token", token, {
-        maxAge: 60 * 60 * 1, // 1 hour
-        path: "/", // global
-      })
-      setCookie(undefined, "refreshToken", refreshToken, {
-        maxAge: 60 * 60 * 24 * 30, // 30 days
-        path: "/", // global
-      })
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`
       setUser(user)
-      router.push("/")
+      // router.push("/")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message)
       } else {
         toast.error("Error creating account")
       }
+      throw error
     }
+    router.push("/")
   }
   const signOut = async () => {
     destroyCookie(undefined, "token")
@@ -135,6 +144,7 @@ export function AuthProvider({children}: AuthProviderProps) {
       } else {
         toast.error("Error sign out")
       }
+      throw error
     }
   }
 
@@ -149,6 +159,7 @@ export function AuthProvider({children}: AuthProviderProps) {
       } else {
         toast.error("Error creating account")
       }
+      throw error
     }
   }
 
@@ -167,6 +178,7 @@ export function AuthProvider({children}: AuthProviderProps) {
       } else {
         toast.error("Error creating account")
       }
+      throw error
     }
   }
   const me = async () => {
@@ -179,6 +191,7 @@ export function AuthProvider({children}: AuthProviderProps) {
       } else {
         toast.error("Error creating account")
       }
+      throw error
     }
   }
 
@@ -191,6 +204,7 @@ export function AuthProvider({children}: AuthProviderProps) {
   )
 }
 
+//auth context n
 export function useAuth() {
   const context = useContext(AuthContext)
   return context

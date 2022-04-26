@@ -1,11 +1,13 @@
 package handler
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"backend/model"
 	"backend/model/apperrors"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,11 +21,13 @@ type signupReq struct {
 
 // Signup handler
 func (h *Handler) Signup(c *gin.Context) {
+	token := "Shimin Li"
+	c.SetCookie("name1800", token, 3600, "/", "localhost", false, true)
 	// define a variable to which we'll bind incoming
 	// json body, {email, password}
 	var req signupReq
 
-	// Bind incoming json to struct and check for validation errors
+	// // Bind incoming json to struct and check for validation errors
 	if ok := bindData(c, &req); !ok {
 		return
 	}
@@ -61,8 +65,18 @@ func (h *Handler) Signup(c *gin.Context) {
 		return
 	}
 
+	accessToken := tokens.IDToken.SS
+	// refreshToken := tokens.RefreshToken.SS
+	fmt.Println("accessToken", accessToken)
+	// fmt.Println("refreshToken", refreshToken)
+	fmt.Println("tokens", tokens)
+	//   maxAge: 60 * 60 * 24, // 1 day
+	//   maxAge: 60 * 60 * 24 * 30, // 1 Month
+	c.SetCookie("token", accessToken, 60*60*24, "/", "localhost", false, true)
+	// c.SetCookie("refreshToken", refreshToken, 60*60*24*30, "/", "localhost", false, true)
+
 	c.JSON(http.StatusCreated, gin.H{
-		"tokens": tokens,
-		"user":   result,
+		"message": "Success SignUp",
+		"user":    result,
 	})
 }

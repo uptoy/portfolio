@@ -46,9 +46,15 @@ func (h *Handler) Signin(c *gin.Context) {
 		})
 		return
 	}
+	accessToken := tokens.IDToken.SS
+	refreshToken := tokens.RefreshToken.SS
+	//   maxAge: 60 * 60 * 24, // 1 day
+	//   maxAge: 60 * 60 * 24 * 30, // 1 Month
+	c.SetCookie("token", accessToken, 60*60*24, "/", "localhost", false, true)
+	c.SetCookie("refreshToken", refreshToken, 60*60*24*30, "/", "localhost", false, true)
 
 	c.JSON(http.StatusOK, gin.H{
-		"tokens": tokens,
-		"user":   user,
+		"message": "Success SignIn",
+		"user":    user,
 	})
 }

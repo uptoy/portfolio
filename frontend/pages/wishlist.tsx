@@ -77,7 +77,7 @@ const Wishlist = ({props}: any) => {
   return (
     <Layout>
       <Paper style={{padding: 30, marginTop: 50}}>
-        <Typography>Shopping Cart</Typography>
+        <Typography>Wishlist</Typography>
         {wishlist.length === 0 ? (
           <div>
             Wishlist is empty.{" "}
@@ -95,7 +95,7 @@ const Wishlist = ({props}: any) => {
                       <TableRow>
                         <TableCell>Image</TableCell>
                         <TableCell>Name</TableCell>
-                        <TableCell align="right">Category</TableCell>
+                        <TableCell align="center">Category</TableCell>
                         <TableCell align="right">Price</TableCell>
                         <TableCell align="center">Review</TableCell>
                       </TableRow>
@@ -122,17 +122,25 @@ const Wishlist = ({props}: any) => {
                               </Link>
                             </NextLink>
                           </TableCell>
-                          <TableCell align="right">
+                          <TableCell align="center">
                             <p>{item.category.category_name}</p>
                           </TableCell>
                           <TableCell align="right">${item.price}</TableCell>
                           <TableCell align="center">
-                            <Rating
-                              value={Average(item.reviews.map((review: Review) => review.rating))}
-                            />
-                            <Typography className={classes.numReviews}>
-                              ({item.reviews.length})
-                            </Typography>
+                            {item.reviews ? (
+                              <div style={{display: "flex", justifyContent: "center"}}>
+                                <Rating
+                                  value={Average(
+                                    item.reviews.map((review: Review) => review.rating)
+                                  )}
+                                />
+                                <Typography className={classes.numReviews}>
+                                  ({item.reviews.length})
+                                </Typography>
+                              </div>
+                            ) : (
+                              <Typography className={classes.numReviews}>No reviews yet</Typography>
+                            )}
                           </TableCell>
                         </TableRow>
                       ))}

@@ -7,7 +7,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-contrib/cors"
+	// "github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	"github.com/jmoiron/sqlx"
@@ -144,8 +144,8 @@ func inject(d *dataSources) (*gin.Engine, error) {
 		CartRepository: cartRepository,
 	})
 	wishlistService := service.NewWishlistService(&service.WishlistServiceConfig{
-		WishlistRepository: wishlistRepository,
-		ReviewRepository: reviewRepository,
+		WishlistRepository:     wishlistRepository,
+		ReviewRepository:       reviewRepository,
 		ProductImageRepository: productImageRepository,
 	})
 
@@ -203,30 +203,52 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	})
 
 	router := gin.Default()
-	router.Use(cors.New(cors.Config{
-		ExposeHeaders: []string{"Content-Length"},
-		// アクセス許可するオリジン
-		AllowOrigins: []string{
-			"http://localhost:3000",
-		},
-		// アクセス許可するHTTPメソッド
-		AllowMethods: []string{
-			"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS",
-		},
-		// 許可するHTTPリクエストヘッダ
-		AllowHeaders: []string{
-			"Origin", "Content-Length", "Content-Type", "Authorization",
-		},
-		// cookieなどの情報を必要とするかどうか
-		// AllowCredentials: true,
-		// preflightリクエストの結果をキャッシュする時間
-		MaxAge: 24 * time.Hour,
-	}))
+	// router.Use(cors.New(cors.Config{
+	// 	AllowOrigins:     []string{"http://localhost:3000"},
+	// 	AllowMethods:     []string{"GET", "POST"},
+	// 	AllowHeaders:     []string{"Content-Type"},
+	// 	ExposeHeaders:    []string{"Content-Length"},
+	// 	AllowCredentials: true,
+	// 	AllowOriginFunc: func(origin string) bool {
+	// 		return origin == "http://localhost:3000"
+	// 	},
+	// 	MaxAge: 12 * time.Hour,
+	// }))
+	// router.Use(cors.New(cors.Config{
+	// 	// ExposeHeaders: []string{"Content-Length"},
+	// 	// // アクセス許可するオリジン
+	// 	// AllowOrigins: []string{
+	// 	// 	"http://localhost:3000",
+	// 	// },
+	// 	// // アクセス許可するHTTPメソッド
+	// 	// AllowMethods: []string{
+	// 	// 	"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS",
+	// 	// },
+	// 	// // 許可するHTTPリクエストヘッダ
+	// 	// AllowHeaders: []string{
+	// 	// 	"Origin", "Content-Length", "Content-Type", "Authorization",
+	// 	// },
+	// 	// // cookieなどの情報を必要とするかどうか
+	// 	// // AllowCredentials: true,
+	// 	// // preflightリクエストの結果をキャッシュする時間
+	// 	// MaxAge: 24 * time.Hour,
+	// 	AllowOrigins: []string{"http://localhost:3000"},
+	// 	AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+	// 	AllowHeaders: []string{
+	// 		"Origin", "Content-Length", "Content-Type", "Authorization",
+	// 	},
+	// 	ExposeHeaders:    []string{"Content-Length"},
+	// 	AllowCredentials: true,
+	// 	// AllowOriginFunc: func(origin string) bool {
+	// 	// 	return origin == "https://github.com"
+	// 	// },
+	// 	MaxAge: 12 * time.Hour,
+	// }))
 	// router.Use(cors.New(cors.Config{
 	// 	AllowOrigins:     []string{"http://localhost:3000"},
 	// 	AllowMethods:     []string{"GET","POST","PUT", "PATCH", "DELETE"},
 	// 	AllowHeaders:     []string{"Origin"},
-	router.Use(cors.Default())
+	// router.Use(cors.Default())
 	baseURL := os.Getenv("BACKEND_API_URL")
 	handlerTimeout := os.Getenv("HANDLER_TIMEOUT")
 	ht, err := strconv.ParseInt(handlerTimeout, 0, 64)
