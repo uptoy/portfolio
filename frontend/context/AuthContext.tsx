@@ -76,35 +76,7 @@ export function AuthProvider({children}: AuthProviderProps) {
         confirmPassword,
       })
       const {user} = data
-      // let x = document.cookie;
-
-      // const token = tokens.idToken.trim()
-      // console.log("token", token)
-      // const refreshToken = tokens.refreshToken.trim()
-      // console.log("refreshToken", refreshToken)
-
-      // setCookie(undefined, "token", token, {
-      //   maxAge: 60 * 60 * 24, // 1 day
-      //   path: "/",
-      // })
-      // setCookie(undefined, "refreshToken", refreshToken, {
-      //   maxAge: 60 * 60 * 24 * 30, // 1 Month
-      //   path: "/",
-      // })
-      // await fetch("http://localhost:8081/api/register", {
-      //   method: "POST",
-      //   headers: {"Content-Type": "application/json"},
-      //   body: JSON.stringify({
-      //     first_name: firstName,
-      //     last_name: lastName,
-      //     email,
-      //     password,
-      //   }),
-      // })
-
       setUser(user)
-      // console.log("cookies", x)
-      // mutate("/wishlist")
       router.push("/")
     } catch (error) {
       if (axios.isAxiosError(error)) {

@@ -21,13 +21,10 @@ type signupReq struct {
 
 // Signup handler
 func (h *Handler) Signup(c *gin.Context) {
-	token := "Shimin Li"
-	c.SetCookie("name1800", token, 3600, "/", "localhost", false, true)
 	// define a variable to which we'll bind incoming
 	// json body, {email, password}
 	var req signupReq
-
-	// // Bind incoming json to struct and check for validation errors
+	// Bind incoming json to struct and check for validation errors
 	if ok := bindData(c, &req); !ok {
 		return
 	}
