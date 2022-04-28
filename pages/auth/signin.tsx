@@ -1,17 +1,19 @@
 import {SubmitHandler, useForm} from "react-hook-form"
 import React from "react"
-import {ForgotPasswordCredentials} from "yub/type"
-import {forgotPasswordFormSchema} from "yub/schema"
+import {SignInCredentials} from "yup/type"
+import {signInFormSchema} from "yup/schema"
 import {yupResolver} from "@hookform/resolvers/yup"
 import {useAuth} from "context/AuthContext"
 import {
   Avatar,
   Button,
   TextField,
+  FormControlLabel,
   Typography,
   Container,
   Box,
   Grid,
+  Checkbox,
 } from "@material-ui/core"
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
 import Link from "components/Link"
@@ -31,7 +33,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -39,20 +41,20 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export default function ForgotPassword() {
+export default function SignIn() {
   const classes = useStyles()
-  const {forgotPassword} = useAuth()
+  const {signIn} = useAuth()
   // const [loading, setLoading] = useState(false)
   const {
     register,
     formState: {errors},
     handleSubmit,
-  } = useForm<ForgotPasswordCredentials>({
-    resolver: yupResolver(forgotPasswordFormSchema),
+  } = useForm<SignInCredentials>({
+    resolver: yupResolver(signInFormSchema),
   })
-  const handleForgotPassword: SubmitHandler<ForgotPasswordCredentials> = async (formData) => {
+  const handleSignIn: SubmitHandler<SignInCredentials> = async (formData) => {
     // setLoading(true)
-    await forgotPassword(formData)
+    await signIn(formData)
     // setLoading(false)
   }
 
@@ -63,9 +65,9 @@ export default function ForgotPassword() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Forgot Password
+          Sign in
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSubmit(handleForgotPassword)}>
+        <form className={classes.form} noValidate onSubmit={handleSubmit(handleSignIn)}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -73,10 +75,24 @@ export default function ForgotPassword() {
             fullWidth
             id="email"
             label="Email Address"
-            // name="email"
             autoComplete="email"
             autoFocus
             {...register("email")}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            {...register("password")}
+          />
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
           />
           <Button
             type="submit"
@@ -85,12 +101,12 @@ export default function ForgotPassword() {
             color="primary"
             className={classes.submit}
           >
-            Submit
+            Sign In
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="/auth/signin" variant="body2">
-                Already have an account?
+              <Link href="/auth/forgot_password" variant="body2">
+                Forgot password?
               </Link>
             </Grid>
             <Grid item>

@@ -8,7 +8,7 @@ import {
   SignInCredentials,
   ForgotPasswordCredentials,
   ResetPasswordCredentials,
-} from "yub/type"
+} from "yup/type"
 import axios from "axios"
 import {mutate} from "swr"
 import {GetServerSidePropsContext, GetServerSideProps} from "next"

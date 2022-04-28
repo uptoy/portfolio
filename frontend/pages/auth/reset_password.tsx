@@ -1,7 +1,7 @@
 import {SubmitHandler, useForm} from "react-hook-form"
 import React from "react"
-import {SignInCredentials} from "yub/type"
-import {signInFormSchema} from "yub/schema"
+import {ResetPasswordCredentials} from "yup/type"
+import {resetPasswordFormSchema} from "yup/schema"
 import {yupResolver} from "@hookform/resolvers/yup"
 import {useAuth} from "context/AuthContext"
 import {
@@ -33,7 +33,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%",
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -41,20 +41,20 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export default function SignIn() {
+export default function ResetPassword() {
   const classes = useStyles()
-  const {signIn} = useAuth()
+  const {resetPassword} = useAuth()
   // const [loading, setLoading] = useState(false)
   const {
     register,
     formState: {errors},
     handleSubmit,
-  } = useForm<SignInCredentials>({
-    resolver: yupResolver(signInFormSchema),
+  } = useForm<ResetPasswordCredentials>({
+    resolver: yupResolver(resetPasswordFormSchema),
   })
-  const handleSignIn: SubmitHandler<SignInCredentials> = async (formData) => {
+  const handleResetPassword: SubmitHandler<ResetPasswordCredentials> = async (formData) => {
     // setLoading(true)
-    await signIn(formData)
+    await resetPassword(formData)
     // setLoading(false)
   }
 
@@ -65,34 +65,30 @@ export default function SignIn() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Reset Password
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSubmit(handleSignIn)}>
+        <form className={classes.form} noValidate onSubmit={handleSubmit(handleResetPassword)}>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            autoComplete="email"
-            autoFocus
-            {...register("email")}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            label="Password"
+            // name="password"
+            label="New Password"
             type="password"
-            id="password"
-            autoComplete="current-password"
+            id="new_password"
             {...register("password")}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            // name="confirm_password"
+            label="Confirm Password"
+            type="password"
+            id="confirm_password"
+            {...register("confirmPassword")}
           />
           <Button
             type="submit"
@@ -101,20 +97,8 @@ export default function SignIn() {
             color="primary"
             className={classes.submit}
           >
-            Sign In
+            Submit
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="/auth/forgot_password" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="/auth/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
       <Box mt={8}>

@@ -1,19 +1,17 @@
 import {SubmitHandler, useForm} from "react-hook-form"
 import React from "react"
-import {ResetPasswordCredentials} from "yub/type"
-import {resetPasswordFormSchema} from "yub/schema"
+import {ForgotPasswordCredentials} from "yup/type"
+import {forgotPasswordFormSchema} from "yup/schema"
 import {yupResolver} from "@hookform/resolvers/yup"
 import {useAuth} from "context/AuthContext"
 import {
   Avatar,
   Button,
   TextField,
-  FormControlLabel,
   Typography,
   Container,
   Box,
   Grid,
-  Checkbox,
 } from "@material-ui/core"
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
 import Link from "components/Link"
@@ -41,20 +39,20 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export default function ResetPassword() {
+export default function ForgotPassword() {
   const classes = useStyles()
-  const {resetPassword} = useAuth()
+  const {forgotPassword} = useAuth()
   // const [loading, setLoading] = useState(false)
   const {
     register,
     formState: {errors},
     handleSubmit,
-  } = useForm<ResetPasswordCredentials>({
-    resolver: yupResolver(resetPasswordFormSchema),
+  } = useForm<ForgotPasswordCredentials>({
+    resolver: yupResolver(forgotPasswordFormSchema),
   })
-  const handleResetPassword: SubmitHandler<ResetPasswordCredentials> = async (formData) => {
+  const handleForgotPassword: SubmitHandler<ForgotPasswordCredentials> = async (formData) => {
     // setLoading(true)
-    await resetPassword(formData)
+    await forgotPassword(formData)
     // setLoading(false)
   }
 
@@ -65,30 +63,20 @@ export default function ResetPassword() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Reset Password
+          Forgot Password
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSubmit(handleResetPassword)}>
+        <form className={classes.form} noValidate onSubmit={handleSubmit(handleForgotPassword)}>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            // name="password"
-            label="New Password"
-            type="password"
-            id="new_password"
-            {...register("password")}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            // name="confirm_password"
-            label="Confirm Password"
-            type="password"
-            id="confirm_password"
-            {...register("confirmPassword")}
+            id="email"
+            label="Email Address"
+            // name="email"
+            autoComplete="email"
+            autoFocus
+            {...register("email")}
           />
           <Button
             type="submit"
@@ -99,6 +87,18 @@ export default function ResetPassword() {
           >
             Submit
           </Button>
+          <Grid container>
+            <Grid item xs>
+              <Link href="/auth/signin" variant="body2">
+                Already have an account?
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link href="/auth/signup" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
         </form>
       </div>
       <Box mt={8}>
