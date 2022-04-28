@@ -6,9 +6,9 @@ import (
 	"log"
 	"time"
 
-	"github.com/go-redis/redis/v8"
 	"backend/model"
 	"backend/model/apperrors"
+	redis "github.com/go-redis/redis/v8"
 )
 
 // redisTokenRepository is data/repository implementation

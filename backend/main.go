@@ -1,9 +1,7 @@
 package main
 
 import (
-	// "fmt"
 	"backend/handler"
-	// "backend/model"
 	"backend/repository"
 	"backend/service"
 	"context"
@@ -15,8 +13,6 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
-	// "gorm.io/driver/sqlite"
-	// "gorm.io/gorm"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -27,14 +23,7 @@ import (
 	"time"
 )
 
-// func init() {
-// 	db, _ := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-// 	db.AutoMigrate(&model.User{})
-
-// }
-
 func main() {
-
 	loadEnv()
 	log.Println("Starting server...")
 
@@ -92,63 +81,63 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	/*
 	 * repository layer
 	 */
-	// addressRepository := repository.NewAddressRepository(d.DB)
-	// authRepository := repository.NewAuthRepository(d.DB)
-	// cartRepository := repository.NewCartRepository(d.DB)
-	// categoryRepository := repository.NewCategoryRepository(d.DB)
-	// orderRepository := repository.NewOrderRepository(d.DB)
-	// paymentRepository := repository.NewPaymentRepository(d.DB)
-	// productRepository := repository.NewProductRepository(d.DB)
-	// productImageRepository := repository.NewProductImageRepository(d.DB)
-	// reviewRepository := repository.NewReviewRepository(d.DB)
+	addressRepository := repository.NewAddressRepository(d.DB)
+	authRepository := repository.NewAuthRepository(d.DB)
+	cartRepository := repository.NewCartRepository(d.DB)
+	categoryRepository := repository.NewCategoryRepository(d.DB)
+	orderRepository := repository.NewOrderRepository(d.DB)
+	paymentRepository := repository.NewPaymentRepository(d.DB)
+	productRepository := repository.NewProductRepository(d.DB)
+	productImageRepository := repository.NewProductImageRepository(d.DB)
+	reviewRepository := repository.NewReviewRepository(d.DB)
 	tokenRepository := repository.NewTokenRepository(d.RedisClient)
 	userRepository := repository.NewUserRepository(d.DB)
-	// wishlistRepository := repository.NewWishlistRepository(d.DB)
+	wishlistRepository := repository.NewWishlistRepository(d.DB)
 
 	/*
 	 * service layer
 	 */
-	// addressService := service.NewAddressService(&service.AddressServiceConfig{
-	// 	AddressRepository: addressRepository,
-	// })
-	// authService := service.NewAuthService(&service.AuthServiceConfig{
-	// 	AuthRepository: authRepository,
-	// })
-	// cartService := service.NewCartService(&service.CartServiceConfig{
-	// 	CartRepository: cartRepository,
-	// })
-	// categoryService := service.NewCategoryService(&service.CategoryServiceConfig{
-	// 	CategoryRepository: categoryRepository,
-	// })
-	// // chatService := service.NewChatService(&service.ChatServiceConfig{
-	// // 	ChatRepository: chatRepository,
-	// // })
-
-	// orderService := service.NewOrderService(&service.OrderServiceConfig{
-	// 	OrderRepository: orderRepository,
+	addressService := service.NewAddressService(&service.AddressServiceConfig{
+		AddressRepository: addressRepository,
+	})
+	authService := service.NewAuthService(&service.AuthServiceConfig{
+		AuthRepository: authRepository,
+	})
+	cartService := service.NewCartService(&service.CartServiceConfig{
+		CartRepository: cartRepository,
+	})
+	categoryService := service.NewCategoryService(&service.CategoryServiceConfig{
+		CategoryRepository: categoryRepository,
+	})
+	// chatService := service.NewChatService(&service.ChatServiceConfig{
+	// 	ChatRepository: chatRepository,
 	// })
 
-	// paymentService := service.NewPaymentService(&service.PaymentServiceConfig{
-	// 	PaymentRepository: paymentRepository,
-	// })
-	// productService := service.NewProductService(&service.ProductServiceConfig{
-	// 	ProductRepository:      productRepository,
-	// 	ProductImageRepository: productImageRepository,
-	// })
+	orderService := service.NewOrderService(&service.OrderServiceConfig{
+		OrderRepository: orderRepository,
+	})
 
-	// reviewService := service.NewReviewService(&service.ReviewServiceConfig{
-	// 	ReviewRepository: reviewRepository,
-	// })
+	paymentService := service.NewPaymentService(&service.PaymentServiceConfig{
+		PaymentRepository: paymentRepository,
+	})
+	productService := service.NewProductService(&service.ProductServiceConfig{
+		ProductRepository:      productRepository,
+		ProductImageRepository: productImageRepository,
+	})
+
+	reviewService := service.NewReviewService(&service.ReviewServiceConfig{
+		ReviewRepository: reviewRepository,
+	})
 
 	userService := service.NewUserService(&service.USConfig{
 		UserRepository: userRepository,
-		// CartRepository: cartRepository,
+		CartRepository: cartRepository,
 	})
-	// wishlistService := service.NewWishlistService(&service.WishlistServiceConfig{
-	// 	WishlistRepository:     wishlistRepository,
-	// 	ReviewRepository:       reviewRepository,
-	// 	ProductImageRepository: productImageRepository,
-	// })
+	wishlistService := service.NewWishlistService(&service.WishlistServiceConfig{
+		WishlistRepository:     wishlistRepository,
+		ReviewRepository:       reviewRepository,
+		ProductImageRepository: productImageRepository,
+	})
 
 	// load rsa keys
 	privKeyFile := os.Getenv("PRIV_KEY_FILE")
@@ -179,7 +168,6 @@ func inject(d *dataSources) (*gin.Engine, error) {
 
 	// load refresh token secret from env variable
 	refreshSecret := os.Getenv("REFRESH_SECRET")
-
 	// load expiration lengths from env variables and parse as int
 	idTokenExp := os.Getenv("ID_TOKEN_EXP")
 	refreshTokenExp := os.Getenv("REFRESH_TOKEN_EXP")
@@ -215,11 +203,6 @@ func inject(d *dataSources) (*gin.Engine, error) {
 		},
 		MaxAge: 12 * time.Hour,
 	}))
-	// router.POST("/api/register", handler.Register)
-	// router.POST("/api/login", handler.Login)
-	// router.GET("/api/user", handler.Get)
-	// router.GET("/api/logout", handler.Logout)
-	// router.Run("127.0.0.1:8081")
 	baseURL := os.Getenv("BACKEND_API_URL")
 	handlerTimeout := os.Getenv("HANDLER_TIMEOUT")
 	ht, err := strconv.ParseInt(handlerTimeout, 0, 64)
@@ -234,19 +217,19 @@ func inject(d *dataSources) (*gin.Engine, error) {
 
 	handler.NewHandler(&handler.Config{
 		R: router,
-		// AddressService:  addressService,
-		// AuthService:     authService,
-		// CartService:     cartService,
-		// CategoryService: categoryService,
+		AddressService:  addressService,
+		AuthService:     authService,
+		CartService:     cartService,
+		CategoryService: categoryService,
 		// ChatService:     chatService,
 		// ImageService:    imageService,
-		// OrderService:    orderService,
-		// PaymentService:  paymentService,
-		// ProductService:  productService,
-		// ReviewService:   reviewService,
+		OrderService:    orderService,
+		PaymentService:  paymentService,
+		ProductService:  productService,
+		ReviewService:   reviewService,
 		TokenService:    tokenService,
 		UserService:     userService,
-		// WishlistService: wishlistService,
+		WishlistService: wishlistService,
 		BaseURL:         baseURL,
 		TimeoutDuration: time.Duration(time.Duration(ht) * time.Second),
 		MaxBodyBytes:    mbb,
