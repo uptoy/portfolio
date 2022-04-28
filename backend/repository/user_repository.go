@@ -111,3 +111,30 @@ func (r *pGUserRepository) GetList(ctx context.Context) ([]*model.User, error) {
 	return userList, nil
 
 }
+
+// package repository
+
+// import (
+// 	"backend/model"
+// 	// "gorm.io/driver/sqlite"
+// 	// "gorm.io/gorm"
+// )
+
+// func Save(user *model.User) error {
+// 	db, _ := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+// 	db.AutoMigrate(&model.User{})
+// 	db.Create(&model.User{Name: user.Name, Email: user.Email, Password: user.Password})
+// 	return nil
+// }
+
+// func GetByEmail(user *model.User) error {
+// 	db, _ := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+// 	db.Where("email = ?", user.Email).First(&user)
+// 	return nil
+// }
+
+// func GetByID(user *model.User) error {
+// 	db, _ := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+// 	db.First(&user, user.ID)
+// 	return nil
+// }
