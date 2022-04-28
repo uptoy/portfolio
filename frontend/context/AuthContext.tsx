@@ -48,25 +48,25 @@ export function AuthProvider({children}: AuthProviderProps) {
 
   const isAuthenticated = !!user
 
-  useEffect(() => {
-    // console.log("effect", document.cookie)
-    // let cookies = parseCookies()
-    // // let token = cookies["token"]
-    // console.log("effect token", cookies)
-    const token = getCookies()
-    console.log("tokentoken", token)
-    // if (token) {
-    //   me()
-    //     .then((user) => {
-    //       setUser(user)
-    //     })
-    //     .catch((err) => {
-    //       console.log(err)
-    //       signOut()
-    //       router.push("/")
-    //     })
-    // }
-  }, [])
+  // useEffect(() => {
+  //   // console.log("effect", document.cookie)
+  //   // let cookies = parseCookies()
+  //   // // let token = cookies["token"]
+  //   // console.log("effect token", cookies)
+  //   const token = getCookies()
+  //   console.log("tokentoken", token)
+  //   // if (token) {
+  //   //   me()
+  //   //     .then((user) => {
+  //   //       setUser(user)
+  //   //     })
+  //   //     .catch((err) => {
+  //   //       console.log(err)
+  //   //       signOut()
+  //   //       router.push("/")
+  //   //     })
+  //   // }
+  // }, [])
 
   const signUp = async ({email, name, password, confirmPassword}: SignUpCredentials) => {
     try {
