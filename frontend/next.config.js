@@ -1,5 +1,6 @@
-module.exports = {
-  images: {
-    domains: ['placehold.jp','swiperjs.com','localhost:8080','res.cloudinary.com'],
-  },
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
 }
+
+module.exports = nextConfig

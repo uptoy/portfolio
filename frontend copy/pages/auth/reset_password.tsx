@@ -1,24 +1,39 @@
-import React from 'react'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import { Avatar, Button, Container, Box, TextField, Typography } from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import theme from 'theme'
-import { makeStyles } from '@material-ui/styles'
-import Copyright from 'components/Copyright'
+import {SubmitHandler, useForm} from "react-hook-form"
+import React from "react"
+import {ResetPasswordCredentials} from "yub/type"
+import {resetPasswordFormSchema} from "yub/schema"
+import {yupResolver} from "@hookform/resolvers/yup"
+import {useAuth} from "context/AuthContext"
+import {
+  Avatar,
+  Button,
+  TextField,
+  FormControlLabel,
+  Typography,
+  Container,
+  Box,
+  Grid,
+  Checkbox,
+} from "@material-ui/core"
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
+import Link from "components/Link"
+import {makeStyles} from "@material-ui/styles"
+import Copyright from "components/Copyright"
+import theme from "theme"
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -26,12 +41,25 @@ const useStyles: any = makeStyles(() => ({
   },
 }))
 
-export default function SignIn() {
+export default function ResetPassword() {
   const classes = useStyles()
+  const {resetPassword} = useAuth()
+  // const [loading, setLoading] = useState(false)
+  const {
+    register,
+    formState: {errors},
+    handleSubmit,
+  } = useForm<ResetPasswordCredentials>({
+    resolver: yupResolver(resetPasswordFormSchema),
+  })
+  const handleResetPassword: SubmitHandler<ResetPasswordCredentials> = async (formData) => {
+    // setLoading(true)
+    await resetPassword(formData)
+    // setLoading(false)
+  }
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -39,28 +67,28 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Reset Password
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleSubmit(handleResetPassword)}>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            name="new_password"
+            // name="password"
             label="New Password"
             type="password"
             id="new_password"
-            autoComplete="current-password"
+            {...register("password")}
           />
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            name="confirm_password"
+            // name="confirm_password"
             label="Confirm Password"
             type="password"
             id="confirm_password"
-            autoComplete="current-password"
+            {...register("confirmPassword")}
           />
           <Button
             type="submit"

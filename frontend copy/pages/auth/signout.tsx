@@ -1,19 +1,12 @@
 import React from "react"
 import {
-  FormControlLabel,
   Avatar,
   Button,
-  Checkbox,
-  Grid,
   Container,
-  Box,
-  TextField,
   Typography,
 } from "@material-ui/core"
 import CssBaseline from "@material-ui/core/CssBaseline"
-import Link from "@material-ui/core/Link"
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
-import Copyright from "components/Copyright"
 import { makeStyles } from "@material-ui/styles"
 import theme from "theme"
 
@@ -37,7 +30,7 @@ const useStyles: any = makeStyles(() => ({
   },
 }))
 
-export default function SignUp() {
+export default function SignOut() {
   const classes = useStyles()
 
   return (

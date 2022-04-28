@@ -9,13 +9,12 @@ import {
   MenuItem,
   InputLabel,
   TextField,
-  CircularProgress,
   Typography,
 } from "@material-ui/core"
 import {makeStyles} from "@material-ui/styles"
 import theme from "theme"
-import {Review} from "types"
-// import {products} from "utils/seed"
+import {Review} from "@types"
+import {Circular} from "components/common/Circular"
 
 const useStyles: any = makeStyles(() => ({
   typography: {
@@ -106,7 +105,7 @@ const ProductReview: React.FC<IProps> = ({reviews}) => {
   }
 
   return loading ? (
-    <p>Loding....</p>
+    <Circular />
   ) : error ? (
     <ErrorMessage header={"Something went wrong"} message={error} />
   ) : (
@@ -211,11 +210,7 @@ const ProductReview: React.FC<IProps> = ({reviews}) => {
                   disabled={createReviewLoading}
                   className={classes.button}
                 >
-                  {createReviewLoading ? (
-                    <CircularProgress color="inherit" className={classes.prgressColor} />
-                  ) : (
-                    <>Submit</>
-                  )}
+                  {createReviewLoading ? <Circular /> : <>Submit</>}
                 </Button>
               </div>
             </form>

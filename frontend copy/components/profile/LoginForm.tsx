@@ -3,7 +3,7 @@ import React from "react";
 import { mutate } from "swr";
 
 import ListErrors from "../common/ListErrors";
-import UserAPI from "../../../frontend/services/api/user";
+import UserAPI from "../../lib/api/user";
 
 const LoginForm = () => {
   const [isLoading, setLoading] = React.useState(false);

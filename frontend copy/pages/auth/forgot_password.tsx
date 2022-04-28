@@ -1,25 +1,37 @@
-import React from 'react'
-import { Avatar, Grid, Button, Container, Box, TextField, Typography } from '@material-ui/core'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import Copyright from 'components/Copyright'
-import Link from 'components/Link'
-import { makeStyles } from '@material-ui/styles'
-import theme from 'theme'
+import {SubmitHandler, useForm} from "react-hook-form"
+import React from "react"
+import {ForgotPasswordCredentials} from "yub/type"
+import {forgotPasswordFormSchema} from "yub/schema"
+import {yupResolver} from "@hookform/resolvers/yup"
+import {useAuth} from "context/AuthContext"
+import {
+  Avatar,
+  Button,
+  TextField,
+  Typography,
+  Container,
+  Box,
+  Grid,
+} from "@material-ui/core"
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
+import Link from "components/Link"
+import {makeStyles} from "@material-ui/styles"
+import Copyright from "components/Copyright"
+import theme from "theme"
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -29,10 +41,23 @@ const useStyles: any = makeStyles(() => ({
 
 export default function ForgotPassword() {
   const classes = useStyles()
+  const {forgotPassword} = useAuth()
+  // const [loading, setLoading] = useState(false)
+  const {
+    register,
+    formState: {errors},
+    handleSubmit,
+  } = useForm<ForgotPasswordCredentials>({
+    resolver: yupResolver(forgotPasswordFormSchema),
+  })
+  const handleForgotPassword: SubmitHandler<ForgotPasswordCredentials> = async (formData) => {
+    // setLoading(true)
+    await forgotPassword(formData)
+    // setLoading(false)
+  }
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -40,7 +65,7 @@ export default function ForgotPassword() {
         <Typography component="h1" variant="h5">
           Forgot Password
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleSubmit(handleForgotPassword)}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -48,9 +73,10 @@ export default function ForgotPassword() {
             fullWidth
             id="email"
             label="Email Address"
-            name="email"
+            // name="email"
             autoComplete="email"
             autoFocus
+            {...register("email")}
           />
           <Button
             type="submit"
