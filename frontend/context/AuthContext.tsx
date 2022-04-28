@@ -11,6 +11,8 @@ import {
 } from "yub/type"
 import axios from "axios"
 import {mutate} from "swr"
+import {GetServerSidePropsContext, GetServerSideProps} from "next"
+import {getCookies, getCookie} from "cookies-next"
 
 export type User = {
   name: string
@@ -34,6 +36,11 @@ type AuthContextType = {
 
 export const AuthContext = createContext({} as AuthContextType)
 
+// export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {
+//   const token = ctx.req?.cookies
+//   return {props: {token}}
+// }
+
 export function AuthProvider({children}: AuthProviderProps) {
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
@@ -41,42 +48,50 @@ export function AuthProvider({children}: AuthProviderProps) {
 
   const isAuthenticated = !!user
 
-  // useEffect(() => {
-  // let cookies = parseCookies()
-  // let token = cookies["token"]
-  // if (token) {
-  // me()
-  //   .then((user) => {
-  //     setUser(user)
-  //   })
-  //   .catch((err) => {
-  //     console.log(err)
-  //     signOut()
-  //     router.push("/")
-  //   })
-  // }
-  // }, [])
+  useEffect(() => {
+    // console.log("effect", document.cookie)
+    // let cookies = parseCookies()
+    // // let token = cookies["token"]
+    // console.log("effect token", cookies)
+    const token = getCookies()
+    console.log("tokentoken", token)
+    // if (token) {
+    //   me()
+    //     .then((user) => {
+    //       setUser(user)
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //       signOut()
+    //       router.push("/")
+    //     })
+    // }
+  }, [])
 
   const signUp = async ({email, name, password, confirmPassword}: SignUpCredentials) => {
     try {
-      // await fetch("http://localhost:8080/api/auth/signup", {
-      //   method: "POST",
-      //   headers: {"Content-Type": "application/json"},
-      //   body: JSON.stringify({
-      //     email,
-      //     name,
-      //     password,
-      //     confirmPassword,
-      //   }),
-      // })
-      const {data} = await api.post("/auth/signup", {
-        name,
-        email,
-        password,
-        confirmPassword,
+      const res = await fetch("http://localhost:8080/api/auth/signup", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          email,
+          name,
+          password,
+          confirmPassword,
+        }),
       })
-      const {user} = data
-      setUser(user)
+      // const {data} = await api.post("/auth/signup", {
+      //   name,
+      //   email,
+      //   password,
+      //   confirmPassword,
+      // })
+      console.log("res", res)
+      // const {user} = res.jso
+      // setUser(user)
+      // const token = getCookies()
+
+      // console.log("tokentoken", token)
       router.push("/")
     } catch (error) {
       if (axios.isAxiosError(error)) {

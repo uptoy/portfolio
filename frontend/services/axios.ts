@@ -12,8 +12,10 @@ export function getAPIClient(ctx?: any) {
     baseURL: "http://localhost:8080/api",
     headers: {
       "Content-Type": "application/json",
+      // 'X-Requested-With': 'XMLHttpRequest'
       // Authorization: `Bearer ${cookies["token"]}`,
     },
+
     withCredentials: true,
   })
   api.interceptors.request.use((config) => {

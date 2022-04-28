@@ -28,9 +28,13 @@ import {Review} from "@types"
 import {Average} from "utils/average"
 import {useRouter} from "next/router"
 import {api} from "services/apiClient"
-import {parseCookies} from "nookies"
 import axios, {AxiosError} from "axios"
 import axiosConfig from "axios"
+import useSWR from "swr"
+import {fetcher} from "services/fetcher"
+import {getCookies} from "cookies-next"
+import {checkCookies} from "cookies-next"
+import {parseCookies, setCookie, destroyCookie} from "nookies"
 
 const useStyles: any = makeStyles(() => ({
   cardGrid: {
@@ -65,38 +69,119 @@ const useStyles: any = makeStyles(() => ({
 }))
 
 export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  // const cookies = ctx.req.headers.cookie
-  // if (!cookies) {
-  //   return {
-  //     redirect: {
-  //       destination: "/auth/signin",
-  //       permanent: false,
-  //     },
-  //   }
+  const token = ctx.req?.cookies["token"]
+  console.log("getServerSideProps token", token)
+  console.log("#######################################")
+  const res1 = api
+    .get("/auth/me", {
+      headers: {
+        cookie: token!,
+      },
+    })
+    .then((res) => console.log("re1", res.data))
+  // const token1 = JSON.parse(token)
+  // if (token) {
+  //   me()
+  //     .then((user) => {
+  //       setUser(user)
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //       signOut()
+  //       router.push("/")
+  //     })
   // }
-  const result = await api.get("/products")
-  const products = result.data
+
+  const res = await api.get("/products")
+  const products: Product[] = res.data
+  // const res1 = await api.get("/auth/me", {
+  //   headers: {
+  //     cookie: token!,
+  //   },
+  // })
+  // const user: any = res1.data
+  //   method: "get",
+  //   url: "http://localhost:8080/api/products",
+  //   headers: ctx.req ? {cookie: ctx.req.headers.cookie} : undefined,
+  //   const cookies = ctx.req.headers.cookie
+  //   if (!cookies) {
+  //     return {
+  //       redirect: {
+  //         destination: "/auth/signin",
+  //         permanent: false,
+  //       },
+  //     }
+  //   }
+  //   const result = await api.get("/products")
+  //   const products = result.data
+  // const result1 = await api.get("/wishlist")
+  // const wishlist = result?.data
   return {props: {products}}
 }
 
 export default function Index({products}: any) {
+  const token = getCookies()
+  console.log("tokentoken", token)
+  const cookies = parseCookies()
+  console.log("tokentoken", {cookies})
+
+  console.log("checkCookies", checkCookies("token"))
+
+  // let cookies = document?.cookie
+
+  // console.log("index token", token1)
+  // useEffect(() => {
+  //   let cookies = document?.cookie
+  //   console.log("useeffect token", cookies)
+  // })
+  // // let cookies1 = document?.cookie
+  // // let token = cookies["token"]
+  // console.log("index token", cookies1)
   const fetchProducts = products.data
+  // const fetchUser = user.data
   console.log("products", fetchProducts)
-  // const {isAuthenticated} = useAuth()
-  // const classes = useStyles()
-  // console.log("props", props)
-  // const router = useRouter()
-  // const {data, error, mutate} = WishlistGet()
+  // console.log("user", fetchUser)
+  const {isAuthenticated} = useAuth()
+  console.log("isAuthenticated", isAuthenticated)
+  const classes = useStyles()
+  // // console.log("props", props)
+  const router = useRouter()
+  const result = useSWR("/wishlist", fetcher)
+  // console.log("result", result?.data?.data)
+  const wishlist = result?.data?.data
+  console.log("wishlist", wishlist)
   // console.log("data", data?.data)
   // console.log("wishlist", wishlist)
-  // const wishlist = !data ? [] : data.data
+  // const result: any = []
+  // const wishlist = result ? result?.data.data : []
+  // console.log("wishlist", wishlist)
   // console.log("wishlist", wishlist)
   // const wishlist: any = []
-  // const wishlistIdList = wishlist?.map((p: any) => p.id)
+  const wishlistIdList = wishlist?.map((p: any) => p.id)
   // console.log("wishlistIdList", wishlistIdList)
 
   // console.log("isAuthenticated", isAuthenticated)
-  return <div>aaa</div>
+  const handleClick = (product: Product) => {
+    const wishlistHandler = async () => {
+      console.log("product", product)
+      if (wishlistIdList?.includes(product.id) == true) {
+        await WishlistDelete(String(product.id)).then((res) => {
+          console.log("delete res", res.data.data)
+          // mutate(res.data)
+        })
+      } else {
+        await WishlistCreate(product).then((res) => {
+          console.log("create res", res.data.data)
+          // mutate(res.data)
+        })
+      }
+    }
+    // console.log("isAuthenticated", isAuthenticated)
+    // isAuthenticated ?():(
+    //   router.push()
+    // )
+    isAuthenticated ? wishlistHandler() : router.push("/auth/signup")
+  }
   // const handleClick = useCallback(
   //   (product: Product) => {
   //     ;(() => {
@@ -121,56 +206,56 @@ export default function Index({products}: any) {
   //   [isAuthenticated, wishlistIdList]
   // )
   // const averageNum = Average(products[0]?.reviews.map((review: Review) => review.rating))
-  // return (
-  //   <>
-  //     <Layout>
-  //       <MainFeaturedPost post={mainFeaturedPost} />
-  //       <Container className={classes.cardGrid} maxWidth="xl">
-  //         <Grid container spacing={4}>
-  //           {products?.map((product: Product) => (
-  //             <Grid item key={product.id} xs={12} sm={6} md={4}>
-  //               <Card className={classes.card}>
-  //                 <Link href={`/products/${String(product.id)}`}>
-  //                   <CardMedia
-  //                     className={classes.cardMedia}
-  //                     image={product.images[0].url}
-  //                     title="Image title"
-  //                   />
-  //                 </Link>
-  //                 <CardContent className={classes.cardContent}>
-  //                   <Typography>{product.product_name}</Typography>
-  //                   <Typography>
-  //                     {"$ "}
-  //                     {product.price}
-  //                   </Typography>
-  //                 </CardContent>
-  //                 <CardActions className={classes.cardActions}>
-  //                   <Button size="small" color="primary">
-  //                     <Rating
-  //                       value={Average(product.reviews.map((review: Review) => review.rating))}
-  //                     />
-  //                     <Typography className={classes.numReviews}>
-  //                       ({product.reviews.length})
-  //                     </Typography>
-  //                   </Button>
-  //                   <div onClick={() => handleClick(product)}>
-  //                     {wishlistIdList?.includes(product.id) ? (
-  //                       <FavoriteIcon className={classes.favorite} />
-  //                     ) : (
-  //                       <FavoriteBorderIcon className={classes.favorite} />
-  //                     )}
-  //                   </div>
-  //                 </CardActions>
-  //               </Card>
-  //             </Grid>
-  //           ))}
-  //         </Grid>
-  //         <Carousel title="Ralated Product" />
-  //         <Carousel title="Popular products" />
-  //       </Container>
-  //     </Layout>
-  //   </>
-  // )
+  return (
+    <>
+      <Layout>
+        <MainFeaturedPost post={mainFeaturedPost} />
+        <Container className={classes.cardGrid} maxWidth="xl">
+          <Grid container spacing={4}>
+            {fetchProducts?.map((product: Product) => (
+              <Grid item key={product.id} xs={12} sm={6} md={4}>
+                <Card className={classes.card}>
+                  <Link href={`/products/${String(product.id)}`}>
+                    <CardMedia
+                      className={classes.cardMedia}
+                      image={product.images[0].url}
+                      title="Image title"
+                    />
+                  </Link>
+                  <CardContent className={classes.cardContent}>
+                    <Typography>{product.product_name}</Typography>
+                    <Typography>
+                      {"$ "}
+                      {product.price}
+                    </Typography>
+                  </CardContent>
+                  <CardActions className={classes.cardActions}>
+                    <Button size="small" color="primary">
+                      <Rating
+                        value={Average(product.reviews.map((review: Review) => review.rating))}
+                      />
+                      <Typography className={classes.numReviews}>
+                        ({product.reviews.length})
+                      </Typography>
+                    </Button>
+                    <div onClick={() => handleClick(product)}>
+                      {wishlistIdList?.includes(product.id) ? (
+                        <FavoriteIcon className={classes.favorite} />
+                      ) : (
+                        <FavoriteBorderIcon className={classes.favorite} />
+                      )}
+                    </div>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+          <Carousel title="Ralated Product" />
+          <Carousel title="Popular products" />
+        </Container>
+      </Layout>
+    </>
+  )
 }
 
 // // {data && (
