@@ -120,6 +120,7 @@ const Index = ({products, wishlist}: any) => {
   // })
   console.log("fetchProducts", fetchProducts)
   console.log("fetchWishlist", fetchWishlist)
+  const WishlistDelete = () => {}
   const {isAuthenticated} = useAuth()
   const wishlistIdList = fetchWishlist?.map((p: any) => p.id)
   const handleClick = useCallback(
