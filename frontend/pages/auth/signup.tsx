@@ -1,10 +1,10 @@
-import React, { SyntheticEvent, useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { SignUpCredentials } from 'yup/type'
-import { signUpFormSchema } from 'yup/schema'
-import { yupResolver } from '@hookform/resolvers/yup'
+import React, {SyntheticEvent, useState} from "react"
+import {SubmitHandler, useForm} from "react-hook-form"
+import {SignUpCredentials} from "yup/type"
+import {signUpFormSchema} from "yup/schema"
+import {yupResolver} from "@hookform/resolvers/yup"
 // import { useAuth } from 'context/AuthContext'
-import toast from 'react-hot-toast'
+import toast from "react-hot-toast"
 import {
   Avatar,
   Button,
@@ -15,28 +15,29 @@ import {
   Box,
   Grid,
   Checkbox,
-} from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import Link from 'components/Link'
-import { makeStyles } from '@material-ui/styles'
-import Copyright from 'components/Copyright'
-import theme from 'theme'
-import { useRouter } from 'next/router'
-import { api } from 'services/apiClient'
+} from "@material-ui/core"
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
+import Link from "components/Link"
+import {makeStyles} from "@material-ui/styles"
+import Copyright from "components/Copyright"
+import theme from "theme"
+import {useRouter} from "next/router"
+import {api} from "services/apiClient"
+import {useAuth} from "context/AuthContext"
 
 const useStyles: any = makeStyles(() => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -47,11 +48,12 @@ const useStyles: any = makeStyles(() => ({
 export default function SignUp() {
   const classes = useStyles()
   const router = useRouter()
+  const {signUp} = useAuth()
   // const { signUp, me } = useAuth()
   const [loading, setLoading] = useState(false)
   const {
     register,
-    formState: { errors },
+    formState: {errors},
     handleSubmit,
   } = useForm<SignUpCredentials>({
     resolver: yupResolver(signUpFormSchema),
@@ -59,22 +61,24 @@ export default function SignUp() {
   const handleSignUp: SubmitHandler<SignUpCredentials> = async (formData) => {
     try {
       setLoading(true)
-      // e.preventDefault()
-      await fetch('http://localhost:8080/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      })
-      // await signUp(formData)
-      toast.success('Successfully category deleted')
-      router.push('/auth/login')
+      await signUp(formData)
       setLoading(false)
-    } catch (error) {
+    } catch (err) {
       toast.error(
-        "Sorry we were'nt able to delete this category right now. Please try again later.",
+        "Sorry we were'nt able to delete this category right now. Please try again later."
       )
+      throw err
     }
   }
+  // e.preventDefault()
+  // await fetch('http://localhost:8080/api/auth/register', {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body: JSON.stringify(formData),
+  // })
+  // // await signUp(formData)
+  // toast.success('Successfully category deleted')
+  // router.push('/auth/login')
 
   return (
     <Container component="main" maxWidth="xs">
@@ -85,11 +89,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form
-          noValidate
-          onSubmit={handleSubmit(handleSignUp)}
-          style={{ marginTop: '1em' }}
-        >
+        <form noValidate onSubmit={handleSubmit(handleSignUp)} style={{marginTop: "1em"}}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -98,7 +98,7 @@ export default function SignUp() {
                 fullWidth
                 label="Name"
                 autoComplete="email"
-                {...register('name')}
+                {...register("name")}
               />
             </Grid>
             <Grid item xs={12}>
@@ -109,7 +109,7 @@ export default function SignUp() {
                 id="email"
                 label="Email Address"
                 autoComplete="email"
-                {...register('email')}
+                {...register("email")}
               />
             </Grid>
             <Grid item xs={12}>
@@ -120,7 +120,7 @@ export default function SignUp() {
                 label="Password"
                 type="password"
                 id="password"
-                {...register('password')}
+                {...register("password")}
               />
             </Grid>
             <Grid item xs={12}>
@@ -131,7 +131,7 @@ export default function SignUp() {
                 label="Password Confirm"
                 type="password"
                 id="password_confirm"
-                {...register('confirmPassword')}
+                {...register("confirmPassword")}
               />
             </Grid>
             <Grid item xs={12}>

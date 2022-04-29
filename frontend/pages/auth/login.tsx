@@ -1,9 +1,10 @@
-import { SubmitHandler, useForm } from 'react-hook-form'
-import React, { SyntheticEvent, useState, useEffect } from 'react'
-import { SignInCredentials } from 'yup/type'
-import { signInFormSchema } from 'yup/schema'
-import { yupResolver } from '@hookform/resolvers/yup'
-// import { useAuth } from 'context/AuthContext'
+import {SubmitHandler, useForm} from "react-hook-form"
+import React, {SyntheticEvent, useState, useEffect} from "react"
+import {SignInCredentials} from "yup/type"
+import {signInFormSchema} from "yup/schema"
+import {yupResolver} from "@hookform/resolvers/yup"
+import toast from "react-hot-toast"
+import {useAuth} from "context/AuthContext"
 import {
   Avatar,
   Button,
@@ -14,28 +15,27 @@ import {
   Box,
   Grid,
   Checkbox,
-} from '@material-ui/core'
-// import { useAuth } from 'context/AuthContext'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import Link from 'components/Link'
-import { makeStyles } from '@material-ui/styles'
-import Copyright from 'components/Copyright'
-import theme from 'theme'
-import { useRouter } from 'next/router'
+} from "@material-ui/core"
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
+import Link from "components/Link"
+import {makeStyles} from "@material-ui/styles"
+import Copyright from "components/Copyright"
+import theme from "theme"
+import {useRouter} from "next/router"
 
 const useStyles = makeStyles(() => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%',
+    width: "100%",
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -46,11 +46,11 @@ const useStyles = makeStyles(() => ({
 export default function SignIn() {
   const classes = useStyles()
   const router = useRouter()
-  // const { signIn } = useAuth()
-  // const [loading, setLoading] = useState(false)
+  const {signIn} = useAuth()
+  const [loading, setLoading] = useState(false)
   const {
     register,
-    formState: { errors },
+    formState: {errors},
     handleSubmit,
   } = useForm<SignInCredentials>({
     resolver: yupResolver(signInFormSchema),
@@ -60,24 +60,17 @@ export default function SignIn() {
   //   await signIn(formData)
   //   // setLoading(false)
   // }
-  const handleSignIn: SubmitHandler<SignInCredentials> = async ({
-    email,
-    password,
-  }: any) => {
-    // e.preventDefault()
-    const response = await fetch('http://localhost:8080/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    })
-    const data = await response.json()
-    const userData = { firstName: data.first_name, lastName: data.last_name }
-    console.log('userData', userData)
-    router.push('/')
+  const handleSignIn: SubmitHandler<SignInCredentials> = async (formData) => {
+    try {
+      setLoading(true)
+      await signIn(formData)
+      setLoading(false)
+    } catch (err) {
+      toast.error(
+        "Sorry we were'nt able to delete this category right now. Please try again later."
+      )
+      throw err
+    }
   }
 
   return (
@@ -89,11 +82,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form
-          className={classes.form}
-          noValidate
-          onSubmit={handleSubmit(handleSignIn)}
-        >
+        <form className={classes.form} noValidate onSubmit={handleSubmit(handleSignIn)}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -103,7 +92,7 @@ export default function SignIn() {
             label="Email Address"
             autoComplete="email"
             autoFocus
-            {...register('email')}
+            {...register("email")}
           />
           <TextField
             variant="outlined"
@@ -114,7 +103,7 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
-            {...register('password')}
+            {...register("password")}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}

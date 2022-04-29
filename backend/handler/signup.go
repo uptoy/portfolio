@@ -36,7 +36,7 @@ func (h *Handler) Signup(c *gin.Context) {
 	}
 
 	ctx := c.Request.Context()
-	result, err := h.UserService.Signup(ctx, u)
+	user, err := h.UserService.Signup(ctx, u)
 
 	if err != nil {
 		log.Printf("Failed to sign up user: %v\n", err.Error())
@@ -45,35 +45,24 @@ func (h *Handler) Signup(c *gin.Context) {
 		})
 		return
 	}
+	tokens, err := h.TokenService.NewPairFromUser(ctx, u, "")
+	if err != nil {
+		log.Printf("Failed to create tokens for user: %v\n", err.Error())
 
-	// create token pair as strings
-	// tokens, err := h.TokenService.NewPairFromUser(ctx, u, "")
+		c.JSON(apperrors.Status(err), gin.H{
+			"error": err,
+		})
+		return
+	}
+	accessToken := tokens.IDToken.SS
+	refreshToken := tokens.RefreshToken.SS
+	//   maxAge: 60 * 60 * 24, // 1 day
+	//   maxAge: 60 * 60 * 24 * 30, // 1 Month
+	c.SetCookie("token", accessToken, 60*60*24, "/", "localhost", false, true)
+	c.SetCookie("refreshToken", refreshToken, 60*60*24*30, "/", "localhost", false, true)
 
-	// if err != nil {
-	// 	log.Printf("Failed to create tokens for user: %v\n", err.Error())
-
-	// 	// may eventually implement rollback logic here
-	// 	// meaning, if we fail to create tokens after creating a user,
-	// 	// we make sure to clear/delete the created user in the database
-
-	// 	c.JSON(apperrors.Status(err), gin.H{
-	// 		"error": err,
-	// 	})
-	// 	return
-	// }
-
-	// accessToken := tokens.IDToken.SS
-	// // refreshToken := tokens.RefreshToken.SS
-	// fmt.Println("accessToken", accessToken)
-	// // fmt.Println("refreshToken", refreshToken)
-	// fmt.Println("tokens", tokens)
-	// //   maxAge: 60 * 60 * 24, // 1 day
-	// //   maxAge: 60 * 60 * 24 * 30, // 1 Month
-	// c.SetCookie("token", accessToken, 60*60*24, "/", "localhost", false, true)
-	// // c.SetCookie("refreshToken", refreshToken, 60*60*24*30, "/", "localhost", false, true)
-
-	c.JSON(http.StatusCreated, gin.H{
-		"message": "Success SignUp",
-		"user":    result,
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Success SignIn",
+		"user":    user,
 	})
 }

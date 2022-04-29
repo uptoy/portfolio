@@ -22,7 +22,7 @@ func (h *Handler) Signout(c *gin.Context) {
 
 	// cookie clear
 	c.SetCookie("token", "", -1, "/", "localhost", false, true,)
-
+	c.SetCookie("refreshToken", "", -1, "/", "localhost", false, true,)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "user signed out successfully!",
 	})
