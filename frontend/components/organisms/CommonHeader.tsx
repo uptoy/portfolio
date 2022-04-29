@@ -175,7 +175,7 @@ export default function CommonHeader() {
       onClose={handleMenuClose1}
     >
       <MenuItem>
-        <Link href="/auth/login">SignIn</Link>
+        <Link href="/auth/signin">SignIn</Link>
       </MenuItem>
       <MenuItem>
         <Link href="/auth/signup">SignUp</Link>

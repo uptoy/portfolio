@@ -56,7 +56,7 @@
 //               </NavLink>
 //             </li>
 //             <li className="nav-item">
-//               <NavLink href="/user/register" as="/user/register">
+//               <NavLink href="/auth/signup" as="/auth/signup">
 //                 Sign up
 //               </NavLink>
 //             </li>

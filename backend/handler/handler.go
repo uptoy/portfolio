@@ -80,9 +80,9 @@ func NewHandler(c *Config) {
 	api.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
 	auth := api.Group("/auth")
 	{
-		auth.POST("/register", h.Signup)
-		auth.POST("/login", h.Signin)
-		auth.POST("/logout", middleware.AuthUser(h.TokenService), h.Signout)
+		auth.POST("/signup", h.Signup)
+		auth.POST("/signin", h.Signin)
+		auth.POST("/signout", middleware.AuthUser(h.TokenService), h.Signout)
 		auth.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
 		auth.POST("/tokens", h.Tokens)
 		auth.POST("/forgot_password", h.Sample)

@@ -52,7 +52,7 @@ export function AuthProvider({children}: AuthProviderProps) {
 
   const signUp = async ({email, name, password, confirmPassword}: SignUpCredentials) => {
     try {
-      const response = await fetch(`${BaseURL}/auth/register`, {
+      const response = await fetch(`${BaseURL}/auth/signup`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         credentials: "include",
@@ -76,7 +76,7 @@ export function AuthProvider({children}: AuthProviderProps) {
 
   const signIn = async ({email, password}: SignInCredentials) => {
     try {
-      const response = await fetch(`${BaseURL}/auth/login`, {
+      const response = await fetch(`${BaseURL}/auth/signin`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         credentials: "include",
@@ -97,7 +97,7 @@ export function AuthProvider({children}: AuthProviderProps) {
   }
   const signOut = async () => {
     try {
-      await fetch(`${BaseURL}/auth/logout`, {
+      await fetch(`${BaseURL}/auth/signout`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         credentials: "include",

@@ -53,7 +53,7 @@
 //           Sign in
 //         </CustomLink>
 //         &nbsp;or&nbsp;
-//         <CustomLink href="/user/signup" as="/user/register">
+//         <CustomLink href="/auth/signup" as="/auth/signup">
 //           sign up
 //         </CustomLink>
 //         &nbsp;to add comments on this article.
