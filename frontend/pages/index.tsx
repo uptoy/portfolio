@@ -84,24 +84,55 @@ export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSideP
 }
 
 const Index = ({products, wishlist}: any) => {
+  const fetcher = (url: any) =>
+    fetch(url, {
+      method: "GET",
+      headers: {"Content-Type": "application/json"},
+      credentials: "include",
+    }).then((r) => r.json())
+  const {data, error, mutate} = useSWR(`${BaseURL}/wishlist`, fetcher, {
+    fallbackData: wishlist,
+    revalidateOnMount: true,
+  })
+
+  console.log("data", data.data)
+
+  // const sample = async () => {
+  //   const res1 = await fetch(`${BaseURL}/wishlist`, {
+  //     method: "GET",
+  //     headers: {"Content-Type": "application/json"},
+  //     credentials: "include",
+  //   })
+  //   const wishlist = await res1.json()
+  //   return wishlist
+  // }
+  // const aaa = sample()
+  // console.log(aaa)
 
   const router = useRouter()
   const classes = useStyles()
   const fetchProducts = products.data
+  const fetchWishlist = data.data
+
+  // console.log("data", data)
+  //   const {data, error} = useSwr(key, fetcher, {
+  //     initialData: props.dataFromServerSideProps
+  // })
   console.log("fetchProducts", fetchProducts)
-  // console.log("wishlist", wishlist)
-  // const wishlist: any = []
-  // const wishlistIdList = wishlist?.map((p: any) => p.id)
-  const wishlistIdList = [1, 2]
-  const isAuthenticated = false
-  const [state, setState] = useState(false)
-  //   const {isAuthenticated} = useAuth()
+  console.log("fetchWishlist", fetchWishlist)
+  const {isAuthenticated} = useAuth()
+  const wishlistIdList = fetchWishlist?.map((p: any) => p.id)
   const handleClick = useCallback(
     (product: Product) => {
       ;(() => {
         const wishlistHandler = async () => {
           if (wishlistIdList?.includes(product.id) == true) {
-            await WishlistDelete(String(product.id)).then((res: any) => {})
+            // await WishlistDelete(String(product.id)).then((res: any) => {})
+            const res1 = await fetch(`${BaseURL}/wishlist/${product.id}`, {
+              method: "DELETE",
+              headers: {"Content-Type": "application/json"},
+              credentials: "include",
+            })
           } else {
             // await WishlistCreate(product).then((res: any) => {})
             const res1 = await fetch(`${BaseURL}/wishlist`, {
@@ -112,6 +143,7 @@ const Index = ({products, wishlist}: any) => {
             })
             console.log("res1", res1)
           }
+          await mutate({...data, product})
         }
         isAuthenticated ? wishlistHandler() : router.push("/auth/signup")
       })()
