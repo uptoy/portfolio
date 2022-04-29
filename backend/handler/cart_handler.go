@@ -3,6 +3,7 @@ package handler
 import (
 	"backend/model"
 	"backend/model/apperrors"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -47,6 +48,7 @@ func (h *Handler) CartAddItem(c *gin.Context) {
 		})
 		return
 	}
+	fmt.Println("user", user)
 	userId := user.(*model.User).UID
 	ctx := c.Request.Context()
 	cartId, err := h.CartService.CartGetId(ctx, userId)
@@ -57,6 +59,7 @@ func (h *Handler) CartAddItem(c *gin.Context) {
 		})
 		return
 	}
+	fmt.Println("cartId", cartId)
 	var json model.CartItem
 	if err := c.ShouldBindJSON(&json); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -76,7 +79,7 @@ func (h *Handler) CartAddItem(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"item": cartItem,
+		"data": cartItem,
 	})
 }
 

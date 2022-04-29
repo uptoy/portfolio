@@ -4,9 +4,10 @@ import (
 	"backend/model"
 	"backend/model/apperrors"
 	"context"
+	"log"
+
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
-	"log"
 )
 
 // PGCartRepository is data/repository implementation
@@ -55,12 +56,11 @@ func (r *pGCartRepository) CartGet(ctx context.Context, userID uuid.UUID) ([]*mo
 
 //ok
 func (r *pGCartRepository) CartAddItem(ctx context.Context, cartItem *model.CartItem) (*model.CartItem, error) {
-	cartId := cartItem.CartId
 	query :=
 		`
 	INSERT INTO cart_item (cart_id, product_id, quantity) VALUES ($1, $2,$3) RETURNING *
 	`
-	if err := r.DB.GetContext(ctx, &cartItem, query, cartId, cartItem.ProductId, cartItem.Quantity); err != nil {
+	if err := r.DB.GetContext(ctx, cartItem, query, cartItem.CartId, cartItem.ProductId, cartItem.Quantity); err != nil {
 		log.Printf("Unable to add cart item: %v. Err: %v\n", cartItem, err)
 		return nil, apperrors.NewNotFound("Unable to add cart item", string(cartItem.CartId))
 	}
@@ -117,17 +117,28 @@ func (r *pGCartRepository) CartDecrementItem(ctx context.Context, cartId int64, 
 }
 
 func (r *pGCartRepository) CartGetId(ctx context.Context, userId uuid.UUID) (int64, error) {
-	cart := model.Cart{}
+	var cartId int64
 	query :=
 		`
-	SELECT * FROM carts WHERE user_id=$1"
-	`
-	if err := r.DB.GetContext(ctx, &cart, query, userId); err != nil {
-		log.Printf("Unable to  get cart id: %v. Err: %v\n", cart, err)
-		return cart.Id, apperrors.NewNotFound("Unable to get cart id", string(cart.Id))
+	SELECT carts.id
+	FROM carts
+	WHERE user_id = $1
+`
+	if err := r.DB.GetContext(ctx, &cartId, query, userId); err != nil {
+		log.Printf("Unable to get user's cart: %v. Err: %v\n", cartId, err)
+		return cartId, apperrors.NewNotFound("user's cart", "user's cart")
 	}
-	cart_id := cart.Id
-	return cart_id, nil
+	// cart := model.Cart{}
+	// query :=
+	// 	`
+	// SELECT * FROM carts WHERE user_id=$1"
+	// `
+	// if err := r.DB.GetContext(ctx, &cart, query, userId); err != nil {
+	// 	log.Printf("Unable to  get cart id: %v. Err: %v\n", cart, err)
+	// 	return cart.Id, apperrors.NewNotFound("Unable to get cart id", string(cart.Id))
+	// }
+	// cart_id := cart.Id
+	return cartId, nil
 }
 
 // func (r *pGCartRepository) CartRemoveItem(ctx context.Context, userId uuid.UUID, productId uuid.UUID) (*model.Cart, error) {

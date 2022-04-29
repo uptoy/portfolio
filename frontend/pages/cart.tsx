@@ -4,7 +4,6 @@ import Link from "@material-ui/core/Link"
 import {Layout} from "components/organisms"
 import {api} from "services/apiClient"
 import {GetServerSideProps} from "next"
-import {setCookie, parseCookies, destroyCookie} from "nookies"
 import {Rating, Carousel} from "components"
 import {Average} from "utils/average"
 import {common} from "@material-ui/core/colors"
@@ -50,26 +49,9 @@ const Cart = ({props}: any) => {
     },
   }))
   const [user, setUser] = useState<User | null>(null)
-  useEffect(() => {
-    let cookies = parseCookies()
-    let token = cookies["token"]
-    if (token) {
-      api
-        .get("/auth/me")
-        .then((user) => {
-          setUser(user.data.user)
-        })
-        .catch((err: any) => {
-          console.log(err)
-        })
-    } else {
-      Router.replace("/")
-    }
-  }, [])
-  console.log("user", user)
   const classes = useStyles()
   const {data, error} = WishlistGet()
-  if (error) return <div>failed to load</div>
+  // if (error) return <div>failed to load</div>
   const cart = !data ? [] : data.data
   console.log("cart", cart)
   function removeItemHandler(item: any) {}
