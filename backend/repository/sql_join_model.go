@@ -9,6 +9,7 @@ import (
 )
 
 // productJoin is temp join type
+
 type productJoin struct {
 	model.Product
 	*CategoryJoin
@@ -73,4 +74,46 @@ type UserJoin struct {
 	Name       string    `db:"name" json:"name"`
 	Email      string    `db:"email" json:"email"`
 	ProfileUrl string    `db:"profile_url" json:"profile_url"`
+}
+
+type cartItemJoin struct {
+	model.CartItem
+	*ProductJoin
+}
+
+
+type ProductJoin struct {
+	PId           int64     `db:"id" json:"id"`
+	PProductName  string    `db:"product_name" json:"product_name"`
+	PSlug         string    `db:"slug" json:"slug"`
+	PBrand        string    `db:"brand" json:"brand"`
+	PPrice        int64     `db:"price" json:"price"`
+	PCategoryId   int64     `db:"category_id" json:"category_id"`
+	PCountInStock int64     `db:"count_in_stock" json:"count_in_stock"`
+	PDescription  string    `db:"description" json:"description"`
+	PCreatedAt    time.Time `db:"created_at" json:"created_at"`
+	PUpdatedAt    time.Time `db:"updated_at" json:"updated_at"`
+}
+
+func (cij *cartItemJoin) ToCartItem() *model.CartItem {
+	return &model.CartItem{
+		Id:        cij.Id,
+		CartId:    cij.CartId,
+		ProductId: cij.ProductId,
+		Quantity:  cij.Quantity,
+		CreatedAt: cij.CreatedAt,
+		UpdatedAt: cij.UpdatedAt,
+		Product: &model.Product{
+			Id:           cij.PId,
+			ProductName:  cij.PProductName,
+			Slug:         cij.PSlug,
+			Brand:        cij.PBrand,
+			Price:        cij.PPrice,
+			CategoryId:   cij.PCategoryId,
+			CountInStock: cij.PCountInStock,
+			Description:  cij.PDescription,
+			CreatedAt:    cij.CreatedAt,
+			UpdatedAt:    cij.UpdatedAt,
+		},
+	}
 }

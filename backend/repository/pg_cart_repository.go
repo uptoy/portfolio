@@ -34,23 +34,48 @@ func (r *pGCartRepository) CartCreate(ctx context.Context, userID uuid.UUID) (*m
 }
 
 func (r *pGCartRepository) CartGet(ctx context.Context, userID uuid.UUID) ([]*model.CartItem, error) {
-	var cartItem []*model.CartItem
-	q := `
-	SELECT
-	*
-	FROM carts c
-	LEFT JOIN cart_item ci ON c.id = ci.cart_id
-	LEFT JOIN products p ON ci.product_id = p.id
-	WHERE c.user_id = uuid('437d874c-6e25-4a01-bd8b-364624fd59fd')
+	// var cartItem []model.CartItem
+	// q := `
+	// SELECT
+	// *
+	// FROM carts
+	// WHERE user_id = $1
+	// `
+	// if err := r.DB.SelectContext(ctx, &cartItem, q, userID); err != nil {
+	// 	log.Printf("Unable to get product with name: %v. Err: %v\n", "", err)
+	// }
+	// cartItems := make([]*model.CartItem, 0)
+	// for _, x := range cartItem {
+	// 	cartItems = append(cartItems, x)
+	// }
+	// return cartItems, nil
+	// SELECT DISTINCT ON (ci.id)
+	// *
+	// FROM cart_item ci
+	// LEFT JOIN products p ON ci.product_id = p.id
+	// LEFT JOIN carts c ON ci.user_id = c.user_id
+	// LEFT JOIN users u ON u.uid = c.user_id
+	// 	WHERE u.uid = $1
+	query := `
+	SELECT DISTINCT ON (p.id)
+			*
+			FROM cart_item ci
+			LEFT JOIN carts c ON c.id = ci.cart_id
+			LEFT JOIN products p ON p.id = ci.product_id
+			LEFT JOIN users u ON u.uid = c.user_id
+				WHERE u.uid = $1
+
 	`
-	if err := r.DB.SelectContext(ctx, &cartItem, q, userID); err != nil {
-		log.Printf("Unable to get product with name: %v. Err: %v\n", "", err)
+	var cij []cartItemJoin
+	if err := r.DB.SelectContext(ctx, &cij, query, userID); err != nil {
+		return nil, apperrors.NewNotFound("userid", userID.String())
 	}
-	cartItems := make([]*model.CartItem, 0)
-	for _, x := range cartItem {
-		cartItems = append(cartItems, x)
+
+	result := make([]*model.CartItem, 0)
+	for _, x := range cij {
+		result = append(result, x.ToCartItem())
 	}
-	return cartItems, nil
+	return result, nil
 }
 
 //ok

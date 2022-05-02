@@ -160,7 +160,7 @@ const Wishlist: NextPage = ({products, wishlist}: any) => {
                         {fetchWishlist?.map((item: Product) => (
                           <TableRow key={item.id}>
                             <TableCell>
-                              <Link href={`/product/${item.slug}`} passHref>
+                              <Link href={`/products/${item.id}`} passHref>
                                 <Image
                                   src={item.images[0].url}
                                   alt={item.product_name}
@@ -170,7 +170,7 @@ const Wishlist: NextPage = ({products, wishlist}: any) => {
                               </Link>
                             </TableCell>
                             <TableCell>
-                              <Link href={`/product/${item.slug}`} passHref>
+                              <Link href={`/products/${item.id}`} passHref>
                                 <Typography>{item.product_name}</Typography>
                               </Link>
                             </TableCell>

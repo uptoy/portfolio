@@ -20,7 +20,6 @@ import theme from "theme"
 import {makeStyles} from "@material-ui/styles"
 import {CartItem, Review} from "@types"
 import {Average} from "utils/average"
-import {Product} from "@types"
 import {useAuth} from "context/AuthContext"
 
 const useStyles: any = makeStyles(() => ({
@@ -76,13 +75,12 @@ const ProductDetail: NextPage = ({product}: any) => {
   console.log("isAuthenticated", isAuthenticated)
   const averageNum = Average(reviews.map((review: Review) => review.rating))
   const id = router.query.id as string
-  const {register, handleSubmit, control} = useForm<any>({
+  const {handleSubmit, control} = useForm({
     defaultValues: {
       quantity: 1,
       product_id: Number(id),
     },
   })
-
 
   const onSubmit = async (formData: CartItem) => {
     try {
@@ -93,7 +91,8 @@ const ProductDetail: NextPage = ({product}: any) => {
           credentials: "include",
           body: JSON.stringify(formData),
         })
-        router.push("/")
+        router.push("/cart")
+        console.log("res", res)
       } else {
         router.push("/auth/signin")
       }

@@ -19,4 +19,5 @@ type CartItem struct {
 	Quantity  int64     `db:"quantity" json:"quantity"`
 	CreatedAt time.Time `db:"created_at" json:"created_at"`
 	UpdatedAt time.Time `db:"updated_at" json:"updated_at"`
+	Product   *Product  `json:"product"`
 }
