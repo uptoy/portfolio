@@ -68,9 +68,14 @@ export function AuthProvider({children}: AuthProviderProps) {
       console.log("login user", user)
       setUser(user)
       router.push("/")
-    } catch (error) {
-      toast.error(error.response?.data.message)
-      throw error
+    } catch (err) {
+      // throw new Error("error")
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+      } else {
+        console.log("Unknown Failure", err)
+      }
     }
   }
 
@@ -90,9 +95,13 @@ export function AuthProvider({children}: AuthProviderProps) {
       console.log("login user", user)
       setUser(user)
       router.push("/")
-    } catch (error) {
-      toast.error(error.response?.data.message)
-      throw error
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+      } else {
+        console.log("Unknown Failure", err)
+      }
     }
   }
   const signOut = async () => {
@@ -105,9 +114,13 @@ export function AuthProvider({children}: AuthProviderProps) {
       toast.success("Success SignOut")
       setUser({} as User)
       router.push("/auth/signout")
-    } catch (error) {
-      toast.error(error.response?.data.message)
-      throw error
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+      } else {
+        console.log("Unknown Failure", err)
+      }
     }
   }
 
@@ -124,9 +137,13 @@ export function AuthProvider({children}: AuthProviderProps) {
 
       toast.success("Sent you an email so please check it.")
       router.push("/dashboard")
-    } catch (error) {
-      toast.error(error.response?.data.message)
-      throw error
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+      } else {
+        console.log("Unknown Failure", err)
+      }
     }
   }
 
@@ -144,9 +161,13 @@ export function AuthProvider({children}: AuthProviderProps) {
       })
       toast.success("Sent you an email so please check it.")
       router.push("/")
-    } catch (error) {
-      toast.error(error.response?.data.message)
-      throw error
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+      } else {
+        console.log("Unknown Failure", err)
+      }
     }
   }
   const me = async () => {
@@ -160,9 +181,13 @@ export function AuthProvider({children}: AuthProviderProps) {
       const user = data.user
       console.log("me user", user)
       setUser(user)
-    } catch (error) {
-      toast.error(error.response?.data.message)
-      throw error
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+      } else {
+        console.log("Unknown Failure", err)
+      }
     }
   }
 

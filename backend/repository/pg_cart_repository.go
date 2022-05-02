@@ -37,12 +37,11 @@ func (r *pGCartRepository) CartGet(ctx context.Context, userID uuid.UUID) ([]*mo
 	var cartItem []*model.CartItem
 	q := `
 	SELECT
-	p.*,
-	ci.quantity
-	FROM cart_item ci
+	*
+	FROM carts c
+	LEFT JOIN cart_item ci ON c.id = ci.cart_id
 	LEFT JOIN products p ON ci.product_id = p.id
-	LEFT JOIN carts c ON ci.cart_id = c.id
-	WHERE c.user_id = $1
+	WHERE c.user_id = uuid('437d874c-6e25-4a01-bd8b-364624fd59fd')
 	`
 	if err := r.DB.SelectContext(ctx, &cartItem, q, userID); err != nil {
 		log.Printf("Unable to get product with name: %v. Err: %v\n", "", err)

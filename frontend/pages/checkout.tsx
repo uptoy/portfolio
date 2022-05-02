@@ -10,7 +10,7 @@ import {
   Step,
   StepLabel,
 } from "@material-ui/core"
-import { AddressForm, PaymentForm, Review } from "components/Order"
+import { AddressForm, PaymentForm, Review } from "components/order"
 import { Layout } from "components/organisms"
 import { Link } from "components"
 

@@ -64,10 +64,12 @@ export default function SignUp() {
       await signUp(formData)
       setLoading(false)
     } catch (err) {
-      toast.error(
-        "Sorry we were'nt able to delete this category right now. Please try again later."
-      )
-      throw err
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+      } else {
+        console.log("Unknown Failure", err)
+      }
     }
   }
   // e.preventDefault()

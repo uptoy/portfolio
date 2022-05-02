@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"strings"
 
 	"backend/model"
 	"backend/model/apperrors"
@@ -74,8 +73,7 @@ func AuthUser(s model.TokenService) gin.HandlerFunc {
 		accessToken, _ := c.Cookie("token")
 		refreshToken, _ := c.Cookie("token")
 		// validate ID token here
-		tokenTrim := strings.TrimSpace(accessToken)
-		user, err := s.ValidateIDToken(tokenTrim)
+		user, err := s.ValidateIDToken(accessToken)
 		if err != nil {
 			err := apperrors.NewAuthorization("Provided token is invalid")
 			c.JSON(err.Status(), gin.H{

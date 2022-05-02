@@ -1,13 +1,4 @@
-import {
-  IOrder,
-  IProduct,
-  IOrderItems,
-  IReview,
-  IUser,
-  IPaymentResult,
-  ShippingAddressType,
-  ICategory,
-} from "types"
+import {Order, Product, OrderItems, Review, User, Category} from "@types"
 
 //User
 export const user1: IUser = {
@@ -30,7 +21,7 @@ export const user2: IUser = {
 }
 export const users: IUser[] = [user1, user2]
 
-//Review
+// //Review
 export const review1: IReview = {
   _id: "_id",
   username: user1.name,
@@ -63,7 +54,7 @@ export const reviews1: IReview[] = [review1, review2]
 export const reviews2: IReview[] = [review3, review4]
 
 //Product
-export const product1: IProduct = {
+export const product1: Product = {
   _id: "1",
   quantity: 1,
   name: "name1",
@@ -80,7 +71,7 @@ export const product1: IProduct = {
   updatedAt: "updatedAt",
   reviews: reviews1,
 }
-export const product2: IProduct = {
+export const product2: Product = {
   _id: "2",
   quantity: 2,
   name: "name2",
@@ -98,7 +89,7 @@ export const product2: IProduct = {
   reviews: reviews2,
 }
 
-export const product3: IProduct = {
+export const product3: Product = {
   _id: "3",
   quantity: 3,
   name: "name3",
@@ -116,7 +107,7 @@ export const product3: IProduct = {
   reviews: reviews2,
 }
 
-export const product4: IProduct = {
+export const product4: Product = {
   _id: "4",
   quantity: 4,
   name: "name4",
@@ -134,7 +125,7 @@ export const product4: IProduct = {
   reviews: reviews1,
 }
 
-export const product5: IProduct = {
+export const product5: Product = {
   _id: "5",
   quantity: 5,
   name: "name5",
@@ -152,7 +143,7 @@ export const product5: IProduct = {
   reviews: reviews2,
 }
 
-export const product6: IProduct = {
+export const product6: Product = {
   _id: "6",
   quantity: 6,
   name: "name6",
@@ -169,7 +160,7 @@ export const product6: IProduct = {
   updatedAt: "updatedAt6",
   reviews: reviews1,
 }
-export const products: IProduct[] = [
+export const products: Product[] = [
   product1,
   product2,
   product3,

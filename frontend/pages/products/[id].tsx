@@ -1,22 +1,27 @@
-import useSWR from "swr"
-import {useReducer} from "react"
 import {useForm, Controller} from "react-hook-form"
 import toast from "react-hot-toast"
 import {GetServerSidePropsContext, GetServerSideProps, NextPage} from "next"
-import React, {ReactEventHandler, useState} from "react"
-import {TextField, Grid, List, ListItem, Typography, Card, Button} from "@material-ui/core"
+import React from "react"
+import {
+  MenuItem,
+  TextField,
+  Grid,
+  List,
+  ListItem,
+  Typography,
+  Card,
+  Button,
+  Container,
+} from "@material-ui/core"
 import {Rating, CarouselThumbs, ProductReview, Carousel} from "components"
 import Layout from "components/organisms/Layout"
 import {useRouter} from "next/router"
 import theme from "theme"
 import {makeStyles} from "@material-ui/styles"
-import {Select, FormControl, MenuItem} from "@material-ui/core"
-import Container from "@material-ui/core/Container"
-// import {Circular} from "components/common/Circular"
-import {CartAddItem} from "services/api/cart"
 import {CartItem, Review} from "@types"
 import {Average} from "utils/average"
 import {Product} from "@types"
+import {useAuth} from "context/AuthContext"
 
 const useStyles: any = makeStyles(() => ({
   gridContainer: {
@@ -46,8 +51,8 @@ const useStyles: any = makeStyles(() => ({
     color: "#fff",
   },
 }))
-const BaseURL = "http://localhost:8080/api"
 
+const BaseURL = "http://localhost:8080/api"
 export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const {id} = ctx.query
   const res = await fetch(`${BaseURL}/products/${id}`, {
@@ -60,36 +65,45 @@ export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSideP
 }
 
 const ProductDetail: NextPage = ({product}: any) => {
+  console.log("product", product)
   const router = useRouter()
   const classes = useStyles()
-  const id = router.query.id as string
   const fetchProduct = product.data
   const images = fetchProduct.images
   const reviews = fetchProduct.reviews
   const countInStock = fetchProduct.count_in_stock
-  const [qty, setQty] = useState(1)
-  const handleChange = (e: any) => {
-    setQty(e.target.value)
-  }
-
+  const {isAuthenticated} = useAuth()
+  console.log("isAuthenticated", isAuthenticated)
   const averageNum = Average(reviews.map((review: Review) => review.rating))
-
-  const handleSubmit = async (id: string) => {
-    const cartItem: CartItem = {
+  const id = router.query.id as string
+  const {register, handleSubmit, control} = useForm<any>({
+    defaultValues: {
+      quantity: 1,
       product_id: Number(id),
-      quantity: qty,
-    }
+    },
+  })
+
+
+  const onSubmit = async (formData: CartItem) => {
     try {
-      await fetch(`${BaseURL}/cart`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        credentials: "include",
-        body: JSON.stringify(cartItem),
-      })
-      router.push("/cart")
+      if (isAuthenticated) {
+        const res = await fetch(`${BaseURL}/cart`, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          credentials: "include",
+          body: JSON.stringify(formData),
+        })
+        router.push("/")
+      } else {
+        router.push("/auth/signin")
+      }
     } catch (err) {
-      toast.error(err.response?.data.message)
-      throw err
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+      } else {
+        console.log("Unknown Failure", err)
+      }
     }
   }
 
@@ -144,7 +158,7 @@ const ProductDetail: NextPage = ({product}: any) => {
                     </Grid>
                   </Grid>
                 </ListItem>
-                <form onSubmit={() => handleSubmit(id)}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <ListItem>
                     <Grid container style={{alignItems: "center"}}>
                       <Grid item xs={6}>
@@ -152,21 +166,22 @@ const ProductDetail: NextPage = ({product}: any) => {
                       </Grid>
                       {countInStock > 0 && (
                         <Grid item xs={6}>
-                          <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={qty}
-                            onChange={handleChange}
-                          >
-                            <MenuItem value={1}>1</MenuItem>
-                            <MenuItem value={2}>2</MenuItem>
-                            <MenuItem value={3}>3</MenuItem>
-                          </Select>
+                          <Controller
+                            name="quantity"
+                            control={control}
+                            render={({field}) => (
+                              <TextField {...field} select sx={{mt: 2}} required>
+                                <MenuItem value={1}>1</MenuItem>
+                                <MenuItem value={2}>2</MenuItem>
+                                <MenuItem value={3}>3</MenuItem>
+                              </TextField>
+                            )}
+                          />
                         </Grid>
                       )}
                     </Grid>
                   </ListItem>
-                  <ListItem>
+                  <ListItem style={{display: "block"}}>
                     <Button
                       fullWidth
                       type="submit"
@@ -191,40 +206,3 @@ const ProductDetail: NextPage = ({product}: any) => {
 }
 
 export default ProductDetail
-
-{
-  /* <ListItem>
-                  <Grid container style={{alignItems: "center"}}>
-                    <Grid item xs={6}>
-                      <Typography>Quantity</Typography>
-                    </Grid>
-                    {countInStock > 0 && (
-                      <Grid item xs={6}>
-                        <FormControl>
-                          <Select
-                            value={qty}
-                            onChange={handleChange}
-                            displayEmpty
-                            className={classes.selectEmpty}
-                            inputProps={{"aria-label": "Without label"}}
-                          >
-                            <MenuItem value={1}>1</MenuItem>
-                            <MenuItem value={2}>2</MenuItem>
-                            <MenuItem value={3}>3</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                    )}
-                  </Grid>
-                </ListItem>
-                <ListItem>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    onClick={() => addToCartHandler(product)}
-                  >
-                    Add to cart
-                  </Button>
-                </ListItem> */
-}
