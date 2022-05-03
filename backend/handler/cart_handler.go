@@ -23,7 +23,15 @@ func (h *Handler) CartGet(c *gin.Context) {
 	}
 	userId := user.(*model.User).UID
 	ctx := c.Request.Context()
-	cart, err := h.CartService.CartGet(ctx, userId)
+	cartId, err := h.CartService.CartGetId(ctx, userId)
+	if err != nil {
+		log.Printf("Failed to get cart: %v\n", err.Error())
+		c.JSON(apperrors.Status(err), gin.H{
+			"error": err,
+		})
+		return
+	}
+	cart, err := h.CartService.CartGet(ctx, cartId)
 	if err != nil {
 		log.Printf("Unable to find user's cart: %v\n%v", userId, err)
 		e := apperrors.NewNotFound("user", userId.String())
@@ -34,7 +42,7 @@ func (h *Handler) CartGet(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"cart": cart,
+		"data": cart,
 	})
 }
 

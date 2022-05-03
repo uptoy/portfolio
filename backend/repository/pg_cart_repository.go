@@ -5,6 +5,7 @@ import (
 	"backend/model/apperrors"
 	"context"
 	"log"
+	"strconv"
 
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
@@ -33,44 +34,19 @@ func (r *pGCartRepository) CartCreate(ctx context.Context, userID uuid.UUID) (*m
 	return &cart, nil
 }
 
-func (r *pGCartRepository) CartGet(ctx context.Context, userID uuid.UUID) ([]*model.CartItem, error) {
-	// var cartItem []model.CartItem
-	// q := `
-	// SELECT
-	// *
-	// FROM carts
-	// WHERE user_id = $1
-	// `
-	// if err := r.DB.SelectContext(ctx, &cartItem, q, userID); err != nil {
-	// 	log.Printf("Unable to get product with name: %v. Err: %v\n", "", err)
-	// }
-	// cartItems := make([]*model.CartItem, 0)
-	// for _, x := range cartItem {
-	// 	cartItems = append(cartItems, x)
-	// }
-	// return cartItems, nil
-	// SELECT DISTINCT ON (ci.id)
-	// *
-	// FROM cart_item ci
-	// LEFT JOIN products p ON ci.product_id = p.id
-	// LEFT JOIN carts c ON ci.user_id = c.user_id
-	// LEFT JOIN users u ON u.uid = c.user_id
-	// 	WHERE u.uid = $1
+func (r *pGCartRepository) CartGet(ctx context.Context, cartID int64) ([]*model.CartItem, error) {
 	query := `
 	SELECT DISTINCT ON (p.id)
-			*
+			p.*,ci.quantity,ci.product_id
 			FROM cart_item ci
-			LEFT JOIN carts c ON c.id = ci.cart_id
 			LEFT JOIN products p ON p.id = ci.product_id
-			LEFT JOIN users u ON u.uid = c.user_id
-				WHERE u.uid = $1
-
+				WHERE ci.cart_id = $1
 	`
 	var cij []cartItemJoin
-	if err := r.DB.SelectContext(ctx, &cij, query, userID); err != nil {
-		return nil, apperrors.NewNotFound("userid", userID.String())
+	id := strconv.Itoa(int(cartID))
+	if err := r.DB.SelectContext(ctx, &cij, query, id); err != nil {
+		return nil, apperrors.NewNotFound("cartID", id)
 	}
-
 	result := make([]*model.CartItem, 0)
 	for _, x := range cij {
 		result = append(result, x.ToCartItem())
@@ -84,9 +60,11 @@ func (r *pGCartRepository) CartAddItem(ctx context.Context, cartItem *model.Cart
 		`
 	INSERT INTO cart_item (cart_id, product_id, quantity) VALUES ($1, $2,$3) RETURNING *
 	`
+
 	if err := r.DB.GetContext(ctx, cartItem, query, cartItem.CartId, cartItem.ProductId, cartItem.Quantity); err != nil {
 		log.Printf("Unable to add cart item: %v. Err: %v\n", cartItem, err)
-		return nil, apperrors.NewNotFound("Unable to add cart item", string(cartItem.CartId))
+		id := strconv.Itoa(int(cartItem.CartId))
+		return nil, apperrors.NewNotFound("Unable to add cart item", id)
 	}
 	return cartItem, nil
 }

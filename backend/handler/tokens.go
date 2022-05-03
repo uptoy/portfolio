@@ -58,6 +58,7 @@ func (h *Handler) Tokens(c *gin.Context) {
 	refreshTokenNew := tokens.RefreshToken.SS
 	//   maxAge: 60 * 60 * 24, // 1 day
 	//   maxAge: 60 * 60 * 24 * 30, // 1 Month
+	c.SetSameSite(http.SameSiteStrictMode)
 	c.SetCookie("token", accessTokenNew, 60*60*24, "/", "localhost", false, true)
 	c.SetCookie("refreshToken", refreshTokenNew, 60*60*24*30, "/", "localhost", false, true)
 

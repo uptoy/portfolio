@@ -105,6 +105,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	})
 	cartService := service.NewCartService(&service.CartServiceConfig{
 		CartRepository: cartRepository,
+		ProductImageRepository: productImageRepository,
 	})
 	categoryService := service.NewCategoryService(&service.CategoryServiceConfig{
 		CategoryRepository: categoryRepository,

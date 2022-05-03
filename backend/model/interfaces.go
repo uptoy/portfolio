@@ -35,7 +35,7 @@ type AuthService interface {
 }
 type CartRepository interface {
 	CartCreate(ctx context.Context, userID uuid.UUID) (*Cart, error)
-	CartGet(ctx context.Context, userID uuid.UUID) ([]*CartItem, error)
+	CartGet(ctx context.Context, cartID int64) ([]*CartItem, error)
 	CartAddItem(ctx context.Context, cartItem *CartItem) (*CartItem, error)
 	CartDeleteItem(ctx context.Context, cartId int64, productId int64) (*CartItem, error)
 	CartIncrementItem(ctx context.Context, cartId int64, productId int64) (*CartItem, error)
@@ -44,7 +44,7 @@ type CartRepository interface {
 }
 type CartService interface {
 	CartCreate(ctx context.Context, userID uuid.UUID) (*Cart, error)
-	CartGet(ctx context.Context, userID uuid.UUID) ([]*CartItem, error)
+	CartGet(ctx context.Context, cartID int64) ([]*CartItem, error)
 	CartAddItem(ctx context.Context, cartItem *CartItem) (*CartItem, error)
 	CartDeleteItem(ctx context.Context, cartId int64, productId int64) (*CartItem, error)
 	CartIncrementItem(ctx context.Context, cartId int64, productId int64) (*CartItem, error)

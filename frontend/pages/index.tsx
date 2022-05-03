@@ -114,6 +114,7 @@ const Index: NextPage = ({products, wishlist}: any) => {
     })
   }
   const {isAuthenticated} = useAuth()
+  console.log("isAuthenticated", isAuthenticated)
   const wishlistIdList = fetchWishlist?.map((p: any) => p.id)
   const handleClick = useCallback(
     (product: Product) => {

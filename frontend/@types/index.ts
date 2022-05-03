@@ -62,6 +62,7 @@ export interface CartItem {
   quantity: number
   created_at?: Date
   updated_at?: Date
+  product: Product
 }
 
 export interface Order {

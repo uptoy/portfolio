@@ -3,20 +3,24 @@ package service
 import (
 	"backend/model"
 	"context"
+
 	"github.com/google/uuid"
 )
 
 type cartService struct {
-	CartRepository model.CartRepository
+	CartRepository         model.CartRepository
+	ProductImageRepository model.ProductImageRepository
 }
 
 type CartServiceConfig struct {
-	CartRepository model.CartRepository
+	CartRepository         model.CartRepository
+	ProductImageRepository model.ProductImageRepository
 }
 
 func NewCartService(c *CartServiceConfig) model.CartService {
 	return &cartService{
-		CartRepository: c.CartRepository,
+		CartRepository:         c.CartRepository,
+		ProductImageRepository: c.ProductImageRepository,
 	}
 }
 
@@ -29,13 +33,21 @@ func (s *cartService) CartCreate(ctx context.Context, userID uuid.UUID) (*model.
 	return cart, nil
 }
 
-func (s *cartService) CartGet(ctx context.Context, userID uuid.UUID) ([]*model.CartItem, error) {
+func (s *cartService) CartGet(ctx context.Context, cartID int64) ([]*model.CartItem, error) {
 	var err error
-	cart, err := s.CartRepository.CartGet(ctx, userID)
+	cartItems, err := s.CartRepository.CartGet(ctx, cartID)
 	if err != nil {
-		return cart, err
+		return cartItems, err
 	}
-	return cart, nil
+	for _, cartItem := range cartItems {
+		productId := cartItem.ProductId
+		images, err := s.ProductImageRepository.GetAll(ctx, productId)
+		if err != nil {
+			return nil, err
+		}
+		cartItem.Product.Images = images
+	}
+	return cartItems, nil
 }
 
 func (s *cartService) CartGetId(ctx context.Context, userID uuid.UUID) (int64, error) {

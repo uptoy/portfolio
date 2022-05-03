@@ -1,9 +1,9 @@
 package middleware
 
 import (
-
 	"backend/model"
 	"backend/model/apperrors"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -83,6 +83,7 @@ func AuthUser(s model.TokenService) gin.HandlerFunc {
 			return
 		}
 		c.Set("user", user)
+		c.SetSameSite(http.SameSiteStrictMode)
 		c.SetCookie("token", accessToken, 60*60*24, "/", "localhost", false, true)
 		c.SetCookie("refreshToken", refreshToken, 60*60*24*30, "/", "localhost", false, true)
 		c.Next()
