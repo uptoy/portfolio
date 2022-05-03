@@ -86,20 +86,10 @@ func (r *pGCartRepository) CartIncrementItem(ctx context.Context, cartId int64, 
 	cartItem := model.CartItem{}
 	query :=
 		`
-		UPDATE cart_item SET quantity = quantity + 1 WHERE cart_item.cart_id = $1 AND cart_item.product_id = $2"
+		UPDATE cart_item SET quantity = quantity + 1 WHERE cart_item.cart_id = $1 AND cart_item.product_id = $2 RETURNING *
 	`
-	if err := r.DB.GetContext(ctx, &cartItem, query, cartId, productId); err != nil {
-		log.Printf("Unable to get user's cart: %v. Err: %v\n", cartItem, err)
-		return nil, apperrors.NewNotFound("user's cart", "user's cart")
-	}
-	query1 :=
-		`
-	SELECT products.*, cart_item.quantity,(products.price * cart_item.quantity) as SUBTOTAL
-	FROM cart_item JOIN products
-	ON cart_item.product_id = products.product_id
-	WHERE cart_item.cart_id = $1
-	`
-	if err := r.DB.GetContext(ctx, &cartItem, query1, cartId); err != nil {
+	_, err := r.DB.QueryContext(ctx, query, cartId, productId)
+	if err != nil {
 		log.Printf("Unable to get user's cart: %v. Err: %v\n", cartItem, err)
 		return nil, apperrors.NewNotFound("user's cart", "user's cart")
 	}
@@ -111,7 +101,8 @@ func (r *pGCartRepository) CartDecrementItem(ctx context.Context, cartId int64, 
 		`
 		UPDATE cart_item SET quantity = quantity - 1 WHERE cart_item.cart_id = $1 AND cart_item.product_id = $2 RETURNING *
 	`
-	if err := r.DB.GetContext(ctx, &cartItem, query, cartId, productId); err != nil {
+	_, err := r.DB.QueryContext(ctx, query, cartId, productId)
+	if err != nil {
 		log.Printf("Unable to get user's cart: %v. Err: %v\n", cartItem, err)
 		return nil, apperrors.NewNotFound("user's cart", "user's cart")
 	}

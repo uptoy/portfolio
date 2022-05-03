@@ -162,8 +162,8 @@ func NewHandler(c *Config) {
 		cart.GET("", middleware.AuthUser(h.TokenService), h.CartGet)
 		cart.POST("", middleware.AuthUser(h.TokenService), h.CartAddItem)
 		cart.DELETE("/:id", middleware.AuthUser(h.TokenService), h.CartDeleteItem)
-		cart.PUT("/inc", middleware.AuthUser(h.TokenService), h.CartIncrementItem)
-		cart.PUT("/dec", middleware.AuthUser(h.TokenService), h.CartDecrementItem)
+		cart.PUT("/inc/:id", middleware.AuthUser(h.TokenService), h.CartIncrementItem)
+		cart.PUT("/dec/:id", middleware.AuthUser(h.TokenService), h.CartDecrementItem)
 	}
 	api.POST("/payment", h.Payment)
 	order := api.Group("/orders")

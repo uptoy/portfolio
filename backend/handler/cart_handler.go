@@ -103,8 +103,7 @@ func (h *Handler) CartDeleteItem(c *gin.Context) {
 	}
 	userId := user.(*model.User).UID
 	ctx := c.Request.Context()
-	id := c.Param("id")
-	productId, err := strconv.ParseInt(id, 0, 64)
+	productId, err := strconv.ParseInt(c.Param("id"), 0, 64)
 	if err != nil {
 		log.Printf("Failed to get product id: %v\n", err.Error())
 		c.JSON(apperrors.Status(err), gin.H{
@@ -129,7 +128,7 @@ func (h *Handler) CartDeleteItem(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"item": cartItem,
+		"data": cartItem,
 	})
 }
 func (h *Handler) CartIncrementItem(c *gin.Context) {
@@ -169,7 +168,7 @@ func (h *Handler) CartIncrementItem(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"item": cartItem,
+		"data": cartItem,
 	})
 }
 func (h *Handler) CartDecrementItem(c *gin.Context) {
@@ -209,7 +208,7 @@ func (h *Handler) CartDecrementItem(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"item": cartItem,
+		"data": cartItem,
 	})
 }
 

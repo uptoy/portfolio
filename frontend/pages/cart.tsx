@@ -1,18 +1,12 @@
 import type {NextPage} from "next"
-import Head from "next/head"
 import Image from "next/image"
 import React, {useEffect} from "react"
 import theme from "theme"
-import {Rating, Carousel} from "components"
-import {MainFeaturedPost} from "components/productTop"
 import {GetServerSidePropsContext, GetServerSideProps} from "next"
 import {
   Typography,
   Grid,
-  Container,
   CardContent,
-  CardMedia,
-  Paper,
   TableContainer,
   Table,
   TableHead,
@@ -27,16 +21,11 @@ import {
 import {makeStyles} from "@material-ui/styles"
 import {Layout} from "components/organisms"
 import {red, common} from "@material-ui/core/colors"
-import {CartItem, Product} from "@types"
+import {CartItem} from "@types"
 import {useAuth} from "context/AuthContext"
-import {Review} from "@types"
-import {Average} from "utils/average"
 import {useRouter} from "next/router"
 import useSWR from "swr"
-import {fetcher} from "services/fetcher"
 import {Link} from "components"
-import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp"
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown"
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline"
 import HighlightOffIcon from "@material-ui/icons/HighlightOff"
@@ -74,6 +63,14 @@ const useStyles: any = makeStyles(() => ({
     marginRight: theme.spacing(1),
     fontSize: "2em",
   },
+  icon: {
+    "&:hover": {
+      color: common.black,
+    },
+    "&:active": {
+      color: red[500],
+    },
+  },
 }))
 
 export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {
@@ -100,10 +97,73 @@ const Cart: NextPage = ({cart}: any) => {
   const router = useRouter()
   const classes = useStyles()
   const fetchCartItems = data.data
-  console.log("fetchCartItems", fetchCartItems)
   const {isAuthenticated} = useAuth()
+  const handleDecrement = async (cartItem: CartItem) => {
+    const productId = cartItem.product_id
+    const quantity = cartItem.quantity
+    if (quantity == 1) {
+      await fetch(`${BaseURL}/cart/${productId}`, {
+        method: "DELETE",
+        headers: {"Content-Type": "application/json"},
+        credentials: "include",
+      })
+      await mutate({...data, cartItem})
+    } else {
+      await fetch(`${BaseURL}/cart/dec/${productId}`, {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        credentials: "include",
+      })
+      await mutate({...data, cartItem})
+    }
+  }
+  const handleIncrement = async (cartItem: CartItem) => {
+    console.log("cartItem", cartItem.product_id)
+    const productId = cartItem.product_id
+    await fetch(`${BaseURL}/cart/inc/${productId}`, {
+      method: "PUT",
+      headers: {"Content-Type": "application/json"},
+      credentials: "include",
+    })
+    await mutate({...data, cartItem})
+  }
+  const handleDelete = async (cartItem: CartItem) => {
+    const productId = cartItem.product_id
+    await fetch(`${BaseURL}/cart/${productId}`, {
+      method: "DELETE",
+      headers: {"Content-Type": "application/json"},
+      credentials: "include",
+    })
+    await mutate({...data, cartItem})
+  }
+  const handleCheckOut = async () => {
+    router.push("/checkout")
+  }
+  // const WishlistCreate = async (product: Product) => {
+  //   const res = await fetch(`${BaseURL}/wishlist`, {
+  //     method: "POST",
+  //     headers: {"Content-Type": "application/json"},
+  //     credentials: "include",
+  //     body: JSON.stringify(product),
+  //   })
+  // }
+  // const handleClick = useCallback(
+  //   (product: Product) => {
+  //     ;(() => {
+  //       const wishlistHandler = async () => {
+  //         if (wishlistIdList?.includes(product.id) == true) {
+  //           await WishlistDelete(product)
+  //         } else {
+  //           await WishlistCreate(product)
+  //         }
+  //         await mutate({...data, product})
+  //       }
+  //       isAuthenticated ? wishlistHandler() : router.push("/auth/signup")
+  //     })()
+  //   },
+  //   [isAuthenticated, wishlistIdList]
+  // )
 
-  console.log("isAuthenticated", isAuthenticated)
   return (
     <Layout>
       <div>
@@ -150,14 +210,14 @@ const Cart: NextPage = ({cart}: any) => {
                           <TableCell align="center">{cartItem.quantity}</TableCell>
                           <TableCell align="center">{cartItem.product.price}</TableCell>
                           <TableCell align="center">
-                            <Icon color="primary">
-                              <RemoveCircleOutlineIcon />
+                            <Icon color="primary" className={classes.icon}>
+                              <RemoveCircleOutlineIcon onClick={() => handleDecrement(cartItem)} />
                             </Icon>
-                            <Icon color="primary">
-                              <HighlightOffIcon />
+                            <Icon color="primary" className={classes.icon}>
+                              <HighlightOffIcon onClick={() => handleDelete(cartItem)} />
                             </Icon>
-                            <Icon color="primary">
-                              <AddCircleOutlineIcon />
+                            <Icon color="primary" className={classes.icon}>
+                              <AddCircleOutlineIcon onClick={() => handleIncrement(cartItem)} />
                             </Icon>
                           </TableCell>
                         </TableRow>
@@ -171,18 +231,23 @@ const Cart: NextPage = ({cart}: any) => {
               <Card>
                 <List>
                   <ListItem style={{justifyContent: "center"}}>
-                    <Typography variant="h6">
-                      {/* Subtotal (
+                    {/* <Typography variant="h6">
+                      Subtotal (
                       {(fetchCartItems as Array<CartItem>).reduce((a, c) => a + c.quantity, 0)}{" "}
                       items) : $
                       {(fetchCartItems as Array<CartItem>).reduce(
-                        (a, c) => a + c.quantity * c.,
+                        (a, c) => (a + c.quantity * c.product.price) as number,
                         0
-                      )} */}
-                    </Typography>
+                      )}
+                    </Typography> */}
                   </ListItem>
                   <ListItem style={{justifyContent: "center"}}>
-                    <Button variant="contained" className={classes.checkout} color="primary">
+                    <Button
+                      variant="contained"
+                      className={classes.checkout}
+                      color="primary"
+                      onClick={() => handleCheckOut()}
+                    >
                       Check Out
                     </Button>
                   </ListItem>
@@ -194,93 +259,6 @@ const Cart: NextPage = ({cart}: any) => {
       </div>
     </Layout>
   )
-  // return (
-  //   <Layout>
-  //     <Paper style={{padding: 30, marginTop: 50}}>
-  //       <Typography>Shopping Cart</Typography>
-  //       {fetchCartItems.length === 0 ? (
-  //         <div>
-  //           Cart is empty.
-  //           <Link href="/" passHref>
-  //             Go shopping
-  //           </Link>
-  //         </div>
-  //       ) : (
-  //         <Grid container spacing={1}>
-  //           <Grid item md={9} xs={12}>
-  //             <CardContent>
-  //               <TableContainer>
-  //                 <Table>
-  //                   <TableHead>
-  //                     <TableRow>
-  //                       <TableCell>Image</TableCell>
-  //                       <TableCell>Name</TableCell>
-  //                       <TableCell align="right">Quantity</TableCell>
-  //                       <TableCell align="right">Price</TableCell>
-  //                       <TableCell align="center">Action</TableCell>
-  //                     </TableRow>
-  //                   </TableHead>
-  //                   <TableBody>
-  //                     {fetchCartItems.map((cartItem: CartItem) => (
-  //                       <TableRow key={cartItem.product_id}>
-  //                         <TableCell>
-  //                           <Link href={`/product/${cartItem.product_id}`} passHref>
-  //                             {/* <Image
-  //                               src={item.images[0].url}
-  //                               alt={item.product_name}
-  //                               width={50}
-  //                               height={50}
-  //                             ></Image> */}
-  //                           </Link>
-  //                         </TableCell>
-  //                         <TableCell>
-  //                           <Link href={`/product/${cartItem.product_id}`} passHref>
-  //                             {/* <Typography>{cartItem.}</Typography> */}
-  //                           </Link>
-  //                         </TableCell>
-  //                         <TableCell align="right"></TableCell>
-  //                         {/* <TableCell align="right">${item.price}</TableCell> */}
-  //                         <TableCell align="right"></TableCell>
-  //                         <TableCell align="center">
-  //                           <Button variant="contained" color="secondary">
-  //                             x
-  //                           </Button>
-  //                         </TableCell>
-  //                       </TableRow>
-  //                     ))}
-  //                   </TableBody>
-  //                 </Table>
-  //               </TableContainer>
-  //             </CardContent>
-  //           </Grid>
-  //           <Grid item md={3} xs={12}>
-  //             <Card>
-  //               <List>
-  //                 <ListItem style={{justifyContent: "center"}}>
-  //                   {/* <Typography variant="h6">
-  //                     Subtotal (
-  //                     {(fetchCartItems as Array<CartItem>).reduce((a, c) => a + c.quantity, 0)}{" "}
-  //                     items) : $
-  //                     {(fetchCartItems as Array<CartItem>).reduce(
-  //                       (a, c) => a + c.quantity * c.price,
-  //                       0
-  //                     )}
-  //                   </Typography> */}
-  //                   aaa
-  //                 </ListItem>
-  //                 <ListItem style={{justifyContent: "center"}}>
-  //                   <Button variant="contained" className={classes.checkout} color="primary">
-  //                     Check Out
-  //                   </Button>
-  //                 </ListItem>
-  //               </List>
-  //             </Card>
-  //           </Grid>
-  //         </Grid>
-  //       )}
-  //     </Paper>
-  //   </Layout>
-  // )
 }
 
 export default Cart
