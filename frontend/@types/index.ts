@@ -16,16 +16,16 @@ export interface Address {
 
 export interface Product {
   id: number
-  product_name?: string
-  slug?: string
-  brand?: string
-  price?: number
-  category_id?: number
+  product_name: string
+  slug: string
+  brand: string
+  price: number
+  category_id: number
   count_in_stock: number
-  description?: string
+  description: string
   average_rating: number
-  createdAt?: Date | null
-  updatedAt?: Date | null
+  createdAt: Date | null
+  updatedAt: Date | null
   images: Image[]
   reviews: Review[]
   category: Category

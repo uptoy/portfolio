@@ -1,8 +1,9 @@
 import type {NextPage} from "next"
 import Head from "next/head"
 import Image from "next/image"
+import toast from "react-hot-toast"
 import Link from "next/link"
-import React, {SyntheticEvent, useState, useEffect, useCallback} from "react"
+import React, {useCallback} from "react"
 import theme from "theme"
 import {Rating, Carousel} from "components"
 import {MainFeaturedPost} from "components/productTop"
@@ -25,7 +26,6 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"
 import FavoriteIcon from "@material-ui/icons/Favorite"
 import {Product} from "@types"
 import {Products} from "services/api/product"
-import {WishlistGet, WishlistCreate, WishlistDelete} from "services/api/wishlist"
 import {useAuth} from "context/AuthContext"
 import {Review} from "@types"
 import {Average} from "utils/average"
@@ -99,22 +99,39 @@ const Index: NextPage = ({products, wishlist}: any) => {
   const fetchProducts = products.data
   const fetchWishlist = data.data
   const WishlistDelete = async (product: Product) => {
-    const res = await fetch(`${BaseURL}/wishlist/${product.id}`, {
-      method: "DELETE",
-      headers: {"Content-Type": "application/json"},
-      credentials: "include",
-    })
+    try {
+      await fetch(`${BaseURL}/wishlist/${product.id}`, {
+        method: "DELETE",
+        headers: {"Content-Type": "application/json"},
+        credentials: "include",
+      })
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+      } else {
+        console.log("Unknown Failure", err)
+      }
+    }
   }
   const WishlistCreate = async (product: Product) => {
-    const res = await fetch(`${BaseURL}/wishlist`, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      credentials: "include",
-      body: JSON.stringify(product),
-    })
+    try {
+      await fetch(`${BaseURL}/wishlist`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        credentials: "include",
+        body: JSON.stringify(product),
+      })
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+      } else {
+        console.log("Unknown Failure", err)
+      }
+    }
   }
   const {isAuthenticated} = useAuth()
-  console.log("isAuthenticated", isAuthenticated)
   const wishlistIdList = fetchWishlist?.map((p: any) => p.id)
   const handleClick = useCallback(
     (product: Product) => {

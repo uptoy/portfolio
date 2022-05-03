@@ -1,8 +1,9 @@
 import type {NextPage} from "next"
 import Image from "next/image"
-import React, {useEffect} from "react"
+import React from "react"
 import theme from "theme"
 import {GetServerSidePropsContext, GetServerSideProps} from "next"
+import toast from "react-hot-toast"
 import {
   Typography,
   Grid,
@@ -22,7 +23,6 @@ import {makeStyles} from "@material-ui/styles"
 import {Layout} from "components/organisms"
 import {red, common} from "@material-ui/core/colors"
 import {CartItem} from "@types"
-import {useAuth} from "context/AuthContext"
 import {useRouter} from "next/router"
 import useSWR from "swr"
 import {Link} from "components"
@@ -97,73 +97,79 @@ const Cart: NextPage = ({cart}: any) => {
   const router = useRouter()
   const classes = useStyles()
   const fetchCartItems = data.data
-  const {isAuthenticated} = useAuth()
   const handleDecrement = async (cartItem: CartItem) => {
-    const productId = cartItem.product_id
     const quantity = cartItem.quantity
-    if (quantity == 1) {
+    const productId = cartItem.product_id
+    try {
+      if (quantity == 1) {
+        await fetch(`${BaseURL}/cart/${productId}`, {
+          method: "DELETE",
+          headers: {"Content-Type": "application/json"},
+          credentials: "include",
+        })
+        await mutate({...data, cartItem})
+      } else {
+        await fetch(`${BaseURL}/cart/dec/${productId}`, {
+          method: "PUT",
+          headers: {"Content-Type": "application/json"},
+          credentials: "include",
+        })
+        await mutate({...data, cartItem})
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+      } else {
+        console.log("Unknown Failure", err)
+      }
+    }
+  }
+  const handleIncrement = async (cartItem: CartItem) => {
+    try {
+      const productId = cartItem.product_id
+      await fetch(`${BaseURL}/cart/inc/${productId}`, {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        credentials: "include",
+      })
+      await mutate({...data, cartItem})
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+      } else {
+        console.log("Unknown Failure", err)
+      }
+    }
+  }
+  const handleDelete = async (cartItem: CartItem) => {
+    const productId = cartItem.product_id
+    try {
       await fetch(`${BaseURL}/cart/${productId}`, {
         method: "DELETE",
         headers: {"Content-Type": "application/json"},
         credentials: "include",
       })
       await mutate({...data, cartItem})
-    } else {
-      await fetch(`${BaseURL}/cart/dec/${productId}`, {
-        method: "PUT",
-        headers: {"Content-Type": "application/json"},
-        credentials: "include",
-      })
-      await mutate({...data, cartItem})
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+      } else {
+        console.log("Unknown Failure", err)
+      }
     }
-  }
-  const handleIncrement = async (cartItem: CartItem) => {
-    console.log("cartItem", cartItem.product_id)
-    const productId = cartItem.product_id
-    await fetch(`${BaseURL}/cart/inc/${productId}`, {
-      method: "PUT",
-      headers: {"Content-Type": "application/json"},
-      credentials: "include",
-    })
-    await mutate({...data, cartItem})
-  }
-  const handleDelete = async (cartItem: CartItem) => {
-    const productId = cartItem.product_id
-    await fetch(`${BaseURL}/cart/${productId}`, {
-      method: "DELETE",
-      headers: {"Content-Type": "application/json"},
-      credentials: "include",
-    })
-    await mutate({...data, cartItem})
   }
   const handleCheckOut = async () => {
     router.push("/checkout")
   }
-  // const WishlistCreate = async (product: Product) => {
-  //   const res = await fetch(`${BaseURL}/wishlist`, {
-  //     method: "POST",
-  //     headers: {"Content-Type": "application/json"},
-  //     credentials: "include",
-  //     body: JSON.stringify(product),
-  //   })
-  // }
-  // const handleClick = useCallback(
-  //   (product: Product) => {
-  //     ;(() => {
-  //       const wishlistHandler = async () => {
-  //         if (wishlistIdList?.includes(product.id) == true) {
-  //           await WishlistDelete(product)
-  //         } else {
-  //           await WishlistCreate(product)
-  //         }
-  //         await mutate({...data, product})
-  //       }
-  //       isAuthenticated ? wishlistHandler() : router.push("/auth/signup")
-  //     })()
-  //   },
-  //   [isAuthenticated, wishlistIdList]
-  // )
-
+  const totalNum: number = fetchCartItems.reduce((total: number, cartItem: CartItem): number => {
+    return total + cartItem.quantity
+  }, 0)
+  const totalPrice: number = fetchCartItems.reduce((total: number, cartItem: CartItem): number => {
+    return total + cartItem.quantity * cartItem.product.price
+  }, 0)
   return (
     <Layout>
       <div>
@@ -231,15 +237,7 @@ const Cart: NextPage = ({cart}: any) => {
               <Card>
                 <List>
                   <ListItem style={{justifyContent: "center"}}>
-                    {/* <Typography variant="h6">
-                      Subtotal (
-                      {(fetchCartItems as Array<CartItem>).reduce((a, c) => a + c.quantity, 0)}{" "}
-                      items) : $
-                      {(fetchCartItems as Array<CartItem>).reduce(
-                        (a, c) => (a + c.quantity * c.product.price) as number,
-                        0
-                      )}
-                    </Typography> */}
+                    <Typography variant="h6">SubTotal(${totalPrice})</Typography>
                   </ListItem>
                   <ListItem style={{justifyContent: "center"}}>
                     <Button
