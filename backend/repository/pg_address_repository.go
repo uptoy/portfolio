@@ -22,7 +22,7 @@ func NewAddressRepository(db *sqlx.DB) model.AddressRepository {
 
 func (r *pGAddressRepository) AddressCreate(ctx context.Context, userId uuid.UUID, address *model.Address) (*model.Address, error) {
 	q := `WITH addr_ins AS (
-		INSERT INTO address (address, city, state, country, zip, created_at, updated_at)
+		INSERT INTO addresses (address, city, state, country, zip, created_at, updated_at)
 		VALUES (:address, :city, :state, :country, :zip , :created_at, :updated_at)
 		RETURNING id AS addr_id
 	)
@@ -54,7 +54,7 @@ func (r *pGAddressRepository) AddressCreate(ctx context.Context, userId uuid.UUI
 	return address, nil
 }
 func (r *pGAddressRepository) AddressGet(ctx context.Context, userID uuid.UUID, addressID int64) (*model.Address, error) {
-	q := `SELECT a.* FROM address a LEFT JOIN user_address ua ON a.id = ua.address_id WHERE ua.user_id = $1 AND a.id = $2`
+	q := `SELECT a.* FROM addresses a LEFT JOIN user_address ua ON a.id = ua.address_id WHERE ua.user_id = $1 AND a.id = $2`
 	var addr model.Address
 	if err := r.DB.Get(&addr, q, userID, addressID); err != nil {
 		return nil, err
@@ -63,7 +63,7 @@ func (r *pGAddressRepository) AddressGet(ctx context.Context, userID uuid.UUID, 
 }
 // GetAll gets the all user's addresses
 func (r *pGAddressRepository) AddressList(ctx context.Context, userID uuid.UUID) ([]*model.Address, error) {
-	q := `SELECT a.* FROM address a LEFT JOIN user_address ua ON a.id = ua.address_id WHERE ua.user_id = $1`
+	q := `SELECT a.* FROM addresses a LEFT JOIN user_address ua ON a.id = ua.address_id WHERE ua.user_id = $1`
 	addressList := make([]*model.Address, 0)
 	if err := r.DB.SelectContext(ctx, &addressList, q, userID); err != nil {
 		return nil, err
@@ -74,7 +74,7 @@ func (r *pGAddressRepository) AddressList(ctx context.Context, userID uuid.UUID)
 
 // Update updates the address
 func (r *pGAddressRepository) AddressUpdate(ctx context.Context, addressId int64, address *model.Address) (*model.Address, error) {
-	query := `UPDATE address SET address=:address, city=:city, state=:state, country=:country, zip=:zip, updated_at=:updated_at WHERE id=:id`
+	query := `UPDATE addresses SET address=:address, city=:city, state=:state, country=:country, zip=:zip, updated_at=:updated_at WHERE id=:id`
 	if _, err := r.DB.NamedExecContext(ctx, query, address); err != nil {
 		return nil, err
 	}
@@ -83,7 +83,7 @@ func (r *pGAddressRepository) AddressUpdate(ctx context.Context, addressId int64
 
 // Delete hard deletes the address
 func (r *pGAddressRepository) AddressDelete(ctx context.Context, addressId int64) error {
-	query := `DELETE FROM address WHERE id = :id`
+	query := `DELETE FROM addresses WHERE id = :id`
 	if _, err := r.DB.NamedExecContext(ctx, query, map[string]interface{}{"id": addressId}); err != nil {
 		return err
 	}

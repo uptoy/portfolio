@@ -2,14 +2,15 @@ import Card from "@material-ui/core/Card"
 import CardContent from "@material-ui/core/CardContent"
 import Divider from "@material-ui/core/Divider"
 import List from "@material-ui/core/List"
-import {createStyles} from "@material-ui/core/styles"
+import createStyles from "@material-ui/styles/createStyles"
 import {makeStyles} from "@material-ui/styles"
-import {categories} from "utils/seed"
+// import {categories} from "utils/seed"
+import CircularProgress from "@material-ui/core/CircularProgress"
 
 import CategoryItem from "./CategoryItem"
 import theme from "theme"
 
-// import { useAppSelector } from 'app/hooks';
+import {useAppSelector} from "app/hooks"
 
 const useStyles: any = makeStyles(() =>
   createStyles({
@@ -26,47 +27,27 @@ const useStyles: any = makeStyles(() =>
   })
 )
 
-interface IProps {
-  open: boolean
-  open1: boolean
-  handleOpen(): void
-  handleDeleteOpen(): void
-}
-
-// ;<CategoryList
-//   open={open}
-//   open1={open1}
-//   handleOpen={handleOpen}
-//   handleDeleteOpen={handleDeleteOpen}
-// />
-
-const CategoryList = (props: IProps) => {
+const CategoryList = () => {
   const classes = useStyles()
 
-  // const { categories, status } = useAppSelector((state) => state.categories)
+  const {categories, status} = useAppSelector((state) => state.category)
 
-  // if (status === "loading") {
-  //   return (
-  //     <div className={classes.loadingContainer}>
-  //       <CircularProgress />
-  //     </div>
-  //   )
-  // }
+  if (status === "loading") {
+    return (
+      <div className={classes.loadingContainer}>
+        <CircularProgress />
+      </div>
+    )
+  }
 
   return (
     <>
       <Card>
         <CardContent>
           <List dense className={classes.list}>
-            {categories.map((category) => (
+            {categories.map((category: any) => (
               <div key={category.id}>
-                <CategoryItem
-                  category={category}
-                  open={props.open}
-                  open1={props.open1}
-                  handleOpen={props.handleOpen}
-                  handleDeleteOpen={props.handleDeleteOpen}
-                />
+                <CategoryItem category={category} />
                 <Divider component="li" />
               </div>
             ))}

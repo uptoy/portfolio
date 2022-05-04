@@ -3,6 +3,15 @@ export interface Category {
   category_name: string
 }
 
+export interface User {
+  uid: string
+  name: string
+  email: string
+  profile_url: string
+  created_at?: Date
+  updated_at?: Date
+}
+
 export interface Address {
   id: number
   address: string
@@ -62,7 +71,7 @@ export interface CartItem {
   quantity: number
   created_at?: Date
   updated_at?: Date
-  product: Product
+  product?: Product
 }
 
 export interface Order {

@@ -13,7 +13,7 @@ import {
 } from "recharts"
 import Paper from "@material-ui/core/Paper"
 import { makeStyles } from "@material-ui/styles"
-import { createStyles } from "@material-ui/core/styles"
+import createStyles from "@material-ui/styles/createStyles"
 
 interface LineBarChartProps {
   data: any

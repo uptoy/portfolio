@@ -15,6 +15,16 @@ type productJoin struct {
 	*CategoryJoin
 }
 
+type Category struct {
+	CID        int64     `db:"category_id"`
+	CName      string    `db:"category_name"`
+	CCreatedAt time.Time `db:"category_created_at"`
+	CUpdatedAt time.Time `db:"category_updated_at"`
+}
+type WishlistProduct struct {
+	model.Product
+	*Category
+}
 // CategoryJoin is temp join type
 type CategoryJoin struct {
 	CID        int64     `db:"category_id"`

@@ -6,8 +6,13 @@ import CssBaseline from "@material-ui/core/CssBaseline"
 import theme from "theme"
 import "styles/globals.css"
 import ContextProvider from "context"
+import {Provider} from "react-redux"
+import {wrapper} from "app/store"
+import {Toaster} from "react-hot-toast"
 
-export default function MyApp(props: AppProps) {
+import store from "app/store"
+
+function MyApp(props: AppProps) {
   const {Component, pageProps} = props
 
   React.useEffect(() => {
@@ -24,12 +29,17 @@ export default function MyApp(props: AppProps) {
         <title>My page</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
-      <ThemeProvider theme={theme}>
-        <ContextProvider>
-        <CssBaseline />
-        <Component {...pageProps} />
-        </ContextProvider>
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <ContextProvider>
+            <CssBaseline />
+            <Component {...pageProps} />
+            <Toaster />
+          </ContextProvider>
+        </ThemeProvider>
+      </Provider>
     </React.Fragment>
   )
 }
+
+export default wrapper.withRedux(MyApp)

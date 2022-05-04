@@ -8,6 +8,7 @@ import theme from "theme"
 interface IProps {
   open: boolean
   handleClose(): void
+  handleDelete(): void
 }
 
 const useStyles: any = makeStyles(() =>
@@ -15,7 +16,7 @@ const useStyles: any = makeStyles(() =>
     submit_container: {
       marginLeft: "auto",
       marginTop: "1em",
-      width: "9.5em",
+      width: "10.5em",
     },
     formControl: {
       margin: theme.spacing(1, 0),
@@ -38,7 +39,8 @@ const DeleteModal = (props: IProps) => {
           <Button variant="contained" style={{marginRight: "1em"}} onClick={props.handleClose}>
             Back
           </Button>
-          <Button variant="contained">Save</Button>
+          {/* <Button variant="contained" onClick={props.handleDelete}> */}
+          <Button variant="contained">Delete</Button>
         </div>
       </SimpleModal>
     </>

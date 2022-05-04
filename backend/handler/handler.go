@@ -127,17 +127,17 @@ func NewHandler(c *Config) {
 		products.DELETE("/:id/reviews/:rid", h.ReviewDelete)
 		// products.POST("/confirm", h.ConfirmCreateReviewFlow)
 	}
-	categories := api.Group("/categories")
+	category := api.Group("/category")
 	{
-		categories.GET("", h.CategoryList)
-		categories.POST("", h.CategoryCreate)
-		categories.GET("/:id", h.CategoryFindByID)
-		categories.PUT("/:id", h.CategoryUpdate)
-		categories.DELETE("/:id", h.CategoryDelete)
-		categories.GET("/search/:name", h.CategoryFindByName)
-		categories.DELETE("/delete", h.CategoryBulkDelete)
-		categories.POST("/insert", h.CategoryBulkInsert)
-		categories.GET("/count", h.CategoryCount)
+		category.GET("", h.CategoryList)
+		category.POST("", h.CategoryCreate)
+		category.GET("/:id", h.CategoryFindByID)
+		category.PUT("/:id", h.CategoryUpdate)
+		category.DELETE("/:id", h.CategoryDelete)
+		category.GET("/search/:name", h.CategoryFindByName)
+		category.DELETE("/delete", h.CategoryBulkDelete)
+		category.POST("/insert", h.CategoryBulkInsert)
+		category.GET("/count", h.CategoryCount)
 	}
 	sample := api.Group("/sample")
 	{

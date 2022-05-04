@@ -4,11 +4,11 @@ import {fetcher} from "services/fetcher"
 import {api} from "services/apiClient"
 
 export const CategoryList = () => {
-  return useSWR(`/categories`, fetcher)
+  return useSWR(`/category`, fetcher)
 }
 
 export const CategoryDetail = (id: string) => {
-  return useSWR(`/categories/${id}`, fetcher)
+  return useSWR(`/category/${id}`, fetcher)
 }
 
 export const CategoryFindByName = (name: string) => {
@@ -16,13 +16,13 @@ export const CategoryFindByName = (name: string) => {
 }
 
 export const CategoryCreate = (category: Category) => {
-  return api.post("/categories", category)
+  return api.post("/category", category)
 }
 
 export const ProductUpdate = (id: string, category: Category) => {
-  return api.put(`/categories/${id}`, category)
+  return api.put(`/category/${id}`, category)
 }
 
 export const ProductDelete = (id: string) => {
-  return api.delete(`/categories/${id}`)
+  return api.delete(`/category/${id}`)
 }

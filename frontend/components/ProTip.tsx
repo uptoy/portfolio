@@ -1,9 +1,10 @@
-import React from 'react'
-import { createStyles, Theme } from '@material-ui/core/styles'
-import { makeStyles } from '@material-ui/styles'
-import Link from '@material-ui/core/Link'
-import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon'
-import Typography from '@material-ui/core/Typography'
+import React from "react"
+import {Theme} from "@material-ui/core/styles"
+import createStyles from "@material-ui/styles/createStyles"
+import {makeStyles} from "@material-ui/styles"
+import Link from "@material-ui/core/Link"
+import SvgIcon, {SvgIconProps} from "@material-ui/core/SvgIcon"
+import Typography from "@material-ui/core/Typography"
 import theme from "theme"
 
 function LightBulbIcon(props: SvgIconProps) {
@@ -20,7 +21,7 @@ const useStyles: any = makeStyles(() =>
       spacing: 6,
     },
     lightBulb: {
-      verticalAlign: 'middle',
+      verticalAlign: "middle",
       marginRight: 10,
     },
   })

@@ -5,7 +5,6 @@ import (
 	"backend/model/apperrors"
 	"context"
 	"log"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
@@ -109,37 +108,4 @@ func (r *pGWishlistRepository) WishlistGet(ctx context.Context, userId uuid.UUID
 	return wishlist, nil
 }
 
-// func (r *pGWishlistRepository) WishlistAddItem(ctx context.Context, userId uuid.UUID, productId int64) ([]*model.Product, error) {
-// 	wishlist := []*model.Product{}
-// 	query := `INSERT INTO product_wishlist (user_id, product_id) VALUES  ($1, $2) RETURNING *`
-// 	if err := r.DB.GetContext(ctx, wishlist, query, userId, productId); err != nil {
-// 		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
-// 			log.Printf("Could not create a userId: %v. Reason: %v\n", userId, err.Code.Name())
-// 			return nil, err
-// 		}
-// 		log.Printf("Could not create a userId: %v. Reason: %v\n", userId, err)
-// 		return nil, apperrors.NewInternal()
-// 	}
-// 	return wishlist, nil
-// }
 
-// func (r *pGWishlistRepository) WishlistClear(ctx context.Context, userId uuid.UUID) error {
-// 	wishlist := []*model.Product{}
-// 	query := "DELETE FROM product_wishlist WHERE user_id=$1  VALUES  ($1)"
-// 	if err := r.DB.GetContext(ctx, wishlist, query, userId); err != nil {
-// 		log.Printf("Unable to get product: %v. Err: %v\n", wishlist, err)
-// 		return apperrors.NewNotFound("wishlist", "userId")
-// 	}
-// 	return nil
-// }
-
-type Category struct {
-	CID        int64     `db:"category_id"`
-	CName      string    `db:"category_name"`
-	CCreatedAt time.Time `db:"category_created_at"`
-	CUpdatedAt time.Time `db:"category_updated_at"`
-}
-type WishlistProduct struct {
-	model.Product
-	*Category
-}

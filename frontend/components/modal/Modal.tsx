@@ -1,11 +1,9 @@
-import { Typography } from "@material-ui/core"
+import {Typography} from "@material-ui/core"
 import Backdrop from "@material-ui/core/Backdrop"
 import Fade from "@material-ui/core/Fade"
 import IconButton from "@material-ui/core/IconButton"
 import MaterialModal from "@material-ui/core/Modal"
-import { Theme } from "@material-ui/core/styles"
-import { makeStyles } from "@material-ui/styles"
-
+import {makeStyles} from "@material-ui/styles"
 import CloseIcon from "@material-ui/icons/Close"
 import React from "react"
 import ReactDOM from "react-dom"
@@ -46,7 +44,7 @@ interface Props {
   withClose?: boolean
 }
 
-const Modal: React.FC<Props> = ({ title, isVisible, onClose, children, withClose = true }) => {
+const Modal: React.FC<Props> = ({title, isVisible, onClose, children, withClose = true}) => {
   const classes = useStyles()
 
   return (

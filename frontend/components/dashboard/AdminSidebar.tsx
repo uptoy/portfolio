@@ -4,10 +4,10 @@ import List from "@material-ui/core/List"
 import Divider from "@material-ui/core/Divider"
 import IconButton from "@material-ui/core/IconButton"
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
-import { makeStyles } from "@material-ui/styles"
+import {makeStyles} from "@material-ui/styles"
 import theme from "theme"
 import clsx from "clsx"
-import { mainListItems, secondaryListItems } from "components/Dashboard/listItems"
+import {mainListItems, secondaryListItems} from "components/dashboard/listItems"
 
 const drawerWidth = 240
 
@@ -29,7 +29,7 @@ const useStyles: any = makeStyles(() => ({
     }),
   },
   drawerPaperClose: {
-    overflowX: "hidden",
+    // overflowX: "hidden",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,

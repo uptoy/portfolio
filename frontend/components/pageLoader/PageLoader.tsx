@@ -1,5 +1,5 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
-import { createStyles } from '@material-ui/core/styles'
+import createStyles from "@material-ui/styles/createStyles"
 import { makeStyles } from '@material-ui/styles'
 
 import logo from 'http://placehold.jp/150x150.png'

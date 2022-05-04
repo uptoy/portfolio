@@ -157,7 +157,7 @@ const ProductDetail: NextPage = ({product}: any) => {
                     </Grid>
                   </Grid>
                 </ListItem>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={() => handleSubmit(onSubmit)}>
                   <ListItem>
                     <Grid container style={{alignItems: "center"}}>
                       <Grid item xs={6}>

@@ -5,26 +5,20 @@ import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import {makeStyles} from "@material-ui/styles"
 import MoreVertIcon from "@material-ui/icons/MoreVert"
-import CreateIcon from "@material-ui/icons/Create"
-import DeleteIcon from "@material-ui/icons/Delete"
-import {CustomerManageModal} from "components/customer"
-import DeleteModal from "components/modal/DeleteModal"
-import {Button} from "@material-ui/core"
-// import { unwrapResult } from "@reduxjs/toolkit"
+import {unwrapResult} from "@reduxjs/toolkit"
 import {useState} from "react"
 import toast from "react-hot-toast"
+import {
+  deleteCategory,
+  setSelectedCategory,
+  setSelectedModal,
+} from "features/category/categorySlice"
+import {Category} from "@types"
 
-// import { deleteCategory, setSelectedCategory, setSelectedModal } from '../../slice';
-import {ICategory} from "types"
+import {useAppDispatch, useAppSelector} from "app/hooks"
 
-// import { useAppDispatch, useAppSelector } from 'app/hooks';
-
-interface IProps {
-  category: ICategory
-  open: boolean
-  open1: boolean
-  handleOpen(): void
-  handleDeleteOpen(): void
+interface Props {
+  category: Category
 }
 
 const useStyles: any = makeStyles(() => ({
@@ -37,12 +31,12 @@ const useStyles: any = makeStyles(() => ({
   },
 }))
 
-const CategoryItem = (props: IProps) => {
+const CategoryItem: React.FC<Props> = ({category}) => {
   const classes = useStyles()
 
-  // const { user } = useAppSelector((state) => state.auth)
+  const {user} = useAppSelector((state) => state.auth)
 
-  // const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -57,16 +51,16 @@ const CategoryItem = (props: IProps) => {
   }
 
   const handleEdit = () => {
-    // dispatch(setSelectedModal("manageCategoryModal"))
-    // dispatch(setSelectedCategory(category))
+    dispatch(setSelectedModal("manageCategoryModal"))
+    dispatch(setSelectedCategory(category))
     handleCloseMenu()
   }
 
   const handleDelete = async () => {
     try {
       setIsCategoryDeleting(true)
-      // const result = await dispatch(deleteCategory(category.id))
-      // unwrapResult(result)
+      const result = await dispatch(deleteCategory(category.id))
+      unwrapResult(result)
       toast.success("Successfully category deleted")
       handleCloseMenu()
     } catch (error) {
@@ -83,21 +77,24 @@ const CategoryItem = (props: IProps) => {
 
   return (
     <ListItem className={classes.categoryItem} disabled={isCategoryDeleting}>
-      <ListItemText primary={props.category.title} />
-
+      <ListItemText primary={category.category_name} />
+      {/* {canShowMenu() && ( */}
       <div className={classes.actionContainer}>
-        <Button
-          variant="contained"
-          className={classes.button}
-          onClick={props.handleOpen}
-          style={{marginRight: "1em"}}
+        <IconButton onClick={handleOpenMenu}>
+          <MoreVertIcon />
+        </IconButton>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleCloseMenu}
         >
-          <CreateIcon />
-        </Button>
-        <Button variant="contained" className={classes.button} onClick={props.handleDeleteOpen}>
-          <DeleteIcon />
-        </Button>
+          <MenuItem onClick={handleEdit}>Edit</MenuItem>
+          <MenuItem onClick={handleDelete}>Delete</MenuItem>
+        </Menu>
       </div>
+      {/* )} */}
     </ListItem>
   )
 }

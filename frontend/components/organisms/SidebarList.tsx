@@ -46,7 +46,7 @@ const LINKS: Links[] = [
     title: 'Budgets',
   },
   {
-    href: '/categories',
+    href: '/category',
     icon: <CategoryIcon />,
     title: 'Categories',
   },

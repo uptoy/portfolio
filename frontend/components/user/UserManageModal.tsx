@@ -1,12 +1,24 @@
-import SimpleModal from "components/modal/SimpleModal"
+import {Modal} from "components/modal"
 import {TextField, Button} from "@material-ui/core"
-import React from "react"
+import React, {useState} from "react"
 import {makeStyles} from "@material-ui/styles"
-import {createStyles} from "@material-ui/core/styles"
+import createStyles from "@material-ui/styles/createStyles"
+import CircularProgress from "@material-ui/core/CircularProgress"
+import {unwrapResult} from "@reduxjs/toolkit"
+import {useForm, Controller} from "react-hook-form"
+import toast from "react-hot-toast"
+import {useAppDispatch, useAppSelector} from "app/hooks"
+import {setSelectedModal, addUser, setSelectedUser, updateUser} from "features/uesr/userSlice"
 
 interface IProps {
   open: boolean
   handleClose(): void
+}
+interface FormData {
+  uid: string
+  email: string
+  name: string
+  profile_url: string
 }
 
 const useStyles: any = makeStyles(() =>
@@ -21,12 +33,65 @@ const useStyles: any = makeStyles(() =>
 
 // create
 // edit
-const CustomerManageModal = (props: IProps) => {
+const UserManageModal = (props: IProps) => {
   const classes = useStyles()
+
+  const {selectedUser, selectedModal} = useAppSelector((state) => state.user)
+
+  const defaultValues = {
+    name: selectedUser?.name || "",
+    email: selectedUser?.email || "",
+  }
+
+  const {handleSubmit, control} = useForm<FormData>({
+    defaultValues,
+  })
+
+  const dispatch = useAppDispatch()
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const userManageModalTitle = selectedUser ? "Edit User" : "Add New User"
+
+  const onSubmit = async (formData: FormData) => {
+    try {
+      setIsSubmitting(true)
+
+      if (selectedUser) {
+        const results = await dispatch(updateUser({uid: selectedUser.uid, fields: formData}))
+        unwrapResult(results)
+        toast.success("You have successfully updated  category")
+      } else {
+        const results = await dispatch(addUser(formData))
+        unwrapResult(results)
+        toast.success("You have successfully added new category")
+      }
+
+      handleCloseUserModal()
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+      } else {
+        console.log("Unknown Failure", err)
+      }
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleCloseUserModal = () => {
+    dispatch(setSelectedModal(null))
+    dispatch(setSelectedUser(null))
+  }
+
   return (
     <>
-      <SimpleModal open={props.open} handleClose={props.handleClose}>
-        <p>Add New Customer</p>
+      <Modal
+        title={userManageModalTitle}
+        isVisible={selectedModal === "manageUserModal"}
+        onClose={handleCloseUserModal}
+      >
+        <p>Add New User</p>
         <TextField
           variant="outlined"
           margin="normal"
@@ -70,12 +135,12 @@ const CustomerManageModal = (props: IProps) => {
           </Button>
           <Button variant="contained">Save</Button>
         </div>
-      </SimpleModal>
+      </Modal>
     </>
   )
 }
 
-export default CustomerManageModal
+export default UserManageModal
 
 // import Button from '@material-ui/core/Button';
 // import CircularProgress from '@material-ui/core/CircularProgress';
