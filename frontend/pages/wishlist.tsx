@@ -4,7 +4,6 @@ import Image from "next/image"
 import React, {useCallback} from "react"
 import theme from "theme"
 import {Rating, Carousel} from "components"
-import {MainFeaturedPost} from "components/productTop"
 import {GetServerSidePropsContext, GetServerSideProps} from "next"
 import {
   Typography,
@@ -25,7 +24,6 @@ import {
 } from "@material-ui/core"
 import {makeStyles} from "@material-ui/styles"
 import {Layout} from "components/organisms"
-import {mainFeaturedPost} from "utils/seed"
 import {red, common} from "@material-ui/core/colors"
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"
 import FavoriteIcon from "@material-ui/icons/Favorite"

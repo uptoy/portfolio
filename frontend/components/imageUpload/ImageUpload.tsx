@@ -54,13 +54,13 @@ export function ImageUpload() {
   //alert
 
   const onChange = async (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {
-    console.log("imageList", imageList)
     setImages(imageList as never[])
     const newImageArr = Array.from(imageList).filter((_f, i) => addUpdateIndex?.includes(i))
     const formData = new FormData()
     newImageArr.forEach((file: any) => formData.append("file", file))
+    console.log(newImageArr)
     try {
-      await fetch(`${BaseURL}/upload`, {
+      await fetch(`${BaseURL}/products`, {
         method: "POST",
         headers: {"content-type": "multipart/form-data"},
         credentials: "include",

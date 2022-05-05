@@ -7,6 +7,7 @@ import {yupResolver} from "@hookform/resolvers/yup"
 import {productFormSchema} from "yup/schema"
 import {ProductType} from "yup/type"
 import toast from "react-hot-toast"
+import useSWR from "swr"
 import {
   Snackbar,
   Card,
@@ -32,46 +33,11 @@ import {common} from "@material-ui/core/colors"
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos"
 import {ImageUpload} from "components/imageUpload/ImageUpload"
 import {useRouter} from "next/router"
-import {SignUpCredentials} from "yup/type"
-import {signUpFormSchema} from "yup/schema"
+import {red} from "@material-ui/core/colors"
+import StoreOutlinedIcon from "@material-ui/icons/StoreOutlined"
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined"
+const red500 = red["500"]
 const BaseURL = "http://localhost:8080/api"
-//   const classes = useStyles()
-//   const router = useRouter()
-//   const [isSubmitting, setIsSubmitting] = useState(false)
-//   const {register, handleSubmit} = useForm<Product>({
-//     resolver: yupResolver(productFormSchema),
-//   })
-//   const handleProductAdd: SubmitHandler<Product> = async (formData) => {
-//     try {
-//       setIsSubmitting(true)
-//       console.log("formData", formData)
-
-//       setIsSubmitting(false)
-//     } catch (err) {
-//       if (err instanceof Error) {
-//         toast.error(err.message)
-//         console.log("Failed", err.message)
-//         throw new Error(err.message)
-//       } else {
-//         console.log("Unknown Failure", err)
-//         throw new Error("Unknown Failure")
-//       }
-//     }
-//   }
-const categories: Category[] = [
-  {
-    id: 1,
-    category_name: "apple",
-  },
-  {
-    id: 2,
-    category_name: "potato",
-  },
-  {
-    id: 3,
-    category_name: "tomato",
-  },
-]
 
 const useStyles: any = makeStyles(() => ({
   form: {
@@ -110,6 +76,14 @@ const useStyles: any = makeStyles(() => ({
 }))
 
 export default function ProductAdd() {
+  const fetcher = (url: any) =>
+    fetch(url, {
+      method: "GET",
+      headers: {"Content-Type": "application/json"},
+      credentials: "include",
+    }).then((r) => r.json())
+  const {data, error, mutate} = useSWR(`${BaseURL}/category`, fetcher)
+  const categories: Category[] = data?.data
   const classes = useStyles()
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -124,18 +98,22 @@ export default function ProductAdd() {
       category_id: 1,
     },
   })
-  const handleSignUp: SubmitHandler<ProductType> = async (formData) => {
+  const handleProductAdd: SubmitHandler<ProductType> = async (formData) => {
     try {
-      setIsSubmitting(true)
-      console.log("formData", formData)
-      // await fetch(`${BaseURL}/products`, {
-      //   method: "POST",
-      //   headers: {"Content-Type": "application/json"},
-      //   credentials: "include",
-      //   body: JSON.stringify(formData),
-      // })
-      // await signUp(formData)
-      setIsSubmitting(false)
+      const slug: any = formData.product_name
+      const str = slug.replace(/[^0-9a-z]/gi, "")
+      formData.slug = str
+      console.log(formData)
+      // setIsSubmitting(true)
+      // console.log("formData", formData)
+      // // await fetch(`${BaseURL}/products`, {
+      // //   method: "POST",
+      // //   headers: {"Content-Type": "application/json"},
+      // //   credentials: "include",
+      // //   body: JSON.stringify(formData),
+      // // })
+      // // await signUp(formData)
+      // setIsSubmitting(false)
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message)
@@ -154,7 +132,7 @@ export default function ProductAdd() {
         <Paper className={classes.paper}>
           <h3 className={classes.title}>Product</h3>
           <Divider />
-          <form noValidate onSubmit={handleSubmit(handleSignUp)} style={{marginTop: "1em"}}>
+          <form noValidate onSubmit={handleSubmit(handleProductAdd)} style={{marginTop: "1em"}}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -164,6 +142,7 @@ export default function ProductAdd() {
                   label="name"
                   {...register("product_name")}
                 />
+                <p>{errors.product_name?.message}</p>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -174,6 +153,7 @@ export default function ProductAdd() {
                   label="brand"
                   {...register("brand")}
                 />
+                <p>{errors.brand?.message}</p>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -183,21 +163,32 @@ export default function ProductAdd() {
                   label="price"
                   {...register("price")}
                 />
+                <p style={{color: red500}}>{errors.price?.message}</p>
               </Grid>
               <Grid item xs={12}>
                 <Controller
                   name="category_id"
                   control={control}
                   render={({field}) => (
-                    <TextField {...field} select sx={{mt: 2}} required style={{width: "100%"}}>
-                      {categories.map((category: Category) => (
+                    <Select {...field} required style={{width: "100%"}}>
+                      {categories?.map((category: Category) => (
                         <MenuItem key={category.id} value={category.id}>
                           {category.category_name}
                         </MenuItem>
                       ))}
-                    </TextField>
+                    </Select>
                   )}
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  label="count_in_stock"
+                  {...register("count_in_stock")}
+                />
+                <p style={{color: red500}}>{errors.count_in_stock?.message}</p>
               </Grid>
               <Grid item xs={12} style={{marginTop: "1em"}}>
                 <ImageUpload />
@@ -347,3 +338,27 @@ export default function ProductAdd() {
 // }
 
 // export default ProductAdd
+
+//   const classes = useStyles()
+//   const router = useRouter()
+//   const [isSubmitting, setIsSubmitting] = useState(false)
+//   const {register, handleSubmit} = useForm<Product>({
+//     resolver: yupResolver(productFormSchema),
+//   })
+//   const handleProductAdd: SubmitHandler<Product> = async (formData) => {
+//     try {
+//       setIsSubmitting(true)
+//       console.log("formData", formData)
+
+//       setIsSubmitting(false)
+//     } catch (err) {
+//       if (err instanceof Error) {
+//         toast.error(err.message)
+//         console.log("Failed", err.message)
+//         throw new Error(err.message)
+//       } else {
+//         console.log("Unknown Failure", err)
+//         throw new Error("Unknown Failure")
+//       }
+//     }
+//   }

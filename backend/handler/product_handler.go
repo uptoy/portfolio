@@ -42,8 +42,12 @@ func (h *Handler) ProductList(c *gin.Context) {
 }
 
 func (h *Handler) ProductCreate(c *gin.Context) {
-	form, _ := c.MultipartForm()
-	files := form.File["file"]
+	form, err := c.MultipartForm()
+	if err != nil {
+		c.String(http.StatusBadRequest, "get form err: %s", err.Error())
+		return
+	}
+	files := form.File["files"]
 	value := form.Value
 	product_name := value["product_name"][0]
 	slug := value["slug"][0]
@@ -54,13 +58,13 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 	description := value["description"][0]
 
 	json := model.Product{
-		ProductName:   product_name,
-		Slug:          slug,
-		Brand:         brand,
-		Price:         int64(price),
-		CategoryId:    int64(category_id),
-		CountInStock:  int64(count_in_stock),
-		Description:   description,
+		ProductName:  product_name,
+		Slug:         slug,
+		Brand:        brand,
+		Price:        int64(price),
+		CategoryId:   int64(category_id),
+		CountInStock: int64(count_in_stock),
+		Description:  description,
 	}
 	ctx := c.Request.Context()
 	product, err := h.ProductService.ProductCreate(ctx, &json, files)
@@ -118,13 +122,13 @@ func (h *Handler) ProductUpdate(c *gin.Context) {
 	description := value["description"][0]
 
 	json := model.Product{
-		ProductName:   product_name,
-		Slug:          slug,
-		Brand:         brand,
-		Price:         int64(price),
-		CategoryId:    int64(category_id),
-		CountInStock:  int64(count_in_stock),
-		Description:   description,
+		ProductName:  product_name,
+		Slug:         slug,
+		Brand:        brand,
+		Price:        int64(price),
+		CategoryId:   int64(category_id),
+		CountInStock: int64(count_in_stock),
+		Description:  description,
 	}
 	ctx := c.Request.Context()
 	param := c.Param("id")
@@ -234,13 +238,13 @@ func (h *Handler) ProductBulkInsert(c *gin.Context) {
 	products := []model.Product{}
 	for _, json := range jsons {
 		products = append(products, model.Product{
-			ProductName:   json.ProductName,
-			Slug:          json.Slug,
-			Brand:         json.Brand,
-			Price:         json.Price,
-			CategoryId:    json.CategoryId,
-			CountInStock:  json.CountInStock,
-			Description:   json.Description,
+			ProductName:  json.ProductName,
+			Slug:         json.Slug,
+			Brand:        json.Brand,
+			Price:        json.Price,
+			CategoryId:   json.CategoryId,
+			CountInStock: json.CountInStock,
+			Description:  json.Description,
 		},
 		)
 	}
