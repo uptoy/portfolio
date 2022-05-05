@@ -4,15 +4,12 @@ import ImageUploading, {ImageListType} from "react-images-uploading"
 import AddIcon from "@material-ui/icons/Add"
 import CancelIcon from "@material-ui/icons/Cancel"
 import axios from "axios"
+import {Grid} from "@material-ui/core"
+const BaseURL = "http://localhost:8080/api"
 
 const useStyles: any = makeStyles(() => ({
   upload: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
     padding: "1em",
-    margin: "auto",
     borderWidth: 2,
     borderRadius: 5,
     outline: "none",
@@ -22,13 +19,14 @@ const useStyles: any = makeStyles(() => ({
     fontWeight: "bold",
     fontSize: "1em",
     width: "100%",
+    minHeight: "15em",
   },
   show: {
     display: "grid",
     gap: 30,
     gridTemplateColumns: "repeat(auto-fill,minmax(100px,1fr))",
     width: "100%",
-    padding: "1em 0",
+    // padding: "1em 0",
     marginTop: "0.2em",
   },
   cancel: {
@@ -62,8 +60,11 @@ export function ImageUpload() {
     const formData = new FormData()
     newImageArr.forEach((file: any) => formData.append("file", file))
     try {
-      const res = await axios.post("/api/upload", formData, {
+      await fetch(`${BaseURL}/upload`, {
+        method: "POST",
         headers: {"content-type": "multipart/form-data"},
+        credentials: "include",
+        body: JSON.stringify(formData),
       })
     } catch (e) {
       console.log(e)
@@ -94,43 +95,41 @@ export function ImageUpload() {
         maxFileSize={5242880}
         onError={onErrorImageUploading}
       >
-        {({
-          imageList,
-          onImageUpload,
-          onImageUpdate,
-          onImageRemove,
-          isDragging,
-          dragProps,
-          // onImageRemoveAll,
-        }) => (
-          <div className="upload__image-wrapper">
-            <button
-              className={classes.upload}
-              style={isDragging ? {color: "red"} : undefined}
-              onClick={onImageUpload}
-              {...dragProps}
-            >
-              <p>Click or Drop images here</p>
-              <AddIcon />
-            </button>
-            {/* &nbsp; */}
-            {/* <button onClick={onImageRemoveAll}>Remove all images</button> */}
-            <div className={classes.show}>
-              {imageList.map((image, index) => (
-                <div key={index} className={classes.imageItem}>
-                  <img
-                    className={classes.image}
-                    src={image["data_url"]}
-                    alt=""
-                    onClick={() => onImageUpdate(index)}
-                  />
-                  <div>
-                    <CancelIcon className={classes.cancel} onClick={() => onImageRemove(index)} />
+        {({imageList, onImageUpload, onImageUpdate, onImageRemove, isDragging, dragProps}) => (
+          <Grid
+            className="upload__image-wrapper"
+            container
+            style={{justifyContent: "space-between", gap: 20}}
+          >
+            <Grid item sm={12} style={{width: "100%"}}>
+              <button
+                className={classes.upload}
+                style={isDragging ? {color: "red"} : undefined}
+                onClick={onImageUpload}
+                {...dragProps}
+              >
+                <p>Click or Drop images here</p>
+                <AddIcon />
+              </button>
+            </Grid>
+            <Grid item sm={12} style={{width: "67%"}}>
+              <div className={classes.show}>
+                {imageList.map((image, index) => (
+                  <div key={index} className={classes.imageItem}>
+                    <img
+                      className={classes.image}
+                      src={image["data_url"]}
+                      alt=""
+                      onClick={() => onImageUpdate(index)}
+                    />
+                    <div>
+                      <CancelIcon className={classes.cancel} onClick={() => onImageRemove(index)} />
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
+                ))}
+              </div>
+            </Grid>
+          </Grid>
         )}
       </ImageUploading>
     </div>

@@ -49,7 +49,6 @@ export default function SignUp() {
   const classes = useStyles()
   const router = useRouter()
   const {signUp} = useAuth()
-  // const { signUp, me } = useAuth()
   const [loading, setLoading] = useState(false)
   const {
     register,
@@ -72,15 +71,6 @@ export default function SignUp() {
       }
     }
   }
-  // e.preventDefault()
-  // await fetch('http://localhost:8080/api/auth/signup', {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify(formData),
-  // })
-  // // await signUp(formData)
-  // toast.success('Successfully category deleted')
-  // router.push('/auth/login')
 
   return (
     <Container component="main" maxWidth="xs">
@@ -135,12 +125,6 @@ export default function SignUp() {
                 id="password_confirm"
                 {...register("confirmPassword")}
               />
-            </Grid>
-            <Grid item xs={12}>
-              {/* <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              /> */}
             </Grid>
           </Grid>
           <Button

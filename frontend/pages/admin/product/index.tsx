@@ -9,8 +9,7 @@ import {pink} from "@material-ui/core/colors"
 import {ProductList, ProductManageModal} from "components/product"
 import {useAppDispatch, useAppSelector} from "app/hooks"
 import {setSelectedModal} from "features/product/productSlice"
-
-const pink500 = pink["500"]
+import {useRouter} from "next/router"
 
 const useStyles: any = makeStyles(() => ({
   topContainer: {
@@ -47,7 +46,7 @@ const useStyles: any = makeStyles(() => ({
     left: "auto",
     position: "fixed",
     marginRight: 20,
-    backgroundColor: pink500,
+    backgroundColor: pink["500"],
   },
   fabSearch: {
     top: "auto",
@@ -87,6 +86,7 @@ export default function AdminProductList() {
   const [state, setState] = React.useState({
     right: false,
   })
+  const router = useRouter()
   const toggleDrawer = (anchor: string, open: boolean) => (event: any) => {
     if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
       return
@@ -102,7 +102,7 @@ export default function AdminProductList() {
         size="small"
         color="secondary"
         className={classes.fab}
-        onClick={() => dispatch(setSelectedModal("manageProductModal"))}
+        onClick={() => router.push("/admin/product/add")}
       >
         <AddIcon />
       </Fab>
@@ -145,7 +145,6 @@ export default function AdminProductList() {
           </Grid>
         </Grid>
       </Drawer>
-      {selectedModal === "manageProductModal" && <ProductManageModal />}
     </AdminLayout>
   )
 }

@@ -16,8 +16,8 @@ export const productFormSchema = yup.object({
     .number()
     .required("Category is a required field")
     .min(0, "Enter a price more than 0"),
-  count_in_stock: yup
-    .number()
-    .required("Stock is a required field")
-    .min(0, "Enter a price more than 0"),
+  // count_in_stock: yup
+  //   .number()
+  //   .required("Stock is a required field")
+  //   .min(0, "Enter a price more than 0"),
 })
