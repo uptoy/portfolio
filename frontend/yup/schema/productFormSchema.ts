@@ -23,4 +23,35 @@ export const productFormSchema = yup.object({
     .number()
     .required("Stock is a required field")
     .min(0, "Enter a price more than 0"),
+  description: yup
+    .string()
+    .required("Description is a required field")
+    .min(0, "Enter a price more than 0"),
+  files: yup.array(),
 })
+
+function isFileExists(file: any) {
+  return !!file
+}
+
+function isValidFileSize(file: any) {
+  const maxFileSize = 3000000
+  if (!file?.size) return false
+  if (file.size > maxFileSize) return false
+  return true
+}
+
+function isValidFileType(file: any) {
+  const maxFileSize = 3000000
+  const supportedFileFormats = [
+    "image/jpg",
+    "image/jpeg",
+    "image/gif",
+    "image/png",
+    "image/bmp",
+    "image/webp",
+  ]
+  if (!file?.type) return false
+  if (!supportedFileFormats.includes(file.type)) return false
+  return true
+}

@@ -1,51 +1,51 @@
-import {makeStyles} from "@material-ui/styles"
-import React from "react"
-import ImageUploading, {ImageListType} from "react-images-uploading"
-import AddIcon from "@material-ui/icons/Add"
-import CancelIcon from "@material-ui/icons/Cancel"
-import axios from "axios"
-import {Grid} from "@material-ui/core"
-const BaseURL = "http://localhost:8080/api"
+// import {makeStyles} from "@material-ui/styles"
+// import React from "react"
+// import ImageUploading, {ImageListType} from "react-images-uploading"
+// import AddIcon from "@material-ui/icons/Add"
+// import CancelIcon from "@material-ui/icons/Cancel"
+// import axios from "axios"
+// import {Grid} from "@material-ui/core"
+// const BaseURL = "http://localhost:8080/api"
 
-const useStyles: any = makeStyles(() => ({
-  upload: {
-    padding: "1em",
-    borderWidth: 2,
-    borderRadius: 5,
-    outline: "none",
-    borderStyle: "dashed",
-    backgroundColor: "#fafafa",
-    color: "black",
-    fontWeight: "bold",
-    fontSize: "1em",
-    width: "100%",
-    minHeight: "15em",
-  },
-  show: {
-    display: "grid",
-    gap: 30,
-    gridTemplateColumns: "repeat(auto-fill,minmax(100px,1fr))",
-    width: "100%",
-    // padding: "1em 0",
-    marginTop: "0.2em",
-  },
-  cancel: {
-    position: "absolute",
-    bottom: "85%",
-    left: "85%",
-    backgroundColor: "white",
-    borderRadius: "50%",
-  },
-  imageItem: {
-    position: "relative",
-    width: "7em",
-    height: "7em",
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-  },
-}))
+// const useStyles: any = makeStyles(() => ({
+//   upload: {
+//     padding: "1em",
+//     borderWidth: 2,
+//     borderRadius: 5,
+//     outline: "none",
+//     borderStyle: "dashed",
+//     backgroundColor: "#fafafa",
+//     color: "black",
+//     fontWeight: "bold",
+//     fontSize: "1em",
+//     width: "100%",
+//     minHeight: "15em",
+//   },
+//   show: {
+//     display: "grid",
+//     gap: 30,
+//     gridTemplateColumns: "repeat(auto-fill,minmax(100px,1fr))",
+//     width: "100%",
+//     // padding: "1em 0",
+//     marginTop: "0.2em",
+//   },
+//   cancel: {
+//     position: "absolute",
+//     bottom: "85%",
+//     left: "85%",
+//     backgroundColor: "white",
+//     borderRadius: "50%",
+//   },
+//   imageItem: {
+//     position: "relative",
+//     width: "7em",
+//     height: "7em",
+//   },
+//   image: {
+//     width: "100%",
+//     height: "100%",
+//   },
+// }))
 
 export function ImageUpload() {
   const classes = useStyles()

@@ -158,11 +158,19 @@ const Index: NextPage = ({products, wishlist}: any) => {
             <Grid item key={product.id} xs={12} sm={6} md={4}>
               <Card className={classes.card}>
                 <Link href={`/products/${String(product.id)}`}>
-                  <CardMedia
-                    className={classes.cardMedia}
-                    image={product.images[0].url}
-                    title="Image title"
-                  />
+                  {product.images == null ? (
+                    <CardMedia
+                      className={classes.cardMedia}
+                      image="http://placehold.jp/150x150.png"
+                      title="Image title"
+                    />
+                  ) : (
+                    <CardMedia
+                      className={classes.cardMedia}
+                      image="http://placehold.jp/150x150.png"
+                      title="Image title"
+                    />
+                  )}
                 </Link>
                 <CardContent className={classes.cardContent}>
                   <Typography>{product.name}</Typography>

@@ -24,7 +24,7 @@ export interface Address {
 }
 
 export interface Product {
-  id: number
+  id?: number
   product_name: string
   slug: string
   brand: string
@@ -32,12 +32,11 @@ export interface Product {
   category_id: number
   count_in_stock: number
   description: string
-  average_rating: number
-  createdAt: Date | null
-  updatedAt: Date | null
-  images: Image[]
-  reviews: Review[]
-  category: Category
+  createdAt?: Date | null
+  updatedAt?: Date | null
+  images?: Image[]
+  reviews?: Review[]
+  category?: Category
 }
 
 export interface Review {
