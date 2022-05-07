@@ -2,6 +2,7 @@ package handler
 
 import (
 	"backend/model"
+	"fmt"
 	// "fmt"
 	"strconv"
 
@@ -48,14 +49,39 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 		return
 	}
 	files := form.File["files"]
-	value := form.Value
-	product_name := value["product_name"][0]
-	slug := value["slug"][0]
-	brand := value["brand"][0]
-	price, _ := strconv.Atoi(value["price"][0])
-	category_id, _ := strconv.Atoi(value["category_id"][0])
-	count_in_stock, _ := strconv.Atoi(value["count_in_stock"][0])
-	description := value["description"][0]
+	product_name := form.Value["product_name"][0]
+	slug := form.Value["slug"][0]
+	brand := form.Value["brand"][0]
+	p := form.Value["price"][0]
+	price, _ := strconv.Atoi(p)
+	cis := form.Value["count_in_stock"][0]
+	count_in_stock, _ := strconv.Atoi(cis)
+	description := form.Value["description"][0]
+	ci := form.Value["category_id"][0]
+	category_id, _ := strconv.Atoi(ci)
+
+	fmt.Println("files", files)
+	fmt.Println("productName", product_name)
+	fmt.Println("slug", slug)
+	fmt.Println("brand", brand)
+	fmt.Println("price", int64(price))
+	fmt.Println("count_in_stock", int64(count_in_stock))
+	fmt.Println("description", description)
+	fmt.Println("category_id", int64(category_id))
+	// form, err := c.MultipartForm()
+	// if err != nil {
+	// 	c.String(http.StatusBadRequest, "get form err: %s", err.Error())
+	// 	return
+	// }
+	// files := form.File["files"]
+	// value := form.Value
+	// product_name := value["product_name"][0]
+	// slug := value["slug"][0]
+	// brand := value["brand"][0]
+	// price, _ := strconv.Atoi(value["price"][0])
+	// category_id, _ := strconv.Atoi(value["category_id"][0])
+	// count_in_stock, _ := strconv.Atoi(value["count_in_stock"][0])
+	// description := value["description"][0]
 
 	json := model.Product{
 		ProductName:  product_name,
@@ -66,6 +92,8 @@ func (h *Handler) ProductCreate(c *gin.Context) {
 		CountInStock: int64(count_in_stock),
 		Description:  description,
 	}
+	// fmt.Println("json", json)
+	// fmt.Println("files", files)
 	ctx := c.Request.Context()
 	product, err := h.ProductService.ProductCreate(ctx, &json, files)
 	if err != nil {

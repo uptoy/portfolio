@@ -1,20 +1,53 @@
 package handler
 
 // import (
-// 	"backend/model"
-// 	"backend/service"
+// 	"fmt"
 // 	"github.com/gin-gonic/gin"
-// 	"mime/multipart"
 // 	"net/http"
+// 	"strconv"
+// 	// "path/filepath"
 // )
 
-// type MediaDto struct {
-// 	StatusCode int                    `json:"statusCode"`
-// 	Message    string                 `json:"message"`
-// 	Data       map[string]interface{} `json:"data"`
+// func (h *Handler) ProductImageBulkInsert(c *gin.Context) {
+// 	form, err := c.MultipartForm()
+// 	if err != nil {
+// 		c.String(http.StatusBadRequest, "get form err: %s", err.Error())
+// 		return
+// 	}
+// 	files := form.File["files"]
+// 	productName := form.Value["product_name"][0]
+// 	slug := form.Value["slug"][0]
+// 	brand := form.Value["brand"][0]
+// 	p := form.Value["price"][0]
+// 	price, _ := strconv.Atoi(p)
+// 	cis := form.Value["count_in_stock"][0]
+// 	count_in_stock, _ := strconv.Atoi(cis)
+// 	description := form.Value["description"][0]
+// 	ci := form.Value["category_id"][0]
+// 	category_id, _ := strconv.Atoi(ci)
+
+// 	fmt.Println("files", files)
+// 	fmt.Println("productName", productName)
+// 	fmt.Println("slug", slug)
+// 	fmt.Println("brand", brand)
+// 	fmt.Println("price", int64(price))
+// 	fmt.Println("count_in_stock", int64(count_in_stock))
+// 	fmt.Println("description", description)
+// 	fmt.Println("category_id", int64(category_id))
+// 	// for _, file := range files {
+// 	// 	fmt.Println("file", file)
+// 	// 	filename := filepath.Base(file.Filename)
+// 	// 	if err := c.SaveUploadedFile(file, filename); err != nil {
+// 	// 		c.String(http.StatusBadRequest, "upload file err: %s", err.Error())
+// 	// 		return
+// 	// 	}
+// 	// }
+// 	ctx := c.Request.Context()
+// 	err1 := h.ProductService.ImageCreate(ctx, files)
+// 	fmt.Println("err1", err1)
+// 	c.String(http.StatusOK, "Uploaded successfully %d files with fields name=%s and email=%s.")
 // }
 
-// func (h *Handler) FileUpload() gin.HandlerFunc {
 // 	return func(c *gin.Context) {
 // 		//upload
 // 		formfile, _, err := c.Request.FormFile("file")

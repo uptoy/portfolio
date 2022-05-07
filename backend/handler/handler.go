@@ -70,7 +70,7 @@ func NewHandler(c *Config) {
 		TokenService:    c.TokenService,
 		UserService:     c.UserService,
 		WishlistService: c.WishlistService,
-		MaxBodyBytes: c.MaxBodyBytes,
+		MaxBodyBytes:    c.MaxBodyBytes,
 	} // currently has no properties
 
 	// Create an account group
@@ -78,6 +78,7 @@ func NewHandler(c *Config) {
 	api.Use(middleware.Timeout(c.TimeoutDuration, apperrors.NewServiceUnavailable()))
 	api.Static("images", "./images")
 	api.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
+	// api.POST("/upload", h.ProductImageBulkInsert)
 	auth := api.Group("/auth")
 	{
 		auth.POST("/signup", h.Signup)

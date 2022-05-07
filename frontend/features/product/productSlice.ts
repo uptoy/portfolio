@@ -1,8 +1,9 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
 import {AxiosError} from "axios"
 import * as ProductAPI from "./productApi"
-import {Product} from "types"
-import {Status} from "types"
+import {Product} from "@types"
+import {Status} from "@types"
+import toast from "react-hot-toast"
 
 interface InitialState {
   status: Status
@@ -17,9 +18,14 @@ const initialState: InitialState = {
   status: "idle",
   products: [],
   product: {
-    average_rating: 1,
-    count_in_stock:0,
-    images:[]
+    product_name: "",
+    slug: "",
+    brand: "",
+    price: 0,
+    count_in_stock: 0,
+    category_id: 1,
+    description: "",
+    images: [],
   },
   error: null,
   selectedProduct: null,
@@ -36,13 +42,14 @@ export const fetchProducts = createAsyncThunk("products", async (_, {rejectWithV
     const response = await ProductAPI.getProducts()
     return response.data.data
   } catch (err) {
-    const error: AxiosError<ValidationErrors> = err
-
-    if (!error.response) {
-      throw error
+    if (err instanceof Error) {
+      toast.error(err.message)
+      console.log("Failed", err.message)
+      return rejectWithValue(err.message)
+    } else {
+      console.log("Unknown Failure", err)
+      return rejectWithValue(err)
     }
-
-    return rejectWithValue(error.response.data)
   }
 })
 
@@ -54,13 +61,14 @@ export const fetchProductById = createAsyncThunk(
       // console.log(response.data.data)
       return response.data.data
     } catch (err) {
-      const error: AxiosError<ValidationErrors> = err
-
-      if (!error.response) {
-        throw error
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+        return rejectWithValue(err.message)
+      } else {
+        console.log("Unknown Failure", err)
+        return rejectWithValue(err)
       }
-
-      return rejectWithValue(error.response.data)
     }
   }
 )
@@ -72,13 +80,14 @@ export const deleteProduct = createAsyncThunk(
       await ProductAPI.deleteProduct(id)
       return id
     } catch (err) {
-      const error: AxiosError<ValidationErrors> = err
-
-      if (!error.response) {
-        throw error
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+        return rejectWithValue(err.message)
+      } else {
+        console.log("Unknown Failure", err)
+        return rejectWithValue(err)
       }
-
-      return rejectWithValue(error.response.data)
     }
   }
 )
@@ -90,13 +99,14 @@ export const updateProduct = createAsyncThunk(
       const response = await ProductAPI.updateProduct(id, fields)
       return response.data.data
     } catch (err) {
-      const error: AxiosError<ValidationErrors> = err
-
-      if (!error.response) {
-        throw error
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+        return rejectWithValue(err.message)
+      } else {
+        console.log("Unknown Failure", err)
+        return rejectWithValue(err)
       }
-
-      return rejectWithValue(error.response.data)
     }
   }
 )
@@ -108,13 +118,14 @@ export const addProduct = createAsyncThunk(
       const response = await ProductAPI.addProduct(fields)
       return response.data.data
     } catch (err) {
-      const error: AxiosError<ValidationErrors> = err
-
-      if (!error.response) {
-        throw error
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+        return rejectWithValue(err.message)
+      } else {
+        console.log("Unknown Failure", err)
+        return rejectWithValue(err)
       }
-
-      return rejectWithValue(error.response.data)
     }
   }
 )

@@ -35,7 +35,7 @@
 // import theme from "theme"
 // import {common} from "@material-ui/core/colors"
 // import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos"
-// import {ImageUpload} from "components/imageUpload/ImageUpload"
+// // import {ImageUpload} from "components/imageUpload/ImageUpload"
 // import {useRouter} from "next/router"
 // import {red} from "@material-ui/core/colors"
 // import StoreOutlinedIcon from "@material-ui/icons/StoreOutlined"
@@ -131,55 +131,59 @@
 //   const [isSubmitting, setIsSubmitting] = useState(false)
 //   const {
 //     register,
-//     formState: {errors},
 //     handleSubmit,
 //     control,
+//     formState: {errors},
 //   } = useForm<ProductType>({
 //     resolver: yupResolver(productFormSchema),
 //     defaultValues: {
 //       category_id: 1,
 //     },
 //   })
-//   const handleProductAdd: SubmitHandler<ProductType> = async (productData) => {
-//     try {
-//       console.log("aaa")
-//       // const product_name: any = productData.product_name
-//       // const str: any = productData.product_name
-//       // const slug = str.replace(/[^0-9a-z]/gi, "")
-//       // const brand: any = productData.brand
-//       // const price: any = productData.price
-//       // const count_in_stock: any = productData.count_in_stock
-//       // const description: any = productData.description
-//       // const category_id: any = productData.category_id
-//       // console.log("productData", productData)
-//       // setIsSubmitting(true)
-//       // const formData = new FormData()
-//       // formData.append("product_name", product_name)
-//       // formData.append("slug", slug)
-//       // formData.append("brand", brand)
-//       // formData.append("price", price)
-//       // formData.append("count_in_stock", count_in_stock)
-//       // formData.append("description", description)
-//       // formData.append("category_id", category_id)
-//       // for (let i = 0; i < files.length; i++) {
-//       //   if (files[i].size > 1024) {
-//       //     setFileSize(false)
-//       //     setFileUploadProgress(false)
-//       //     setFileUploadResponse(null)
-//       //     return
-//       //   }
+//   const [files, setFiles] = useState<any>("")
+//   const [fileSize, setFileSize] = useState(true)
+//   const [fileUploadProgress, setFileUploadProgress] = useState(false)
+//   const [fileUploadResponse, setFileUploadResponse] = useState(null)
 
-//       //   formData.append(`files`, files[i])
-//       // }
-//       // // await axios.post(`${BaseURL}/products`, formData)
-//       // await fetch(`${BaseURL}/products`, {
-//       //   method: "POST",
-//       //   // headers: {"Content-Type": "application/json"},
-//       //   // headers: {"Content-Type": "multipart/form-data"},
-//       //   credentials: "include",
-//       //   body: formData,
-//       // })
-//       // setIsSubmitting(false)
+//   const uploadFileHandler = (event: any) => {
+//     setFiles(event.target.files)
+//   }
+
+//   const onSubmit = async (productData: any) => {
+//     const product_name: any = productData.product_name
+//     const str: any = productData.product_name
+//     const slug = str.replace(/[^0-9a-z]/gi, "")
+//     const brand: any = productData.brand
+//     const price: any = productData.price
+//     const count_in_stock: any = productData.count_in_stock
+//     const description: any = productData.description
+//     const category_id: any = productData.category_id
+//     try {
+//       setIsSubmitting(true)
+//       const formData: any = new FormData()
+//       formData.append("product_name", product_name)
+//       formData.append("slug", slug)
+//       formData.append("brand", brand)
+//       formData.append("price", price)
+//       formData.append("count_in_stock", count_in_stock)
+//       formData.append("description", description)
+//       formData.append("category_id", category_id)
+//       for (let i = 0; i < files.length; i++) {
+//         if (files[i].size > 1024) {
+//           setFileSize(false)
+//           setFileUploadProgress(false)
+//           setFileUploadResponse(null)
+//           return
+//         }
+//         formData.append(`files`, files[i])
+//       }
+//       await fetch(`${BaseURL}/products`, {
+//         method: "POST",
+//         credentials: "include",
+//         body: formData,
+//       })
+//       setIsSubmitting(false)
+//       router.push("/admin/products")
 //     } catch (err) {
 //       if (err instanceof Error) {
 //         toast.error(err.message)
@@ -191,64 +195,6 @@
 //       }
 //     }
 //   }
-//   const [files, setFiles] = useState<any>("")
-//   //state for checking file size
-//   const [fileSize, setFileSize] = useState(true)
-//   // for file upload progress message
-//   const [fileUploadProgress, setFileUploadProgress] = useState(false)
-//   //for displaying response message
-//   const [fileUploadResponse, setFileUploadResponse] = useState(null)
-//   //base end point url
-//   const FILE_UPLOAD_BASE_ENDPOINT = "http://localhost:8282"
-
-//   const uploadFileHandler = (event: any) => {
-//     setFiles(event.target.files)
-//   }
-
-//   // const fileSubmitHandler = () => {
-//   //   setFileSize(true)
-//   //   setFileUploadProgress(true)
-//   //   setFileUploadResponse(null)
-//   //   console.log("files", files)
-
-//   //   const formData = new FormData()
-
-//   //   for (let i = 0; i < files.length; i++) {
-//   //     if (files[i].size > 1024) {
-//   //       setFileSize(false)
-//   //       setFileUploadProgress(false)
-//   //       setFileUploadResponse(null)
-//   //       return
-//   //     }
-
-//   //     formData.append(`files`, files[i])
-//   //   }
-
-//   //   const requestOptions = {
-//   //     method: "POST",
-//   //     body: formData,
-//   //   }
-//   //   fetch("http://localhost:8080/api" + "/upload", requestOptions)
-//   //     .then(async (response) => {
-//   //       const isJson = response.headers.get("content-type")?.includes("application/json")
-//   //       const data = isJson && (await response.json())
-
-//   //       // check for error response
-//   //       if (!response.ok) {
-//   //         // get error message
-//   //         const error = (data && data.message) || response.status
-//   //         setFileUploadResponse(data.message)
-//   //         return Promise.reject(error)
-//   //       }
-
-//   //       console.log(data.message)
-//   //       setFileUploadResponse(data.message)
-//   //     })
-//   //     .catch((error) => {
-//   //       console.error("Error while uploading file!", error)
-//   //     })
-//   //   setFileUploadProgress(false)
-//   // }
 
 //   return (
 //     <>
@@ -257,7 +203,7 @@
 //           <Paper className={classes.paper}>
 //             <h3 className={classes.title}>Product</h3>
 //             <Divider />
-//             <form noValidate onSubmit={handleSubmit(handleProductAdd)} style={{marginTop: "1em"}}>
+//             <form onSubmit={handleSubmit(onSubmit)}>
 //               <Grid container spacing={2}>
 //                 <Grid item xs={12}>
 //                   <TextField
@@ -315,15 +261,23 @@
 //                   />
 //                   <p style={{color: red500}}>{errors.count_in_stock?.message}</p>
 //                 </Grid>
+//                 <Grid item xs={12}>
+//                   <TextField
+//                     variant="outlined"
+//                     required
+//                     fullWidth
+//                     label="description"
+//                     {...register("description")}
+//                   />
+//                   <p style={{color: red500}}>{errors.count_in_stock?.message}</p>
+//                 </Grid>
 //                 <Grid item xs={12} style={{marginTop: "1em"}}>
-//                   <div>
-//                     <input type="file" multiple onChange={uploadFileHandler} />
-//                     {!fileSize && <p style={{color: "red"}}>File size exceeded!!</p>}
-//                     {fileUploadProgress && <p style={{color: "red"}}>Uploading File(s)</p>}
-//                     {fileUploadResponse != null && (
-//                       <p style={{color: "green"}}>{fileUploadResponse}</p>
-//                     )}
-//                   </div>
+//                   <input type="file" multiple onChange={uploadFileHandler} />
+//                   {!fileSize && <p style={{color: "red"}}>File size exceeded!!</p>}
+//                   {fileUploadProgress && <p style={{color: "red"}}>Uploading File(s)</p>}
+//                   {fileUploadResponse != null && (
+//                     <p style={{color: "green"}}>{fileUploadResponse}</p>
+//                   )}
 //                 </Grid>
 //               </Grid>
 //               <div
@@ -368,403 +322,164 @@
 //           </Paper>
 //         </div>
 //       </AdminLayout>
-//       {/* <form onSubmit={fileSubmitHandler}>
-//         <input type="file" multiple onChange={uploadFileHandler} />
-//         <button type="submit">Upload</button>
-//         {!fileSize && <p style={{color: "red"}}>File size exceeded!!</p>}
-//         {fileUploadProgress && <p style={{color: "red"}}>Uploading File(s)</p>}
-//         {fileUploadResponse != null && <p style={{color: "green"}}>{fileUploadResponse}</p>}
-//       </form> */}
 //     </>
 //   )
 // }
 
-// // export default function ProductAdd() {
-// //   const [images, setImages] = React.useState([])
-// //   const maxNumber = 5
-// //   //alert
+import React, {MouseEventHandler} from "react"
+import {makeStyles} from "@material-ui/styles"
+import {AdminLayout} from "components/dashboard"
+import theme from "theme"
+import {Button, Fab, Drawer, Grid, TextField} from "@material-ui/core"
+import AddIcon from "@material-ui/icons/Add"
+import SearchIcon from "@material-ui/icons/Search"
+import {pink} from "@material-ui/core/colors"
+import {ProductList} from "components/product"
+import {useRouter} from "next/router"
 
-// //   const onChange = async (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {
-// //     setImages(imageList as never[])
-// //     const newImageArr = Array.from(imageList).filter((_f, i) => addUpdateIndex?.includes(i))
-// //     const formData = new FormData()
-// //     newImageArr.forEach((file: any) => formData.append("file", file))
-// //     console.log(newImageArr)
-// //     try {
-// //       await fetch(`${BaseURL}/products`, {
-// //         method: "POST",
-// //         headers: {"content-type": "multipart/form-data"},
-// //         credentials: "include",
-// //         body: JSON.stringify(formData),
-// //       })
-// //     } catch (e) {
-// //       console.log(e)
-// //     }
-// //   }
-// //   const onErrorImageUploading: any = (
-// //     errors: {
-// //       maxFileSize?: boolean
-// //       maxNumber?: boolean
-// //       acceptType?: boolean
-// //       resolution?: boolean
-// //     },
-// //     _files: ImageListType
-// //   ) => {
-// //     if (errors.acceptType) alert("Register PNG・JPG・GIF Only")
-// //     if (errors.maxFileSize) alert("Register ◯MB low")
-// //     if (errors.maxNumber) alert("Register Max 5")
-// //   }
-// //   const fetcher = (url: any) =>
-// //     fetch(url, {
-// //       method: "GET",
-// //       headers: {"Content-Type": "application/json"},
-// //       credentials: "include",
-// //     }).then((r) => r.json())
-// //   const {data, error, mutate} = useSWR(`${BaseURL}/category`, fetcher)
-// //   const categories: Category[] = data?.data
-// //   const classes = useStyles()
-// //   const router = useRouter()
-// //   const [isSubmitting, setIsSubmitting] = useState(false)
-// //   const {
-// //     register,
-// //     formState: {errors},
-// //     handleSubmit,
-// //     control,
-// //   } = useForm<ProductType>({
-// //     resolver: yupResolver(productFormSchema),
-// //     defaultValues: {
-// //       category_id: 1,
-// //     },
-// //   })
-// //   const handleProductAdd: SubmitHandler<ProductType> = async (formData) => {
-// //     try {
-// //       const slug: any = formData.product_name
-// //       const str = slug.replace(/[^0-9a-z]/gi, "")
-// //       formData.slug = str
-// //       console.log(formData)
-// //       // setIsSubmitting(true)
-// //       // console.log("formData", formData)
-// //       // // await fetch(`${BaseURL}/products`, {
-// //       // //   method: "POST",
-// //       // //   headers: {"Content-Type": "application/json"},
-// //       // //   credentials: "include",
-// //       // //   body: JSON.stringify(formData),
-// //       // // })
-// //       // // await signUp(formData)
-// //       // setIsSubmitting(false)
-// //     } catch (err) {
-// //       if (err instanceof Error) {
-// //         toast.error(err.message)
-// //         console.log("Failed", err.message)
-// //         throw new Error(err.message)
-// //       } else {
-// //         console.log("Unknown Failure", err)
-// //         throw new Error("Unknown Failure")
-// //       }
-// //     }
-// //   }
+const useStyles: any = makeStyles(() => ({
+  topContainer: {
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  mainContainer: {
+    maxWidth: 800,
+    margin: "0 auto",
+  },
+  table: {
+    minWidth: 650,
+  },
+  content: {
+    flexGrow: 1,
+    height: "100vh",
+    overflow: "auto",
+  },
+  paper: {
+    padding: theme.spacing(2),
+    display: "flex",
+    overflow: "auto",
+    flexDirection: "column",
+  },
+  fixedHeight: {
+    height: 240,
+  },
+  fab: {
+    top: "auto",
+    right: 20,
+    bottom: 20,
+    left: "auto",
+    position: "fixed",
+    marginRight: 20,
+    backgroundColor: pink["500"],
+  },
+  fabSearch: {
+    top: "auto",
+    right: 100,
+    bottom: 20,
+    left: "auto",
+    position: "fixed",
+    marginRight: 20,
+    backgroundColor: "lightblue",
+  },
+  button: {
+    minWidth: 40,
+    borderRadius: "50%",
+    padding: 5,
+    marginRight: 10,
+  },
+  searchButton: {
+    marginRight: 20,
+  },
+  searchField: {
+    margin: 10,
+  },
+  searchDrawer: {
+    overflow: "hidden",
+    width: 280,
+  },
+  list: {
+    width: 250,
+  },
+  fullList: {
+    width: "auto",
+  },
+}))
 
-// //   return (
-// //     <AdminLayout>
-// //       <div className={classes.main}>
-// //         <Paper className={classes.paper}>
-// //           <h3 className={classes.title}>Product</h3>
-// //           <Divider />
-// //           <form noValidate onSubmit={handleSubmit(handleProductAdd)} style={{marginTop: "1em"}}>
-// //             <Grid container spacing={2}>
-// //               <Grid item xs={12}>
-// //                 <TextField
-// //                   variant="outlined"
-// //                   required
-// //                   fullWidth
-// //                   label="name"
-// //                   {...register("product_name")}
-// //                 />
-// //                 <p>{errors.product_name?.message}</p>
-// //               </Grid>
-// //               <Grid item xs={12}>
-// //                 <TextField
-// //                   variant="outlined"
-// //                   required
-// //                   fullWidth
-// //                   id="brand"
-// //                   label="brand"
-// //                   {...register("brand")}
-// //                 />
-// //                 <p>{errors.brand?.message}</p>
-// //               </Grid>
-// //               <Grid item xs={12}>
-// //                 <TextField
-// //                   variant="outlined"
-// //                   required
-// //                   fullWidth
-// //                   label="price"
-// //                   {...register("price")}
-// //                 />
-// //                 <p style={{color: red500}}>{errors.price?.message}</p>
-// //               </Grid>
-// //               <Grid item xs={12}>
-// //                 <Controller
-// //                   name="category_id"
-// //                   control={control}
-// //                   render={({field}) => (
-// //                     <Select {...field} required style={{width: "100%"}}>
-// //                       {categories?.map((category: Category) => (
-// //                         <MenuItem key={category.id} value={category.id}>
-// //                           {category.category_name}
-// //                         </MenuItem>
-// //                       ))}
-// //                     </Select>
-// //                   )}
-// //                 />
-// //               </Grid>
-// //               <Grid item xs={12}>
-// //                 <TextField
-// //                   variant="outlined"
-// //                   required
-// //                   fullWidth
-// //                   label="count_in_stock"
-// //                   {...register("count_in_stock")}
-// //                 />
-// //                 <p style={{color: red500}}>{errors.count_in_stock?.message}</p>
-// //               </Grid>
-// //               <Grid item xs={12} style={{marginTop: "1em"}}>
-// //                 <div>
-// //                   <UploadFile />
-// //                 </div>
-// //               </Grid>
-// //             </Grid>
-// //             <div
-// //               style={{
-// //                 display: "flex",
-// //                 justifyContent: "right",
-// //                 alignItems: "center",
-// //                 marginTop: 20,
-// //               }}
-// //             >
-// //               <Button
-// //                 type="button"
-// //                 variant="contained"
-// //                 color="primary"
-// //                 className={classes.button}
-// //                 onClick={() => router.push("/admin/product")}
-// //               >
-// //                 <ArrowBackIosIcon />
-// //                 <p style={{margin: 5}}>Back</p>
-// //               </Button>
+export default function AdminProductList() {
+  const classes = useStyles()
+  const router = useRouter()
+  const [state, setState] = React.useState({
+    right: false,
+  })
+  const toggleDrawer = (anchor: string, open: boolean) => (event: any) => {
+    if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
+      return
+    }
+    setState({...state, [anchor]: open})
+  }
+  const handleProductAdd = () => {
+    router.push("/admin/product/add")
+  }
+  return (
+    <AdminLayout>
+      <Fab size="small" color="secondary" className={classes.fab} onClick={handleProductAdd}>
+        <AddIcon />
+      </Fab>
+      <Fab size="small" className={classes.fabSearch} onClick={toggleDrawer("right", true)}>
+        <SearchIcon />
+      </Fab>
+      <ProductList />
+      <SearchDrawer state={state} onClose={toggleDrawer("right", false)} />
+    </AdminLayout>
+  )
+}
+interface IProps {
+  state: {
+    right: boolean
+  }
+  onClose: (e: MouseEventHandler) => void
+}
 
-// //               <Button
-// //                 type="submit"
-// //                 variant="contained"
-// //                 color="primary"
-// //                 className={classes.button}
-// //                 disableElevation
-// //                 disabled={isSubmitting}
-// //               >
-// //                 {isSubmitting ? (
-// //                   <CircularProgress size={25} />
-// //                 ) : (
-// //                   <div style={{display: "flex", alignItems: "center"}}>
-// //                     <SaveIcon style={{margin: 5}} />
-// //                     <p style={{margin: 5}}>Save</p>
-// //                   </div>
-// //                 )}
-// //               </Button>
-// //             </div>
-// //           </form>
-// //           <div className={classes.clear} />
-// //         </Paper>
-// //       </div>
-// //     </AdminLayout>
-// //   )
-// // }
-
-// // const UploadFile = () => {
-// //   const [files, setFiles] = useState<any>("")
-// //   //state for checking file size
-// //   const [fileSize, setFileSize] = useState(true)
-// //   // for file upload progress message
-// //   const [fileUploadProgress, setFileUploadProgress] = useState(false)
-// //   //for displaying response message
-// //   const [fileUploadResponse, setFileUploadResponse] = useState(null)
-// //   //base end point url
-// //   const FILE_UPLOAD_BASE_ENDPOINT = "http://localhost:8282"
-
-// //   const uploadFileHandler = (event: any) => {
-// //     setFiles(event.target.files)
-// //   }
-
-// //   const fileSubmitHandler = (event: any) => {
-// //     event.preventDefault()
-// //     setFileSize(true)
-// //     setFileUploadProgress(true)
-// //     setFileUploadResponse(null)
-// //     console.log("files", files)
-
-// //     const formData = new FormData()
-
-// //     for (let i = 0; i < files.length; i++) {
-// //       if (files[i].size > 1024) {
-// //         setFileSize(false)
-// //         setFileUploadProgress(false)
-// //         setFileUploadResponse(null)
-// //         return
-// //       }
-
-// //       formData.append(`files`, files[i])
-// //     }
-
-// //     const requestOptions = {
-// //       method: "POST",
-// //       body: formData,
-// //     }
-// //     fetch("http://localhost:8080/api" + "/upload", requestOptions)
-// //       .then(async (response) => {
-// //         const isJson = response.headers.get("content-type")?.includes("application/json")
-// //         const data = isJson && (await response.json())
-
-// //         // check for error response
-// //         if (!response.ok) {
-// //           // get error message
-// //           const error = (data && data.message) || response.status
-// //           setFileUploadResponse(data.message)
-// //           return Promise.reject(error)
-// //         }
-
-// //         console.log(data.message)
-// //         setFileUploadResponse(data.message)
-// //       })
-// //       .catch((error) => {
-// //         console.error("Error while uploading file!", error)
-// //       })
-// //     setFileUploadProgress(false)
-// //   }
-
-// //   return (
-// //     <form onSubmit={fileSubmitHandler}>
-// //       <input type="file" multiple onChange={uploadFileHandler} />
-// //       <button type="submit">Upload</button>
-// //       {!fileSize && <p style={{color: "red"}}>File size exceeded!!</p>}
-// //       {fileUploadProgress && <p style={{color: "red"}}>Uploading File(s)</p>}
-// //       {fileUploadResponse != null && <p style={{color: "green"}}>{fileUploadResponse}</p>}
-// //     </form>
-// //   )
-// // }
-
-// // const UploadFile = () => {
-// // const [files, setFiles] = useState<any>("")
-// // //state for checking file size
-// // const [fileSize, setFileSize] = useState(true)
-// // // for file upload progress message
-// // const [fileUploadProgress, setFileUploadProgress] = useState(false)
-// // //for displaying response message
-// // const [fileUploadResponse, setFileUploadResponse] = useState(null)
-// // //base end point url
-// // const FILE_UPLOAD_BASE_ENDPOINT = "http://localhost:8282"
-
-// // const uploadFileHandler = (event: any) => {
-// //   setFiles(event.target.files)
-// // }
-
-// // const fileSubmitHandler = (event: any) => {
-// //   event.preventDefault()
-// //   setFileSize(true)
-// //   setFileUploadProgress(true)
-// //   setFileUploadResponse(null)
-// //   console.log("files", files)
-
-// //   const formData = new FormData()
-
-// //   for (let i = 0; i < files.length; i++) {
-// //     if (files[i].size > 1024) {
-// //       setFileSize(false)
-// //       setFileUploadProgress(false)
-// //       setFileUploadResponse(null)
-// //       return
-// //     }
-
-// //     formData.append(`files`, files[i])
-// //   }
-
-// //   const requestOptions = {
-// //     method: "POST",
-// //     body: formData,
-// //   }
-// //   fetch("http://localhost:8080/api" + "/upload", requestOptions)
-// //     .then(async (response) => {
-// //       const isJson = response.headers.get("content-type")?.includes("application/json")
-// //       const data = isJson && (await response.json())
-
-// //       // check for error response
-// //       if (!response.ok) {
-// //         // get error message
-// //         const error = (data && data.message) || response.status
-// //         setFileUploadResponse(data.message)
-// //         return Promise.reject(error)
-// //       }
-
-// //       console.log(data.message)
-// //       setFileUploadResponse(data.message)
-// //     })
-// //     .catch((error) => {
-// //       console.error("Error while uploading file!", error)
-// //     })
-// //   setFileUploadProgress(false)
-// // }
-
-// //   return (
-// //     <form onSubmit={fileSubmitHandler}>
-// //       <input type="file" multiple onChange={uploadFileHandler} />
-// //       <button type="submit">Upload</button>
-// //       {!fileSize && <p style={{color: "red"}}>File size exceeded!!</p>}
-// //       {fileUploadProgress && <p style={{color: "red"}}>Uploading File(s)</p>}
-// //       {fileUploadResponse != null && <p style={{color: "green"}}>{fileUploadResponse}</p>}
-// //     </form>
-// //   )
-// // }
-
-// // const ProductAdd = () => {
-// //   const handleClick = async () => {
-// //     // const formData: Product = {
-// //     //   product_name: "name",
-// //     //   slug: "name",
-// //     //   brand: "brand",
-// //     //   price: 1000,
-// //     //   count_in_stock: 1000,
-// //     //   description: "desc",
-// //     //   category_id: 1,
-// //     // }
-// //     const formData = new FormData()
-// //     formData.append("product_name", "name")
-// //     formData.append("slug", "slug")
-// //     formData.append("brand", "brand")
-// //     formData.append("price", "1000")
-// //     formData.append("count_in_stock", "1000")
-// //     formData.append("description", "description")
-// //     formData.append("category_id", "1")
-// //     for (let i = 0; i < files.length; i++) {
-// //       if (files[i].size > 1024) {
-// //         setFileSize(false)
-// //         setFileUploadProgress(false)
-// //         setFileUploadResponse(null)
-// //         return
-// //       }
-
-// //       formData.append(`files`, files[i])
-// //     }
-// //     // await axios.post(`${BaseURL}/products`, formData)
-// //     await fetch(`${BaseURL}/products`, {
-// //       method: "POST",
-// //       // headers: {"Content-Type": "application/json"},
-// //       // headers: {"Content-Type": "multipart/form-data"},
-// //       credentials: "include",
-// //       body: formData,
-// //     })
-// //   }
-// //   return (
-// //     <div>
-// //       <button onClick={() => handleClick()}>button</button>
-// //     </div>
-// //   )
-// // }
-// // export default ProductAdd
+const SearchDrawer = (props: IProps) => {
+  const classes = useStyles()
+  const {state, onClose} = props
+  return (
+    <Drawer anchor="right" open={state["right"]} onClose={onClose}>
+      <Grid container className={classes.searchDrawer} spacing={1}>
+        <Grid item xs={12} className={classes.searchField}>
+          <h5>Search</h5>
+        </Grid>
+        <Grid item xs={12} className={classes.searchField}>
+          <TextField
+            placeholder="Product Name"
+            label="Product Name"
+            name="name"
+            fullWidth={true}
+            value={"name"}
+            onChange={() => {}}
+          />
+        </Grid>
+        <Grid item xs={12} className={classes.searchField}>
+          <Button
+            variant="contained"
+            className={classes.searchButton}
+            onClick={() => {}}
+            color="secondary"
+          >
+            Search
+          </Button>
+          <Button
+            variant="contained"
+            className={classes.searchButton}
+            onClick={() => {}}
+            color="secondary"
+          >
+            Cancel
+          </Button>
+        </Grid>
+      </Grid>
+    </Drawer>
+  )
+}

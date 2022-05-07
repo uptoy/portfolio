@@ -1,6 +1,6 @@
 import {CircularProgress} from "@material-ui/core"
 import React, {useEffect} from "react"
-import {createStyles} from "@material-ui/core/styles"
+import createStyles from "@material-ui/styles/createStyles"
 import {makeStyles} from "@material-ui/styles"
 import ProductItem from "./ProductItem"
 import {useAppDispatch, useAppSelector} from "app/hooks"
@@ -40,7 +40,6 @@ const ProductList = () => {
     dispatch(fetchProducts())
   }, [])
   const {products, status, error} = useAppSelector((state) => state.product)
-  console.log(products[0])
   if (status === "loading") {
     return (
       <div className={classes.loadingContainer}>

@@ -10,6 +10,8 @@ import {Product} from "@types"
 import {useAppDispatch} from "app/hooks"
 import {Button, TableCell, TableRow} from "@material-ui/core"
 import Image from "next/image"
+import {useRouter} from "next/router"
+import Link from "components/Link"
 
 interface IProps {
   product: Product
@@ -30,6 +32,7 @@ const useStyles: any = makeStyles(() => ({
 
 const ProductItem: React.FC<IProps> = ({product}) => {
   const classes = useStyles()
+  const router = useRouter()
   const dispatch = useAppDispatch()
   const [open, setOpen] = useState(false)
   const handleDeleteOpen = () => {
@@ -37,13 +40,12 @@ const ProductItem: React.FC<IProps> = ({product}) => {
   }
 
   const handleEdit = () => {
-    dispatch(setSelectedModal("manageProductModal"))
-    dispatch(setSelectedProduct(product))
+    router.push("/admin/product/edit")
   }
 
   const handleDelete = async () => {
     try {
-      const result = await dispatch(deleteProduct(product.id))
+      const result = await dispatch(deleteProduct(product.id as number))
       unwrapResult(result)
       toast.success("Successfully product deleted")
     } catch (error) {
@@ -69,15 +71,17 @@ const ProductItem: React.FC<IProps> = ({product}) => {
           {product.count_in_stock}
         </TableCell>
         <TableCell align="center" className={classes.cell}>
-          <Button variant="contained" className={classes.button} onClick={handleEdit}>
-            <CreateIcon />
-          </Button>
+          <Link href={`/admin/product/edit/${product.id}`}>
+            <Button variant="contained" className={classes.button}>
+              <CreateIcon />
+            </Button>
+          </Link>
           <Button variant="contained" className={classes.button} onClick={handleDeleteOpen}>
             <DeleteIcon />
           </Button>
+          <DeleteModal open={open} handleClose={handleDeleteOpen} handleDelete={handleDelete} />
         </TableCell>
       </TableRow>
-      <DeleteModal open={open} handleClose={handleDeleteOpen} handleDelete={handleDelete} />
     </>
   )
 }

@@ -190,3 +190,30 @@ func (s *productService) ProductListByIDS(ctx context.Context, ids []int64) ([]*
 	}
 	return products, nil
 }
+
+func (s *productService) ImageCreate(ctx context.Context, files []*multipart.FileHeader) error {
+	if len(files) > 0 {
+		images := make([]*model.ProductImage, 0)
+		for _, file := range files {
+			image_url, err := NewMediaService(&MediaServiceConfig{}).FileUpload(file)
+			if err != nil {
+				return err
+			}
+			images = append(images, &model.ProductImage{
+				// ProductId: model.NewInt64(product.Id),
+				// URL:       model.NewString(image_url),
+				ProductId: 1,
+				URL:       image_url,
+			})
+		}
+
+		for _, img := range images {
+			img.PreSave()
+		}
+		if err := s.ProductImageRepository.BulkInsert(ctx, images); err != nil {
+			return err
+		}
+		return nil
+	}
+	return nil
+}

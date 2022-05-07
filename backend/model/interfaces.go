@@ -146,6 +146,7 @@ type ProductService interface {
 	ProductCount(ctx context.Context) (int, error)
 	ProductListByIDS(ctx context.Context, ids []int64) ([]*Product, error)
 	ImageBulkInsert(ctx context.Context, images []*ProductImage) error
+	// ImageCreate(ctx context.Context, files []*multipart.FileHeader) error
 }
 
 type ReviewService interface {

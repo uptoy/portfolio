@@ -3,7 +3,7 @@ import {makeStyles} from "@material-ui/styles"
 import {AdminLayout} from "components/dashboard"
 import theme from "theme"
 import {Button, TextField, Grid} from "@material-ui/core"
-import {createStyles} from "@material-ui/core/styles"
+import createStyles from "@material-ui/styles/createStyles"
 
 const useStyles: any = makeStyles(() =>
   createStyles({
