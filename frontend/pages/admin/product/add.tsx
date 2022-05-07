@@ -265,6 +265,15 @@ const ProductAddForm = () => {
           {fileUploadProgress && <p style={{color: "red"}}>Uploading File(s)</p>}
           {fileUploadResponse != null && <p style={{color: "green"}}>{fileUploadResponse}</p>}
         </Grid>
+        <Grid item xs={12} style={{marginTop: "1em"}}>
+          <ul style={{display: "flex", padding: 0, margin: 0}}>
+            {images?.map((image) => (
+              <li style={{listStyle: "none", padding: "10 0"}}>
+                <NextImage src={image.url} height={100} width={100} />
+              </li>
+            ))}
+          </ul>
+        </Grid>
       </Grid>
       <div
         style={{

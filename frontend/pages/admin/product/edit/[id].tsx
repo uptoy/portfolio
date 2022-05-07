@@ -24,6 +24,8 @@ import {useRouter} from "next/router"
 import {red} from "@material-ui/core/colors"
 import {fetcher} from "../add"
 import toast from "react-hot-toast"
+import {Image} from "@types"
+import NextImage from "next/image"
 
 const red500 = red["500"]
 const BaseURL = "http://localhost:8080/api"
@@ -116,6 +118,7 @@ export interface ManageProductFields {
   count_in_stock: number
   description: string
   category: Category
+  images: Image[]
 }
 
 interface FormData {
@@ -128,34 +131,9 @@ interface FormData {
   description: string
 }
 
-// const useStyles: any = makeStyles(() => ({
-//   input: {
-//     marginBottom: 20,
-//   },
-//   buttonContainer: {
-//     display: "flex",
-//     justifyContent: "flex-end",
-//     marginTop: 20,
-//   },
-//   loadingContainer: {
-//     textAlign: "center",
-//     margin: "100px 0",
-//   },
-// }))
-
 interface ProductManageFormProps {
   id?: string
   fields?: ManageProductFields
-}
-
-const defaultValues = {
-  product_name: "",
-  slug: "",
-  brand: "",
-  price: 0,
-  category_id: 0,
-  count_in_stock: 0,
-  description: "",
 }
 
 export default function ProductAdd() {
@@ -172,6 +150,7 @@ export default function ProductAdd() {
   const count_in_stock = product?.count_in_stock
   const description = product?.description
   const category = product?.category
+  const images = product?.images
   const fields: ManageProductFields = {
     product_name: product_name,
     slug: slug,
@@ -181,6 +160,7 @@ export default function ProductAdd() {
     count_in_stock: count_in_stock,
     description: description,
     category: category as any,
+    images: images,
   }
   return (
     <>
@@ -203,6 +183,7 @@ const ProductEditForm = ({id, fields}: ProductManageFormProps) => {
   const [fileSize, setFileSize] = useState(true)
   const [fileUploadProgress, setFileUploadProgress] = useState(false)
   const [fileUploadResponse, setFileUploadResponse] = useState(null)
+  const images = fields?.images
   const uploadFileHandler = (event: any) => {
     setFiles(event.target.files)
   }
@@ -306,45 +287,6 @@ const ProductEditForm = ({id, fields}: ProductManageFormProps) => {
         </Grid>
         <Grid item xs={12}>
           <Controller
-            name="category_id"
-            control={control}
-            render={({field}) => (
-              <Select {...field} required style={{width: "100%"}}>
-                {categories?.map((category: Category) => (
-                  <MenuItem key={category.id} value={category.id}>
-                    {category.category_name}
-                  </MenuItem>
-                ))}
-              </Select>
-            )}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Controller
-            name="slug"
-            control={control}
-            defaultValue=""
-            rules={{
-              required: "Title is required field",
-            }}
-            render={({field: {onChange, value}, fieldState: {error}}) => (
-              <TextField
-                margin="normal"
-                onChange={onChange}
-                value={value}
-                fullWidth
-                id="slug"
-                label="slug"
-                name="slug"
-                autoComplete="true"
-                error={Boolean(error)}
-                helperText={error?.message}
-              />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Controller
             name="brand"
             control={control}
             defaultValue=""
@@ -388,6 +330,21 @@ const ProductEditForm = ({id, fields}: ProductManageFormProps) => {
                 error={Boolean(error)}
                 helperText={error?.message}
               />
+            )}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Controller
+            name="category_id"
+            control={control}
+            render={({field}) => (
+              <Select {...field} required style={{width: "100%"}}>
+                {categories?.map((category: Category) => (
+                  <MenuItem key={category.id} value={category.id}>
+                    {category.category_name}
+                  </MenuItem>
+                ))}
+              </Select>
             )}
           />
         </Grid>
@@ -444,6 +401,15 @@ const ProductEditForm = ({id, fields}: ProductManageFormProps) => {
           {!fileSize && <p style={{color: "red"}}>File size exceeded!!</p>}
           {fileUploadProgress && <p style={{color: "red"}}>Uploading File(s)</p>}
           {fileUploadResponse != null && <p style={{color: "green"}}>{fileUploadResponse}</p>}
+        </Grid>
+        <Grid item xs={12} style={{marginTop: "1em"}}>
+          <ul style={{display: "flex", padding: 0, margin: 0}}>
+            {images?.map((image) => (
+              <li style={{listStyle: "none", padding: "10 0"}}>
+                <NextImage src={image.url} height={100} width={100} />
+              </li>
+            ))}
+          </ul>
         </Grid>
       </Grid>
       <div
