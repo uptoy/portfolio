@@ -43,7 +43,7 @@ const ProductItem: React.FC<IProps> = ({product}) => {
 
   const handleDelete = async () => {
     try {
-      const result = await dispatch(deleteProduct(product.id))
+      const result = await dispatch(deleteProduct(product.id as number))
       unwrapResult(result)
       toast.success("Successfully product deleted")
     } catch (error) {

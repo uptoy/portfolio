@@ -1,24 +1,22 @@
-import { Typography } from '@material-ui/core'
-import { createStyles } from '@material-ui/core/styles'
-import { makeStyles } from '@material-ui/styles'
-import React from 'react'
-
-import Modal from '../modal'
-
-import { DateRange } from 'types'
-import formatDate from 'utils/formatDate'
-import getDateRanges from 'utils/getDateRanges'
+import {Typography} from "@material-ui/core"
+import {createStyles} from "@material-ui/core/styles"
+import {makeStyles} from "@material-ui/styles"
+import React from "react"
+import {Modal} from "../modal"
+import {DateRange} from "@types"
+import formatDate from "utils/formatDate"
+import getDateRanges from "utils/getDateRanges"
 
 const useStyles: any = makeStyles(() =>
   createStyles({
     listItem: {
-      padding: '15px 10px',
-      border: '1px solid transparent',
-      borderBottom: '1px solid #ccc',
-      cursor: 'pointer',
-      background: 'transparent',
-      display: 'block',
-      width: '100%  ',
+      padding: "15px 10px",
+      border: "1px solid transparent",
+      borderBottom: "1px solid #ccc",
+      cursor: "pointer",
+      background: "transparent",
+      display: "block",
+      width: "100%  ",
     },
   })
 )
@@ -29,7 +27,7 @@ interface Props {
   onSelectDateRange(range: DateRange): void
 }
 
-const SelectDateRangeModal: React.FC<Props> = ({ show, onClose, onSelectDateRange }) => {
+const SelectDateRangeModal: React.FC<Props> = ({show, onClose, onSelectDateRange}) => {
   const classes = useStyles()
 
   const dateRanges = getDateRanges()
