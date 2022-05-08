@@ -1,4 +1,6 @@
-import React, {useState} from "react"
+import React, {useState, useReducer} from "react"
+import ImageUploading from "react-images-uploading"
+import NextImage from "next/image"
 import SaveIcon from "@material-ui/icons/Save"
 import {Category} from "@types"
 import {AdminLayout} from "components/dashboard"
@@ -24,6 +26,8 @@ import {common} from "@material-ui/core/colors"
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos"
 import {useRouter} from "next/router"
 import {red} from "@material-ui/core/colors"
+import AddIcon from "@material-ui/icons/Add"
+import CancelIcon from "@material-ui/icons/Cancel"
 
 const red500 = red["500"]
 const BaseURL = "http://localhost:8080/api"
@@ -38,24 +42,30 @@ const useStyles: any = makeStyles(() => ({
     backgroundColor: "#fafafa",
     color: "black",
     fontWeight: "bold",
-    fontSize: "1em",
     width: "100%",
-    minHeight: "15em",
+    minHeight: "10em",
+    marginBottom: 30,
+  },
+  uploadText: {
+    margin: 0,
+    paddingTop: 40,
+    textAlign: "center",
+    fontSize: "1em",
   },
   show: {
     display: "grid",
-    gap: 30,
+    gap: 15,
     gridTemplateColumns: "repeat(auto-fill,minmax(100px,1fr))",
     width: "100%",
     //     // padding: "1em 0",
-    marginTop: "0.2em",
+    marginTop: "1em",
   },
   cancel: {
-    position: "absolute",
-    bottom: "85%",
-    left: "85%",
     backgroundColor: "white",
     borderRadius: "50%",
+    position: "absolute",
+    bottom: "90%",
+    left: "78%",
   },
   imageItem: {
     position: "relative",
@@ -141,13 +151,19 @@ const ProductAddForm = () => {
       category_id: 1,
     },
   })
-  const [files, setFiles] = useState<any>("")
-  const [fileSize, setFileSize] = useState(true)
-  const [fileUploadProgress, setFileUploadProgress] = useState(false)
-  const [fileUploadResponse, setFileUploadResponse] = useState(null)
+  // const [files, setFiles] = useState<any>("")
+  // const [fileSize, setFileSize] = useState(true)
+  // const [fileUploadProgress, setFileUploadProgress] = useState(false)
+  // const [fileUploadResponse, setFileUploadResponse] = useState(null)
 
-  const uploadFileHandler = (event: any) => {
-    setFiles(event.target.files)
+  // const uploadFileHandler = (event: any) => {
+  //   setFiles(event.target.files)
+  // }
+  const [files, setFiles] = React.useState([])
+  const maxNumber = 5
+  const onChange = (imageList: any, addUpdateIndex: any) => {
+    console.log(imageList, addUpdateIndex)
+    setFiles(imageList)
   }
 
   const onSubmit = async (productData: any) => {
@@ -170,12 +186,6 @@ const ProductAddForm = () => {
       formData.append("description", description)
       formData.append("category_id", category_id)
       for (let i = 0; i < files.length; i++) {
-        if (files[i].size > 1024) {
-          setFileSize(false)
-          setFileUploadProgress(false)
-          setFileUploadResponse(null)
-          return
-        }
         formData.append(`files`, files[i])
       }
       await fetch(`${BaseURL}/products`, {
@@ -260,19 +270,50 @@ const ProductAddForm = () => {
           <p style={{color: red500}}>{errors.count_in_stock?.message}</p>
         </Grid>
         <Grid item xs={12} style={{marginTop: "1em"}}>
-          <input type="file" multiple onChange={uploadFileHandler} />
-          {!fileSize && <p style={{color: "red"}}>File size exceeded!!</p>}
-          {fileUploadProgress && <p style={{color: "red"}}>Uploading File(s)</p>}
-          {fileUploadResponse != null && <p style={{color: "green"}}>{fileUploadResponse}</p>}
-        </Grid>
-        <Grid item xs={12} style={{marginTop: "1em"}}>
-          <ul style={{display: "flex", padding: 0, margin: 0}}>
-            {images?.map((image) => (
-              <li style={{listStyle: "none", padding: "10 0"}}>
-                <NextImage src={image.url} height={100} width={100} />
-              </li>
-            ))}
-          </ul>
+          <ImageUploading
+            multiple
+            value={files}
+            onChange={onChange}
+            maxNumber={maxNumber}
+            dataURLKey="data_url"
+          >
+            {({
+              imageList,
+              onImageUpload,
+              // onImageRemoveAll,
+              onImageUpdate,
+              onImageRemove,
+              isDragging,
+              dragProps,
+            }) => (
+              // write your building UI
+              <div className="upload__image-wrapper">
+                <div
+                  className={classes.upload}
+                  style={isDragging ? {color: "red"} : undefined}
+                  onClick={onImageUpload}
+                  {...dragProps}
+                >
+                  <p className={classes.uploadText}>Click or Drop here</p>
+                </div>
+
+                {/* <button className="btn btn-danger" onClick={onImageRemoveAll}>
+                    Remove all images
+                  </button> */}
+                <div className={classes.show}>
+                  {imageList.map((image, index) => (
+                    <div key={index} className={classes.imageItem}>
+                      <NextImage src={image["data_url"]} height={100} width={100} />
+                      <CancelIcon className={classes.cancel} onClick={() => onImageRemove(index)} />
+                      {/* <button className="btn btn-primary" onClick={() => onImageUpdate(index)}>
+                        Update
+                      </button> */}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </ImageUploading>
         </Grid>
       </Grid>
       <div
@@ -315,3 +356,70 @@ const ProductAddForm = () => {
     </form>
   )
 }
+
+// const AdminProductAdd = () => {
+//   const [images, setImages] = React.useState([])
+//   const maxNumber = 69
+
+//   const onChange = (imageList: any, addUpdateIndex: any) => {
+//     // data for submit
+//     console.log(imageList, addUpdateIndex)
+//     setImages(imageList)
+//   }
+//   return (
+//     <div>
+//       <div>
+//         <ImageUploading
+//           multiple
+//           value={images}
+//           onChange={onChange}
+//           maxNumber={maxNumber}
+//           dataURLKey="data_url"
+//         >
+//           {({
+//             imageList,
+//             onImageUpload,
+//             onImageRemoveAll,
+//             onImageUpdate,
+//             onImageRemove,
+//             isDragging,
+//             dragProps,
+//           }) => (
+//             // write your building UI
+//             <div className="upload__image-wrapper">
+//               <div className="mainbtndiv">
+//                 <button
+//                   className="btn btn-primary"
+//                   style={isDragging ? {color: "red"} : undefined}
+//                   onClick={onImageUpload}
+//                   {...dragProps}
+//                 >
+//                   Click or Drop here
+//                 </button>
+
+//                 <button className="btn btn-danger" onClick={onImageRemoveAll}>
+//                   Remove all images
+//                 </button>
+//               </div>
+//               {imageList.map((image, index) => (
+//                 <div key={index} className="image-item mt-5 mb-5 mr-5">
+//                   <NextImage src={image["data_url"]} height={100} width={100} />
+//                   <div className="image-item__btn-wrapper">
+//                     <button className="btn btn-primary" onClick={() => onImageUpdate(index)}>
+//                       Update
+//                     </button>
+//                     <button className="btn btn-danger" onClick={() => onImageRemove(index)}>
+//                       Remove
+//                     </button>
+//                   </div>
+//                 </div>
+//               ))}
+//             </div>
+//           )}
+//         </ImageUploading>
+//       </div>
+//     </div>
+//   )
+// }
+
+// export default AdminProductAdd
