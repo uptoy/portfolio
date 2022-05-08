@@ -151,14 +151,7 @@ const ProductAddForm = () => {
       category_id: 1,
     },
   })
-  // const [files, setFiles] = useState<any>("")
-  // const [fileSize, setFileSize] = useState(true)
-  // const [fileUploadProgress, setFileUploadProgress] = useState(false)
-  // const [fileUploadResponse, setFileUploadResponse] = useState(null)
-
-  // const uploadFileHandler = (event: any) => {
-  //   setFiles(event.target.files)
-  // }
+  //image
   const [files, setFiles] = React.useState([])
   const maxNumber = 5
   const onChange = (imageList: any, addUpdateIndex: any) => {
@@ -194,7 +187,8 @@ const ProductAddForm = () => {
         body: formData,
       })
       setIsSubmitting(false)
-      router.push("/admin/products")
+      toast.success("Create Product")
+      router.push("/admin/product")
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message)
@@ -281,7 +275,7 @@ const ProductAddForm = () => {
               imageList,
               onImageUpload,
               // onImageRemoveAll,
-              onImageUpdate,
+              // onImageUpdate,
               onImageRemove,
               isDragging,
               dragProps,
@@ -297,17 +291,11 @@ const ProductAddForm = () => {
                   <p className={classes.uploadText}>Click or Drop here</p>
                 </div>
 
-                {/* <button className="btn btn-danger" onClick={onImageRemoveAll}>
-                    Remove all images
-                  </button> */}
                 <div className={classes.show}>
                   {imageList.map((image, index) => (
                     <div key={index} className={classes.imageItem}>
                       <NextImage src={image["data_url"]} height={100} width={100} />
                       <CancelIcon className={classes.cancel} onClick={() => onImageRemove(index)} />
-                      {/* <button className="btn btn-primary" onClick={() => onImageUpdate(index)}>
-                        Update
-                      </button> */}
                     </div>
                   ))}
                 </div>

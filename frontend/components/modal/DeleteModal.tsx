@@ -1,3 +1,4 @@
+import CircularProgress from "@material-ui/core/CircularProgress"
 import SimpleModal from "components/modal/SimpleModal"
 import {Button} from "@material-ui/core"
 import {makeStyles} from "@material-ui/styles"
@@ -9,6 +10,7 @@ interface IProps {
   open: boolean
   handleClose(): void
   handleDelete(): void
+  isSubmitting: boolean
 }
 
 const useStyles: any = makeStyles(() =>
@@ -17,6 +19,7 @@ const useStyles: any = makeStyles(() =>
       marginLeft: "auto",
       marginTop: "1em",
       width: "10.5em",
+      display: "flex",
     },
     formControl: {
       margin: theme.spacing(1, 0),
@@ -30,17 +33,19 @@ const useStyles: any = makeStyles(() =>
 // create
 // edit
 const DeleteModal = (props: IProps) => {
+  const {handleClose, handleDelete, isSubmitting} = props
   const classes = useStyles()
   return (
     <>
-      <SimpleModal open={props.open} handleClose={props.handleClose}>
+      <SimpleModal open={props.open} handleClose={handleClose}>
         <p>Don't you delete ?</p>
         <div className={classes.submit_container}>
-          <Button variant="contained" style={{marginRight: "1em"}} onClick={props.handleClose}>
+          <Button variant="contained" style={{marginRight: "1em"}} onClick={handleClose}>
             Back
           </Button>
-          {/* <Button variant="contained" onClick={props.handleDelete}> */}
-          <Button variant="contained">Delete</Button>
+          <Button variant="contained" disabled={isSubmitting} onClick={handleDelete}>
+            {isSubmitting ? <CircularProgress size={25} /> : "Submit"}
+          </Button>
         </div>
       </SimpleModal>
     </>

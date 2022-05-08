@@ -30,7 +30,7 @@ interface FormData {
   category_id: string
   count_in_stock: string
   description: string
-  average_rating: string
+  // average_rating: string
   createdAt?: Date | null
   updatedAt?: Date | null
   images: Image[]
@@ -71,7 +71,7 @@ const ProductManageModal = () => {
     category_id: selectedProduct?.category_id.toString() || "",
     count_in_stock: selectedProduct?.count_in_stock.toString() || "",
     description: selectedProduct?.description || "",
-    average_rating: selectedProduct?.average_rating.toString() || "",
+    // average_rating: selectedProduct?.average_rating.toString() || "",
     images: selectedProduct?.images || [],
   }
 

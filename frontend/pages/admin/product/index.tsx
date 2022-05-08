@@ -93,8 +93,9 @@ export default function AdminProductList() {
     }
     setState({...state, [anchor]: open})
   }
-  const dispatch = useAppDispatch()
-  const {selectedModal} = useAppSelector((state) => state.product)
+  const handleProductAdd = () => {
+    router.push("/admin/product/add")
+  }
 
   return (
     <AdminLayout>
@@ -102,7 +103,7 @@ export default function AdminProductList() {
         size="small"
         color="secondary"
         className={classes.fab}
-        onClick={() => router.push("/admin/product/add")}
+        onClick={() => handleProductAdd()}
       >
         <AddIcon />
       </Fab>

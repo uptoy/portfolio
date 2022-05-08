@@ -4,6 +4,7 @@ import {createStyles} from "@material-ui/core/styles"
 import {makeStyles} from "@material-ui/styles"
 import ProductItem from "./ProductItem"
 import {useAppDispatch, useAppSelector} from "app/hooks"
+import useSWR from "swr"
 import {fetchProducts} from "features/product/productSlice"
 import theme from "theme"
 import {
@@ -15,6 +16,8 @@ import {
   TableHead,
   TableRow,
 } from "@material-ui/core"
+import {fetcher} from "pages/admin/product/add"
+const BaseURL = "http://localhost:8080/api"
 
 const useStyles: any = makeStyles(() =>
   createStyles({
@@ -39,9 +42,11 @@ const ProductList = () => {
   useEffect(() => {
     dispatch(fetchProducts())
   }, [])
-  const {products, status, error} = useAppSelector((state) => state.product)
-  console.log(products[0])
-  if (status === "loading") {
+  // const {products, status, error} = useAppSelector((state) => state.product)
+  const {data, error, mutate} = useSWR(`${BaseURL}/products`, fetcher)
+  const products = data?.data
+  if (error) return <div>failed to load</div>
+  if (!data) {
     return (
       <div className={classes.loadingContainer}>
         <CircularProgress />
@@ -55,18 +60,18 @@ const ProductList = () => {
           <Table className={classes.table} aria-label="product table">
             <TableHead>
               <TableRow>
-                <TableCell>Image</TableCell>
+                <TableCell align="center">Image</TableCell>
                 <TableCell>Name</TableCell>
                 <TableCell align="center">Category</TableCell>
                 <TableCell align="center">Price</TableCell>
-                <TableCell >Brand</TableCell>
+                <TableCell>Brand</TableCell>
                 <TableCell align="center">Stock </TableCell>
                 <TableCell align="center">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {products.map((product) => (
-                <ProductItem key={product.id} product={product} />
+              {products.map((product: any) => (
+                <ProductItem key={product.id} product={product} mutate={mutate} />
               ))}
             </TableBody>
           </Table>

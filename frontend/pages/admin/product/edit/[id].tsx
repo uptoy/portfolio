@@ -26,6 +26,8 @@ import {fetcher} from "../add"
 import toast from "react-hot-toast"
 import {Image} from "@types"
 import NextImage from "next/image"
+import ImageUploading from "react-images-uploading"
+import CancelIcon from "@material-ui/icons/Cancel"
 
 const red500 = red["500"]
 const BaseURL = "http://localhost:8080/api"
@@ -40,9 +42,15 @@ const useStyles: any = makeStyles(() => ({
     backgroundColor: "#fafafa",
     color: "black",
     fontWeight: "bold",
-    fontSize: "1em",
     width: "100%",
-    minHeight: "15em",
+    minHeight: "10em",
+    marginBottom: 30,
+  },
+  uploadText: {
+    margin: 0,
+    paddingTop: 40,
+    textAlign: "center",
+    fontSize: "1em",
   },
   show: {
     display: "grid",
@@ -180,13 +188,8 @@ const ProductEditForm = ({id, fields}: ProductManageFormProps) => {
   const classes = useStyles()
   const router = useRouter()
   const [files, setFiles] = useState<any>("")
-  const [fileSize, setFileSize] = useState(true)
-  const [fileUploadProgress, setFileUploadProgress] = useState(false)
-  const [fileUploadResponse, setFileUploadResponse] = useState(null)
-  const images = fields?.images
-  const uploadFileHandler = (event: any) => {
-    setFiles(event.target.files)
-  }
+  console.log("images", fields.images)
+  const maxNumber = 5
   const {
     handleSubmit,
     control,
@@ -201,6 +204,10 @@ const ProductEditForm = ({id, fields}: ProductManageFormProps) => {
   const {data} = useSWR(`${BaseURL}/category`, fetcher)
   const categories: any = data?.data
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const onChange = (imageList: any, addUpdateIndex: any) => {
+    console.log(imageList, addUpdateIndex)
+    setFiles(imageList)
+  }
   useEffect(() => {
     if (fields) {
       setValue("product_name", fields.product_name)
@@ -232,16 +239,10 @@ const ProductEditForm = ({id, fields}: ProductManageFormProps) => {
       formData.append("description", description)
       formData.append("category_id", category_id)
       for (let i = 0; i < files.length; i++) {
-        if (files[i].size > 1024) {
-          setFileSize(false)
-          setFileUploadProgress(false)
-          setFileUploadResponse(null)
-          return
-        }
         formData.append(`files`, files[i])
       }
       await fetch(`${BaseURL}/products`, {
-        method: "POST",
+        method: "PUT",
         credentials: "include",
         body: formData,
       })
@@ -397,19 +398,43 @@ const ProductEditForm = ({id, fields}: ProductManageFormProps) => {
           />
         </Grid>
         <Grid item xs={12} style={{marginTop: "1em"}}>
-          <input type="file" multiple onChange={uploadFileHandler} />
-          {!fileSize && <p style={{color: "red"}}>File size exceeded!!</p>}
-          {fileUploadProgress && <p style={{color: "red"}}>Uploading File(s)</p>}
-          {fileUploadResponse != null && <p style={{color: "green"}}>{fileUploadResponse}</p>}
-        </Grid>
-        <Grid item xs={12} style={{marginTop: "1em"}}>
-          <ul style={{display: "flex", padding: 0, margin: 0}}>
-            {images?.map((image) => (
-              <li style={{listStyle: "none", padding: "10 0"}}>
-                <NextImage src={image.url} height={100} width={100} />
-              </li>
-            ))}
-          </ul>
+          <ImageUploading
+            multiple
+            value={files}
+            onChange={onChange}
+            maxNumber={maxNumber}
+            dataURLKey="data_url"
+          >
+            {({
+              imageList,
+              onImageUpload,
+              // onImageRemoveAll,
+              onImageUpdate,
+              onImageRemove,
+              isDragging,
+              dragProps,
+            }) => (
+              <div className="upload__image-wrapper">
+                <div
+                  className={classes.upload}
+                  style={isDragging ? {color: "red"} : undefined}
+                  onClick={onImageUpload}
+                  {...dragProps}
+                >
+                  <p className={classes.uploadText}>Click or Drop here</p>
+                </div>
+                {/* image view */}
+                <div className={classes.show}>
+                  {imageList.map((image, index) => (
+                    <div key={index} className={classes.imageItem}>
+                      <NextImage src={image["data_url"]} height={100} width={100} />
+                      <CancelIcon className={classes.cancel} onClick={() => onImageRemove(index)} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </ImageUploading>
         </Grid>
       </Grid>
       <div
