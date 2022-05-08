@@ -1,12 +1,9 @@
 import {CircularProgress} from "@material-ui/core"
-import React, {useEffect} from "react"
-import {createStyles} from "@material-ui/core/styles"
+import React from "react"
+import createStyles from "@material-ui/styles/createStyles"
 import {makeStyles} from "@material-ui/styles"
 import ProductItem from "./ProductItem"
-import {useAppDispatch, useAppSelector} from "app/hooks"
 import useSWR from "swr"
-import {fetchProducts} from "features/product/productSlice"
-import theme from "theme"
 import {
   Paper,
   Table,
@@ -17,18 +14,13 @@ import {
   TableRow,
 } from "@material-ui/core"
 import {fetcher} from "pages/admin/product/add"
+import {Product} from "@types"
 const BaseURL = "http://localhost:8080/api"
 
 const useStyles: any = makeStyles(() =>
   createStyles({
     container: {
       height: "83%",
-    },
-    list: {
-      width: "100%",
-      margin: 0,
-      padding: 0,
-      backgroundColor: theme.palette.background.paper,
     },
     loadingContainer: {
       textAlign: "center",
@@ -37,12 +29,7 @@ const useStyles: any = makeStyles(() =>
   })
 )
 const ProductList = () => {
-  const dispatch = useAppDispatch()
   const classes = useStyles()
-  useEffect(() => {
-    dispatch(fetchProducts())
-  }, [])
-  // const {products, status, error} = useAppSelector((state) => state.product)
   const {data, error, mutate} = useSWR(`${BaseURL}/products`, fetcher)
   const products = data?.data
   if (error) return <div>failed to load</div>
@@ -57,9 +44,12 @@ const ProductList = () => {
     <>
       {products && (
         <TableContainer component={Paper} className={classes.container}>
-          <Table className={classes.table} aria-label="product table">
+          <Table aria-label="product table">
             <TableHead>
               <TableRow>
+                <TableCell align="center" style={{padding: 5}}>
+                  ID
+                </TableCell>
                 <TableCell align="center">Image</TableCell>
                 <TableCell>Name</TableCell>
                 <TableCell align="center">Category</TableCell>
@@ -70,7 +60,7 @@ const ProductList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {products.map((product: any) => (
+              {products.map((product: Product) => (
                 <ProductItem key={product.id} product={product} mutate={mutate} />
               ))}
             </TableBody>

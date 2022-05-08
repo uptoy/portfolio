@@ -1,8 +1,8 @@
-import React, {useState, useReducer} from "react"
-import ImageUploading from "react-images-uploading"
+import React, {useState} from "react"
+import ImageUploading, {ImageListType} from "react-images-uploading"
 import NextImage from "next/image"
 import SaveIcon from "@material-ui/icons/Save"
-import {Category} from "@types"
+import {Category, Product} from "@types"
 import {AdminLayout} from "components/dashboard"
 import {useForm, Controller} from "react-hook-form"
 import {yupResolver} from "@hookform/resolvers/yup"
@@ -21,12 +21,9 @@ import {
   CircularProgress,
 } from "@material-ui/core"
 import {makeStyles} from "@material-ui/styles"
-import theme from "theme"
-import {common} from "@material-ui/core/colors"
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos"
 import {useRouter} from "next/router"
 import {red} from "@material-ui/core/colors"
-import AddIcon from "@material-ui/icons/Add"
 import CancelIcon from "@material-ui/icons/Cancel"
 
 const red500 = red["500"]
@@ -61,34 +58,16 @@ const useStyles: any = makeStyles(() => ({
     marginTop: "1em",
   },
   cancel: {
+    position: "absolute",
+    bottom: "88%",
+    left: "78%",
     backgroundColor: "white",
     borderRadius: "50%",
-    position: "absolute",
-    bottom: "90%",
-    left: "78%",
   },
   imageItem: {
     position: "relative",
     width: "7em",
     height: "7em",
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-  },
-  form: {
-    width: "100%",
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  navigation: {
-    fontSize: 15,
-    fontWeight: 400,
-    color: common.black,
-    paddingBottom: 15,
-    display: "block",
   },
   title: {
     fontSize: 24,
@@ -106,6 +85,12 @@ const useStyles: any = makeStyles(() => ({
     marginTop: 10,
     marginLeft: 10,
   },
+  saveButton: {
+    marginTop: 10,
+    marginLeft: 10,
+    width: "7em",
+    height: "3.4em",
+  },
   clear: {
     clear: "both",
   },
@@ -117,7 +102,7 @@ export default function ProductAdd() {
     <>
       <AdminLayout>
         <Paper className={classes.paper}>
-          <h3 className={classes.title}>Product Edit</h3>
+          <h3 className={classes.title}>Product Add</h3>
           <Divider />
           <ProductAddForm />
           <div className={classes.clear} />
@@ -127,7 +112,7 @@ export default function ProductAdd() {
   )
 }
 
-export const fetcher = (url: any) =>
+export const fetcher = (url: string) =>
   fetch(url, {
     method: "GET",
     headers: {"Content-Type": "application/json"},
@@ -135,7 +120,7 @@ export const fetcher = (url: any) =>
   }).then((r) => r.json())
 
 const ProductAddForm = () => {
-  const {data, error, mutate} = useSWR(`${BaseURL}/category`, fetcher)
+  const {data} = useSWR(`${BaseURL}/category`, fetcher)
   const categories: Category[] = data?.data
   const classes = useStyles()
   const router = useRouter()
@@ -151,23 +136,26 @@ const ProductAddForm = () => {
       category_id: 1,
     },
   })
-  //image
-  const [files, setFiles] = React.useState([])
+  interface IFile {
+    data_url: string
+    file: File
+  }
+  const [files, setFiles] = React.useState<ImageListType>([])
   const maxNumber = 5
-  const onChange = (imageList: any, addUpdateIndex: any) => {
+  const onChange = (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {
     console.log(imageList, addUpdateIndex)
     setFiles(imageList)
   }
 
   const onSubmit = async (productData: any) => {
-    const product_name: any = productData.product_name
-    const str: any = productData.product_name
+    const product_name = productData.product_name
+    const str = productData.product_name
     const slug = str.replace(/[^0-9a-z]/gi, "")
-    const brand: any = productData.brand
-    const price: any = productData.price
-    const count_in_stock: any = productData.count_in_stock
-    const description: any = productData.description
-    const category_id: any = productData.category_id
+    const brand = productData.brand
+    const price = productData.price
+    const count_in_stock = productData.count_in_stock
+    const description = productData.description
+    const category_id = productData.category_id
     try {
       setIsSubmitting(true)
       const formData: any = new FormData()
@@ -179,7 +167,7 @@ const ProductAddForm = () => {
       formData.append("description", description)
       formData.append("category_id", category_id)
       for (let i = 0; i < files.length; i++) {
-        formData.append(`files`, files[i])
+        formData.append(`files`, files[i].file)
       }
       await fetch(`${BaseURL}/products`, {
         method: "POST",
@@ -327,7 +315,7 @@ const ProductAddForm = () => {
           type="submit"
           variant="contained"
           color="primary"
-          className={classes.button}
+          className={classes.saveButton}
           disableElevation
           disabled={isSubmitting}
         >
@@ -344,70 +332,3 @@ const ProductAddForm = () => {
     </form>
   )
 }
-
-// const AdminProductAdd = () => {
-//   const [images, setImages] = React.useState([])
-//   const maxNumber = 69
-
-//   const onChange = (imageList: any, addUpdateIndex: any) => {
-//     // data for submit
-//     console.log(imageList, addUpdateIndex)
-//     setImages(imageList)
-//   }
-//   return (
-//     <div>
-//       <div>
-//         <ImageUploading
-//           multiple
-//           value={images}
-//           onChange={onChange}
-//           maxNumber={maxNumber}
-//           dataURLKey="data_url"
-//         >
-//           {({
-//             imageList,
-//             onImageUpload,
-//             onImageRemoveAll,
-//             onImageUpdate,
-//             onImageRemove,
-//             isDragging,
-//             dragProps,
-//           }) => (
-//             // write your building UI
-//             <div className="upload__image-wrapper">
-//               <div className="mainbtndiv">
-//                 <button
-//                   className="btn btn-primary"
-//                   style={isDragging ? {color: "red"} : undefined}
-//                   onClick={onImageUpload}
-//                   {...dragProps}
-//                 >
-//                   Click or Drop here
-//                 </button>
-
-//                 <button className="btn btn-danger" onClick={onImageRemoveAll}>
-//                   Remove all images
-//                 </button>
-//               </div>
-//               {imageList.map((image, index) => (
-//                 <div key={index} className="image-item mt-5 mb-5 mr-5">
-//                   <NextImage src={image["data_url"]} height={100} width={100} />
-//                   <div className="image-item__btn-wrapper">
-//                     <button className="btn btn-primary" onClick={() => onImageUpdate(index)}>
-//                       Update
-//                     </button>
-//                     <button className="btn btn-danger" onClick={() => onImageRemove(index)}>
-//                       Remove
-//                     </button>
-//                   </div>
-//                 </div>
-//               ))}
-//             </div>
-//           )}
-//         </ImageUploading>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default AdminProductAdd

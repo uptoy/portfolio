@@ -127,7 +127,7 @@ func NewHandler(c *Config) {
 		products.DELETE("/:id/reviews/:rid", h.ReviewDelete)
 		// products.POST("/confirm", h.ConfirmCreateReviewFlow)
 	}
-	category := api.Group("/category")
+	category := api.Group("/categories")
 	{
 		category.GET("", h.CategoryList)
 		category.POST("", h.CategoryCreate)

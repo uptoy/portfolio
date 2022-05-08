@@ -21,7 +21,6 @@ import SearchIcon from "@material-ui/icons/Search"
 import {pink} from "@material-ui/core/colors"
 import CreateIcon from "@material-ui/icons/Create"
 import DeleteIcon from "@material-ui/icons/Delete"
-import {CategoryManageModal} from "components/Category"
 
 const pink500 = pink["500"]
 
@@ -58,7 +57,7 @@ const useStyles: any = makeStyles(() => ({
   fab: {
     top: "auto",
     right: 20,
-    bottom: 20,
+    bottom: 10,
     left: "auto",
     position: "fixed",
     marginRight: 20,
@@ -67,7 +66,7 @@ const useStyles: any = makeStyles(() => ({
   fabSearch: {
     top: "auto",
     right: 100,
-    bottom: 20,
+    bottom: 10,
     left: "auto",
     position: "fixed",
     marginRight: 20,
@@ -194,7 +193,7 @@ export default function AdminOrderList() {
           </Grid>
         </Grid>
       </Drawer>
-      <CategoryManageModal open={open} handleClose={handleClose} />
+      {/* <CategoryManageModal open={open} handleClose={handleClose} /> */}
     </AdminLayout>
   )
 }

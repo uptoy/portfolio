@@ -1,101 +1,108 @@
-import IconButton from "@material-ui/core/IconButton"
-import ListItem from "@material-ui/core/ListItem"
-import ListItemText from "@material-ui/core/ListItemText"
-import Menu from "@material-ui/core/Menu"
-import MenuItem from "@material-ui/core/MenuItem"
 import {makeStyles} from "@material-ui/styles"
-import MoreVertIcon from "@material-ui/icons/MoreVert"
-import {unwrapResult} from "@reduxjs/toolkit"
+import CreateIcon from "@material-ui/icons/Create"
+import DeleteIcon from "@material-ui/icons/Delete"
+import DeleteModal from "components/modal/DeleteModal"
 import {useState} from "react"
 import toast from "react-hot-toast"
-import {
-  deleteCategory,
-  setSelectedCategory,
-  setSelectedModal,
-} from "features/category/categorySlice"
 import {Category} from "@types"
+import {Button, TableCell, TableRow} from "@material-ui/core"
+import {useRouter} from "next/router"
+import getFormattedDate from "utils/getFormattedDate"
+const BaseURL = "http://localhost:8080/api"
 
-import {useAppDispatch, useAppSelector} from "app/hooks"
-
-interface Props {
+interface IProps {
   category: Category
+  mutate(): void
 }
 
 const useStyles: any = makeStyles(() => ({
-  categoryItem: {
-    padding: "15px 0",
-  },
   actionContainer: {
     position: "absolute",
     right: 0,
   },
+  cell: {
+    padding: "10px",
+  },
+  button: {
+    margin: "0.25em",
+  },
 }))
 
-const CategoryItem: React.FC<Props> = ({category}) => {
+const CategoryItem: React.FC<IProps> = (props) => {
+  const {category, mutate} = props
+  const router = useRouter()
   const classes = useStyles()
-
-  const {user} = useAppSelector((state) => state.auth)
-
-  const dispatch = useAppDispatch()
-
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-
-  const [isCategoryDeleting, setIsCategoryDeleting] = useState(false)
-
-  const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
+  const [open, setOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const handleDeleteOpen = () => {
+    setOpen(!open)
   }
+  const categoryId = category.id as number
 
-  const handleCloseMenu = () => {
-    setAnchorEl(null)
-  }
-
-  const handleEdit = () => {
-    dispatch(setSelectedModal("manageCategoryModal"))
-    dispatch(setSelectedCategory(category))
-    handleCloseMenu()
+  const handleEdit = (categoryId: number) => {
+    router.push(`/admin/category/edit/${String(categoryId)}`)
   }
 
   const handleDelete = async () => {
+    console.log(String(categoryId))
     try {
-      setIsCategoryDeleting(true)
-      const result = await dispatch(deleteCategory(category.id))
-      unwrapResult(result)
-      toast.success("Successfully category deleted")
-      handleCloseMenu()
-    } catch (error) {
-      toast.error(
-        "Sorry we were'nt able to delete this category right now. Please try again later."
-      )
-      setIsCategoryDeleting(false)
+      setIsSubmitting(true)
+      await fetch(`${BaseURL}/categories/${String(categoryId)}`, {
+        method: "DELETE",
+        credentials: "include",
+      })
+      setIsSubmitting(false)
+      toast.success("Success Delete Category")
+      mutate()
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+        throw new Error(err.message)
+      } else {
+        console.log("Unknown Failure", err)
+        throw new Error("Unknown Failure")
+      }
     }
   }
-
-  // const canShowMenu = () => {
-  //   return user?.id === category.user_id
-  // }
+  const data = getFormattedDate(category.updated_at as any)
+  console.log("data", data)
 
   return (
-    <ListItem className={classes.categoryItem} disabled={isCategoryDeleting}>
-      <ListItemText primary={category.category_name} />
-      {/* {canShowMenu() && ( */}
-      <div className={classes.actionContainer}>
-        <IconButton onClick={handleOpenMenu}>
-          <MoreVertIcon />
-        </IconButton>
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleCloseMenu}
-        >
-          <MenuItem onClick={handleEdit}>Edit</MenuItem>
-          <MenuItem onClick={handleDelete}>Delete</MenuItem>
-        </Menu>
-      </div>
-      {/* )} */}
-    </ListItem>
+    <>
+      <TableRow key={category.id}>
+        <TableCell align="center" className={classes.cell} style={{padding: 0}}>
+          {category.id}
+        </TableCell>
+        <TableCell style={{width: "10%", paddingLeft: 35}} className={classes.cell}>
+          {category.category_name}
+        </TableCell>
+        <TableCell align="center" className={classes.cell}>
+          {getFormattedDate(category.created_at)}
+        </TableCell>
+        <TableCell align="center" className={classes.cell}>
+          {getFormattedDate(category.updated_at)}
+        </TableCell>
+        <TableCell align="center" className={classes.cell}>
+          <Button
+            variant="contained"
+            className={classes.button}
+            onClick={() => handleEdit(categoryId)}
+          >
+            <CreateIcon />
+          </Button>
+          <Button variant="contained" className={classes.button} onClick={handleDeleteOpen}>
+            <DeleteIcon />
+          </Button>
+        </TableCell>
+      </TableRow>
+      <DeleteModal
+        open={open}
+        handleClose={handleDeleteOpen}
+        handleDelete={() => handleDelete()}
+        isSubmitting={isSubmitting}
+      />
+    </>
   )
 }
 

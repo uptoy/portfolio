@@ -11,8 +11,6 @@ const useStyles: any = makeStyles(() => ({
   },
   container: {
     paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-    marginBottom: "10em",
   },
   content: {
     flexGrow: 1,

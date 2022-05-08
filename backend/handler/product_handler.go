@@ -2,6 +2,7 @@ package handler
 
 import (
 	"backend/model"
+	"fmt"
 	"strconv"
 
 	"backend/model/apperrors"
@@ -110,7 +111,7 @@ func (h *Handler) ProductFindByID(c *gin.Context) {
 
 func (h *Handler) ProductUpdate(c *gin.Context) {
 	form, _ := c.MultipartForm()
-	files := form.File["file"]
+	files := form.File["files"]
 	value := form.Value
 	product_name := value["product_name"][0]
 	slug := value["slug"][0]
@@ -129,7 +130,7 @@ func (h *Handler) ProductUpdate(c *gin.Context) {
 		CountInStock: int64(count_in_stock),
 		Description:  description,
 	}
-	ctx := c.Request.Context()
+	// ctx := c.Request.Context()
 	param := c.Param("id")
 	id, err := strconv.ParseInt(param, 0, 64)
 	if err != nil {
@@ -139,40 +140,43 @@ func (h *Handler) ProductUpdate(c *gin.Context) {
 		})
 		return
 	}
-	p, err := h.ProductService.ProductUpdate(ctx, id, &json, files)
-	if err != nil {
-		log.Printf("Unable to update product: %v", err)
-		e := apperrors.NewNotFound("product", "err")
+	fmt.Println("id", id)
+	fmt.Println("json", json)
+	fmt.Println("files", files)
+	// p, err := h.ProductService.ProductUpdate(ctx, id, &json, files)
+	// if err != nil {
+	// 	log.Printf("Unable to update product: %v", err)
+	// 	e := apperrors.NewNotFound("product", "err")
 
-		c.JSON(e.Status(), gin.H{
-			"error": e,
-		})
-		return
-	}
-	categoryId := p.CategoryId
-	category, err := h.CategoryService.CategoryFindByID(ctx, categoryId)
-	if err != nil {
-		log.Printf("Unable to get category: %v", err)
-		e := apperrors.NewNotFound("product", "err")
+	// 	c.JSON(e.Status(), gin.H{
+	// 		"error": e,
+	// 	})
+	// 	return
+	// }
+	// categoryId := p.CategoryId
+	// category, err := h.CategoryService.CategoryFindByID(ctx, categoryId)
+	// if err != nil {
+	// 	log.Printf("Unable to get category: %v", err)
+	// 	e := apperrors.NewNotFound("product", "err")
 
-		c.JSON(e.Status(), gin.H{
-			"error": e,
-		})
-		return
-	}
-	p.Category = category
-	if err != nil {
-		log.Printf("Unable to update product: %v", err)
-		e := apperrors.NewNotFound("product", "err")
+	// 	c.JSON(e.Status(), gin.H{
+	// 		"error": e,
+	// 	})
+	// 	return
+	// }
+	// p.Category = category
+	// if err != nil {
+	// 	log.Printf("Unable to update product: %v", err)
+	// 	e := apperrors.NewNotFound("product", "err")
 
-		c.JSON(e.Status(), gin.H{
-			"error": e,
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"product": p,
-	})
+	// 	c.JSON(e.Status(), gin.H{
+	// 		"error": e,
+	// 	})
+	// 	return
+	// }
+	// c.JSON(http.StatusOK, gin.H{
+	// 	"product": p,
+	// })
 }
 
 func (h *Handler) ProductDelete(c *gin.Context) {

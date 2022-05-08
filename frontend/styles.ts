@@ -1,16 +1,11 @@
 // import { TypographyStyle } from "@material-ui/core/styles";
-import { grey , pink} from "@material-ui/core/colors";
-import {
-  createStyles,
-  Theme,
-  StyleRules,
-} from "@material-ui/core/styles";
-const pink500 = pink['500'];
-const grey600 = grey["600"];
+import {grey, pink} from "@material-ui/core/colors"
+import {createStyles, Theme} from "@material-ui/core/styles"
+import {StyleRules} from "@material-ui/styles"
+const pink500 = pink["500"]
+const grey600 = grey["600"]
 
-
-
-const styles: (theme: Theme) => StyleRules<string> = (theme) =>
+const styles: (theme: Theme) => StyleRules<any> = (theme) =>
   createStyles({
     root: {},
     app: {
@@ -18,66 +13,65 @@ const styles: (theme: Theme) => StyleRules<string> = (theme) =>
     },
     navigation: {
       fontSize: 15,
-      fontWeight: 500, // TypographyStyle.fontWeightLight,
+      fontWeight: 500,
       color: grey600,
       paddingBottom: 15,
       display: "block",
     },
     title: {
       fontSize: 24,
-      fontWeight: 500, //TypographyStyle.fontWeightLight,
+      fontWeight: 500,
       marginBottom: 20,
     },
     paper: {
       padding: 30,
     },
     clear: {
-      clear: "both" as TODO,
+      clear: "both",
     },
-  });
-
+  })
 
 export const listPageStyle = {
   fab: {
-    top: 'auto' as TODO,
+    top: "auto",
     right: 20,
-    bottom: 20,
-    left: 'auto' as TODO,
-    position: 'fixed' as TODO,
+    left: "auto",
+    bottom: 10,
+    position: "fixed",
     marginRight: 20,
     backgroundColor: pink500, // {pink500}
   },
   fabSearch: {
-    top: 'auto' as TODO,
+    top: "auto",
     right: 100,
-    bottom: 20,
-    left: 'auto' as TODO,
-    position: 'fixed' as TODO,
+    bottom: 10,
+    left: "auto",
+    position: "fixed",
     marginRight: 20,
-    backgroundColor: 'lightblue' as TODO,
+    backgroundColor: "lightblue",
   },
   searchButton: {
     marginRight: 20,
   },
   drawer: {
-    backgroundColor: 'lightgrey',
+    backgroundColor: "lightgrey",
   },
   searchDrawer: {
-    overflow: 'hidden',
+    overflow: "hidden",
     width: 280,
   },
   searchGrid: {
     width: 250,
   },
   searchField: {
-    margin:10
-  }
+    margin: 10,
+  },
 }
 
-export const formPageStyles ={
+export const formPageStyles = {
   buttons: {
     marginTop: 30,
-    float: 'right' as TODO,
+    float: "right",
   },
   saveButton: {
     marginLeft: 5,
@@ -89,22 +83,21 @@ export const formPageStyles ={
     marginBottom: 5,
   },
   container: {
-    marginTop: '2em',
+    marginTop: "2em",
   },
   cell: {
-    padding: '1em',
+    padding: "1em",
   },
   productList: {
-    color: 'navy' as TODO,
+    color: "navy",
     paddingTop: 20,
-    fontWeight: 'bold' as TODO,
+    fontWeight: "bold",
   },
   textField: {
     marginLeft: 4, // theme.spacing(1),
     marginRight: 4, //theme.spacing(1),
-    width: '100%',
+    width: "100%",
   },
 }
 
-export default styles;
-
+export default styles

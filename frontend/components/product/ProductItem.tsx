@@ -1,4 +1,3 @@
-import CircularProgress from "@material-ui/core/CircularProgress"
 import {makeStyles} from "@material-ui/styles"
 import CreateIcon from "@material-ui/icons/Create"
 import DeleteIcon from "@material-ui/icons/Delete"
@@ -6,7 +5,6 @@ import DeleteModal from "components/modal/DeleteModal"
 import {useState} from "react"
 import toast from "react-hot-toast"
 import {Product} from "@types"
-import {useAppDispatch} from "app/hooks"
 import {Button, TableCell, TableRow} from "@material-ui/core"
 import Image from "next/image"
 import {useRouter} from "next/router"
@@ -72,6 +70,9 @@ const ProductItem: React.FC<IProps> = (props) => {
   return (
     <>
       <TableRow key={product.id}>
+        <TableCell align="center" className={classes.cell} style={{padding: 0}}>
+          {product.id}
+        </TableCell>
         <TableCell style={{width: "10%"}} className={classes.cell}>
           <Image src="http://placehold.jp/100x100.png" width={100} height={100} alt="My avatar" />
         </TableCell>

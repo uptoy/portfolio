@@ -101,7 +101,7 @@ const useStyles: any = makeStyles(() => ({
   fab: {
     top: "auto",
     right: 20,
-    bottom: 20,
+    bottom: 10,
     left: "auto",
     position: "fixed",
     marginRight: 20,
@@ -110,7 +110,7 @@ const useStyles: any = makeStyles(() => ({
   fabSearch: {
     top: "auto",
     right: 100,
-    bottom: 20,
+    bottom: 10,
     left: "auto",
     position: "fixed",
     marginRight: 20,
