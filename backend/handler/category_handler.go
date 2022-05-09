@@ -38,21 +38,20 @@ func (h *Handler) CategoryCreate(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println("json", json)
-	// ctx := c.Request.Context()
-	// category, err := h.CategoryService.CategoryCreate(ctx, &json)
-	// if err != nil {
-	// 	log.Printf("Unable to find categories: %v", err)
-	// 	e := apperrors.NewNotFound("categories", "err")
+	ctx := c.Request.Context()
+	category, err := h.CategoryService.CategoryCreate(ctx, &json)
+	if err != nil {
+		log.Printf("Unable to find categories: %v", err)
+		e := apperrors.NewNotFound("categories", "err")
 
-	// 	c.JSON(e.Status(), gin.H{
-	// 		"error": e,
-	// 	})
-	// 	return
-	// }
-	// c.JSON(http.StatusOK, gin.H{
-	// 	"category": category,
-	// })
+		c.JSON(e.Status(), gin.H{
+			"error": e,
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"data": category,
+	})
 }
 
 func (h *Handler) CategoryFindByID(c *gin.Context) {
@@ -74,7 +73,7 @@ func (h *Handler) CategoryFindByID(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"category": category,
+		"data": category,
 	})
 }
 
@@ -106,7 +105,7 @@ func (h *Handler) CategoryUpdate(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"category": category,
+		"data": category,
 	})
 }
 
@@ -204,7 +203,7 @@ func (h *Handler) CategoryBulkInsert(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"categories": result,
+		"data": result,
 	})
 }
 
@@ -217,6 +216,6 @@ func (h *Handler) CategoryCount(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"category count": result,
+		"data": result,
 	})
 }

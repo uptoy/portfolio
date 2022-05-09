@@ -176,7 +176,6 @@ const ProductAddForm = () => {
       })
       setIsSubmitting(false)
       toast.success("Create Product")
-      router.push("/admin/product")
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message)

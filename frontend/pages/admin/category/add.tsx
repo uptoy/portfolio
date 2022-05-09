@@ -11,6 +11,7 @@ import {Button, Divider, TextField, Grid, Paper, CircularProgress} from "@materi
 import {makeStyles} from "@material-ui/styles"
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos"
 import {useRouter} from "next/router"
+import axios from "axios"
 
 const BaseURL = "http://localhost:8080/api"
 
@@ -39,7 +40,6 @@ const useStyles: any = makeStyles(() => ({
     gap: 15,
     gridTemplateColumns: "repeat(auto-fill,minmax(100px,1fr))",
     width: "100%",
-    //     // padding: "1em 0",
     marginTop: "1em",
   },
   cancel: {
@@ -109,17 +109,16 @@ const CategoryAddForm = () => {
     resolver: yupResolver(categoryFormSchema),
   })
 
-  const onSubmit: SubmitHandler<CategoryType> = async (formData) => {
+  const onSubmit = async (formData: any) => {
     try {
       setIsSubmitting(true)
       await fetch(`${BaseURL}/categories`, {
         method: "POST",
         credentials: "include",
-        body: formData as any,
+        body: JSON.stringify(formData),
       })
       setIsSubmitting(false)
       toast.success("Create Category")
-      router.push("/admin/category")
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message)

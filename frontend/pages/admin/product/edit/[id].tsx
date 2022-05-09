@@ -154,7 +154,9 @@ export default function ProductEdit() {
   const classes = useStyles()
   const router = useRouter()
   const id = router.query.id as string
-  const {data, error, mutate} = useSWR(`${BaseURL}/products/${id}`, fetcher)
+  const {data, error} = useSWR(`${BaseURL}/products/${id}`, fetcher)
+  if (error) return <div>failed to load</div>
+  if (!data) return <div>loading...</div>
   const product: any = data?.data
   const product_name = product?.product_name
   const slug = product?.slug
@@ -255,7 +257,6 @@ const ProductEditForm = ({id, fields}: ProductManageFormProps) => {
       })
       setIsSubmitting(false)
       toast.success("Success Edit Product")
-      router.push("/admin/product")
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message)
@@ -456,7 +457,7 @@ const ProductEditForm = ({id, fields}: ProductManageFormProps) => {
           type="button"
           variant="contained"
           color="primary"
-          className={classes.button}
+          style={{marginTop: 10, marginLeft: 10}}
           onClick={() => router.push("/admin/product")}
         >
           <ArrowBackIosIcon />
@@ -467,7 +468,13 @@ const ProductEditForm = ({id, fields}: ProductManageFormProps) => {
           type="submit"
           variant="contained"
           color="primary"
-          className={classes.saveButton}
+          // className={classes.saveButton}
+          style={{
+            marginTop: 10,
+            marginLeft: 10,
+            width: "7em",
+            height: "3.4em",
+          }}
           disableElevation
           disabled={isSubmitting}
         >
