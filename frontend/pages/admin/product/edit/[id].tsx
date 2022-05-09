@@ -102,18 +102,12 @@ const useStyles: any = makeStyles(() => ({
     margin: "auto",
     marginBottom: "10em",
   },
-  button: {
-    marginTop: 10,
-    marginLeft: 10,
-  },
-  saveButton: {
-    marginTop: 10,
-    marginLeft: 10,
-    width: "7em",
-    height: "3.4em",
-  },
   clear: {
     clear: "both",
+  },
+  loadingContainer: {
+    textAlign: "center",
+    margin: "100px 0",
   },
 }))
 
@@ -210,8 +204,16 @@ const ProductEditForm = ({id, fields}: ProductManageFormProps) => {
   })
   const images = fields?.images
   console.log("iamges", images)
-  const {data} = useSWR(`${BaseURL}/category`, fetcher)
+  const {data, error} = useSWR(`${BaseURL}/category`, fetcher)
   const categories: any = data?.data
+  if (error) return <div>failed to load</div>
+  if (!data) {
+    return (
+      <div className={classes.loadingContainer}>
+        <CircularProgress />
+      </div>
+    )
+  }
   const [isSubmitting, setIsSubmitting] = useState(false)
   const onChange = (imageList: any, addUpdateIndex: any) => {
     console.log(imageList, addUpdateIndex)

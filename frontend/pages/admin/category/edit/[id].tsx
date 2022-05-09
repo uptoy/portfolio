@@ -70,6 +70,10 @@ const useStyles: any = makeStyles(() => ({
   clear: {
     clear: "both",
   },
+  loadingContainer: {
+    textAlign: "center",
+    margin: "100px 0",
+  },
 }))
 
 export interface ManageCategoryFields {
@@ -101,7 +105,13 @@ export default function CategoryEdit() {
   const {data, error} = useSWR(`${BaseURL}/categories/${id}`, fetcher)
   const category: Category = data?.data
   if (error) return <div>failed to load</div>
-  if (!data) return <div>loading...</div>
+  if (!data) {
+    return (
+      <div className={classes.loadingContainer}>
+        <CircularProgress />
+      </div>
+    )
+  }
   const fields: ManageCategoryFields = {
     category_name: category?.category_name,
     created_at: category?.created_at,
@@ -201,7 +211,6 @@ const CategoryEditForm = ({id, fields}: CategoryManageFormProps) => {
           type="submit"
           variant="contained"
           color="primary"
-          // className={classes.saveButton}
           style={{
             marginTop: 10,
             marginLeft: 10,
