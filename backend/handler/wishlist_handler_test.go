@@ -54,7 +54,7 @@ func TestWishlistGet(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 		mockUser := &model.User{
 			UID:   uid,
-			Name:  "name",
+			Username:  "username",
 			Email: "email@email.com",
 		}
 		userId := mockUser.UID
@@ -115,7 +115,7 @@ func TestWishlistCreate(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 		mockUser := &model.User{
 			UID:   uid,
-			Name:  "name",
+			Username:  "username",
 			Email: "email@email.com",
 		}
 		wishlist := []model.Product{p1, p2}
@@ -178,7 +178,7 @@ func TestWishlistDelete(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 		mockUser := &model.User{
 			UID:   uid,
-			Name:  "name",
+			Username:  "username",
 			Email: "email@email.com",
 		}
 		productId := strconv.Itoa(int(p2.Id))
@@ -214,7 +214,7 @@ func TestWishlistClear(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 		mockUser := &model.User{
 			UID:   uid,
-			Name:  "name",
+			Username:  "username",
 			Email: "email@email.com",
 		}
 		userId := mockUser.UID

@@ -12,7 +12,7 @@ import {mutate} from "swr"
 import {GetServerSidePropsContext, GetServerSideProps} from "next"
 
 export type User = {
-  name: string
+  username: string
   email: string
 }
 
@@ -50,14 +50,14 @@ export function AuthProvider({children}: AuthProviderProps) {
     me()
   }, [])
 
-  const signUp = async ({email, name, password, confirmPassword}: SignUpCredentials) => {
+  const signUp = async ({email, username, password, confirmPassword}: SignUpCredentials) => {
     try {
       const response = await fetch(`${BaseURL}/auth/signup`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         credentials: "include",
         body: JSON.stringify({
-          name,
+          username,
           email,
           password,
           confirmPassword,

@@ -11,7 +11,7 @@ import (
 
 // omitempty must be listed first (tags evaluated sequentially, it seems)
 type detailsReq struct {
-	Name       string `json:"name" binding:"omitempty,max=50"`
+	Username   string `json:"username" binding:"omitempty,max=50"`
 	Email      string `json:"email" binding:"required,email"`
 	ProfileUrl string `json:"profile_url" binding:"omitempty,url"`
 }
@@ -28,8 +28,8 @@ func (h *Handler) Details(c *gin.Context) {
 
 	// Should be returned with current imageURL
 	u := &model.User{
-		UID:     authUser.UID,
-		Name:       req.Name,
+		UID:        authUser.UID,
+		Username:   req.Username,
 		Email:      req.Email,
 		ProfileUrl: req.ProfileUrl,
 	}

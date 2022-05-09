@@ -27,9 +27,9 @@ func NewUserRepository(db *sqlx.DB) model.UserRepository {
 
 // Create reaches out to database SQLX api
 func (r *pGUserRepository) Create(ctx context.Context, u *model.User) (*model.User, error) {
-	query := "INSERT INTO users (name,email, password) VALUES ($1, $2, $3) RETURNING *"
+	query := "INSERT INTO users (username,email, password) VALUES ($1, $2, $3) RETURNING *"
 
-	if err := r.DB.GetContext(ctx, u, query, u.Name, u.Email, u.Password); err != nil {
+	if err := r.DB.GetContext(ctx, u, query, u.Username, u.Email, u.Password); err != nil {
 		// check unique constraint
 		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
 			log.Printf("Could not create a user with email: %v. Reason: %v\n", u.Email, err.Code.Name())
@@ -73,7 +73,7 @@ func (r *pGUserRepository) FindByEmail(ctx context.Context, email string) (*mode
 func (r *pGUserRepository) Update(ctx context.Context, u *model.User) error {
 	query := `
 		UPDATE users
-		SET name=:name, email=:email, website=:website
+		SET username=:username, email=:email, website=:website
 		WHERE uid=:uid
 		RETURNING *;
 	`

@@ -7,7 +7,7 @@ export interface Category {
 
 export interface User {
   uid: string
-  name: string
+  username: string
   email: string
   profile_url: string
   created_at?: Date

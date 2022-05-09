@@ -31,7 +31,7 @@ export const signinWithGoogle = (accessToken: string) => {
 }
 
 export const signup = (fields: {
-  name: string
+  username: string
   email: string
   password: string
   password_confirmation: string
@@ -54,7 +54,7 @@ export const changePassword = async (fields: {
   apiClient.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`
 }
 
-export const updateProfile = (fields: {name: string; email: string}) => {
+export const updateProfile = (fields: {username: string; email: string}) => {
   return apiClient.post("/api/me/update-profile", fields)
 }
 

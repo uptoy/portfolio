@@ -25,6 +25,7 @@ type WishlistProduct struct {
 	model.Product
 	*Category
 }
+
 // CategoryJoin is temp join type
 type CategoryJoin struct {
 	CID        int64     `db:"category_id"`
@@ -72,7 +73,7 @@ func (rj *reviewJoin) ToReview() *model.ProductReview {
 		UpdatedAt: rj.UpdatedAt,
 		User: &model.User{
 			UID:        rj.UID,
-			Name:       rj.Name,
+			Username:   rj.Username,
 			Email:      rj.Email,
 			ProfileUrl: rj.ProfileUrl,
 		},
@@ -81,7 +82,7 @@ func (rj *reviewJoin) ToReview() *model.ProductReview {
 
 type UserJoin struct {
 	UID        uuid.UUID `db:"uid" json:"uid"`
-	Name       string    `db:"name" json:"name"`
+	Username   string    `db:"username" json:"username"`
 	Email      string    `db:"email" json:"email"`
 	ProfileUrl string    `db:"profile_url" json:"profile_url"`
 }
@@ -90,7 +91,6 @@ type cartItemJoin struct {
 	model.CartItem
 	*ProductJoin
 }
-
 
 type ProductJoin struct {
 	PId           int64     `db:"id" json:"id"`

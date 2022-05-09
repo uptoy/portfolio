@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@material-ui/core"
 import CssBaseline from "@material-ui/core/CssBaseline"
-import { makeStyles } from "@material-ui/styles"
+import {makeStyles} from "@material-ui/styles"
 import theme from "theme"
 
 const useStyles: any = makeStyles(() => ({
@@ -109,7 +109,7 @@ export default function EditProduct() {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={age}
-              onChange={handleChange}
+              onChange={() => handleChange}
             >
               <MenuItem value={"Car"}>Car</MenuItem>
               <MenuItem value={"Health"}>Health</MenuItem>

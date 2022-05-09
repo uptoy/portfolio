@@ -17,7 +17,7 @@ const initialState: InitialState = {
   users: [],
   user: {
     uid: "",
-    name: "",
+    username: "",
     email: "",
     profile_url: "",
   },

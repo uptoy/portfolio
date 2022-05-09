@@ -14,7 +14,7 @@ import (
 // signupReq is not exported, hence the lowercase name
 // it is used for validation and json marshalling
 type signupReq struct {
-	Name     string `json:"name" binding:"required"`
+	Username string `json:"username" binding:"required"`
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,gte=6,lte=30"`
 }
@@ -30,7 +30,7 @@ func (h *Handler) Signup(c *gin.Context) {
 	}
 
 	u := &model.User{
-		Name:     req.Name,
+		Username: req.Username,
 		Email:    req.Email,
 		Password: req.Password,
 	}

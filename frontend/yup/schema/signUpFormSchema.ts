@@ -1,9 +1,9 @@
 import * as yup from 'yup';
 
 export const signUpFormSchema = yup.object({
-  name: yup
+  username: yup
     .string()
-    .required('Name is a required field')
+    .required('Username is a required field')
     .min(3, 'Enter a name more than 3 character')
     .max(
       120,

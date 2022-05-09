@@ -116,10 +116,10 @@ func (h *Handler) SeedProductImage(c *gin.Context) {
 func (h *Handler) SeedReview(c *gin.Context) {
 	ctx := c.Request.Context()
 	randText := utils.RandStringRunes(10)
-	randName := randText + "name"
+	randName := randText + "username"
 	randEmail := randText + "@email.com"
 	u := model.User{
-		Name:     randName,
+		Username: randName,
 		Email:    randEmail,
 		Password: "password",
 	}
@@ -132,7 +132,7 @@ func (h *Handler) SeedReview(c *gin.Context) {
 		return
 	}
 	u1 := model.User{
-		Name:     user.Name,
+		Username: user.Username,
 		Email:    user.Email,
 		Password: "password",
 	}
@@ -169,10 +169,10 @@ func (h *Handler) SeedReview(c *gin.Context) {
 func (h *Handler) SeedWishlist(c *gin.Context) {
 	ctx := c.Request.Context()
 	randText := utils.RandStringRunes(10)
-	randName := randText + "name"
+	randName := randText + "username"
 	randEmail := randText + "@email.com"
 	u := model.User{
-		Name:     randName,
+		Username: randName,
 		Email:    randEmail,
 		Password: "password",
 	}
@@ -185,7 +185,7 @@ func (h *Handler) SeedWishlist(c *gin.Context) {
 		return
 	}
 	u1 := model.User{
-		Name:     user.Name,
+		Username: user.Username,
 		Email:    user.Email,
 		Password: "password",
 	}

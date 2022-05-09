@@ -60,7 +60,7 @@ func TestDetails(t *testing.T) {
 		newWebsite := "https://jacobgoodwin.me"
 
 		reqBody, _ := json.Marshal(gin.H{
-			"name":    newName,
+			"username":    newName,
 			"email":   newEmail,
 			"website": newWebsite,
 		})
@@ -69,9 +69,9 @@ func TestDetails(t *testing.T) {
 		request.Header.Set("Content-Type", "application/json")
 
 		userToUpdate := &model.User{
-			UID:   ctxUser.UID,
-			Name:  newName,
-			Email: newEmail,
+			UID:      ctxUser.UID,
+			Username: newName,
+			Email:    newEmail,
 		}
 
 		updateArgs := mock.Arguments{
@@ -109,7 +109,7 @@ func TestDetails(t *testing.T) {
 		newWebsite := "https://jacobgoodwin.me"
 
 		reqBody, _ := json.Marshal(gin.H{
-			"name":    newName,
+			"username":    newName,
 			"email":   newEmail,
 			"website": newWebsite,
 		})
@@ -119,7 +119,7 @@ func TestDetails(t *testing.T) {
 
 		userToUpdate := &model.User{
 			UID:   ctxUser.UID,
-			Name:  newName,
+			Username:  newName,
 			Email: newEmail,
 		}
 

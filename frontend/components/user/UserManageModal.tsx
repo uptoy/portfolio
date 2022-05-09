@@ -17,7 +17,7 @@ interface IProps {
 interface FormData {
   uid: string
   email: string
-  name: string
+  username: string
   profile_url: string
 }
 
@@ -39,7 +39,7 @@ const UserManageModal = (props: IProps) => {
   const {selectedUser, selectedModal} = useAppSelector((state) => state.user)
 
   const defaultValues = {
-    name: selectedUser?.name || "",
+    username: selectedUser?.username || "",
     email: selectedUser?.email || "",
   }
 

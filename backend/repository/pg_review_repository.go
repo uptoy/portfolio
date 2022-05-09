@@ -47,7 +47,7 @@ func (r *pGReviewRepository) Get(ctx context.Context, product_id, review_id int6
 	q := `SELECT
 	pr.*,
 	u.uid AS user_id,
-	u.name AS name,
+	u.username AS username,
 	FROM product_review pr
 	LEFT JOIN users u ON pr.user_id = u.uid
 	WHERE pr.product_id = $1 AND r.id = $2`
@@ -60,7 +60,7 @@ func (r *pGReviewRepository) Get(ctx context.Context, product_id, review_id int6
 
 // GetAll returns all reviews
 func (r *pGReviewRepository) GetAll(ctx context.Context, productId int64) ([]*model.ProductReview, error) {
-	query := `SELECT pr.*,u.name FROM product_review pr LEFT JOIN users u ON pr.user_id = u.uid WHERE product_id = $1`
+	query := `SELECT pr.*,u.username FROM product_review pr LEFT JOIN users u ON pr.user_id = u.uid WHERE product_id = $1`
 
 	var rj []reviewJoin
 	if err := r.DB.SelectContext(ctx, &rj, query, productId); err != nil {

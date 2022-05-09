@@ -88,9 +88,8 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                label="Name"
-                autoComplete="email"
-                {...register("name")}
+                label="Username"
+                {...register("username")}
               />
             </Grid>
             <Grid item xs={12}>

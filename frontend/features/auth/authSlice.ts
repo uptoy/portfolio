@@ -55,11 +55,11 @@ export const signup = createAsyncThunk(
       email,
       password,
       password_confirmation,
-      name,
+      username,
     }: {
       email: string
       password: string
-      name: string
+      username: string
       password_confirmation: string
     },
     {rejectWithValue}
@@ -68,7 +68,7 @@ export const signup = createAsyncThunk(
       // await AuthAPI.getCSRFCookie()
       const response = await AuthAPI.signup({
         email,
-        name,
+        username,
         password,
         password_confirmation,
       })
@@ -115,7 +115,7 @@ export const fetchCurrentUser = createAsyncThunk(
 
 export const updateProfile = createAsyncThunk(
   "user/updateProfile",
-  async (fields: {name: string; email: string}, {rejectWithValue}) => {
+  async (fields: {username: string; email: string}, {rejectWithValue}) => {
     try {
       const response = await AuthAPI.updateProfile(fields)
       const user = response.data.user

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export type User = {
-  name: string | null
+  username: string | null
   age: number | null
   email: string | null
   token: string | null
@@ -17,7 +17,7 @@ export type AddHistoryPayload = string
 
 const initialState: UserState = {
   user: {
-    name: null,
+    username: null,
     age: null,
     email: null,
     token: null,

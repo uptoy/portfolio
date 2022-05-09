@@ -1,4 +1,29 @@
 INSERT INTO products (product_name, slug, brand, price, category_id, count_in_stock, description) VALUES
 ('Potato', 'potato','haruka', 100,12,5, 'Haruka has shallow eyes and is easy to peel, and it is hard to discolor after peeling. Since the amount of starch is small, it can be cut into strips and eaten as a salad. The photo on the right is a combination of shredded and chopped basil mixed with dressing. It has a nice texture and does not feel powdery.'),
 ('Kintoki carrot', 'kintoki_carrot','kintoki', 200,12,5, 'This crimson color is rich in beta-carotene and lycopene and has high nutritional value. Kintoki carrot, which is an oriental species, has a stronger sweetness than western carrots and is suitable for simmered foods because it does not easily crumble.'),
-('Tajima peppers', 'tajima_peppers','tajima', 300,12,20, 'The characteristic of the deliciousness of "Tajima peppers" is that the fruits are thick and chewy. It also features less bitterness peculiar to bell peppers and is recommended for families with small children. Also, because the green color is dark, you can add color to various dishes, and you can feel the deliciousness from the appearance.')
+('Tajima peppers', 'tajima_peppers','tajima', 300,12,20, 'The characteristic of the deliciousness of "Tajima peppers" is that the fruits are thick and chewy. It also features less bitterness peculiar to bell peppers and is recommended for families with small children. Also, because the green color is dark, you can add color to various dishes, and you can feel the deliciousness from the appearance.'),
+('Glitter green', 'glitter_green','daisen', 250,12,100, 'The characteristic of the deliciousness of "Tajima peppers" is that the fruits are thick and chewy. It also features less bitterness peculiar to bell peppers and is recommended for families with small children. Also, because the green color is dark, you can add color to various dishes, and you can feel the deliciousness from the appearance.')
+
+
+
+INSERT INTO product_image (product_id, url) VALUES
+(1, 'https://res.cloudinary.com/yutainoue/image/upload/v1650431002/portfolio/potato1_yonn2d.jpg'),
+(1, 'https://res.cloudinary.com/yutainoue/image/upload/v1650431002/portfolio/potato2_hdznp1.jpg'),
+(1, 'https://res.cloudinary.com/yutainoue/image/upload/v1650431002/portfolio/potato_dm4vc5.jpg'),
+(1, 'https://res.cloudinary.com/yutainoue/image/upload/v1650431002/portfolio/potato3_gehj9a.jpg'),
+(1, 'https://res.cloudinary.com/yutainoue/image/upload/v1650431002/portfolio/potato4_d0ckzf.jpg'),
+(2, 'https://res.cloudinary.com/yutainoue/image/upload/v1650434876/portfolio/carrots3_ek9avv.jpg'),
+(2, 'https://res.cloudinary.com/yutainoue/image/upload/v1650434876/portfolio/carrots2_kcgdgz.jpg'),
+(2, 'https://res.cloudinary.com/yutainoue/image/upload/v1650434876/portfolio/carrots1_ydxe3e.jpg'),
+(2, 'https://res.cloudinary.com/yutainoue/image/upload/v1650434876/portfolio/carrots5_sgjg5q.jpg'),
+(2, 'https://res.cloudinary.com/yutainoue/image/upload/v1650434876/portfolio/carrots_ekrgwv.jpg'),
+(3, 'https://res.cloudinary.com/yutainoue/image/upload/v1652098988/portfolio/i7oocbmpnok7cbeeazbj.jpg'),
+(3, 'https://res.cloudinary.com/yutainoue/image/upload/v1652098999/portfolio/kinwjlr2zn8zt86o7s7i.jpg'),
+(3, 'https://res.cloudinary.com/yutainoue/image/upload/v1652099007/portfolio/livoctb9hmgdhnzm65h1.jpg'),
+(3, 'https://res.cloudinary.com/yutainoue/image/upload/v1652099011/portfolio/srbixydgxxpvtokeukur.jpg'),
+(3, 'https://res.cloudinary.com/yutainoue/image/upload/v1652099039/portfolio/rudsgmr6jbqrk8qu13b7.jpg'),
+(4, 'https://res.cloudinary.com/yutainoue/image/upload/v1652099261/portfolio/afn72e5gbflv1ikumpb5.jpg'),
+(4, 'https://res.cloudinary.com/yutainoue/image/upload/v1652099268/portfolio/s1v5tkqo5dnvyd1mtxms.jpg'),
+(4, 'https://res.cloudinary.com/yutainoue/image/upload/v1652099277/portfolio/gvwzroozf0mnjnrtbaym.jpg'),
+(4, 'https://res.cloudinary.com/yutainoue/image/upload/v1652099287/portfolio/knskwda9tck3d5qsrp9o.jpg'),
+(4, 'https://res.cloudinary.com/yutainoue/image/upload/v1652099297/portfolio/dimcccuoj32pfwxkpvie.jpg')

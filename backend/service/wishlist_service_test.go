@@ -41,7 +41,7 @@ func TestWishlistAddItem(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 		mockUser := &model.User{
 			UID:   uid,
-			Name:  "name",
+			Username:  "username",
 			Email: "email@email.com",
 		}
 		mockWishlistRepository := new(mocks.MockWishlistRepository)
@@ -87,7 +87,7 @@ func TestWishlistGet(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 		mockUser := &model.User{
 			UID:   uid,
-			Name:  "name",
+			Username:  "username",
 			Email: "email@email.com",
 		}
 		mockWishlistRepository := new(mocks.MockWishlistRepository)
@@ -133,7 +133,7 @@ func TestWishlistDelete(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 		mockUser := &model.User{
 			UID:   uid,
-			Name:  "name",
+			Username:  "username",
 			Email: "email@email.com",
 		}
 		mockWishlistRepository := new(mocks.MockWishlistRepository)

@@ -13,8 +13,8 @@ export const getUserFindByEmail = (email: string) => {
   return apiClient.post(`/api/user`, email)
 }
 
-export const searchUser = (name: string) => {
-  return apiClient.get(`/api/user/search/${name}`)
+export const searchUser = (username: string) => {
+  return apiClient.get(`/api/user/search/${username}`)
 }
 
 export const addUser = (fields: User) => {

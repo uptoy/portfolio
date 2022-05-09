@@ -8,7 +8,7 @@ import (
 // User defines domain model and its json and db representations
 type User struct {
 	UID        uuid.UUID  `db:"uid" json:"uid"`
-	Name       string     `db:"name" json:"name"`
+	Username   string     `db:"username" json:"username"`
 	Email      string     `db:"email" json:"email"`
 	Password   string     `db:"password" json:"-"`
 	ProfileUrl string     `db:"profile_url" json:"profile_url"`
