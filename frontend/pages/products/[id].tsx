@@ -214,7 +214,7 @@ const CarouselContainer = () => {
   return (
     <div>
       <Carousel title="Ralated Product" products={products} />
-      {/* <Carousel title="Popular products" products={products} /> */}
+      <Carousel title="Popular products" products={products} />
     </div>
   )
 }
