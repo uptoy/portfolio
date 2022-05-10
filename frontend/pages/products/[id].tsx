@@ -13,7 +13,7 @@ import {
   Button,
   Container,
 } from "@material-ui/core"
-import {Rating, CarouselThumbs, ProductReview, Carousel} from "components"
+import {Rating, CarouselThumbs, ProductReview, CarouselContainer} from "components"
 import Layout from "components/organisms/Layout"
 import {useRouter} from "next/router"
 import theme from "theme"
@@ -206,15 +206,3 @@ const ProductDetail: NextPage = ({product}: any) => {
 }
 
 export default ProductDetail
-
-const CarouselContainer = () => {
-  const {data, error, mutate} = useSWR(`http://localhost:8080/api/products`, fetcher)
-  console.log("data", data?.data)
-  const products = data?.data
-  return (
-    <div>
-      <Carousel title="Ralated Product" />
-      <Carousel title="Popular products" />
-    </div>
-  )
-}

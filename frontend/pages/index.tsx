@@ -1,11 +1,9 @@
 import type {NextPage} from "next"
-import Head from "next/head"
-import Image from "next/image"
 import toast from "react-hot-toast"
 import Link from "next/link"
 import React, {useCallback} from "react"
 import theme from "theme"
-import {Rating, Carousel} from "components"
+import {Rating, CarouselContainer} from "components"
 import {MainFeaturedPost} from "components/productTop"
 import {GetServerSidePropsContext, GetServerSideProps} from "next"
 import {
@@ -25,12 +23,10 @@ import {red, common} from "@material-ui/core/colors"
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"
 import FavoriteIcon from "@material-ui/icons/Favorite"
 import {Product} from "@types"
-import {Products} from "services/api/product"
 import {useAuth} from "context/AuthContext"
 import {Review} from "@types"
 import {Average} from "utils/average"
 import {useRouter} from "next/router"
-import {api} from "services/apiClient"
 import useSWR from "swr"
 const BaseURL = "http://localhost:8080/api"
 
@@ -199,21 +195,10 @@ const Index: NextPage = ({products, wishlist}: any) => {
             </Grid>
           ))}
         </Grid>
-        {/* <CarouselContainer /> */}
+        <CarouselContainer />
       </Container>
     </Layout>
   )
 }
 
 export default Index
-
-// const CarouselContainer = () => {
-//   const {data, error, mutate} = useSWR(`http://localhost:8080/api/products`, fetcher)
-//   console.log("data", data)
-//   return (
-//     <div>
-//       <Carousel title="Ralated Product" />
-//       <Carousel title="Popular products" />
-//     </div>
-//   )
-// }
