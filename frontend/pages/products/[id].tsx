@@ -213,8 +213,8 @@ const CarouselContainer = () => {
   const products = data?.data
   return (
     <div>
-      <Carousel title="Ralated Product" products={products} />
-      <Carousel title="Popular products" products={products} />
+      <Carousel title="Ralated Product" />
+      <Carousel title="Popular products" />
     </div>
   )
 }
