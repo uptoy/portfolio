@@ -32,7 +32,6 @@ import {Average} from "utils/average"
 import {useRouter} from "next/router"
 import {api} from "services/apiClient"
 import useSWR from "swr"
-import {fetcher} from "services/fetcher"
 const BaseURL = "http://localhost:8080/api"
 
 const useStyles: any = makeStyles(() => ({
@@ -200,11 +199,21 @@ const Index: NextPage = ({products, wishlist}: any) => {
             </Grid>
           ))}
         </Grid>
-        <Carousel title="Ralated Product" />
-        <Carousel title="Popular products" />
+        {/* <CarouselContainer /> */}
       </Container>
     </Layout>
   )
 }
 
 export default Index
+
+// const CarouselContainer = () => {
+//   const {data, error, mutate} = useSWR(`http://localhost:8080/api/products`, fetcher)
+//   console.log("data", data)
+//   return (
+//     <div>
+//       <Carousel title="Ralated Product" />
+//       <Carousel title="Popular products" />
+//     </div>
+//   )
+// }

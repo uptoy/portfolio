@@ -36,7 +36,7 @@ export interface Product {
   description: string
   createdAt?: Date | null
   updatedAt?: Date | null
-  images?: Image[]
+  images: Image[]
   reviews?: Review[]
   category?: Category
 }

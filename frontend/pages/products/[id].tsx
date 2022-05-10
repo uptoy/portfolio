@@ -21,6 +21,8 @@ import {makeStyles} from "@material-ui/styles"
 import {CartItem, Review} from "@types"
 import {Average} from "utils/average"
 import {useAuth} from "context/AuthContext"
+import {fetcher} from "pages/admin/product/add"
+import useSWR from "swr"
 
 const useStyles: any = makeStyles(() => ({
   gridContainer: {
@@ -197,11 +199,22 @@ const ProductDetail: NextPage = ({product}: any) => {
           </Grid>
         </Grid>
         <ProductReview reviews={reviews} />
-        <Carousel title="Ralated Product" />
-        <Carousel title="Popular products" />
+        <CarouselContainer />
       </Container>
     </Layout>
   )
 }
 
 export default ProductDetail
+
+const CarouselContainer = () => {
+  const {data, error, mutate} = useSWR(`http://localhost:8080/api/products`, fetcher)
+  console.log("data", data?.data)
+  const products = data?.data
+  return (
+    <div>
+      <Carousel title="Ralated Product" products={products} />
+      {/* <Carousel title="Popular products" products={products} /> */}
+    </div>
+  )
+}

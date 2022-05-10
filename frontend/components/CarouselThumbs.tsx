@@ -6,7 +6,7 @@ import "swiper/css"
 import "swiper/css/free-mode"
 import "swiper/css/navigation"
 import "swiper/css/thumbs"
-import {Image} from "types"
+import {Image} from "@types"
 
 const useStyles: any = makeStyles(() => ({
   swiperBox: {
@@ -25,9 +25,6 @@ const useStyles: any = makeStyles(() => ({
     height: "100%",
     objectFit: "cover",
   },
-  swiperSlide: {
-    opacity: 0.4,
-  },
 }))
 
 interface IProps {
@@ -35,30 +32,12 @@ interface IProps {
 }
 
 const CarouselThumbs: React.FC<IProps> = ({images}) => {
-  const images1 = [
-    "https://swiperjs.com/demos/images/nature-1.jpg",
-    "https://swiperjs.com/demos/images/nature-2.jpg",
-    "https://swiperjs.com/demos/images/nature-3.jpg",
-    "https://swiperjs.com/demos/images/nature-4.jpg",
-    "https://swiperjs.com/demos/images/nature-5.jpg",
-  ]
-  const images2 = [
-    "https://swiperjs.com/demos/images/nature-6.jpg",
-    "https://swiperjs.com/demos/images/nature-7.jpg",
-    "https://swiperjs.com/demos/images/nature-8.jpg",
-    "https://swiperjs.com/demos/images/nature-9.jpg",
-    "https://swiperjs.com/demos/images/nature-10.jpg",
-  ]
   const classes = useStyles()
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null)
   return (
     <>
       <div className={classes.swiperBox}>
         <Swiper
-          // style={{
-          //   "--swiper-navigation-color": "#fff",
-          //   "--swiper-pagination-color": "#fff",
-          // }}
           loop={true}
           spaceBetween={10}
           navigation={true}
