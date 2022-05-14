@@ -23,6 +23,7 @@ import {Average} from "utils/average"
 import {useAuth} from "context/AuthContext"
 import {fetcher} from "pages/admin/product/add"
 import useSWR from "swr"
+import Link from "next/link"
 
 const useStyles: any = makeStyles(() => ({
   gridContainer: {
@@ -86,18 +87,14 @@ const ProductDetail: NextPage = ({product}: any) => {
 
   const onSubmit = async (formData: CartItem) => {
     try {
-      if (isAuthenticated) {
-        const res = await fetch(`${BaseURL}/cart`, {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          credentials: "include",
-          body: JSON.stringify(formData),
-        })
-        router.push("/cart")
-        console.log("res", res)
-      } else {
-        router.push("/auth/signin")
-      }
+      const res = await fetch(`${BaseURL}/cart`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        credentials: "include",
+        body: JSON.stringify(formData),
+      })
+      router.push("/cart")
+      console.log("res", res)
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message)
@@ -183,15 +180,27 @@ const ProductDetail: NextPage = ({product}: any) => {
                     </Grid>
                   </ListItem>
                   <ListItem style={{display: "block"}}>
-                    <Button
-                      fullWidth
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                    >
-                      Add to Cart
-                    </Button>
+                    {isAuthenticated ? (
+                      <Button
+                        fullWidth
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                      >
+                        Add to Cart
+                      </Button>
+                    ) : (
+                      <Button
+                        fullWidth
+                        type="button"
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                      >
+                        <Link href="/auth/signin">Please Signin</Link>
+                      </Button>
+                    )}
                   </ListItem>
                 </form>
               </List>

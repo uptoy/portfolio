@@ -162,7 +162,7 @@ const Index: NextPage = ({products, wishlist}: any) => {
                   ) : (
                     <CardMedia
                       className={classes.cardMedia}
-                      image="http://placehold.jp/150x150.png"
+                      image={product.images[0].url}
                       title="Image title"
                     />
                   )}

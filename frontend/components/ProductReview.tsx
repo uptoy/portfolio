@@ -1,20 +1,15 @@
 import React, {useState} from "react"
 import {ErrorMessage} from "components/message"
+import {SubmitHandler, useForm, Controller} from "react-hook-form"
 import Rating from "components/Rating"
-import {
-  Link,
-  Select,
-  Button,
-  FormControl,
-  MenuItem,
-  InputLabel,
-  TextField,
-  Typography,
-} from "@material-ui/core"
+import {ReviewType} from "yup/type"
+import {yupResolver} from "@hookform/resolvers/yup"
+import {reviewFormSchema} from "yup/schema"
+import {Link, Button, MenuItem, TextField} from "@material-ui/core"
 import {makeStyles} from "@material-ui/styles"
 import theme from "theme"
 import {Review} from "@types"
-import {Circular} from "components/common/Circular"
+import {useAuth} from "context/AuthContext"
 
 const useStyles: any = makeStyles(() => ({
   typography: {
@@ -41,74 +36,40 @@ interface IProps {
   reviews: Review[]
 }
 
-const ProductReview: React.FC<IProps> = ({reviews}) => {
-  const [initialLoading, setInitialLoading] = useState(true)
-  const [title, setTitle] = useState("")
-  const [text, setText] = useState("")
-  const [rating, setRating] = useState("")
+const ratings = [
+  {
+    value: 1,
+    label: "1 - Poor",
+  },
+  {
+    value: 2,
+    label: "2 - Fair",
+  },
+  {
+    value: 3,
+    label: "3 - Good",
+  },
+  {
+    value: 4,
+    label: "4 - Very Good",
+  },
+  {
+    value: 5,
+    label: "5 - Excellent",
+  },
+]
+
+const ProductReview: React.VFC<IProps> = ({reviews}) => {
   const [state, setState] = useState(false)
   const [state2, setState2] = useState(false)
-
-  const classes = useStyles()
-
-  // const productReviewsData = useSelector((state) => state.productReview)
-  // const reviewResponses = useSelector((state) => state.createReview)
-
-  // const { success: createReviewSuccess, loading: createReviewLoading } = reviewResponses
-
-  // const userAuthData = useSelector((state) => state.userLogin)
-
-  // const { userInfo } = userAuthData
-
-  // const { loading, productReviews, count, error, success } = productReviewsData
-
-  // const dispatch = useDispatch()
-
-  // useEffect(() => {
-  //   if (createReviewSuccess) {
-  //     setTitle("")
-  //     setText("")
-  //     setRating("")
-  //     dispatch({ type: productConstants.CREATE_REVIEW_RESET })
-  //   }
-
-  //   dispatch(productAction.productReviews(productId, initialLoading))
-
-  //   // eslint-disable-next-line
-  // }, [dispatch, createReviewSuccess])
-
-  // useEffect(() => {
-  //   if (success && initialLoading) {
-  //     setInitialLoading(false)
-  //   }
-  //   // eslint-disable-next-line
-  // }, [dispatch, success])
-
-  // const handleCreateReview = (e) => {
-  //   e.preventDefault()
-
-  //   dispatch(productAction.createReview(productId, title, text, rating))
-  // }
-  const loading = false
-  const error = false
-  const count = 1
-
-  const createReviewLoading = false
-  const userInfo = true
-
+  const {isAuthenticated} = useAuth()
   function handleClick(e: any) {
     setState(!state)
   }
-
-  function handleClick2(e: any) {
+  const handleClick2: React.MouseEventHandler<HTMLButtonElement> = () => {
     setState2(!state2)
   }
-
-  return loading ? (
-    <Circular />
-  ) : error ? (
-    <ErrorMessage header={"Something went wrong"} message={error} />
-  ) : (
+  return (
     <>
       <Button variant="contained" style={{marginTop: "1em"}} onClick={handleClick2}>
         {state2 ? <p>Close Review List</p> : <p>Open Review List</p>}
@@ -144,83 +105,20 @@ const ProductReview: React.FC<IProps> = ({reviews}) => {
       ) : (
         <div>Do you want look review?</div>
       )}
-
       <Button variant="contained" style={{marginTop: "1em"}} onClick={handleClick}>
         {state ? <p>Review Form Close</p> : <p>Write Review</p>}
       </Button>
-
       {state && (
         <div>
-          <h2>Write a Customer Review</h2>
-          {userInfo ? (
-            <form>
-              <TextField
-                variant="outlined"
-                type="text"
-                margin="normal"
-                placeholder="Write a title"
-                required
-                fullWidth
-                id="title"
-                label="Write a title"
-                name="title"
-                autoComplete="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-              <TextField
-                variant="outlined"
-                type="text"
-                margin="normal"
-                placeholder="Write a comment"
-                required
-                fullWidth
-                id="comment"
-                label="Write a comment"
-                name="comment"
-                autoComplete="comment"
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-              />
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel id="demo-simple-select-outlined-label">Rating</InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  onChange={(e) => setRating(e.target.value)}
-                  autoWidth
-                  value={rating}
-                  className={classes.select}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value="1">1 - Poor</MenuItem>
-                  <MenuItem value="2">2 - Fair</MenuItem>
-                  <MenuItem value="3">3 - Good</MenuItem>
-                  <MenuItem value="4">4 - Very Good</MenuItem>
-                  <MenuItem value="5">5 - Excellent</MenuItem>
-                </Select>
-              </FormControl>
-              <div>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  disabled={createReviewLoading}
-                  className={classes.button}
-                >
-                  {createReviewLoading ? <Circular /> : <>Submit</>}
-                </Button>
-              </div>
-            </form>
+          {isAuthenticated ? (
+            <ProductReviewForm />
           ) : (
             <>
-              <Typography>Please</Typography>
-              <Link href="#" onClick={() => {}}>
+              <span>Please</span>
+              <Link href="/auth/signin" style={{margin: 5}}>
                 sign in
               </Link>
-              <Typography>to write a review</Typography>
+              <span>to write a review</span>
             </>
           )}
         </div>
@@ -230,3 +128,67 @@ const ProductReview: React.FC<IProps> = ({reviews}) => {
 }
 
 export default ProductReview
+
+const ProductReviewForm = () => {
+  const {
+    register,
+    formState: {errors},
+    handleSubmit,
+  } = useForm<ReviewType>({
+    resolver: yupResolver(reviewFormSchema),
+  })
+  const onSubmit: SubmitHandler<ReviewType> = async (formData) => {
+    console.log("formData", formData)
+  }
+  return (
+    <>
+      <h2>Write a Customer Review</h2>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TextField
+          variant="outlined"
+          type="text"
+          margin="normal"
+          placeholder="Write a title"
+          required
+          fullWidth
+          label="Title"
+          id="title"
+          {...register("title")}
+        />
+        <TextField
+          variant="outlined"
+          type="text"
+          margin="normal"
+          placeholder="Write a comment"
+          required
+          fullWidth
+          label="Comment"
+          id="comment"
+          {...register("comment")}
+        />
+        <TextField
+          select
+          defaultValue={1}
+          variant="outlined"
+          margin="normal"
+          required
+          label="Rating"
+          id="rating"
+          {...register("rating")}
+          style={{width: "15vh"}}
+        >
+          {ratings.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+        <div>
+          <Button type="submit" variant="contained" sx={{mt: 3}}>
+            submit
+          </Button>
+        </div>
+      </form>
+    </>
+  )
+}
