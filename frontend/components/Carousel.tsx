@@ -24,8 +24,7 @@ const useStyles: any = makeStyles(() => ({
     paddingBottom: theme.spacing(0.25),
   },
   swiperBox: {
-    padding: 20,
-    height: "20em",
+    height: "26em",
     margin: "auto",
   },
   img: {
@@ -34,7 +33,7 @@ const useStyles: any = makeStyles(() => ({
     objectFit: "cover",
   },
   imageContainer: {
-    height: "14vh",
+    height: "17em",
   },
 }))
 
@@ -51,8 +50,8 @@ export default function Carousel(props: IProps) {
     <div className={classes.swiperBox}>
       <p>{title}</p>
       <Swiper
-        slidesPerView={4}
-        spaceBetween={30}
+        slidesPerView={1}
+        spaceBetween={10}
         loop={true}
         pagination={{
           clickable: true,
@@ -60,6 +59,17 @@ export default function Carousel(props: IProps) {
         navigation={true}
         modules={[Navigation]}
         className="mySwiper"
+        breakpoints={{
+          460: {
+            slidesPerView: 2,
+          },
+          640: {
+            slidesPerView: 3,
+          },
+          768: {
+            slidesPerView: 4,
+          },
+        }}
       >
         {products?.map((product: Product) => (
           <SwiperSlide key={product.id}>

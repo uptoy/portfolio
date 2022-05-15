@@ -10,30 +10,17 @@ import {makeStyles} from "@material-ui/styles"
 import theme from "theme"
 import {Review} from "@types"
 import {useAuth} from "context/AuthContext"
+import toast from "react-hot-toast"
+import getFormattedDate from "utils/getFormattedDate"
+const BaseURL = "http://localhost:8080/api"
 
-const useStyles: any = makeStyles(() => ({
-  typography: {
-    padding: theme.spacing(2),
-  },
-  formControl: {
-    margin: theme.spacing(1, 0),
-    width: 200,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-  prgressColor: {
-    color: "#fff",
-  },
-  button: {
-    marginTop: "1em",
-  },
-  select: {
-    marginBottom: "0.5em",
-  },
-}))
 interface IProps {
   reviews: Review[]
+  productId: string
+}
+
+interface ReviewFormIProps {
+  productId: string
 }
 
 const ratings = [
@@ -59,18 +46,18 @@ const ratings = [
   },
 ]
 
-const ProductReview: React.VFC<IProps> = ({reviews}) => {
+const ProductReview: React.VFC<IProps> = ({reviews, productId}) => {
   const [state, setState] = useState(false)
-  const [state2, setState2] = useState(false)
+  const [state2, setState2] = useState(true)
   const {isAuthenticated} = useAuth()
-  function handleClick(e: any) {
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = () => {
     setState(!state)
   }
   const handleClick2: React.MouseEventHandler<HTMLButtonElement> = () => {
     setState2(!state2)
   }
   return (
-    <>
+    <div style={{paddingTop: 15}}>
       <Button variant="contained" style={{marginTop: "1em"}} onClick={handleClick2}>
         {state2 ? <p>Close Review List</p> : <p>Open Review List</p>}
       </Button>
@@ -81,9 +68,9 @@ const ProductReview: React.VFC<IProps> = ({reviews}) => {
               <div>
                 <h2>Reviews({reviews.length})</h2>
                 {reviews.map((review) => (
-                  <div key={review.id}>
-                    <p>{review.created_at}</p>
+                  <div key={review.id} style={{margin: 10, marginLeft: 0}}>
                     <Rating value={review.rating} />
+                    <p style={{margin: 0}}>{getFormattedDate(review.updated_at)}</p>
                     <div>
                       <strong>Title: </strong>
                       {review.title}
@@ -103,7 +90,7 @@ const ProductReview: React.VFC<IProps> = ({reviews}) => {
           </div>
         </div>
       ) : (
-        <div>Do you want look review?</div>
+        <div style={{marginTop: 10}}>Do you want look review?</div>
       )}
       <Button variant="contained" style={{marginTop: "1em"}} onClick={handleClick}>
         {state ? <p>Review Form Close</p> : <p>Write Review</p>}
@@ -111,25 +98,26 @@ const ProductReview: React.VFC<IProps> = ({reviews}) => {
       {state && (
         <div>
           {isAuthenticated ? (
-            <ProductReviewForm />
+            <ProductReviewForm productId={productId} />
           ) : (
-            <>
+            <div style={{marginTop: 10}}>
               <span>Please</span>
               <Link href="/auth/signin" style={{margin: 5}}>
                 sign in
               </Link>
               <span>to write a review</span>
-            </>
+            </div>
           )}
         </div>
       )}
-    </>
+    </div>
   )
 }
 
 export default ProductReview
 
-const ProductReviewForm = () => {
+const ProductReviewForm: React.VFC<ReviewFormIProps> = ({productId}) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const {
     register,
     formState: {errors},
@@ -138,7 +126,25 @@ const ProductReviewForm = () => {
     resolver: yupResolver(reviewFormSchema),
   })
   const onSubmit: SubmitHandler<ReviewType> = async (formData) => {
-    console.log("formData", formData)
+    try {
+      setIsSubmitting(true)
+      await fetch(`${BaseURL}/products/${productId}/reviews`, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(formData),
+      })
+      setIsSubmitting(false)
+      toast.success("Create Review")
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log("Failed", err.message)
+        throw new Error(err.message)
+      } else {
+        console.log("Unknown Failure", err)
+        throw new Error("Unknown Failure")
+      }
+    }
   }
   return (
     <>
@@ -184,7 +190,7 @@ const ProductReviewForm = () => {
           ))}
         </TextField>
         <div>
-          <Button type="submit" variant="contained" sx={{mt: 3}}>
+          <Button type="submit" variant="contained" disabled={isSubmitting} sx={{mt: 3}}>
             submit
           </Button>
         </div>

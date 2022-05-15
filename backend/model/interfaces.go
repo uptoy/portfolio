@@ -150,7 +150,7 @@ type ProductService interface {
 
 type ReviewService interface {
 	ReviewBulkInsert(ctx context.Context, reviews []ProductReview) ([]ProductReview, error)
-	ReviewCreate(ctx context.Context, product_id int64, review *ProductReview) (*ProductReview, error)
+	ReviewCreate(ctx context.Context, review *ProductReview) (*ProductReview, error)
 	Get(ctx context.Context, product_id, review_id int64) (*ProductReview, error)
 	GetAll(ctx context.Context, product_id int64) ([]*ProductReview, error)
 	Update(ctx context.Context, product_id, review_id int64, review *ProductReview) (*ProductReview, error)
@@ -164,7 +164,7 @@ type ReviewService interface {
 }
 type ReviewRepository interface {
 	ReviewBulkInsert(ctx context.Context, reviews []ProductReview) ([]ProductReview, error)
-	ReviewCreate(ctx context.Context, product_id int64, review *ProductReview) (*ProductReview, error)
+	ReviewCreate(ctx context.Context, review *ProductReview) (*ProductReview, error)
 	Get(ctx context.Context, product_id, review_id int64) (*ProductReview, error)
 	GetAll(ctx context.Context, product_id int64) ([]*ProductReview, error)
 	Update(ctx context.Context, product_id, review_id int64, review *ProductReview) (*ProductReview, error)

@@ -159,7 +159,7 @@ func (h *Handler) SeedReview(c *gin.Context) {
 		Comment:   "It was very delicious.I could eat what you disliked.",
 	}
 	fmt.Println("review")
-	result2, _ := h.ReviewService.ReviewCreate(ctx, productId, &review)
+	result2, _ := h.ReviewService.ReviewCreate(ctx, &review)
 
 	c.JSON(http.StatusAccepted, gin.H{
 		"ok": result2,

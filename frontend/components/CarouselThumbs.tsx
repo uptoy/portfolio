@@ -11,7 +11,7 @@ import {Image} from "@types"
 const useStyles: any = makeStyles(() => ({
   swiperBox: {
     height: "30em",
-    width: "25em",
+    width: "100%",
     margin: "auto",
   },
   mySwiper: {

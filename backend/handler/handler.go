@@ -91,7 +91,7 @@ func NewHandler(c *Config) {
 	// if gin.Mode() != gin.TestMode {
 	// 	//auth
 
-	// 	api.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
+	// 	api.GET("/me", middleware.AuthUser/category/health(h.TokenService), h.Me)
 	// 	// api.POST("/signout", middleware.AuthUser(h.TokenService), h.Signout)
 	// 	api.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
 	// } else {

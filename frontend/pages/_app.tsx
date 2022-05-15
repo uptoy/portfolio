@@ -9,10 +9,11 @@ import ContextProvider from "context"
 import {Provider} from "react-redux"
 import {wrapper} from "app/store"
 import {Toaster} from "react-hot-toast"
-
+import makeStyles from "@material-ui/styles/makeStyles"
 import store from "app/store"
+import {createTheme} from "@material-ui/core/styles"
 
-function MyApp(props: AppProps) {
+function MyApp(props: any) {
   const {Component, pageProps} = props
 
   React.useEffect(() => {
@@ -23,20 +24,31 @@ function MyApp(props: AppProps) {
     }
   }, [])
 
+  const useGlobalStyles = makeStyles({
+    "@global": {
+      body: {
+        backgroundColor: "#f5f6f6",
+      },
+    },
+  })
+  function MyThemeProvider({children}: any) {
+    useGlobalStyles()
+    return <ThemeProvider theme={theme}>{children}</ThemeProvider>
+  }
+
   return (
     <React.Fragment>
+      <Toaster />
       <Head>
         <title>My page</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
       <Provider store={store}>
-        <ThemeProvider theme={theme}>
+        <MyThemeProvider theme={theme}>
           <ContextProvider>
-            <CssBaseline />
             <Component {...pageProps} />
-            <Toaster />
           </ContextProvider>
-        </ThemeProvider>
+        </MyThemeProvider>
       </Provider>
     </React.Fragment>
   )

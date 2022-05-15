@@ -1,6 +1,6 @@
-import { createTheme } from "@material-ui/core/styles"
-import { Theme } from "@material-ui/core/styles"
-import { yellow, red, common } from "@material-ui/core/colors"
+import {createTheme} from "@material-ui/core/styles"
+import {Theme} from "@material-ui/core/styles"
+import {yellow, red, common} from "@material-ui/core/colors"
 
 // Create a theme instance.
 const theme: Theme = createTheme({

@@ -164,10 +164,10 @@ const Cart: NextPage = ({cart}: any) => {
   const handleCheckOut = async () => {
     router.push("/checkout")
   }
-  const totalNum: number = fetchCartItems.reduce((total: number, cartItem: CartItem): number => {
+  const totalNum: number = fetchCartItems?.reduce((total: number, cartItem: CartItem): number => {
     return total + cartItem.quantity
   }, 0)
-  const totalPrice: number = fetchCartItems.reduce((total: number, cartItem: CartItem): number => {
+  const totalPrice: number = fetchCartItems?.reduce((total: number, cartItem: any): number => {
     return total + cartItem.quantity * cartItem.product.price
   }, 0)
   return (

@@ -33,7 +33,7 @@ func (r *pGReviewRepository) ReviewBulkInsert(ctx context.Context, reviews []mod
 	return reviews, nil
 }
 
-func (r *pGReviewRepository) ReviewCreate(ctx context.Context, product_id int64, review *model.ProductReview) (*model.ProductReview, error) {
+func (r *pGReviewRepository) ReviewCreate(ctx context.Context, review *model.ProductReview) (*model.ProductReview, error) {
 	query := `INSERT INTO product_review (user_id, product_id, rating, title, comment) VALUES ($1, $2,$3, $4,$5) RETURNING *`
 	if err := r.DB.GetContext(ctx, review, query, review.UserID, review.ProductID, review.Rating, review.Title, review.Comment); err != nil {
 		log.Printf("Could not create product review : %v. Reason: %v\n", review.ProductID, err)

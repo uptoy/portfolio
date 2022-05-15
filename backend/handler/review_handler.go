@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -47,12 +48,12 @@ func (h *Handler) ReviewCreate(c *gin.Context) {
 	uid := user.(*model.User).UID
 	review := model.ProductReview{
 		UserID:    uid,
-		ProductID: json.ProductID,
+		ProductID: productId,
 		Rating:    json.Rating,
 		Title:     json.Title,
 		Comment:   json.Comment,
 	}
-	result, err := h.ReviewService.ReviewCreate(ctx, productId, &review)
+	result, err := h.ReviewService.ReviewCreate(ctx, &review)
 	if err != nil {
 		log.Printf("Unable to find reviews: %v", err)
 		e := apperrors.NewNotFound("reviews", "err")
