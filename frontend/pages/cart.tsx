@@ -1,5 +1,4 @@
 import type {NextPage} from "next"
-import {useEffect} from "react"
 import Image from "next/image"
 import React from "react"
 import theme from "theme"
@@ -19,6 +18,10 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline"
 import {Icon} from "@material-ui/core"
 import DeleteIcon from "@material-ui/icons/Delete"
 import {useAuth} from "context/AuthContext"
+import AddBoxIcon from "@material-ui/icons/AddBox"
+import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox"
+import {AspectRatioBox} from "components/AspectRatioBox"
+import {Avatar} from "@material-ui/core"
 
 const BaseURL = "http://localhost:8080/api"
 
@@ -54,10 +57,10 @@ const useStyles: any = makeStyles(() => ({
   },
   icon: {
     "&:hover": {
-      color: common.black,
+      opacity: 0.5,
     },
     "&:active": {
-      color: common.black,
+      opacity: 1,
     },
     display: "block",
   },
@@ -75,6 +78,7 @@ const useStyles: any = makeStyles(() => ({
   paper: {
     padding: theme.spacing(2),
     color: theme.palette.text.secondary,
+    marginBottom: "1em",
   },
 }))
 
@@ -95,11 +99,12 @@ const Cart: NextPage = ({cart}: any) => {
       headers: {"Content-Type": "application/json"},
       credentials: "include",
     }).then((r) => r.json())
-  const {data, error, mutate} = useSWR(`${BaseURL}/cart`, fetcher, {
+  const {data, mutate} = useSWR(`${BaseURL}/cart`, fetcher, {
     fallbackData: cart,
     revalidateOnMount: true,
   })
   const {isAuthenticated} = useAuth()
+  console.log("isAuthenticated", isAuthenticated)
   const router = useRouter()
   const classes = useStyles()
   const fetchCartItems = data.data
@@ -176,69 +181,93 @@ const Cart: NextPage = ({cart}: any) => {
   const totalPrice: number = fetchCartItems?.reduce((total: number, cartItem: any): number => {
     return total + cartItem.quantity * cartItem.product.price
   }, 0)
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/auth/signin")
-    }
-  }, [])
+
   return (
     <Layout>
-      <div className={classes.root}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={9}>
-            {fetchCartItems?.map((cartItem: CartItem, index: number) => (
-              <Paper className={classes.paper} key={index}>
-                <Link href={`/product/${cartItem.product_id}`}>
-                  <div style={{display: "flex"}}>
-                    <Image
-                      src={cartItem.product?.images[0].url as string}
-                      alt={cartItem.product?.product_name}
-                      width={"100%"}
-                      height={"100%"}
-                    ></Image>
-                    <div style={{paddingLeft: 10}}>
-                      <p style={{margin: 0}}>name</p>
-                      <p>{cartItem.product?.price}</p>
-                      <p style={{color: "#007600"}}>In Stock</p>
+      <>
+        {fetchCartItems?.length === 0 ? (
+          <div>
+            Cart is empty.
+            <Link href="/" passHref>
+              Go shopping
+            </Link>
+          </div>
+        ) : (
+          <div className={classes.root}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={12} md={9}>
+                {fetchCartItems?.map((cartItem: CartItem, index: number) => (
+                  <Paper className={classes.paper} key={index}>
+                    <div style={{display: "flex"}}>
+                      <div
+                        style={{
+                          position: "relative",
+                          width: "30vw",
+                          height: "100%",
+                          minHeight: "8em",
+                          minWidth: "8em",
+                          maxHeight: "13em",
+                          maxWidth: "13em",
+                        }}
+                      >
+                        <Image
+                          alt={cartItem.product?.product_name}
+                          src={cartItem.product?.images[0].url as string}
+                          width={"100%"}
+                          height={"100%"}
+                          layout="responsive"
+                        />
+                      </div>
+                      <div style={{paddingLeft: 10}}>
+                        <Link href={`/products/${cartItem.product_id}`}>
+                          <p style={{margin: 0}}>name</p>
+                        </Link>
+                        <p>{cartItem.product?.price}</p>
+                        <p style={{color: "#007600"}}>In Stock</p>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-                <div style={{paddingTop: 10, display: "flex"}}>
-                  <Icon color="primary" className={classes.icon}>
-                    <RemoveCircleOutlineIcon onClick={() => handleDecrement(cartItem)} />
-                  </Icon>
-                  <div style={{marginRight: 10, marginLeft: 10}}>{cartItem.quantity}</div>
-                  <Icon color="primary" className={classes.icon}>
-                    <AddCircleOutlineIcon onClick={() => handleIncrement(cartItem)} />
-                  </Icon>
-                  <Icon color="inherit" style={{marginLeft: 10}}>
-                    <DeleteIcon onClick={() => handleDelete(cartItem)} />
-                  </Icon>
-                </div>
-              </Paper>
-            ))}
-          </Grid>
-          <Grid item xs={12} sm={6} md>
-            <Paper className={classes.paper}>
-              <List>
-                <ListItem style={{justifyContent: "center"}}>
-                  <Typography variant="h6">SubTotal(${totalPrice})</Typography>
-                </ListItem>
-                <ListItem style={{justifyContent: "center"}}>
-                  <Button
-                    variant="contained"
-                    className={classes.checkout}
-                    color="primary"
-                    onClick={() => handleCheckOut()}
-                  >
-                    Check Out
-                  </Button>
-                </ListItem>
-              </List>
-            </Paper>
-          </Grid>
-        </Grid>
-      </div>
+
+                    <div style={{paddingTop: 10, paddingLeft: 10, display: "flex"}}>
+                      <Icon color="primary" className={classes.icon}>
+                        <IndeterminateCheckBoxIcon onClick={() => handleDecrement(cartItem)} />
+                      </Icon>
+                      <div style={{marginRight: 20, marginLeft: 20}}>{cartItem.quantity}</div>
+                      <Icon color="primary" className={classes.icon}>
+                        <AddBoxIcon onClick={() => handleIncrement(cartItem)} />
+                      </Icon>
+                      <Icon color="inherit" style={{marginLeft: 10}}>
+                        <DeleteIcon onClick={() => handleDelete(cartItem)} />
+                      </Icon>
+                    </div>
+                  </Paper>
+                ))}
+              </Grid>
+              <Grid item xs={12} sm={6} md>
+                <Paper className={classes.paper}>
+                  <List>
+                    <ListItem style={{display: "block"}}>
+                      <div style={{margin: "auto", width: "8em"}}>
+                        <p>Total Price(${totalPrice})</p>
+                        <p>Total Num(${totalNum})</p>
+                      </div>
+                    </ListItem>
+                    <ListItem style={{justifyContent: "center"}}>
+                      <Button
+                        variant="contained"
+                        className={classes.checkout}
+                        color="primary"
+                        onClick={() => handleCheckOut()}
+                      >
+                        Check Out
+                      </Button>
+                    </ListItem>
+                  </List>
+                </Paper>
+              </Grid>
+            </Grid>
+          </div>
+        )}
+      </>
     </Layout>
   )
 }

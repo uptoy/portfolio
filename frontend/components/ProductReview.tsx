@@ -59,7 +59,7 @@ const ProductReview: React.VFC<IProps> = ({reviews, productId}) => {
   return (
     <div style={{paddingTop: 15}}>
       <Button variant="contained" style={{marginTop: "1em"}} onClick={handleClick2}>
-        {state2 ? <p>Close Review List</p> : <p>Open Review List</p>}
+        {state2 ? <div>Close Review List</div> : <div>Open Review List</div>}
       </Button>
       {state2 ? (
         <div>
@@ -93,7 +93,7 @@ const ProductReview: React.VFC<IProps> = ({reviews, productId}) => {
         <div style={{marginTop: 10}}>Do you want look review?</div>
       )}
       <Button variant="contained" style={{marginTop: "1em"}} onClick={handleClick}>
-        {state ? <p>Review Form Close</p> : <p>Write Review</p>}
+        {state ? <div>Review Form Close</div> : <div>Write Review</div>}
       </Button>
       {state && (
         <div>

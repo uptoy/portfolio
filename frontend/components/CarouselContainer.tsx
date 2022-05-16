@@ -13,7 +13,7 @@ const CarouselContainer = () => {
   return (
     <div style={{marginTop: "3em"}}>
       <Carousel title="Ralated Product" products={products} />
-      <Carousel title="Popular products" products={products} />
+      <Carousel title="New Arrival Products" products={products} />
     </div>
   )
 }

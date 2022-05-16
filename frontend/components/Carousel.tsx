@@ -17,6 +17,12 @@ const useStyles: any = makeStyles(() => ({
     height: "100%",
     display: "flex",
     flexDirection: "column",
+    "&:hover": {
+      opacity: 0.5,
+    },
+    "&:active": {
+      opacity: 1,
+    },
   },
   cardContent: {
     flexGrow: 1,
