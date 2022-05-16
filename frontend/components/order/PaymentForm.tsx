@@ -1,67 +1,72 @@
-import * as React from 'react';
-import {
-  Grid,
-  FormControlLabel,
-  Typography,
-  Checkbox,
-  TextField
-} from '@material-ui/core'
+import * as React from "react"
+import {Grid, Typography, TextField} from "@material-ui/core"
+import {Button} from "@material-ui/core"
+import {useForm} from "react-hook-form"
+import {IPayment} from "pages/checkout"
 
-export default function PaymentForm() {
+interface IProps {
+  handleNext: () => void
+  setPayment: React.Dispatch<React.SetStateAction<IPayment | undefined>>
+}
+
+const PaymentForm: React.VFC<IProps> = ({setPayment, handleNext}) => {
+  const {
+    register,
+    formState: {errors},
+    handleSubmit,
+  } = useForm()
+  const Submit = async (formData: any) => {
+    console.log("formData", formData)
+    setPayment(formData)
+    handleNext()
+  }
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         Payment method
       </Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="cardName"
-            label="Name on card"
-            fullWidth
-            autoComplete="cc-name"
-            variant="standard"
-          />
+      <form noValidate onSubmit={handleSubmit(Submit)}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <TextField
+              required
+              id="card_number"
+              label="Card number"
+              fullWidth
+              variant="standard"
+              {...register("card_number")}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              id="expDate"
+              label="Expiry date"
+              fullWidth
+              autoComplete="cc-exp"
+              variant="standard"
+              {...register("expDate")}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              id="cvv"
+              label="CVV"
+              helperText="Last three digits on signature strip"
+              fullWidth
+              autoComplete="cc-csc"
+              variant="standard"
+              {...register("cvv")}
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="cardNumber"
-            label="Card number"
-            fullWidth
-            autoComplete="cc-number"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="expDate"
-            label="Expiry date"
-            fullWidth
-            autoComplete="cc-exp"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="cvv"
-            label="CVV"
-            helperText="Last three digits on signature strip"
-            fullWidth
-            autoComplete="cc-csc"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox color="secondary" name="saveCard" value="yes" />}
-            label="Remember credit card details for next time"
-          />
-        </Grid>
-      </Grid>
+        <Button type="submit" fullWidth variant="contained" color="primary">
+          Submit
+        </Button>
+      </form>
     </React.Fragment>
-  );
+  )
 }
+
+export default PaymentForm
