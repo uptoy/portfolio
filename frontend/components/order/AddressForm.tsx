@@ -1,7 +1,19 @@
 import * as React from "react"
-import {Button, Grid, Typography, TextField, FormControlLabel, Checkbox} from "@material-ui/core"
-import {useForm} from "react-hook-form"
-import {IAddress} from "pages/checkout"
+import {Button, Grid, Typography, TextField} from "@material-ui/core"
+import {useForm, SubmitHandler} from "react-hook-form"
+
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos"
+import ArrowForwardIos from "@material-ui/icons/ArrowForwardIos"
+interface IAddress {
+  first_name: string
+  last_name: string
+  address1: string
+  address2: string
+  city: string
+  state: string
+  // Zip: string
+  // Country: string
+}
 
 interface IProps {
   handleNext: () => void
@@ -14,7 +26,7 @@ const AddressForm: React.VFC<IProps> = ({handleNext, setAddress}) => {
     formState: {errors},
     handleSubmit,
   } = useForm()
-  const Submit = async (formData: any) => {
+  const onSubmit: SubmitHandler<IAddress> = async (formData) => {
     setAddress(formData)
     handleNext()
   }
@@ -23,7 +35,7 @@ const AddressForm: React.VFC<IProps> = ({handleNext, setAddress}) => {
       <Typography variant="h6" gutterBottom>
         Shipping address
       </Typography>
-      <form noValidate onSubmit={handleSubmit(Submit)}>
+      <form noValidate onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -77,6 +89,7 @@ const AddressForm: React.VFC<IProps> = ({handleNext, setAddress}) => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
+              required
               id="state"
               label="State/Province/Region"
               fullWidth
@@ -85,21 +98,65 @@ const AddressForm: React.VFC<IProps> = ({handleNext, setAddress}) => {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField required id="zip" label="Zip / Postal code" fullWidth variant="standard" />
+            <TextField
+              required
+              id="zip"
+              label="Zip / Postal code"
+              fullWidth
+              variant="standard"
+              {...register("zip")}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField required id="country" label="Country" fullWidth variant="standard" />
-          </Grid>
-          <Grid item xs={12}>
-            <FormControlLabel
-              control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
-              label="Use this address for payment details"
+            <TextField
+              required
+              id="country"
+              label="Country"
+              fullWidth
+              variant="standard"
+              {...register("country")}
             />
           </Grid>
         </Grid>
-        <Button type="submit" fullWidth variant="contained" color="primary">
-          Submit
-        </Button>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "right",
+            alignItems: "center",
+            marginTop: 20,
+          }}
+        >
+          <Button
+            type="button"
+            variant="contained"
+            color="primary"
+            style={{
+              marginTop: 10,
+              marginLeft: 10,
+            }}
+          >
+            <ArrowBackIosIcon />
+            <p style={{margin: 5}}>Back</p>
+          </Button>
+
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            style={{
+              marginTop: 10,
+              marginLeft: 10,
+              width: "7em",
+              height: "3.4em",
+            }}
+            disableElevation
+          >
+            <div style={{display: "flex", alignItems: "center"}}>
+              <p style={{margin: 5}}>Save</p>
+              <ArrowForwardIos style={{margin: 5}} />
+            </div>
+          </Button>
+        </div>
       </form>
     </React.Fragment>
   )

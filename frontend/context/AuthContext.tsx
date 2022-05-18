@@ -179,7 +179,6 @@ export function AuthProvider({children}: AuthProviderProps) {
       })
       const data = await response.json()
       const user = data.user
-      console.log("me user", user)
       setUser(user)
     } catch (err) {
       if (err instanceof Error) {

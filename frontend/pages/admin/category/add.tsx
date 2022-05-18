@@ -1,6 +1,5 @@
 import React, {useState} from "react"
 import SaveIcon from "@material-ui/icons/Save"
-import {Category} from "@types"
 import {AdminLayout} from "components/dashboard"
 import {useForm, SubmitHandler} from "react-hook-form"
 import {yupResolver} from "@hookform/resolvers/yup"
@@ -11,7 +10,6 @@ import {Button, Divider, TextField, Grid, Paper, CircularProgress} from "@materi
 import {makeStyles} from "@material-ui/styles"
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos"
 import {useRouter} from "next/router"
-import axios from "axios"
 
 const BaseURL = "http://localhost:8080/api"
 

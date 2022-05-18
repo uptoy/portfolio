@@ -104,7 +104,6 @@ const Cart: NextPage = ({cart}: any) => {
     revalidateOnMount: true,
   })
   const {isAuthenticated} = useAuth()
-  console.log("isAuthenticated", isAuthenticated)
   const router = useRouter()
   const classes = useStyles()
   const fetchCartItems = data.data

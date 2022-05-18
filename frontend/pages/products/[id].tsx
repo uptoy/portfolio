@@ -50,7 +50,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSideP
 }
 
 const ProductDetail: NextPage = ({product}: any) => {
-  console.log("product", product)
   const router = useRouter()
   const classes = useStyles()
   const fetchProduct = product.data
@@ -58,7 +57,6 @@ const ProductDetail: NextPage = ({product}: any) => {
   const reviews = fetchProduct.reviews
   const countInStock = fetchProduct.count_in_stock
   const {isAuthenticated} = useAuth()
-  console.log("isAuthenticated", isAuthenticated)
   const averageNum = Average(reviews.map((review: Review) => review.rating))
   const id = router.query.id as string
   const {handleSubmit, control} = useForm({

@@ -3,6 +3,8 @@ import {Grid, Typography, TextField} from "@material-ui/core"
 import {Button} from "@material-ui/core"
 import {useForm} from "react-hook-form"
 import {IPayment} from "pages/checkout"
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos"
+import ArrowForwardIos from "@material-ui/icons/ArrowForwardIos"
 
 interface IProps {
   handleNext: () => void
@@ -61,9 +63,48 @@ const PaymentForm: React.VFC<IProps> = ({setPayment, handleNext}) => {
             />
           </Grid>
         </Grid>
-        <Button type="submit" fullWidth variant="contained" color="primary">
+        {/* <Button type="submit" fullWidth variant="contained" color="primary">
           Submit
-        </Button>
+        </Button> */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "right",
+            alignItems: "center",
+            marginTop: 20,
+          }}
+        >
+          <Button
+            type="button"
+            variant="contained"
+            color="primary"
+            style={{
+              marginTop: 10,
+              marginLeft: 10,
+            }}
+          >
+            <ArrowBackIosIcon />
+            <p style={{margin: 5}}>Back</p>
+          </Button>
+
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            style={{
+              marginTop: 10,
+              marginLeft: 10,
+              width: "7em",
+              height: "3.4em",
+            }}
+            disableElevation
+          >
+            <div style={{display: "flex", alignItems: "center"}}>
+              <p style={{margin: 5}}>Save</p>
+              <ArrowForwardIos style={{margin: 5}} />
+            </div>
+          </Button>
+        </div>
       </form>
     </React.Fragment>
   )
