@@ -1,9 +1,7 @@
 import {Carousel} from "components"
 import useSWR from "swr"
-import theme from "theme"
 import React from "react"
-import {makeStyles} from "@material-ui/styles"
-import CircularProgress from "@material-ui/core/CircularProgress"
+import {Circular} from "./Circular"
 const BaseURL = "http://localhost:8080/api"
 
 const CarouselContainer = () => {
@@ -24,23 +22,4 @@ const useProducts = () => {
   const fetcher = (url: string) => fetch(url).then((r) => r.json())
   const {data, error} = useSWR(`${BaseURL}/products`, fetcher)
   return {data: data, isLoading: !error && !data}
-}
-
-const useStyles: any = makeStyles(() => ({
-  root: {
-    display: "flex",
-    "& > * + *": {
-      marginLeft: theme.spacing(2),
-    },
-  },
-}))
-
-function Circular() {
-  const classes = useStyles()
-
-  return (
-    <div className={classes.root}>
-      <CircularProgress color="secondary" />
-    </div>
-  )
 }

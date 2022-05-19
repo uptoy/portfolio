@@ -1,33 +1,58 @@
 import * as React from "react"
 import {Grid, Typography, TextField} from "@material-ui/core"
 import {Button} from "@material-ui/core"
-import {useForm} from "react-hook-form"
+import {useForm, SubmitHandler, Controller} from "react-hook-form"
 import {IPayment} from "pages/checkout"
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos"
 import ArrowForwardIos from "@material-ui/icons/ArrowForwardIos"
+import Select from "@material-ui/core/Select"
+import MenuItem from "@material-ui/core/MenuItem"
+import FormControl from "@material-ui/core/FormControl"
+import InputLabel from "@material-ui/core/InputLabel"
+import {makeStyles} from "@material-ui/styles"
 
 interface IProps {
   handleNext: () => void
   setPayment: React.Dispatch<React.SetStateAction<IPayment | undefined>>
 }
 
+const useStyles = makeStyles(() => ({
+  formControl: {
+    "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
+      borderColor: "blue",
+    },
+  },
+  select: {
+    "&:before": {
+      borderColor: "red",
+    },
+  },
+}))
+
 const PaymentForm: React.VFC<IProps> = ({setPayment, handleNext}) => {
-  const {
-    register,
-    formState: {errors},
-    handleSubmit,
-  } = useForm()
-  const Submit = async (formData: any) => {
-    console.log("formData", formData)
+  const months: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  const years: number[] = []
+  for (let i = 0; i < 21; i++) {
+    const d = new Date()
+    const year = d.getFullYear()
+    years.push(year + i)
+  }
+  const {register, control, handleSubmit} = useForm<IPayment>({
+    defaultValues: {
+      exp_month: months[0],
+      exp_year: years[0],
+    },
+  })
+  const onSubmit: SubmitHandler<IPayment> = (formData) => {
     setPayment(formData)
     handleNext()
   }
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         Payment method
       </Typography>
-      <form noValidate onSubmit={handleSubmit(Submit)}>
+      <form noValidate onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <TextField
@@ -35,19 +60,54 @@ const PaymentForm: React.VFC<IProps> = ({setPayment, handleNext}) => {
               id="card_number"
               label="Card number"
               fullWidth
-              variant="standard"
+              variant="outlined"
+              placeholder="4242 4242 4242 4242"
               {...register("card_number")}
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
               required
-              id="expDate"
-              label="Expiry date"
+              id="holder_name"
+              label="Holder Name"
               fullWidth
-              autoComplete="cc-exp"
-              variant="standard"
-              {...register("expDate")}
+              variant="outlined"
+              placeholder="TARO YAMADA"
+              {...register("holder_name")}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Controller
+              name="exp_month"
+              control={control}
+              render={({field}) => (
+                <FormControl style={{width: "7em"}}>
+                  <InputLabel id="demo-simple-select-label">Month</InputLabel>
+                  <Select {...field} required style={{width: "100%"}}>
+                    {months?.map((month: number) => (
+                      <MenuItem key={month} value={month}>
+                        {month}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+            />
+            <Controller
+              name="exp_year"
+              control={control}
+              render={({field}) => (
+                <FormControl style={{width: "7em", marginLeft: "1em"}}>
+                  <InputLabel id="demo-simple-select-label">Year</InputLabel>
+                  <Select {...field} required style={{width: "100%"}}>
+                    {years?.map((year: number) => (
+                      <MenuItem key={year} value={year}>
+                        {year}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
             />
           </Grid>
           <Grid item xs={12}>
@@ -55,17 +115,13 @@ const PaymentForm: React.VFC<IProps> = ({setPayment, handleNext}) => {
               required
               id="cvv"
               label="CVV"
-              helperText="Last three digits on signature strip"
               fullWidth
-              autoComplete="cc-csc"
-              variant="standard"
+              variant="outlined"
+              placeholder="123"
               {...register("cvv")}
             />
           </Grid>
         </Grid>
-        {/* <Button type="submit" fullWidth variant="contained" color="primary">
-          Submit
-        </Button> */}
         <div
           style={{
             display: "flex",
@@ -74,19 +130,6 @@ const PaymentForm: React.VFC<IProps> = ({setPayment, handleNext}) => {
             marginTop: 20,
           }}
         >
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            style={{
-              marginTop: 10,
-              marginLeft: 10,
-            }}
-          >
-            <ArrowBackIosIcon />
-            <p style={{margin: 5}}>Back</p>
-          </Button>
-
           <Button
             type="submit"
             variant="contained"

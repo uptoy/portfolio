@@ -1,20 +1,17 @@
 //address noting patern
+import {GetServerSidePropsContext, GetServerSideProps} from "next"
 import * as React from "react"
-import {
-  Button,
-  Typography,
-  Container,
-  Box,
-  Paper,
-  Stepper,
-  Step,
-  StepLabel,
-} from "@material-ui/core"
+import {Typography, Container, Box, Paper, Stepper, Step, StepLabel} from "@material-ui/core"
 import {AddressForm, PaymentForm, Review} from "components/order"
 import {Layout} from "components/organisms"
 import {Link} from "components"
 import {makeStyles} from "@material-ui/styles"
 import theme from "theme"
+import {fetcher} from "./cart"
+import useSWR from "swr"
+import {Circular} from "components/Circular"
+import {CartItem} from "@types"
+const BaseURL = "http://localhost:8080/api"
 
 const useStyles: any = makeStyles(() => ({
   stepper: {
@@ -31,20 +28,22 @@ const useStyles: any = makeStyles(() => ({
 const steps = ["Shipping address", "Payment details", "Review your order"]
 
 export interface IPayment {
-  CardNumber: number
-  HolderName: string
-  Cvv: number
+  card_number: number
+  holder_name: string
+  exp_month: number
+  exp_year: number
+  cvv: number
 }
 
 export interface IAddress {
-  FirstName: string
-  LastName: string
-  AddressLine1: string
-  AddressLine2: string
-  City: string
-  State: string
-  Zip: string
-  Country: string
+  first_name: string
+  last_name: string
+  address1: string
+  address2: string
+  city: string
+  state: string
+  zip: string
+  country: string
 }
 
 function getStepContent(
@@ -53,7 +52,8 @@ function getStepContent(
   setAddress: React.Dispatch<React.SetStateAction<IAddress | undefined>>,
   setPayment: React.Dispatch<React.SetStateAction<IPayment | undefined>>,
   address: IAddress | undefined,
-  payment: IPayment | undefined
+  payment: IPayment | undefined,
+  cartItems: CartItem[]
 ) {
   switch (step) {
     case 0:
@@ -61,13 +61,28 @@ function getStepContent(
     case 1:
       return <PaymentForm handleNext={handleNext} setPayment={setPayment} />
     case 2:
-      return <Review handleNext={handleNext} address={address} payment={payment} />
+      return (
+        <Review handleNext={handleNext} address={address} payment={payment} cartItems={cartItems} />
+      )
     default:
       throw new Error("Unknown step")
   }
 }
-export default function Order() {
+
+export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const res = await fetch(`${BaseURL}/cart`, {
+    method: "GET",
+    headers: {"Content-Type": "application/json"},
+    credentials: "include",
+  })
+  const cart = await res.json()
+  return {props: {cart}}
+}
+export default function Order(cart: CartItem) {
   const classes = useStyles()
+  const {data, isLoading} = useCarts(cart)
+  const cartItems = data.data
+  console.log(cartItems)
   const [activeStep, setActiveStep] = React.useState(0)
   const [address, setAddress] = React.useState<IAddress | undefined>()
   const [payment, setPayment] = React.useState<IPayment | undefined>()
@@ -76,10 +91,7 @@ export default function Order() {
     setActiveStep(activeStep + 1)
   }
 
-  const handleBack = () => {
-    setActiveStep(activeStep - 1)
-  }
-
+  if (isLoading) return <Circular />
   return (
     <Layout>
       <Container component="main" maxWidth="sm" sx={{mb: 4}}>
@@ -115,7 +127,15 @@ export default function Order() {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {getStepContent(activeStep, handleNext, setAddress, setPayment, address, payment)}
+                {getStepContent(
+                  activeStep,
+                  handleNext,
+                  setAddress,
+                  setPayment,
+                  address,
+                  payment,
+                  cartItems
+                )}
               </React.Fragment>
             )}
           </React.Fragment>
@@ -123,4 +143,12 @@ export default function Order() {
       </Container>
     </Layout>
   )
+}
+
+const useCarts = (cart: CartItem) => {
+  const {data, error} = useSWR(`${BaseURL}/cart`, fetcher, {
+    fallbackData: cart,
+    revalidateOnMount: true,
+  })
+  return {data: data, isLoading: !error && !data}
 }

@@ -1,66 +1,46 @@
 import * as React from "react"
 import {Box, Button, ListItemText, Grid, List, ListItem, Typography} from "@material-ui/core"
 import {IAddress, IPayment} from "pages/checkout"
-
-const products = [
-  {
-    name: "Product 1",
-    desc: "A nice thing",
-    price: "$9.99",
-  },
-  {
-    name: "Product 2",
-    desc: "Another thing",
-    price: "$3.45",
-  },
-  {
-    name: "Product 3",
-    desc: "Something else",
-    price: "$6.51",
-  },
-  {
-    name: "Product 4",
-    desc: "Best thing of all",
-    price: "$14.11",
-  },
-  {name: "Shipping", desc: "", price: "Free"},
-]
-const addresses = ["1 MUI Drive", "Reactville", "Anytown", "99999", "USA"]
-const payments = [
-  {name: "Card type", detail: "Visa"},
-  {name: "Card holder", detail: "Mr John Smith"},
-  {name: "Card number", detail: "xxxx-xxxx-xxxx-1234"},
-  {name: "Expiry date", detail: "04/2024"},
-]
+import {CartItem} from "@types"
 
 interface IProps {
   address: IAddress | undefined
   payment: IPayment | undefined
+  cartItems: CartItem[]
   handleNext: () => void
 }
 
-const Review: React.VFC<IProps> = ({address, payment, handleNext}) => {
+const Review: React.VFC<IProps> = ({address, payment, handleNext, cartItems}) => {
+  console.log("address", address)
   const Submit = () => {
     console.log("payment", payment)
     console.log("address", address)
     handleNext()
   }
+  const totalPrice: number = cartItems?.reduce((total: number, cartItem: any): number => {
+    return total + cartItem.quantity * cartItem.product.price
+  }, 0)
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         Order summary
       </Typography>
       <List disablePadding>
-        {products.map((product) => (
-          <ListItem key={product.name} sx={{py: 1, px: 0}}>
-            <ListItemText primary={product.name} secondary={product.desc} />
-            <Typography variant="body2">{product.price}</Typography>
+        {cartItems.map((item) => (
+          <ListItem key={item.id} sx={{py: 1, px: 0}}>
+            <ListItemText
+              primary={`Product: ${item.product?.product_name}`}
+              secondary={`Quantity: ${item.quantity}`}
+            />
+            <Typography variant="body2">
+              $ {(item.product?.price as number) * item.quantity}
+            </Typography>
           </ListItem>
         ))}
         <ListItem sx={{py: 1, px: 0}}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" sx={{fontWeight: 700}}>
-            $34.06
+            ${totalPrice}
           </Typography>
         </ListItem>
       </List>
@@ -69,36 +49,33 @@ const Review: React.VFC<IProps> = ({address, payment, handleNext}) => {
           <Typography variant="h6" gutterBottom sx={{mt: 2}}>
             Shipping
           </Typography>
-          <Typography gutterBottom>John Smith</Typography>
-          <Typography gutterBottom>{addresses.join(", ")}</Typography>
+          <div style={{display: "flex", paddingBottom: 5}}>
+            <p style={{margin: 0, paddingRight: 5}}>{address?.first_name}</p>
+            <p style={{margin: 0}}>{address?.last_name}</p>
+          </div>
+          <div>
+            <p style={{margin: 0, paddingRight: 5, paddingBottom: 5}}>{address?.address1}</p>
+            <p style={{margin: 0, paddingRight: 5, paddingBottom: 5}}>{address?.address2}</p>
+            <p style={{margin: 0, paddingRight: 5, paddingBottom: 5}}>{address?.city}</p>
+            <p style={{margin: 0, paddingRight: 5, paddingBottom: 5}}>{address?.country}</p>
+            <p style={{margin: 0, paddingRight: 5, paddingBottom: 5}}>{address?.state}</p>
+            <p style={{margin: 0, paddingRight: 5, paddingBottom: 5}}>{address?.zip}</p>
+          </div>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{mt: 2}}>
             Payment details
           </Typography>
           <Grid container>
-            {payments.map((payment) => (
-              <React.Fragment key={payment.name}>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.name}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.detail}</Typography>
-                </Grid>
-              </React.Fragment>
-            ))}
+            <p>{payment?.card_number}</p>
+            <p>{payment?.holder_name}</p>
+            <p>{payment?.exp_month}</p>
+            <p>{payment?.exp_year}</p>
+            <p>{payment?.cvv}</p>
           </Grid>
         </Grid>
       </Grid>
       <Box sx={{display: "flex", justifyContent: "flex-end"}}>
-        {/* {activeStep !== 0 && (
-          <Button onClick={handleBack} sx={{mt: 3, ml: 1}}>
-            Back
-          </Button>
-        )}
-        <Button variant="contained" onClick={handleNext} sx={{mt: 3, ml: 1}}>
-          {activeStep === steps.length - 1 ? "Place order" : "Next"}
-        </Button> */}
         <Button onClick={() => Submit()}>button</Button>
       </Box>
     </React.Fragment>

@@ -4,7 +4,7 @@ import React from "react"
 import theme from "theme"
 import {GetServerSidePropsContext, GetServerSideProps} from "next"
 import toast from "react-hot-toast"
-import {Typography, Grid, Button, List, ListItem} from "@material-ui/core"
+import {Grid, Button, List, ListItem} from "@material-ui/core"
 import Paper from "@material-ui/core/Paper"
 import {makeStyles} from "@material-ui/styles"
 import {Layout} from "components/organisms"
@@ -13,15 +13,11 @@ import {CartItem} from "@types"
 import {useRouter} from "next/router"
 import useSWR from "swr"
 import {Link} from "components"
-import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline"
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline"
 import {Icon} from "@material-ui/core"
 import DeleteIcon from "@material-ui/icons/Delete"
 import {useAuth} from "context/AuthContext"
 import AddBoxIcon from "@material-ui/icons/AddBox"
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox"
-import {AspectRatioBox} from "components/AspectRatioBox"
-import {Avatar} from "@material-ui/core"
 
 const BaseURL = "http://localhost:8080/api"
 
@@ -92,13 +88,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSideP
   return {props: {cart}}
 }
 
+export const fetcher = (url: any) =>
+  fetch(url, {
+    method: "GET",
+    headers: {"Content-Type": "application/json"},
+    credentials: "include",
+  }).then((r) => r.json())
+
 const Cart: NextPage = ({cart}: any) => {
-  const fetcher = (url: any) =>
-    fetch(url, {
-      method: "GET",
-      headers: {"Content-Type": "application/json"},
-      credentials: "include",
-    }).then((r) => r.json())
   const {data, mutate} = useSWR(`${BaseURL}/cart`, fetcher, {
     fallbackData: cart,
     revalidateOnMount: true,

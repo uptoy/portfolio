@@ -2,7 +2,7 @@ import React, {useState} from "react"
 import ImageUploading, {ImageListType} from "react-images-uploading"
 import NextImage from "next/image"
 import SaveIcon from "@material-ui/icons/Save"
-import {Category, Product} from "@types"
+import {Category} from "@types"
 import {AdminLayout} from "components/dashboard"
 import {useForm, Controller} from "react-hook-form"
 import {yupResolver} from "@hookform/resolvers/yup"
@@ -261,8 +261,6 @@ const ProductAddForm = () => {
             {({
               imageList,
               onImageUpload,
-              // onImageRemoveAll,
-              // onImageUpdate,
               onImageRemove,
               isDragging,
               dragProps,

@@ -1,19 +1,8 @@
 import * as React from "react"
 import {Button, Grid, Typography, TextField} from "@material-ui/core"
 import {useForm, SubmitHandler} from "react-hook-form"
-
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos"
 import ArrowForwardIos from "@material-ui/icons/ArrowForwardIos"
-interface IAddress {
-  first_name: string
-  last_name: string
-  address1: string
-  address2: string
-  city: string
-  state: string
-  // Zip: string
-  // Country: string
-}
+import {IAddress} from "pages/checkout"
 
 interface IProps {
   handleNext: () => void
@@ -25,13 +14,14 @@ const AddressForm: React.VFC<IProps> = ({handleNext, setAddress}) => {
     register,
     formState: {errors},
     handleSubmit,
-  } = useForm()
-  const onSubmit: SubmitHandler<IAddress> = async (formData) => {
-    setAddress(formData)
+  } = useForm<IAddress>()
+
+  const onSubmit: SubmitHandler<IAddress> = (formData) => {
     handleNext()
+    setAddress(formData)
   }
   return (
-    <React.Fragment>
+    <>
       <Typography variant="h6" gutterBottom>
         Shipping address
       </Typography>
@@ -43,7 +33,7 @@ const AddressForm: React.VFC<IProps> = ({handleNext, setAddress}) => {
               id="first_name"
               label="First name"
               fullWidth
-              variant="standard"
+              variant="outlined"
               {...register("first_name")}
             />
           </Grid>
@@ -53,7 +43,7 @@ const AddressForm: React.VFC<IProps> = ({handleNext, setAddress}) => {
               id="last_name"
               label="Last name"
               fullWidth
-              variant="standard"
+              variant="outlined"
               {...register("last_name")}
             />
           </Grid>
@@ -63,7 +53,7 @@ const AddressForm: React.VFC<IProps> = ({handleNext, setAddress}) => {
               id="address1"
               label="Address line 1"
               fullWidth
-              variant="standard"
+              variant="outlined"
               {...register("address1")}
             />
           </Grid>
@@ -73,7 +63,7 @@ const AddressForm: React.VFC<IProps> = ({handleNext, setAddress}) => {
               id="address2"
               label="Address line 2"
               fullWidth
-              variant="standard"
+              variant="outlined"
               {...register("address2")}
             />
           </Grid>
@@ -83,7 +73,7 @@ const AddressForm: React.VFC<IProps> = ({handleNext, setAddress}) => {
               id="city"
               label="City"
               fullWidth
-              variant="standard"
+              variant="outlined"
               {...register("city")}
             />
           </Grid>
@@ -93,7 +83,7 @@ const AddressForm: React.VFC<IProps> = ({handleNext, setAddress}) => {
               id="state"
               label="State/Province/Region"
               fullWidth
-              variant="standard"
+              variant="outlined"
               {...register("state")}
             />
           </Grid>
@@ -103,7 +93,7 @@ const AddressForm: React.VFC<IProps> = ({handleNext, setAddress}) => {
               id="zip"
               label="Zip / Postal code"
               fullWidth
-              variant="standard"
+              variant="outlined"
               {...register("zip")}
             />
           </Grid>
@@ -113,7 +103,7 @@ const AddressForm: React.VFC<IProps> = ({handleNext, setAddress}) => {
               id="country"
               label="Country"
               fullWidth
-              variant="standard"
+              variant="outlined"
               {...register("country")}
             />
           </Grid>
@@ -126,19 +116,6 @@ const AddressForm: React.VFC<IProps> = ({handleNext, setAddress}) => {
             marginTop: 20,
           }}
         >
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            style={{
-              marginTop: 10,
-              marginLeft: 10,
-            }}
-          >
-            <ArrowBackIosIcon />
-            <p style={{margin: 5}}>Back</p>
-          </Button>
-
           <Button
             type="submit"
             variant="contained"
@@ -158,45 +135,8 @@ const AddressForm: React.VFC<IProps> = ({handleNext, setAddress}) => {
           </Button>
         </div>
       </form>
-    </React.Fragment>
+    </>
   )
 }
-
-// return (
-//   <Container component="main" maxWidth="xs">
-//     <form  noValidate onSubmit={handleSubmit(handleForgotPassword)}>
-//       <TextField
-//         variant="outlined"
-//         margin="normal"
-//         required
-//         fullWidth
-//         id="first_name"
-//         label="First Name"
-//         autoComplete="first_name"
-//         autoFocus
-//         {...register("first_name")}
-//       />
-//       <TextField
-//         variant="outlined"
-//         margin="normal"
-//         required
-//         fullWidth
-//         id="last_name"
-//         label="Last Name"
-//         autoComplete="last_name"
-//         autoFocus
-//         {...register("last_name")}
-//       />
-//       <Button
-//         type="submit"
-//         fullWidth
-//         variant="contained"
-//         color="primary"
-//       >
-//         Submit
-//       </Button>
-//     </form>
-//   </Container>
-// )
 
 export default AddressForm
