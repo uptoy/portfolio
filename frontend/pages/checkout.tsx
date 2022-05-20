@@ -70,6 +70,15 @@ function getStepContent(
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const {req} = ctx
+  if (req.headers.cookie === undefined) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/signup",
+      },
+    }
+  }
   const res = await fetch(`${BaseURL}/cart`, {
     method: "GET",
     headers: {"Content-Type": "application/json"},
@@ -82,6 +91,7 @@ export default function Order(cart: CartItem) {
   const classes = useStyles()
   const {data, isLoading} = useCarts(cart)
   const cartItems = data.data
+  console.log(cartItems)
   const [activeStep, setActiveStep] = React.useState(0)
   const [address, setAddress] = React.useState<IAddress | undefined>()
   const [payment, setPayment] = React.useState<IPayment | undefined>()

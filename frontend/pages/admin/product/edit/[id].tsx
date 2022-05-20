@@ -29,7 +29,6 @@ import NextImage from "next/image"
 import ImageUploading from "react-images-uploading"
 import CancelIcon from "@material-ui/icons/Cancel"
 
-const red500 = red["500"]
 const BaseURL = "http://localhost:8080/api"
 
 const useStyles: any = makeStyles(() => ({

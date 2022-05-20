@@ -18,6 +18,7 @@ import DeleteIcon from "@material-ui/icons/Delete"
 import {useAuth} from "context/AuthContext"
 import AddBoxIcon from "@material-ui/icons/AddBox"
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox"
+import {CarouselContainer} from "components"
 
 const BaseURL = "http://localhost:8080/api"
 
@@ -76,9 +77,22 @@ const useStyles: any = makeStyles(() => ({
     color: theme.palette.text.secondary,
     marginBottom: "1em",
   },
+  emptyPaper: {
+    padding: theme.spacing(5),
+    color: theme.palette.text.secondary,
+  },
 }))
 
 export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const {req} = ctx
+  if (req.headers.cookie === undefined) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/signup",
+      },
+    }
+  }
   const res = await fetch(`${BaseURL}/cart`, {
     method: "GET",
     headers: {"Content-Type": "application/json"},
@@ -100,7 +114,6 @@ const Cart: NextPage = ({cart}: any) => {
     fallbackData: cart,
     revalidateOnMount: true,
   })
-  const {isAuthenticated} = useAuth()
   const router = useRouter()
   const classes = useStyles()
   const fetchCartItems = data.data
@@ -180,14 +193,14 @@ const Cart: NextPage = ({cart}: any) => {
 
   return (
     <Layout>
-      <>
+      <div style={{marginTop: "2em", marginBottom: "2em"}}>
         {fetchCartItems?.length === 0 ? (
-          <div>
-            Cart is empty.
+          <Paper className={classes.emptyPaper}>
+            <p>Cart is empty.</p>
             <Link href="/" passHref>
               Go shopping
             </Link>
-          </div>
+          </Paper>
         ) : (
           <div className={classes.root}>
             <Grid container spacing={3}>
@@ -214,7 +227,7 @@ const Cart: NextPage = ({cart}: any) => {
                           layout="responsive"
                         />
                       </div>
-                      <div style={{paddingLeft: 10}}>
+                      <div style={{paddingTop: 10, paddingLeft: 20}}>
                         <Link href={`/products/${cartItem.product_id}`}>
                           <p style={{margin: 0}}>name</p>
                         </Link>
@@ -263,7 +276,8 @@ const Cart: NextPage = ({cart}: any) => {
             </Grid>
           </div>
         )}
-      </>
+        <CarouselContainer />
+      </div>
     </Layout>
   )
 }

@@ -15,19 +15,6 @@ interface IProps {
   setPayment: React.Dispatch<React.SetStateAction<IPayment | undefined>>
 }
 
-// const useStyles = makeStyles(() => ({
-//   formControl: {
-//     "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
-//       borderColor: "blue",
-//     },
-//   },
-//   select: {
-//     "&:before": {
-//       borderColor: "red",
-//     },
-//   },
-// }))
-
 const PaymentForm: React.VFC<IProps> = ({setPayment, handleNext}) => {
   const months: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
   const years: number[] = []
@@ -36,7 +23,13 @@ const PaymentForm: React.VFC<IProps> = ({setPayment, handleNext}) => {
     const year = d.getFullYear()
     years.push(year + i)
   }
-  const {register, control, handleSubmit} = useForm<IPayment>({
+  const {
+    register,
+    formState: {dirtyFields},
+    getValues,
+    control,
+    handleSubmit,
+  } = useForm<IPayment>({
     defaultValues: {
       exp_month: months[0],
       exp_year: years[0],
@@ -56,29 +49,22 @@ const PaymentForm: React.VFC<IProps> = ({setPayment, handleNext}) => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <TextField
+              required
               id="card_number"
-              label="Card number"
+              label="Card Number"
               fullWidth
               variant="outlined"
-              placeholder="4242 4242 4242 4242"
-              {...(register("card_number"),
-              {
-                maxLength: 16,
-                required: true,
-              })}
+              {...register("card_number")}
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
+              required
               id="holder_name"
               label="Holder Name"
               fullWidth
               variant="outlined"
-              placeholder="TARO YAMADA"
-              {...(register("holder_name"),
-              {
-                required: true,
-              })}
+              {...register("holder_name")}
             />
           </Grid>
           <Grid item xs={12}>
@@ -122,11 +108,7 @@ const PaymentForm: React.VFC<IProps> = ({setPayment, handleNext}) => {
               label="CVV"
               fullWidth
               variant="outlined"
-              placeholder="123"
-              {...(register("cvv"),
-              {
-                maxLength: 3,
-              })}
+              {...register("cvv")}
             />
           </Grid>
         </Grid>
@@ -148,7 +130,9 @@ const PaymentForm: React.VFC<IProps> = ({setPayment, handleNext}) => {
               width: "7em",
               height: "3.4em",
             }}
-            disableElevation
+            disabled={
+              (dirtyFields.card_number && dirtyFields.holder_name && dirtyFields.cvv) !== true
+            }
           >
             <div style={{display: "flex", alignItems: "center"}}>
               <p style={{margin: 5}}>Save</p>

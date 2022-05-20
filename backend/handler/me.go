@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	// "backend/model"
+	"backend/model"
 	"backend/model/apperrors"
 
 	"github.com/gin-gonic/gin"
@@ -30,24 +30,24 @@ func (h *Handler) Me(c *gin.Context) {
 		return
 	}
 
-	// uid := user.(*model.User).UID
+	uid := user.(*model.User).UID
 
-	// // use the Request Context
-	// ctx := c.Request.Context()
-	// u, err := h.UserService.Get(ctx, uid)
+	// use the Request Context
+	ctx := c.Request.Context()
+	u, err := h.UserService.Get(ctx, uid)
 
-	// if err != nil {
-	// 	log.Printf("Unable to find user: %v\n%v", uid, err)
-	// 	e := apperrors.NewNotFound("user", uid.String())
+	if err != nil {
+		log.Printf("Unable to find user: %v\n%v", uid, err)
+		e := apperrors.NewNotFound("user", uid.String())
 
-	// 	c.JSON(e.Status(), gin.H{
-	// 		"error": e,
-	// 	})
-	// 	return
-	// }
+		c.JSON(e.Status(), gin.H{
+			"error": e,
+		})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"user": user,
+		"user": u,
 	})
 }
 

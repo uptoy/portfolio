@@ -8,8 +8,6 @@ import {
   ForgotPasswordCredentials,
   ResetPasswordCredentials,
 } from "yup/type"
-import {mutate} from "swr"
-import {GetServerSidePropsContext, GetServerSideProps} from "next"
 
 export type User = {
   username: string
