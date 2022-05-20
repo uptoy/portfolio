@@ -19,6 +19,7 @@ import {Icon} from "@material-ui/core"
 import DeleteIcon from "@material-ui/icons/Delete"
 import {Link} from "components"
 import toast from "react-hot-toast"
+import CancelIcon from "@material-ui/icons/Cancel"
 const BaseURL = "http://localhost:8080/api"
 
 const useStyles: any = makeStyles(() => ({
@@ -53,6 +54,7 @@ const useStyles: any = makeStyles(() => ({
   },
   paper: {
     marginBottom: "1em",
+    position: "relative",
   },
   emptyPaper: {
     padding: theme.spacing(5),
@@ -115,11 +117,11 @@ const Wishlist: NextPage = ({products, wishlist}: any) => {
       }
     }
   }
-  const handleClick = async (product: Product) => {
+
+  const handleDelete = async (product: Product) => {
     await WishlistDelete(product)
     await mutate({...data, product})
   }
-
   return (
     <Layout>
       <div style={{marginTop: "2em", marginBottom: "2em"}}>
@@ -137,10 +139,10 @@ const Wishlist: NextPage = ({products, wishlist}: any) => {
                 {fetchWishlist?.map((item: Product, index: number) => (
                   <Paper className={classes.paper} key={index}>
                     <Grid container xs={12} sm={12}>
-                      <Grid item sm={2}>
+                      <Grid item xs={4}>
                         <div
                           style={{
-                            position: "relative",
+                            // position: "relative",
                             width: "30vw",
                             height: "100%",
                             minHeight: "8em",
@@ -158,16 +160,7 @@ const Wishlist: NextPage = ({products, wishlist}: any) => {
                           />
                         </div>
                       </Grid>
-                      <Grid item sm={7}>
-                        <div style={{paddingTop: 10, paddingLeft: 20}}>
-                          <Link href={`/products/${item.id}`}>
-                            <p style={{margin: 0}}>name</p>
-                          </Link>
-                          <p>{item?.price}</p>
-                          <p style={{color: "#007600"}}>In Stock</p>
-                        </div>
-                      </Grid>
-                      <Grid item sm={3}>
+                      <Grid item xs={8}>
                         <div style={{paddingTop: 10, paddingLeft: 20}}>
                           <Link href={`/products/${item.id}`}>
                             <p style={{margin: 0}}>name</p>
@@ -177,6 +170,10 @@ const Wishlist: NextPage = ({products, wishlist}: any) => {
                         </div>
                       </Grid>
                     </Grid>
+                    <CancelIcon
+                      style={{position: "absolute", top: "-1%", right: "-0.2%"}}
+                      onClick={() => handleDelete(item)}
+                    />
                   </Paper>
                 ))}
               </Grid>
