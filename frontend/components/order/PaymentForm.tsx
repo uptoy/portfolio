@@ -15,18 +15,18 @@ interface IProps {
   setPayment: React.Dispatch<React.SetStateAction<IPayment | undefined>>
 }
 
-const useStyles = makeStyles(() => ({
-  formControl: {
-    "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
-      borderColor: "blue",
-    },
-  },
-  select: {
-    "&:before": {
-      borderColor: "red",
-    },
-  },
-}))
+// const useStyles = makeStyles(() => ({
+//   formControl: {
+//     "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
+//       borderColor: "blue",
+//     },
+//   },
+//   select: {
+//     "&:before": {
+//       borderColor: "red",
+//     },
+//   },
+// }))
 
 const PaymentForm: React.VFC<IProps> = ({setPayment, handleNext}) => {
   const months: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -56,24 +56,29 @@ const PaymentForm: React.VFC<IProps> = ({setPayment, handleNext}) => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <TextField
-              required
               id="card_number"
               label="Card number"
               fullWidth
               variant="outlined"
               placeholder="4242 4242 4242 4242"
-              {...register("card_number")}
+              {...(register("card_number"),
+              {
+                maxLength: 16,
+                required: true,
+              })}
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
-              required
               id="holder_name"
               label="Holder Name"
               fullWidth
               variant="outlined"
               placeholder="TARO YAMADA"
-              {...register("holder_name")}
+              {...(register("holder_name"),
+              {
+                required: true,
+              })}
             />
           </Grid>
           <Grid item xs={12}>
@@ -118,7 +123,10 @@ const PaymentForm: React.VFC<IProps> = ({setPayment, handleNext}) => {
               fullWidth
               variant="outlined"
               placeholder="123"
-              {...register("cvv")}
+              {...(register("cvv"),
+              {
+                maxLength: 3,
+              })}
             />
           </Grid>
         </Grid>

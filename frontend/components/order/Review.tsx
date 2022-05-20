@@ -67,11 +67,15 @@ const Review: React.VFC<IProps> = ({address, payment, handleNext, cartItems}) =>
             Payment details
           </Typography>
           <Grid container>
-            <p>{payment?.card_number}</p>
-            <p>{payment?.holder_name}</p>
-            <p>{payment?.exp_month}</p>
-            <p>{payment?.exp_year}</p>
-            <p>{payment?.cvv}</p>
+            <div>
+              <p style={{margin: 0, paddingBottom: 5}}>{payment?.card_number}</p>
+              <p style={{margin: 0, paddingBottom: 5}}>{payment?.holder_name}</p>
+              <div style={{display: "flex"}}>
+                <p style={{margin: 0, paddingBottom: 5}}>{`${payment?.exp_month} 月`}</p>
+                <p style={{margin: 0, paddingBottom: 5}}>{`${payment?.exp_year} 年`}</p>
+              </div>
+              <p style={{margin: 0, paddingBottom: 5}}>{payment?.cvv}</p>
+            </div>
           </Grid>
         </Grid>
       </Grid>
