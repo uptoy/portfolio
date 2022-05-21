@@ -37,8 +37,8 @@ export interface Product {
   createdAt?: Date | null
   updatedAt?: Date | null
   images: Image[]
-  reviews?: Review[]
-  category?: Category
+  reviews: Review[]
+  category: Category
 }
 
 export interface Review {

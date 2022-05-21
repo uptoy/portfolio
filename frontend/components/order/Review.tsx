@@ -80,7 +80,9 @@ const Review: React.VFC<IProps> = ({address, payment, handleNext, cartItems}) =>
         </Grid>
       </Grid>
       <Box sx={{display: "flex", justifyContent: "flex-end"}}>
-        <Button onClick={() => Submit()}>button</Button>
+        <Button variant="contained" color="primary" onClick={() => Submit()}>
+          Submit
+        </Button>
       </Box>
     </React.Fragment>
   )

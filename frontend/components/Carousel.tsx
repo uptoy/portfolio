@@ -1,5 +1,5 @@
 import {makeStyles} from "@material-ui/styles"
-import {Product} from "@types"
+import {Product, Review} from "@types"
 import theme from "theme"
 import {Typography, Card, CardContent} from "@material-ui/core"
 import Link from "next/link"
@@ -10,6 +10,8 @@ import "swiper/css"
 import "swiper/css/free-mode"
 import "swiper/css/navigation"
 import "swiper/css/thumbs"
+import {Rating} from "components"
+import {Average} from "utils/average"
 
 const BaseURL = "http://localhost:8080/api"
 const useStyles: any = makeStyles(() => ({
@@ -86,6 +88,9 @@ export default function Carousel(props: IProps) {
                 </div>
                 <CardContent className={classes.cardContent}>
                   <Typography>{product.product_name}</Typography>
+                  <Rating
+                    value={Average(product?.reviews?.map((review: Review) => review?.rating))}
+                  />
                   <Typography>
                     {"$ "}
                     {product.price}

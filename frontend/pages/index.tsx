@@ -22,9 +22,8 @@ import {mainFeaturedPost} from "utils/seed"
 import {red, common} from "@material-ui/core/colors"
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"
 import FavoriteIcon from "@material-ui/icons/Favorite"
-import {Product} from "@types"
+import {Product, Review} from "@types"
 import {useAuth} from "context/AuthContext"
-import {Review} from "@types"
 import {Average} from "utils/average"
 import {useRouter} from "next/router"
 import useSWR from "swr"
@@ -38,6 +37,12 @@ const useStyles: any = makeStyles(() => ({
     height: "100%",
     display: "flex",
     flexDirection: "column",
+    "&:hover": {
+      opacity: 0.5,
+    },
+    "&:active": {
+      opacity: 1,
+    },
   },
   cardMedia: {
     paddingTop: "80%",

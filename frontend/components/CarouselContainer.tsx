@@ -2,6 +2,7 @@ import {Carousel} from "components"
 import useSWR from "swr"
 import React from "react"
 import {Circular} from "./Circular"
+
 const BaseURL = "http://localhost:8080/api"
 
 const CarouselContainer = () => {
