@@ -76,23 +76,20 @@ func (s *userService) Get(ctx context.Context, uid uuid.UUID) (*model.User, erro
 
 // 	return user, nil
 // }
-func (s *userService) Signup(ctx context.Context, u *model.User) error {
+func (s *userService) Signup(ctx context.Context, u *model.User) (*model.User, error) {
 	pw, err := hashPassword(u.Password)
 
 	if err != nil {
 		log.Printf("Unable to signup user for email: %v\n", u.Email)
-		return apperrors.NewInternal()
+		return nil, apperrors.NewInternal()
 	}
-
-	// now I realize why I originally used Signup(ctx, email, password)
-	// then created a user. It's somewhat un-natural to mutate the user here
 	u.Password = pw
 
-	if err := s.UserRepository.Create(ctx, u); err != nil {
-		return err
+	user, err := s.UserRepository.Create(ctx, u)
+	if err != nil {
+		return nil, err
 	}
-
-	return nil
+	return user, nil
 }
 
 // Signin reaches our to a UserRepository check if the user exists

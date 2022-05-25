@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"testing"
+	"fmt"
 
 	"backend/model"
 	"backend/model/apperrors"
@@ -59,10 +59,18 @@ func TestGet(t *testing.T) {
 func TestSignup(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		uid, _ := uuid.NewRandom()
+		email := "bob@bob.com"
+		password := "howdyhoneighbor!"
+		hashedValidPW, _ := hashPassword(password)
 
 		mockUser := &model.User{
-			Email:    "bob@bob.com",
-			Password: "howdyhoneighbor!",
+			Email:    email,
+			Password: password,
+		}
+		mockUserResp := &model.User{
+			UID:      uid,
+			Email:    email,
+			Password: hashedValidPW,
 		}
 
 		mockUserRepository := new(mocks.MockUserRepository)
@@ -77,10 +85,10 @@ func TestSignup(t *testing.T) {
 			Run(func(args mock.Arguments) {
 				userArg := args.Get(1).(*model.User) // arg 0 is context, arg 1 is *User
 				userArg.UID = uid
-			}).Return(nil)
+			}).Return(mockUserResp, nil)
 
 		ctx := context.TODO()
-		err := us.Signup(ctx, mockUser)
+		_, err := us.Signup(ctx, mockUser)
 
 		assert.NoError(t, err)
 
@@ -107,10 +115,10 @@ func TestSignup(t *testing.T) {
 		//  We can then chain on a Return method to return no error
 		mockUserRepository.
 			On("Create", mock.AnythingOfType("*context.emptyCtx"), mockUser).
-			Return(mockErr)
+			Return(nil, mockErr)
 
 		ctx := context.TODO()
-		err := us.Signup(ctx, mockUser)
+		_, err := us.Signup(ctx, mockUser)
 
 		// assert error is error we response with in mock
 		assert.EqualError(t, err, mockErr.Error())
@@ -158,7 +166,6 @@ func TestSignin(t *testing.T) {
 
 		ctx := context.TODO()
 		_, err := us.Signin(ctx, mockUser)
-		// fmt.Println(result)
 		assert.NoError(t, err)
 		mockUserRepository.AssertCalled(t, "FindByEmail", mockArgs...)
 	})
@@ -188,8 +195,7 @@ func TestSignin(t *testing.T) {
 			On("FindByEmail", mockArgs...).Return(mockUserResp, nil)
 
 		ctx := context.TODO()
-		result, err := us.Signin(ctx, mockUser)
-		fmt.Println(result)
+		_, err := us.Signin(ctx, mockUser)
 
 		assert.Error(t, err)
 		assert.EqualError(t, err, "Invalid email and password combination")
