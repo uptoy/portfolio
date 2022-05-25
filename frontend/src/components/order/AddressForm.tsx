@@ -4,7 +4,6 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos'
 import { useAuth } from 'src/context/AuthContext'
 import { useRouter } from 'next/router'
-// import {IAddress} from "pages/checkout"
 
 export interface IAddress {
   first_name: string
@@ -22,7 +21,7 @@ interface IProps {
   setAddress: React.Dispatch<React.SetStateAction<IAddress | undefined>>
 }
 
-const AddressForm: React.VFC<IProps> = ({ handleNext, setAddress }) => {
+const AddressForm: React.FC<IProps> = ({ handleNext, setAddress }) => {
   const {
     register,
     formState: { dirtyFields },

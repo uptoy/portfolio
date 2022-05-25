@@ -1,5 +1,5 @@
-import { DateRange } from 'types'
-import { getStartAndEndDate } from 'utils/getDateRange'
+import { DateRange } from 'src/@types'
+import { getStartAndEndDate } from 'src/utils/getDateRange'
 
 const getDateRanges = () => {
   const ranges: DateRange[] = []
@@ -14,37 +14,37 @@ const getDateRanges = () => {
   ranges.push({
     label: 'This Month',
     start_date: thisMonth.startDate,
-    end_date: thisMonth.endDate,
+    end_date: thisMonth.endDate
   })
 
   ranges.push({
     label: 'Last Month',
     start_date: lastMonth.startDate,
-    end_date: lastMonth.endDate,
+    end_date: lastMonth.endDate
   })
 
   ranges.push({
     label: 'Last 3 Months',
     start_date: last3Months.startDate,
-    end_date: last3Months.endDate,
+    end_date: last3Months.endDate
   })
 
   ranges.push({
     label: 'Last 6 Months',
     start_date: last6Months.startDate,
-    end_date: last6Months.endDate,
+    end_date: last6Months.endDate
   })
 
   ranges.push({
     label: 'This Year',
     start_date: thisYear.startDate,
-    end_date: thisYear.endDate,
+    end_date: thisYear.endDate
   })
 
   ranges.push({
     label: 'Last Year',
     start_date: lastYear.startDate,
-    end_date: lastYear.endDate,
+    end_date: lastYear.endDate
   })
 
   return ranges

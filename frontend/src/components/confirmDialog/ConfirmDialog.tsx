@@ -1,10 +1,9 @@
 import { Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import { Circular } from 'src/components/common/Circular'
-import { Theme } from '@material-ui/core/styles'
 import { makeStyles } from '@material-ui/styles'
 
-import Modal from 'components/modal'
+import { Modal } from 'src/components/modal'
 
 interface Props {
   title: string

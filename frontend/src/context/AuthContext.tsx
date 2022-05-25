@@ -1,6 +1,5 @@
 import { createContext, ReactNode, useEffect, useState, useContext } from 'react'
 import { useRouter } from 'next/router'
-import { api } from 'services/apiClient'
 import toast from 'react-hot-toast'
 import { SignUpCredentials, SignInCredentials, ForgotPasswordCredentials, ResetPasswordCredentials } from 'src/yup/type'
 

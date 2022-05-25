@@ -11,7 +11,7 @@ import { Button, Divider, TextField, Grid, Paper, CircularProgress } from '@mate
 import { makeStyles } from '@material-ui/styles'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import { useRouter } from 'next/router'
-import { fetcher } from 'pages/admin/product/add'
+import { fetcher } from 'src/pages/admin/product/add'
 import useSWR from 'swr'
 
 const BaseURL = 'http://localhost:8080/api'

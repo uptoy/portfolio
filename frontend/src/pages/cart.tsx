@@ -197,7 +197,7 @@ const Cart: NextPage = ({ cart }: any) => {
         {fetchCartItems?.length === 0 ? (
           <Paper className={classes.emptyPaper}>
             <p>Cart is empty.</p>
-            <Link href="/" passHref>
+            <Link href="/">
               Go shopping
             </Link>
           </Paper>

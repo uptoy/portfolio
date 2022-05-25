@@ -1,4 +1,3 @@
-// import { TypographyStyle } from "@material-ui/core/styles";
 import {grey, pink} from "@material-ui/core/colors"
 import {createStyles, Theme} from "@material-ui/core/styles"
 import {StyleRules} from "@material-ui/styles"

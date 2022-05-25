@@ -1,15 +1,9 @@
-import React from "react"
+import React, { ReactNode } from 'react'
+import { AuthProvider } from './AuthContext'
+interface IProps {
+  children: ReactNode
+}
 
-// import PageContext from "./PageContext"
-import PageCountContext from "./PageCountContext"
-import {AuthProvider} from "./AuthContext"
-
-const ContextProvider = ({children}: any) => (
-  // <PageContext>
-  <AuthProvider>
-    <PageCountContext>{children}</PageCountContext>
-  </AuthProvider>
-  // </PageContext>
-)
+const ContextProvider: React.FC<IProps> = ({ children }) => <AuthProvider>{children}</AuthProvider>
 
 export default ContextProvider

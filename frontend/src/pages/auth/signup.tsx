@@ -1,26 +1,16 @@
-import React, { SyntheticEvent, useState } from 'react'
+import React, { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { SignUpCredentials } from 'src/yup/type'
 import { signUpFormSchema } from 'src/yup/schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import toast from 'react-hot-toast'
-import {
-  Avatar,
-  Button,
-  TextField,
-  Typography,
-  Container,
-  Box,
-  Grid,
-  Checkbox
-} from '@material-ui/core'
+import { Avatar, Button, TextField, Typography, Container, Box, Grid } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Link from 'src/components/Link'
 import { makeStyles } from '@material-ui/styles'
 import Copyright from 'src/components/Copyright'
 import theme from 'theme'
 import { useRouter } from 'next/router'
-import { api } from 'src/services/apiClient'
 import { useAuth } from 'src/context/AuthContext'
 
 const useStyles: any = makeStyles(() => ({

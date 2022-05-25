@@ -1,7 +1,4 @@
-import CategoryItem from "./CategoryItem"
-import CategoryList from "./CategoryList"
-import CategoryManageModal from "./CategoryManageModal"
+import CategoryItem from './CategoryItem'
+import CategoryList from './CategoryList'
 
-export {CategoryItem, CategoryList, CategoryManageModal}
-
-// CategoryManageModal
+export { CategoryItem, CategoryList }

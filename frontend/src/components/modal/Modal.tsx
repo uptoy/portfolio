@@ -1,40 +1,40 @@
-import {Typography} from "@material-ui/core"
-import Backdrop from "@material-ui/core/Backdrop"
-import Fade from "@material-ui/core/Fade"
-import IconButton from "@material-ui/core/IconButton"
-import MaterialModal from "@material-ui/core/Modal"
-import {makeStyles} from "@material-ui/styles"
-import CloseIcon from "@material-ui/icons/Close"
-import React from "react"
-import ReactDOM from "react-dom"
-import theme from "theme"
+import { Typography } from '@material-ui/core'
+import Backdrop from '@material-ui/core/Backdrop'
+import Fade from '@material-ui/core/Fade'
+import IconButton from '@material-ui/core/IconButton'
+import MaterialModal from '@material-ui/core/Modal'
+import { makeStyles } from '@material-ui/styles'
+import CloseIcon from '@material-ui/icons/Close'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import theme from 'theme'
 
 const useStyles: any = makeStyles(() => ({
   modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   modalHeader: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 10,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     borderRadius: 6,
-    width: "90%",
-    [theme.breakpoints.up("md")]: {
-      width: 600,
-    },
+    width: '90%',
+    [theme.breakpoints.up('md')]: {
+      width: 600
+    }
   },
   closeContainer: {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
+    display: 'flex',
+    justifyContent: 'flex-end'
+  }
 }))
 
 interface Props {
@@ -42,9 +42,10 @@ interface Props {
   onClose(): void
   title: string
   withClose?: boolean
+  children: React.ReactNode
 }
 
-const Modal: React.FC<Props> = ({title, isVisible, onClose, children, withClose = true}) => {
+const Modal: React.FC<Props> = ({ title, isVisible, onClose, children, withClose = true }) => {
   const classes = useStyles()
 
   return (
@@ -59,7 +60,7 @@ const Modal: React.FC<Props> = ({title, isVisible, onClose, children, withClose 
               closeAfterTransition
               BackdropComponent={Backdrop}
               BackdropProps={{
-                timeout: 500,
+                timeout: 500
               }}
             >
               <Fade in={isVisible}>

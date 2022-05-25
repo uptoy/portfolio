@@ -1,11 +1,10 @@
-// import React from "react"
 import Assessment from '@material-ui/icons/Assessment'
 import Face from '@material-ui/icons/Face'
 import ThumbUp from '@material-ui/icons/ThumbUp'
 import ShoppingCart from '@material-ui/icons/ShoppingCart'
 import { makeStyles } from '@material-ui/styles'
 import { Grid } from '@material-ui/core'
-import { LineBarChart, BrowserUsage, InfoBox, NewOrders, MonthlySales } from 'src/components/Admin'
+import { LineBarChart, BrowserUsage, InfoBox, NewOrders, MonthlySales } from 'src/components/admin'
 import { cyan, pink, purple, orange, grey } from '@material-ui/core/colors'
 import { AdminLayout } from 'src/components/dashboard'
 import Data from 'data'

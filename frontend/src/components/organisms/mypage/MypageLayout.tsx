@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Container } from '@material-ui/core'
 import { CommonHeader } from 'src/components/organisms'
 import MypageFooter from './MypageFooter'
@@ -13,7 +13,11 @@ const useStyles: any = makeStyles(() => ({
   }
 }))
 
-const DashboardLayout: React.FC = ({ children }) => {
+interface IProps {
+  children: ReactNode
+}
+
+const DashboardLayout: React.FC<IProps> = ({ children }) => {
   const classes = useStyles()
   return (
     <>
