@@ -1,7 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-README.md
-
 # dependencies
 /node_modules
 /.pnp
@@ -34,9 +32,3 @@ yarn-error.log*
 
 # vercel
 .vercel
-
-node_modules
-.DS_Store
-dist
-dist-ssr
-*.local

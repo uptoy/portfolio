@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	"testing"
 	"fmt"
+	"testing"
 
 	"backend/model"
 	"backend/model/apperrors"
@@ -74,8 +74,11 @@ func TestSignup(t *testing.T) {
 		}
 
 		mockUserRepository := new(mocks.MockUserRepository)
+		mockCartRepository := new(mocks.MockCartRepository)
+
 		us := NewUserService(&USConfig{
 			UserRepository: mockUserRepository,
+			CartRepository: mockCartRepository,
 		})
 
 		// We can use Run method to modify the user when the Create method is called.
@@ -86,15 +89,15 @@ func TestSignup(t *testing.T) {
 				userArg := args.Get(1).(*model.User) // arg 0 is context, arg 1 is *User
 				userArg.UID = uid
 			}).Return(mockUserResp, nil)
+		mockCartRepository.
+			On("CartCreate", mock.AnythingOfType("*context.emptyCtx"), uid).
+			Return(nil)
 
 		ctx := context.TODO()
 		_, err := us.Signup(ctx, mockUser)
-
 		assert.NoError(t, err)
-
 		// assert user now has a userID
 		assert.Equal(t, uid, mockUser.UID)
-
 		mockUserRepository.AssertExpectations(t)
 	})
 

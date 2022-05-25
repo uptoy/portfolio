@@ -24,14 +24,14 @@ func NewCartRepository(db *sqlx.DB) model.CartRepository {
 	}
 }
 
-func (r *pGCartRepository) CartCreate(ctx context.Context, userID uuid.UUID) (*model.Cart, error) {
+func (r *pGCartRepository) CartCreate(ctx context.Context, userID uuid.UUID) error {
 	cart := model.Cart{}
 	query := `INSERT INTO carts (user_id) VALUES ($1) RETURNING *`
 	if err := r.DB.GetContext(ctx, &cart, query, userID); err != nil {
 		log.Printf("Could not create a cart : %v. Reason: %v\n", userID, err)
-		return nil, apperrors.NewInternal()
+		return apperrors.NewInternal()
 	}
-	return &cart, nil
+	return nil
 }
 
 func (r *pGCartRepository) CartGet(ctx context.Context, cartID int64) ([]*model.CartItem, error) {

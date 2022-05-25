@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "noImplicitAny": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
+    "downlevelIteration": true,
     "allowJs": true,
-    "baseUrl": ".",
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -22,16 +22,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "downlevelIteration": true,
+    "types": ["jest"]
   },
-  "include": [
-    "next-env.d.ts",
-    "frontend",
-    "**/*.ts",
-    "**/*.tsx",
-    "postcss.config.js",
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "src/**/*.ts","src/**/*.tsx"],
+  "exclude": ["node_modules"]
 }

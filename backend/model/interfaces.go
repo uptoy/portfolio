@@ -34,7 +34,7 @@ type AuthService interface {
 	ResetPassword(ctx context.Context, newPassword string, passwordReset *PasswordReset) error
 }
 type CartRepository interface {
-	CartCreate(ctx context.Context, userID uuid.UUID) (*Cart, error)
+	CartCreate(ctx context.Context, userID uuid.UUID) error
 	CartGet(ctx context.Context, cartID int64) ([]*CartItem, error)
 	CartAddItem(ctx context.Context, cartItem *CartItem) (*CartItem, error)
 	CartDeleteItem(ctx context.Context, cartId int64, productId int64) (*CartItem, error)
@@ -43,7 +43,7 @@ type CartRepository interface {
 	CartGetId(ctx context.Context, userId uuid.UUID) (int64, error)
 }
 type CartService interface {
-	CartCreate(ctx context.Context, userID uuid.UUID) (*Cart, error)
+	// CartCreate(ctx context.Context, userID uuid.UUID) (*Cart, error)
 	CartGet(ctx context.Context, cartID int64) ([]*CartItem, error)
 	CartAddItem(ctx context.Context, cartItem *CartItem) (*CartItem, error)
 	CartDeleteItem(ctx context.Context, cartId int64, productId int64) (*CartItem, error)

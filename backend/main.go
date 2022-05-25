@@ -23,6 +23,10 @@ import (
 	"time"
 )
 
+func Hello() string {
+	return "Hello, world"
+}
+
 func main() {
 	loadEnv()
 	log.Println("Starting server...")

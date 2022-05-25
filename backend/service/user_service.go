@@ -89,6 +89,13 @@ func (s *userService) Signup(ctx context.Context, u *model.User) (*model.User, e
 	if err != nil {
 		return nil, err
 	}
+	uid := user.UID
+	err1 := s.CartRepository.CartCreate(ctx, uid)
+	// // fmt.Println(cart)
+	if err1 != nil {
+		log.Printf("Unable to create cart: %v\n", u.Username)
+		return nil, apperrors.NewInternal()
+	}
 	return user, nil
 }
 

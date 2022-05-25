@@ -24,14 +24,6 @@ func NewCartService(c *CartServiceConfig) model.CartService {
 	}
 }
 
-func (s *cartService) CartCreate(ctx context.Context, userID uuid.UUID) (*model.Cart, error) {
-	var err error
-	cart, err := s.CartRepository.CartCreate(ctx, userID)
-	if err != nil {
-		return cart, err
-	}
-	return cart, nil
-}
 
 func (s *cartService) CartGet(ctx context.Context, cartID int64) ([]*model.CartItem, error) {
 	var err error
