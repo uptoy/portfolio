@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"backend/model"
@@ -65,7 +66,7 @@ func (s *addressService) AddressUpdate(ctx context.Context, addressId int64, add
 func (s *addressService) AddressDelete(ctx context.Context, addressId int64) error {
 	err := s.AddressRepository.AddressDelete(ctx, addressId)
 	if err != nil {
-		log.Printf("Unable to service reset password: %v\n", string(addressId))
+		log.Printf("Unable to service reset password: %v\n", fmt.Sprint(addressId))
 		return apperrors.NewInternal()
 	}
 	return nil
