@@ -123,9 +123,7 @@ const Wishlist: NextPage = ({ products, wishlist }: any) => {
         {fetchWishlist?.length === 0 ? (
           <Paper className={classes.emptyPaper}>
             <p>Wishlist is empty.</p>
-            <Link href="/" passHref>
-              Go shopping
-            </Link>
+            <Link href="/">Go shopping</Link>
           </Paper>
         ) : (
           <div className={classes.root}>
@@ -134,7 +132,7 @@ const Wishlist: NextPage = ({ products, wishlist }: any) => {
                 {fetchWishlist?.map((item: Product, index: number) => (
                   <Paper className={classes.paper} key={index}>
                     <Grid container xs={12} sm={12}>
-                      <Grid item xs={5} style={{ minWidth: '7em',maxWidth: '13em' }}>
+                      <Grid item xs={5} style={{ minWidth: '7em', maxWidth: '13em' }}>
                         <div
                           style={{
                             width: '30vw',
