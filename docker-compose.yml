@@ -4,9 +4,9 @@ services:
   postgres-backend:
     image: "postgres:alpine"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: portfolio_db
+      POSTGRES_USER: $PG_USER
+      POSTGRES_PASSWORD: $PG_PASSWORD
+      POSTGRES_DB: $PG_DB
     ports:
       - "5432:5432"
     networks:
@@ -43,8 +43,8 @@ services:
       - ./data/pgadmin-data:/var/lib/pgadmin
 
     environment:
-      PGADMIN_DEFAULT_EMAIL: root@root.com
-      PGADMIN_DEFAULT_PASSWORD: root
+      PGADMIN_EMAIL: $PGADMIN_EMAIL
+      PGADMIN_PASSWORD: $PGADMIN_PASSWORD
       # PGADMIN_LISTEN_PORT = 80
     ports:
       - "5050:80"
