@@ -1,5 +1,5 @@
 {
-  "name": "jest-cypress",
+  "name": "frontend",
   "private": true,
   "scripts": {
     "dev": "next dev",
