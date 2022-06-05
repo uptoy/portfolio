@@ -2,10 +2,10 @@ name: Deploy - BACKEND
 on:
   push:
     branches:
-      - "main"
+      - "*"
   pull_request:
     branches:
-      - "main"
+      - "*"
 
 env:
   GCP_REGION: ${{ secrets.GCP_REGION_PRD }}
