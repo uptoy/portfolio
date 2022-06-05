@@ -33,7 +33,7 @@ jobs:
       - name: Authorize Docker push
         run: gcloud auth configure-docker
       - name: Build a docker image
-        run: cd helloworld && docker build -t ${{ env.IMAGE }} -f Dockerfile .
+        run: cd backend && docker build -t ${{ env.IMAGE }} -f Dockerfile .
       - name: Push the docker image
         run: docker push ${{ env.IMAGE }}
       - name: Deploy to Cloud Run
