@@ -58,7 +58,7 @@ jobs:
           image: ${{ env.IMAGE_FRONTEND }}
           region: ${{ env.GCP_REGION }}
 
-      - name: Clean up Container images
+      - name: Clean up Container images frontend
         run: |
           gcloud container images list-tags "${BASE_IMAGE_FRONTEND}" \
             --filter="NOT tags:${GITHUB_SHA}" --format="get(digest)" | \
@@ -66,6 +66,7 @@ jobs:
           do
             gcloud container images delete -q --force-delete-tags "${BASE_IMAGE_FRONTEND}@$digest"
           done
+      - name: Clean up Container images backend
         run: |
           gcloud container images list-tags "${BASE_IMAGE_BACKEND}" \
             --filter="NOT tags:${GITHUB_SHA}" --format="get(digest)" | \
