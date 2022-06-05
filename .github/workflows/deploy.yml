@@ -1,0 +1,79 @@
+name: Deploy - Frontend & Backend
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - "*"
+
+env:
+  GCP_REGION: ${{ secrets.GCP_REGION_PRD }}
+  IMAGE_BACKEND: gcr.io/${{ secrets.GCP_PROJECT_ID_PRD }}/portfolio_backend:${{ github.sha }}
+  IMAGE_FRONTEND: gcr.io/${{ secrets.GCP_PROJECT_ID_PRD }}/portfolio_frontend:${{ github.sha }}
+  GOOGLE_IAM_WORKLOAD_IDENTITY_POOL_PROVIDER: ${{ secrets.GOOGLE_IAM_WORKLOAD_IDENTITY_POOL_PROVIDER }}
+  SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+      - id: "auth"
+        uses: "google-github-actions/auth@v0"
+        with:
+          workload_identity_provider: "${{ env.GOOGLE_IAM_WORKLOAD_IDENTITY_POOL_PROVIDER }}"
+          service_account: "${{ env.SERVICE_ACCOUNT_EMAIL }}"
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+      - name: Authorize Docker push
+        run: gcloud auth configure-docker
+
+      - name: Build a docker image backend
+        run: cd backend && docker build -t ${{ env.IMAGE_BACKEND }} -f Dockerfile .
+      - name: Push the docker image backend
+        run: docker push ${{ env.IMAGE_BACKEND }}
+      - name: Deploy to Cloud Run backend
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v0
+        with:
+          service: backend
+          image: ${{ env.IMAGE_BACKEND }}
+          region: ${{ env.GCP_REGION }}
+
+      - name: Build a docker image frontend
+        run: cd frontend && docker build -t ${{ env.IMAGE_FRONTEND }} -f Dockerfile .
+      - name: Push the docker image frontend
+        run: docker push ${{ env.IMAGE_FRONTEND }}
+      - name: Deploy to Cloud Run frontend
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v0
+        with:
+          service: frontend
+          image: ${{ env.IMAGE_FRONTEND }}
+          region: ${{ env.GCP_REGION }}
+
+      - name: Clean up Container images
+        run: |
+          gcloud container images list-tags "${BASE_IMAGE_FRONTEND}" \
+            --filter="NOT tags:${GITHUB_SHA}" --format="get(digest)" | \
+          while read digest
+          do
+            gcloud container images delete -q --force-delete-tags "${BASE_IMAGE_FRONTEND}@$digest"
+          done
+        run: |
+          gcloud container images list-tags "${BASE_IMAGE_BACKEND}" \
+            --filter="NOT tags:${GITHUB_SHA}" --format="get(digest)" | \
+          while read digest
+          do
+            gcloud container images delete -q --force-delete-tags "${BASE_IMAGE_BACKEND}@$digest"
+          done
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          BASE_IMAGE_FRONTEND: asia.gcr.io/${{ secrets.GCP_PROJECT_ID_PRD }}/portfolio_frontend
+          BASE_IMAGE_BACKEND: asia.gcr.io/${{ secrets.GCP_PROJECT_ID_PRD }}/portfolio_backend
