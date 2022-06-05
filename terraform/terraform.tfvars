@@ -1,0 +1,6 @@
+project               = "portfolio05301916"
+repo_name             = "uptoy/portfolio"
+location              = "asia-northeast1"
+container_image_front = "gcr.io/portfolio05301916/frontend"
+container_image_back  = "gcr.io/portfolio05301916/backend"
+service_account_name  = "github-actions060529@portfolio05301916.iam.gserviceaccount.com"
