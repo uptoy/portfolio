@@ -9,7 +9,7 @@ on:
 
 env:
   GCP_REGION: ${{ secrets.GCP_REGION_PRD }}
-  IMAGE_BACKEND: gcr.io/${{ secrets.GCP_PROJECT_ID_PRD }}/portfolio_backend:${{ github.sha }}
+  IMAGE: asia.gcr.io/${{ secrets.GCP_PROJECT_ID_PRD }}/portfolio_backend:${{ github.sha }}
   GOOGLE_IAM_WORKLOAD_IDENTITY_POOL_PROVIDER: ${{ secrets.GOOGLE_IAM_WORKLOAD_IDENTITY_POOL_PROVIDER }}
   SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
 jobs:
@@ -33,24 +33,24 @@ jobs:
       - name: Authorize Docker push
         run: gcloud auth configure-docker
       - name: Build a docker image
-        run: cd backend && docker build -t ${{ env.IMAGE_BACKEND }} -f Dockerfile .
+        run: cd helloworld && docker build -t ${{ env.IMAGE }} -f Dockerfile .
       - name: Push the docker image
-        run: docker push ${{ env.IMAGE_BACKEND }}
+        run: docker push ${{ env.IMAGE }}
       - name: Deploy to Cloud Run
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v0
         with:
           service: cloudrun-hello
-          image: ${{ env.IMAGE_BACKEND }}
+          image: ${{ env.IMAGE }}
           region: ${{ env.GCP_REGION }}
       - name: Clean up Container images
         run: |
-          gcloud container images list-tags "${BASE_IMAGE_BACKEND}" \
+          gcloud container images list-tags "${BASE_IMAGE}" \
             --filter="NOT tags:${GITHUB_SHA}" --format="get(digest)" | \
           while read digest
           do
-            gcloud container images delete -q --force-delete-tags "${BASE_IMAGE_BACKEND}@$digest"
+            gcloud container images delete -q --force-delete-tags "${BASE_IMAGE}@$digest"
           done
         env:
           GITHUB_SHA: ${{ github.sha }}
-          BASE_IMAGE_BACKEND: gcr.io/${{ secrets.GCP_PROJECT_ID_PRD }}/portfolio_backend
+          BASE_IMAGE: asia.gcr.io/${{ secrets.GCP_PROJECT_ID_PRD }}/portfolio_backend
