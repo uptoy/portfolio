@@ -1,4 +1,4 @@
-name: DEPLOY
+name: CI - Test
 on:
   push:
     branches:
@@ -40,8 +40,8 @@ jobs:
         with:
           go-version: 1.17
 
-      - name: Build
+      - name: Go Build
         run: cd ./backend && go build -v ./...
 
-      - name: Test
+      - name: Go Test
         run: cd ./backend && go test -v ./...
