@@ -1,6 +1,6 @@
 terraform {
   required_version = "~> 1.2.1"
-  required_providers {
+    required_providers {
     google = ">= 4.23.0"
     google-beta = ">= 4.23.0"
   }
@@ -40,7 +40,7 @@ resource "google_project_service" "default" {
 
 resource "google_service_account" "github_actions" {
   project      = var.project
-  account_id   = "github-actions"
+  account_id   = "github-actions-back"
   display_name = "A service account for GitHub Actions"
   description  = "link to Workload Identity Pool used by github actions"
 }
@@ -48,8 +48,8 @@ resource "google_service_account" "github_actions" {
 resource "google_iam_workload_identity_pool" "github" {
   provider                  = google-beta
   project                   = var.project
-  workload_identity_pool_id = "github0605"
-  display_name              = "github0605"
+  workload_identity_pool_id = "github-back"
+  display_name              = "github-back"
   description               = "Workload Identity Pool for GitHub Actions"
 }
 

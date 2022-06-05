@@ -1,5 +1,5 @@
 resource "google_cloud_run_service" "default" {
-  name     = "portfolio0605"
+  name     = "portfolio-backend"
   location = var.location
   autogenerate_revision_name = true
   template {
