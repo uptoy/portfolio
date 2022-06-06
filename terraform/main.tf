@@ -1,12 +1,13 @@
 terraform {
   required_version = "~> 1.2.1"
   required_providers {
-    google = ">= 4.23.0"
+    google = ">= 4.20.0"
   }
   backend "gcs" {
     prefix = "terraform/state"
   }
 }
+
 
 data "google_iam_policy" "cloud_run_public" {
   binding {
@@ -17,18 +18,18 @@ data "google_iam_policy" "cloud_run_public" {
   }
 }
 
-resource "google_cloud_run_service_iam_policy" "policy_front" {
-  location = google_cloud_run_service.front.location
-  project  = google_cloud_run_service.front.project
-  service  = google_cloud_run_service.front.name
+resource "google_cloud_run_service_iam_policy" "policy_frontend" {
+  location = google_cloud_run_service.frontend.location
+  project  = google_cloud_run_service.frontend.project
+  service  = google_cloud_run_service.frontend.name
 
   policy_data = data.google_iam_policy.cloud_run_public.policy_data
 }
 
-resource "google_cloud_run_service_iam_policy" "policy_back" {
-  location = google_cloud_run_service.back.location
-  project  = google_cloud_run_service.back.project
-  service  = google_cloud_run_service.back.name
+resource "google_cloud_run_service_iam_policy" "policy_backend" {
+  location = google_cloud_run_service.backend.location
+  project  = google_cloud_run_service.backend.project
+  service  = google_cloud_run_service.backend.name
 
   policy_data = data.google_iam_policy.cloud_run_public.policy_data
 }
@@ -48,7 +49,7 @@ resource "google_project_service" "default" {
 
 resource "google_service_account" "github_actions" {
   project      = var.project
-  account_id   = "github-actions060529"
+  account_id   = "github-actions"
   display_name = "A service account for GitHub Actions"
   description  = "link to Workload Identity Pool used by github actions"
 }
@@ -56,8 +57,8 @@ resource "google_service_account" "github_actions" {
 resource "google_iam_workload_identity_pool" "github" {
   provider                  = google-beta
   project                   = var.project
-  workload_identity_pool_id = "github060529"
-  display_name              = "github060529"
+  workload_identity_pool_id = "github"
+  display_name              = "github"
   description               = "Workload Identity Pool for GitHub Actions"
 }
 

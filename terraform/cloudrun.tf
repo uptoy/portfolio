@@ -1,35 +1,35 @@
-resource "google_cloud_run_service" "front" {
-  name                       = "portfolio-front"
+resource "google_cloud_run_service" "frontend" {
+  name                       = "portfolio-frontend"
   location                   = var.location
   autogenerate_revision_name = true
   template {
     spec {
       containers {
-        image = var.container_image_front
+        image = var.container_image_frontend
       }
       service_account_name = var.service_account_name
     }
   }
 }
 
-output "front_url" {
-  value = google_cloud_run_service.front.status[0].url
+output "frontend_url" {
+  value = google_cloud_run_service.frontend.status[0].url
 }
 
-resource "google_cloud_run_service" "back" {
-  name                       = "portfolio-back"
+resource "google_cloud_run_service" "backend" {
+  name                       = "portfolio-backend"
   location                   = var.location
   autogenerate_revision_name = true
   template {
     spec {
       containers {
-        image = var.container_image_back
+        image = var.container_image_backend
       }
       service_account_name = var.service_account_name
     }
   }
 }
 
-output "back_url" {
-  value = google_cloud_run_service.back.status[0].url
+output "backend_url" {
+  value = google_cloud_run_service.backend.status[0].url
 }

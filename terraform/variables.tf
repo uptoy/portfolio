@@ -14,13 +14,13 @@ variable "location" {
   default     = "asia-northeast1"
 }
 
-variable "container_image_front" {
+variable "container_image_frontend" {
   description = "docker container image"
   type        = string
   default     = ""
 }
 
-variable "container_image_back" {
+variable "container_image_backend" {
   description = "docker container image"
   type        = string
   default     = ""
