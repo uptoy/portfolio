@@ -40,7 +40,7 @@ jobs:
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v0
         with:
-          service: frontend
+          service: portfolio-frontend
           image: ${{ env.IMAGE }}
           region: ${{ env.GCP_REGION }}
       - name: Clean up Container images
