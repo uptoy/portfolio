@@ -28,12 +28,12 @@ func TestHandler(t *testing.T) {
 	}{
 		{
 			label: "default",
-			want:  "Hello World!\n",
+			want:  "HelloHelloHello World!\n",
 			name:  "",
 		},
 		{
 			label: "override",
-			want:  "Hello Override!\n",
+			want:  "HelloHelloHello Override!\n",
 			name:  "Override",
 		},
 	}
