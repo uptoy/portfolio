@@ -7,7 +7,7 @@ import { Grid } from '@material-ui/core'
 import { LineBarChart, BrowserUsage, InfoBox, NewOrders, MonthlySales } from 'src/components/admin'
 import { cyan, pink, purple, orange, grey } from '@material-ui/core/colors'
 import { AdminLayout } from 'src/components/dashboard'
-import Data from 'data'
+import Data from 'src/data'
 
 const cyan600 = cyan['600']
 const pink600 = pink['600']

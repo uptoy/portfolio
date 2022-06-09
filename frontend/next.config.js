@@ -5,6 +5,10 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true
   },
+  webpack(config) {
+    config.infrastructureLogging = { debug: /PackFileCache/ }
+    return config;
+  }
 };
 
 module.exports = nextConfig;
