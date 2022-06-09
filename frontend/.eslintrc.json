@@ -1,13 +1,4 @@
 {
-  "extends": ["next/core-web-vitals", "airbnb-typescript", "@herp-inc", "prettier","plugin:storybook/recommended"],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./tsconfig.json",
-    "sourceType": "module"
-  },
-  "plugins": ["@typescript-eslint", "import"],
-  "ignorePatterns": ["jest.config.js","next.config.js"],
-  "rules": {
-    "import/no-unassigned-import": ["error", { "allow": ["**/*.css"] }]
-  }
+  "extends": ["next", "next/core-web-vitals", "prettier", "next/babel"]
+
 }

@@ -1,4 +1,5 @@
-.env.development
-.env.production
-.env.local
+.env.dev
 .env
+.env.local
+*.pem
+.env.production

@@ -55,7 +55,7 @@ export const GameHistory: React.FC = () => {
     if (winnerStr) {
       return 'Winner: ' + winnerStr
     }
-    return 'Next playerNext player: ' + (xIsNext ? 'X' : 'O')
+    return 'Next player: ' + (xIsNext ? 'X' : 'O')
   }
 
   const status: string = getStatus(winner)

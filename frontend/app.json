@@ -1,5 +1,5 @@
 {
-  "name": "nextjs",
+  "name": "frontend",
   "options": {
     "allow-unauthenticated": true,
     "memory": "256Mi",

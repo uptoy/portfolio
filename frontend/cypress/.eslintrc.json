@@ -1,5 +1,5 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:cypress/recommended", "airbnb-typescript", "@herp-inc", "prettier"],
+  "extends": ["next/core-web-vitals", "plugin:cypress/recommended", "prettier"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./cypress/tsconfig.json",
