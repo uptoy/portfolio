@@ -144,6 +144,7 @@ const Index: NextPage = ({ products, wishlist }: any) => {
   return (
     <Layout>
       <Game />
+      <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
       <MainFeaturedPost post={mainFeaturedPost} />
       <Container className={classes.cardGrid} maxWidth="xl">
         <Grid container spacing={4}>
