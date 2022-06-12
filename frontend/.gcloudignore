@@ -8,5 +8,9 @@
 vendor/
 
 # Exclude git history and configuration.
-.git/
 .gitignore
+
+.git
+dist
+node_modules
+*.jar
