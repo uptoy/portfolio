@@ -27,14 +27,29 @@ steps:
   entrypoint: yarn
   args: ['run', 'build']
 
+
+# Docker Pull
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
-  args: ['-c', 'docker pull gcr.io/p06111806/frontend:latest || exit 0']
+  args: ['-c', 'docker pull gcr.io/p06111806/frontend:$COMMIT_SHA || exit 0']
+
+# Docker Build
 - name: 'gcr.io/cloud-builders/docker'
   args: [
             'build',
-            '-t', 'gcr.io/p06111806/frontend:latest',
-            '--cache-from', 'gcr.io/p06111806/frontend:latest',
+            '-t', 'gcr.io/p06111806/frontend:$COMMIT_SHA',
+            '--cache-from', 'gcr.io/p06111806/frontend:$COMMIT_SHA',
             '.'
         ]
-images: ['gcr.io/p06111806/frontend:latest']
+
+# Docker Push
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push','gcr.io/p06111806/frontend:$COMMIT_SHA']
+
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'frontend', '--image', 'gcr.io/p06111806/frontend:$COMMIT_SHA', '--region', 'asia-northeast1']
+images: ['gcr.io/p06111806/frontend:$COMMIT_SHA']
+options:
+  machineType: 'E2_HIGHCPU_8'
