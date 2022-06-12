@@ -17,8 +17,6 @@ steps:
     args: ['run', 'deploy', 'frontend-${SHORT_SHA}','--image=gcr.io/p06111806/frontend :$SHORT_SHA:$SHORT_SHA','--region', 'asia-northeast1', '--platform', 'managed']
   # [END cloudbuild_go_deploy_yaml]
 
-# [START cloudbuild_go_logs_yaml]
-# Save test logs to Google Cloud Storage
 artifacts:
   objects:
     location: gs://$_BUCKET_NAME/
