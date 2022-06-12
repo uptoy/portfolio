@@ -12,9 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START cloudrun_helloworld_dockerfile]
-# [START run_helloworld_dockerfile]
-
 # Use the offical golang image to create a binary.
 # This is based on Debian and sets the GOPATH to /go.
 # https://hub.docker.com/_/golang
@@ -33,7 +30,7 @@ RUN go mod download
 COPY . ./
 
 # Build the binary.
-RUN go build -v -o server
+RUN go build -v -o server .
 
 # Use the official Debian slim image for a lean production container.
 # https://hub.docker.com/_/debian
@@ -45,6 +42,7 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
 
 # Copy the binary to the production image from the builder stage.
 COPY --from=builder /app/server /app/server
-
+# Copy any certificates IFF present.
 # Run the web service on container startup.
+WORKDIR /app
 CMD ["/app/server"]
