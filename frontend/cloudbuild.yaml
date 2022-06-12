@@ -31,7 +31,7 @@ steps:
 # Docker Pull
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
-  args: ['-c', 'docker pull gcr.io/p06111806/frontend:$COMMIT_SHA || exit 0']
+  args: ['-c', 'docker pull gcr.io/p06111806/frontend:$COMMIT_SHA']
 
 # Docker Build
 - name: 'gcr.io/cloud-builders/docker'
