@@ -9,7 +9,8 @@ CREATE TABLE orders (
   shipping_zip_code TEXT NOT NULL,
 	shipping_country TEXT NOT NULL,
 	shipped_at TIMESTAMPTZ NOT NULL,
-	created_at TIMESTAMPTZ NOT NULL DEFAULT (now())
+	created_at TIMESTAMPTZ NOT NULL DEFAULT (now()),
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT (now())
 );
 
 
