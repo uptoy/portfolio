@@ -1,4 +1,4 @@
-# B to C向けECサイト(Amazon風)ポートフォリオサイト
+# B to C向けECサイト(Amazon風)
 
 
 # 使用技術
