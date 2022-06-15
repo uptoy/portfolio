@@ -1,2 +1,5 @@
-server-ca.pem
+.env.dev
 .env
+.env.local
+*.pem
+.env.production

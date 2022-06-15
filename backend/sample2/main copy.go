@@ -24,7 +24,7 @@ import (
 )
 
 func main() {
-	// loadEnv()
+	loadEnv()
 	log.Println("Starting server...")
 
 	ds, err := initDS()
@@ -37,13 +37,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failure to inject data sources: %v\n", err)
 	}
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
 
 	srv := &http.Server{
-		Addr:    "127.0.0.1:" + port,
+		Addr:    "127.0.0.1:8080",
 		Handler: router,
 	}
 	go func() {
@@ -80,7 +76,7 @@ func main() {
 }
 
 func inject(d *dataSources) (*gin.Engine, error) {
-	// loadEnv()
+	loadEnv()
 	log.Println("Injecting data sources")
 	/*
 	 * repository layer
@@ -108,7 +104,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 		AuthRepository: authRepository,
 	})
 	cartService := service.NewCartService(&service.CartServiceConfig{
-		CartRepository:         cartRepository,
+		CartRepository: cartRepository,
 		ProductImageRepository: productImageRepository,
 	})
 	categoryService := service.NewCategoryService(&service.CategoryServiceConfig{
@@ -170,7 +166,10 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	if err != nil {
 		return nil, fmt.Errorf("could not parse public key: %w", err)
 	}
+
+	// load refresh token secret from env variable
 	refreshSecret := os.Getenv("REFRESH_SECRET")
+	// load expiration lengths from env variables and parse as int
 	idTokenExp := os.Getenv("ID_TOKEN_EXP")
 	refreshTokenExp := os.Getenv("REFRESH_TOKEN_EXP")
 
@@ -195,13 +194,13 @@ func inject(d *dataSources) (*gin.Engine, error) {
 
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
+		AllowOrigins:     []string{"http://localhost:3000"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
 		AllowHeaders:     []string{"Content-Type"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		AllowOriginFunc: func(origin string) bool {
-			return origin == "*"
+			return origin == "http://localhost:3000"
 		},
 		MaxAge: 12 * time.Hour,
 	}))
@@ -218,11 +217,13 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	}
 
 	handler.NewHandler(&handler.Config{
-		R:               router,
+		R: router,
 		AddressService:  addressService,
 		AuthService:     authService,
 		CartService:     cartService,
 		CategoryService: categoryService,
+		// ChatService:     chatService,
+		// ImageService:    imageService,
 		OrderService:    orderService,
 		PaymentService:  paymentService,
 		ProductService:  productService,
@@ -242,38 +243,37 @@ type dataSources struct {
 	RedisClient *redis.Client
 }
 
+// InitDS establishes connections to fields in dataSources
 func initDS() (*dataSources, error) {
-	var (
-		db  *sqlx.DB
-		err error
-	)
 	log.Printf("Initializing data sources\n")
-	if os.Getenv("INSTANCE_HOST") != "" {
+	pgHost := "localhost"
+	pgPort := "5432"
+	pgUser := "postgres"
+	pgPassword := "password"
+	pgDB := "portfolio_db"
+	pgSSL := "disable"
 
-		db, err = connectTCPSocket()
-		if err != nil {
-			log.Fatalf("connectTCPSocket: unable to connect: %s", err)
-		}
+	pgConnString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s", pgHost, pgPort, pgUser, pgPassword, pgDB, pgSSL)
+
+	log.Printf("Connecting to Postgresql\n")
+	db, err := sqlx.Open("postgres", pgConnString)
+
+	if err != nil {
+		return nil, fmt.Errorf("error opening db: %w", err)
 	}
-	if os.Getenv("INSTANCE_UNIX_SOCKET") != "" {
-		db, err = connectUnixSocket()
-		if err != nil {
-			log.Fatalf("connectUnixSocket: unable to connect: %s", err)
-		}
+
+	if err := db.Ping(); err != nil {
+		return nil, fmt.Errorf("error connecting to db: %w", err)
 	}
-	if db == nil {
-		log.Fatal("Missing database connection type. Please define one of INSTANCE_HOST, INSTANCE_UNIX_SOCKET, or INSTANCE_CONNECTION_NAME")
-	}
-	redisHost := os.Getenv("REDIS_HOST")
-	redisPort := os.Getenv("REDIS_PORT")
-	fmt.Println("redisHost", redisHost)
-	fmt.Println("redisPort", redisPort)
+	redisHost := "localhost"
+	redisPort := "6379"
 	log.Printf("Connecting to Redis\n")
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", redisHost, redisPort),
 		Password: "",
 		DB:       0,
 	})
+	// verify redis connection
 	_, err = rdb.Ping(context.Background()).Result()
 
 	if err != nil {
@@ -300,70 +300,4 @@ func loadEnv() {
 	if err != nil {
 		fmt.Printf("Could not read env: %v", err)
 	}
-}
-
-func connectTCPSocket() (*sqlx.DB, error) {
-	mustGetenv := func(k string) string {
-		v := os.Getenv(k)
-		if v == "" {
-			log.Fatalf("Warning: %s environment variable not set.", k)
-		}
-		return v
-	}
-	var (
-		dbUser    = mustGetenv("DB_USER")       // e.g. 'my-db-user'
-		dbPwd     = mustGetenv("DB_PASS")       // e.g. 'my-db-password'
-		dbTCPHost = mustGetenv("INSTANCE_HOST") // e.g. '127.0.0.1' ('172.17.0.1' if deployed to GAE Flex)
-		dbPort    = mustGetenv("DB_PORT")       // e.g. '5432'
-		dbName    = mustGetenv("DB_NAME")       // e.g. 'my-database'
-	)
-
-	dbURI := fmt.Sprintf("host=%s user=%s password=%s port=%s database=%s",
-		dbTCPHost, dbUser, dbPwd, dbPort, dbName)
-	if dbRootCert, ok := os.LookupEnv("DB_ROOT_CERT"); ok { // e.g., '/path/to/my/server-ca.pem'
-		var (
-			dbCert = mustGetenv("DB_CERT") // e.g. '/path/to/my/client-cert.pem'
-			dbKey  = mustGetenv("DB_KEY")  // e.g. '/path/to/my/client-key.pem'
-		)
-		dbURI += fmt.Sprintf(" sslmode=require sslrootcert=%s sslcert=%s sslkey=%s",
-			dbRootCert, dbCert, dbKey)
-	}
-	dbPool, err := sqlx.Open("postgres", dbURI)
-	if err != nil {
-		return nil, fmt.Errorf("sqlx.Open: %v", err)
-	}
-	configureConnectionPool(dbPool)
-	return dbPool, nil
-}
-
-func connectUnixSocket() (*sqlx.DB, error) {
-	mustGetenv := func(k string) string {
-		v := os.Getenv(k)
-		if v == "" {
-			log.Fatalf("Warning: %s environment variable not set.\n", k)
-		}
-		return v
-	}
-	var (
-		dbUser         = mustGetenv("DB_USER")              // e.g. 'my-db-user'
-		dbPwd          = mustGetenv("DB_PASS")              // e.g. 'my-db-password'
-		unixSocketPath = mustGetenv("INSTANCE_UNIX_SOCKET") // e.g. '/cloudsql/project:region:instance'
-		dbName         = mustGetenv("DB_NAME")              // e.g. 'my-database'
-	)
-
-	dbURI := fmt.Sprintf("user=%s password=%s database=%s host=%s",
-		dbUser, dbPwd, dbName, unixSocketPath)
-
-	dbPool, err := sqlx.Open("postgres", dbURI)
-	if err != nil {
-		return nil, fmt.Errorf("sqlx.Open: %v", err)
-	}
-	configureConnectionPool(dbPool)
-	return dbPool, nil
-}
-
-func configureConnectionPool(db *sqlx.DB) {
-	db.SetMaxIdleConns(5)
-	db.SetMaxOpenConns(7)
-	db.SetConnMaxLifetime(1800 * time.Second)
 }
