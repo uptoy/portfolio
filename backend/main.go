@@ -21,6 +21,9 @@ import (
 	"strconv"
 	"syscall"
 	"time"
+
+	secretmanager "cloud.google.com/go/secretmanager/apiv1"
+	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 )
 
 func main() {
@@ -37,9 +40,14 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failure to inject data sources: %v\n", err)
 	}
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+		log.Printf("defaulting to port %s", port)
+	}
 
 	srv := &http.Server{
-		Addr:    "127.0.0.1:8080",
+		Addr:    "127.0.0.1:" + port,
 		Handler: router,
 	}
 	go func() {
@@ -104,7 +112,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 		AuthRepository: authRepository,
 	})
 	cartService := service.NewCartService(&service.CartServiceConfig{
-		CartRepository: cartRepository,
+		CartRepository:         cartRepository,
 		ProductImageRepository: productImageRepository,
 	})
 	categoryService := service.NewCategoryService(&service.CategoryServiceConfig{
@@ -141,22 +149,19 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	})
 
 	// load rsa keys
-	privKeyFile := os.Getenv("PRIV_KEY_FILE")
+	privateName := os.Getenv("privateName")
+	publicName := os.Getenv("publicName")
+	pubKeyFile := accessSecret(publicName)
+	privKeyFile := accessSecret(privateName)
 	priv, err := ioutil.ReadFile(privKeyFile)
-
 	if err != nil {
 		return nil, fmt.Errorf("could not read private key pem file: %w", err)
 	}
-
 	privKey, err := jwt.ParseRSAPrivateKeyFromPEM(priv)
-
 	if err != nil {
 		return nil, fmt.Errorf("could not parse private key: %w", err)
 	}
-
-	pubKeyFile := os.Getenv("PUB_KEY_FILE")
 	pub, err := ioutil.ReadFile(pubKeyFile)
-
 	if err != nil {
 		return nil, fmt.Errorf("could not read public key pem file: %w", err)
 	}
@@ -194,13 +199,13 @@ func inject(d *dataSources) (*gin.Engine, error) {
 
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
 		AllowHeaders:     []string{"Content-Type"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		AllowOriginFunc: func(origin string) bool {
-			return origin == "http://localhost:3000"
+			return origin == "*"
 		},
 		MaxAge: 12 * time.Hour,
 	}))
@@ -217,7 +222,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	}
 
 	handler.NewHandler(&handler.Config{
-		R: router,
+		R:               router,
 		AddressService:  addressService,
 		AuthService:     authService,
 		CartService:     cartService,
@@ -246,11 +251,11 @@ type dataSources struct {
 // InitDS establishes connections to fields in dataSources
 func initDS() (*dataSources, error) {
 	log.Printf("Initializing data sources\n")
-	pgHost := "localhost"
-	pgPort := "5432"
-	pgUser := "postgres"
-	pgPassword := "password"
-	pgDB := "portfolio_db"
+	pgHost := os.Getenv("DB_HOST")
+	pgPort := os.Getenv("DB_PORT")
+	pgUser := os.Getenv("DB_USER")
+	pgPassword := os.Getenv("DB_PASS")
+	pgDB := os.Getenv("DB_NAME")
 	pgSSL := "disable"
 
 	pgConnString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s", pgHost, pgPort, pgUser, pgPassword, pgDB, pgSSL)
@@ -265,8 +270,8 @@ func initDS() (*dataSources, error) {
 	if err := db.Ping(); err != nil {
 		return nil, fmt.Errorf("error connecting to db: %w", err)
 	}
-	redisHost := "localhost"
-	redisPort := "6379"
+	redisHost := os.Getenv("REDIS_HOST")
+	redisPort := os.Getenv("REDIS_PORT")
 	log.Printf("Connecting to Redis\n")
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", redisHost, redisPort),
@@ -293,6 +298,24 @@ func (d *dataSources) close() error {
 		return fmt.Errorf("error closing Redis Client: %w", err)
 	}
 	return nil
+}
+
+func accessSecret(name string) string {
+	ctx := context.Background()
+	client, err := secretmanager.NewClient(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer client.Close()
+	reqPrivate := &secretmanagerpb.AccessSecretVersionRequest{
+		Name: name,
+	}
+	result, err := client.AccessSecretVersion(ctx, reqPrivate)
+	if err != nil {
+		log.Fatal(err)
+	}
+	key := string(result.Payload.Data)
+	return key
 }
 
 func loadEnv() {
