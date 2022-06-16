@@ -114,6 +114,10 @@ const Cart: NextPage = ({ cart }: any) => {
     fallbackData: cart,
     revalidateOnMount: true
   })
+
+  const { data:data1 } = useSWR(`${BaseURL}/products`, fetcher)
+  console.log("data1",data1?.data[0].product_name)
+  console.log("data1",data1?.data[1].product_name)
   const router = useRouter()
   const classes = useStyles()
   const fetchCartItems = data.data
@@ -206,6 +210,7 @@ const Cart: NextPage = ({ cart }: any) => {
             <Grid container spacing={3}>
               <Grid item xs={12} sm={12} md={9}>
                 {fetchCartItems?.map((cartItem: CartItem, index: number) => (
+
                   <Paper className={classes.paper} key={index}>
                     <div style={{ display: 'flex' }}>
                       <div
@@ -229,7 +234,7 @@ const Cart: NextPage = ({ cart }: any) => {
                       </div>
                       <div style={{ paddingTop: 10, paddingLeft: 20 }}>
                         <Link href={`/products/${cartItem.product_id}`}>
-                          <p style={{ margin: 0 }}>name</p>
+                          <p style={{ margin: 0 }}>{cartItem.product?.product_name}</p>
                         </Link>
                         <p>{cartItem.product?.price}</p>
                         <p style={{ color: '#007600' }}>In Stock</p>
@@ -257,7 +262,7 @@ const Cart: NextPage = ({ cart }: any) => {
                     <ListItem style={{ display: 'block' }}>
                       <div style={{ margin: 'auto', width: '8em' }}>
                         <p>Total Price(${totalPrice})</p>
-                        <p>Total Num(${totalNum})</p>
+                        <p>Total Num({totalNum})</p>
                       </div>
                     </ListItem>
                     <ListItem style={{ justifyContent: 'center' }}>

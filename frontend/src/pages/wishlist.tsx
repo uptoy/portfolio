@@ -127,6 +127,7 @@ const Wishlist: NextPage = ({ products, wishlist }: any) => {
           </Paper>
         ) : (
           <div className={classes.root}>
+            <p>Wishlist</p>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={12}>
                 {fetchWishlist?.map((item: Product, index: number) => (

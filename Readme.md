@@ -50,7 +50,41 @@
 
 
 # インフラ構成
-![インフラ構成図](/infra.png)
+![インフラ構成図](/image/infra.png)
 
 # ER図
-![ER図](/table.png)
+![ER図](/image/table.png)
+
+
+# 各種ページ
+![Top](/image/top.png)
+
+![Detail](/image/detail.png)
+
+![Cart](/image/cart.png)
+
+![Wishlist](/image/wishlist.png)
+
+![Checkout1](/image/checkout1.png)
+
+![Checkout2](/image/checkout2.png)
+
+![Checkout3](/image/checkout3.png)
+
+![Checkout4](/image/checkout4.png)
+
+![AdminIndex](/image/admin_index.png)
+
+![AdminChart](/image/admin_chart.png)
+
+![AdminCategory](/image/admin_category.png)
+
+![AdminCategoryAdd](/image/admin_category_add.png)
+
+![AdminCategoryEdit](/image/admin_category_edit.png)
+
+![AdminCategoryDelete](/image/admin_category_delete.png)
+
+![AdminOrderList](/image/admin_order_list.png)
+
+![AdminProductAdd](/image/admin_product_add.png)
