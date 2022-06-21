@@ -33,6 +33,7 @@ type Handler struct {
 
 type Config struct {
 	R               *gin.Engine
+	SampleService   model.SampleService
 	AddressService  model.AddressService
 	AuthService     model.AuthService
 	CartService     model.CartService
@@ -70,7 +71,7 @@ func NewHandler(c *Config) {
 		TokenService:    c.TokenService,
 		UserService:     c.UserService,
 		WishlistService: c.WishlistService,
-		MaxBodyBytes: c.MaxBodyBytes,
+		MaxBodyBytes:    c.MaxBodyBytes,
 	} // currently has no properties
 
 	// Create an account group

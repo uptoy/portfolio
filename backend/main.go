@@ -4,6 +4,7 @@ import (
 	"backend/handler"
 	"backend/repository"
 	"backend/service"
+	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	"context"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
@@ -13,7 +14,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
-	"io/ioutil"
+	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 	"log"
 	"net/http"
 	"os"
@@ -21,22 +22,17 @@ import (
 	"strconv"
 	"syscall"
 	"time"
-
-	secretmanager "cloud.google.com/go/secretmanager/apiv1"
-	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 )
 
 func main() {
 	loadEnv()
 	log.Println("Starting server...")
-
 	ds, err := initDS()
+	fmt.Println(ds)
 	if err != nil {
 		log.Fatalf("Unable to initialize data sources: %v\n", err)
 	}
-
 	router, err := inject(ds)
-
 	if err != nil {
 		log.Fatalf("Failure to inject data sources: %v\n", err)
 	}
@@ -45,19 +41,8 @@ func main() {
 		port = "8080"
 		log.Printf("defaulting to port %s", port)
 	}
-
-	srv := &http.Server{
-		Addr:    "127.0.0.1:" + port,
-		Handler: router,
-	}
-	go func() {
-		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("Failed to initialize server: %v\n", err)
-		}
-	}()
-
-	log.Printf("Listening on port %v\n", srv.Addr)
-
+	router.Run("0.0.0.0:" + port) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	log.Printf("Listening on port %v\n", port)
 	// Wait for kill signal of channel
 	quit := make(chan os.Signal)
 
@@ -68,23 +53,24 @@ func main() {
 
 	// The context is used to inform the server it has 5 seconds to finish
 	// the request it is currently handling
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
 	// shutdown data sources
 	if err := ds.close(); err != nil {
 		log.Fatalf("A problem occurred gracefully shutting down data sources: %v\n", err)
 	}
+	// shutdown data sources
+	if err := ds.close(); err != nil {
+		log.Fatalf("A problem occurred gracefully shutting down data sources: %v\n", err)
+	}
+}
 
-	// Shutdown server
-	log.Println("Shutting down server...")
-	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatalf("Server forced to shutdown: %v\n", err)
+func loadEnv() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		fmt.Printf("読み込み出来ませんでした: %v", err)
 	}
 }
 
 func inject(d *dataSources) (*gin.Engine, error) {
-	loadEnv()
 	log.Println("Injecting data sources")
 	/*
 	 * repository layer
@@ -101,7 +87,6 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	tokenRepository := repository.NewTokenRepository(d.RedisClient)
 	userRepository := repository.NewUserRepository(d.DB)
 	wishlistRepository := repository.NewWishlistRepository(d.DB)
-
 	/*
 	 * service layer
 	 */
@@ -118,10 +103,6 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	categoryService := service.NewCategoryService(&service.CategoryServiceConfig{
 		CategoryRepository: categoryRepository,
 	})
-	// chatService := service.NewChatService(&service.ChatServiceConfig{
-	// 	ChatRepository: chatRepository,
-	// })
-
 	orderService := service.NewOrderService(&service.OrderServiceConfig{
 		OrderRepository: orderRepository,
 	})
@@ -149,29 +130,19 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	})
 
 	// load rsa keys
-	privateName := os.Getenv("privateName")
-	publicName := os.Getenv("publicName")
-	pubKeyFile := accessSecret(publicName)
-	privKeyFile := accessSecret(privateName)
-	priv, err := ioutil.ReadFile(privKeyFile)
-	if err != nil {
-		return nil, fmt.Errorf("could not read private key pem file: %w", err)
-	}
+	privateName := os.Getenv("PRIVATE_NAME")
+	publicName := os.Getenv("PUBLIC_NAME")
+	pub := accessSecret(publicName)
+	priv := accessSecret(privateName)
 	privKey, err := jwt.ParseRSAPrivateKeyFromPEM(priv)
 	if err != nil {
 		return nil, fmt.Errorf("could not parse private key: %w", err)
 	}
-	pub, err := ioutil.ReadFile(pubKeyFile)
-	if err != nil {
-		return nil, fmt.Errorf("could not read public key pem file: %w", err)
-	}
-
 	pubKey, err := jwt.ParseRSAPublicKeyFromPEM(pub)
 
 	if err != nil {
 		return nil, fmt.Errorf("could not parse public key: %w", err)
 	}
-
 	// load refresh token secret from env variable
 	refreshSecret := os.Getenv("REFRESH_SECRET")
 	// load expiration lengths from env variables and parse as int
@@ -187,7 +158,6 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	if err != nil {
 		return nil, fmt.Errorf("could not parse REFRESH_TOKEN_EXP as int: %w", err)
 	}
-
 	tokenService := service.NewTokenService(&service.TSConfig{
 		TokenRepository:       tokenRepository,
 		PrivKey:               privKey,
@@ -199,9 +169,9 @@ func inject(d *dataSources) (*gin.Engine, error) {
 
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
-		AllowHeaders:     []string{"Content-Type"},
+		AllowOrigins:     []string{"http://localhost:3000","https://frontend-kighwilmrq-an.a.run.app"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		AllowOriginFunc: func(origin string) bool {
@@ -209,6 +179,11 @@ func inject(d *dataSources) (*gin.Engine, error) {
 		},
 		MaxAge: 12 * time.Hour,
 	}))
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "connect portfolio backend",
+		})
+	})
 	baseURL := os.Getenv("BACKEND_API_URL")
 	handlerTimeout := os.Getenv("HANDLER_TIMEOUT")
 	ht, err := strconv.ParseInt(handlerTimeout, 0, 64)
@@ -250,25 +225,26 @@ type dataSources struct {
 
 // InitDS establishes connections to fields in dataSources
 func initDS() (*dataSources, error) {
+	var (
+		db  *sqlx.DB
+		err error
+	)
 	log.Printf("Initializing data sources\n")
-	pgHost := os.Getenv("DB_HOST")
-	pgPort := os.Getenv("DB_PORT")
-	pgUser := os.Getenv("DB_USER")
-	pgPassword := os.Getenv("DB_PASS")
-	pgDB := os.Getenv("DB_NAME")
-	pgSSL := "disable"
+	if os.Getenv("INSTANCE_HOST") != "" {
 
-	pgConnString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s", pgHost, pgPort, pgUser, pgPassword, pgDB, pgSSL)
-
-	log.Printf("Connecting to Postgresql\n")
-	db, err := sqlx.Open("postgres", pgConnString)
-
-	if err != nil {
-		return nil, fmt.Errorf("error opening db: %w", err)
+		db, err = connectTCPSocket()
+		if err != nil {
+			log.Fatalf("connectTCPSocket: unable to connect: %s", err)
+		}
 	}
-
-	if err := db.Ping(); err != nil {
-		return nil, fmt.Errorf("error connecting to db: %w", err)
+	if os.Getenv("INSTANCE_UNIX_SOCKET") != "" {
+		db, err = connectUnixSocket()
+		if err != nil {
+			log.Fatalf("connectUnixSocket: unable to connect: %s", err)
+		}
+	}
+	if db == nil {
+		log.Fatal("Missing database connection type. Please define one of INSTANCE_HOST, INSTANCE_UNIX_SOCKET, or INSTANCE_CONNECTION_NAME")
 	}
 	redisHost := os.Getenv("REDIS_HOST")
 	redisPort := os.Getenv("REDIS_PORT")
@@ -278,7 +254,6 @@ func initDS() (*dataSources, error) {
 		Password: "",
 		DB:       0,
 	})
-	// verify redis connection
 	_, err = rdb.Ping(context.Background()).Result()
 
 	if err != nil {
@@ -300,7 +275,7 @@ func (d *dataSources) close() error {
 	return nil
 }
 
-func accessSecret(name string) string {
+func accessSecret(name string) []byte {
 	ctx := context.Background()
 	client, err := secretmanager.NewClient(ctx)
 	if err != nil {
@@ -314,13 +289,72 @@ func accessSecret(name string) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	key := string(result.Payload.Data)
+	key := result.Payload.Data
 	return key
 }
 
-func loadEnv() {
-	err := godotenv.Load(".env.dev")
-	if err != nil {
-		fmt.Printf("Could not read env: %v", err)
+func configureConnectionPool(db *sqlx.DB) {
+	db.SetMaxIdleConns(5)
+	db.SetMaxOpenConns(7)
+	db.SetConnMaxLifetime(1800 * time.Second)
+}
+
+func connectUnixSocket() (*sqlx.DB, error) {
+	mustGetenv := func(k string) string {
+		v := os.Getenv(k)
+		if v == "" {
+			log.Fatalf("Warning: %s environment variable not set.\n", k)
+		}
+		return v
 	}
+	var (
+		dbUser         = mustGetenv("DB_USER")              // e.g. 'my-db-user'
+		dbPwd          = mustGetenv("DB_PASS")              // e.g. 'my-db-password'
+		unixSocketPath = mustGetenv("INSTANCE_UNIX_SOCKET") // e.g. '/cloudsql/project:region:instance'
+		dbName         = mustGetenv("DB_NAME")              // e.g. 'my-database'
+	)
+
+	dbURI := fmt.Sprintf("user=%s password=%s database=%s host=%s",
+		dbUser, dbPwd, dbName, unixSocketPath)
+
+	dbPool, err := sqlx.Open("postgres", dbURI)
+	if err != nil {
+		return nil, fmt.Errorf("sqlx.Open: %v", err)
+	}
+	configureConnectionPool(dbPool)
+	return dbPool, nil
+}
+
+func connectTCPSocket() (*sqlx.DB, error) {
+	mustGetenv := func(k string) string {
+		v := os.Getenv(k)
+		if v == "" {
+			log.Fatalf("Warning: %s environment variable not set.", k)
+		}
+		return v
+	}
+	var (
+		dbUser    = mustGetenv("DB_USER")       // e.g. 'my-db-user'
+		dbPwd     = mustGetenv("DB_PASS")       // e.g. 'my-db-password'
+		dbTCPHost = mustGetenv("INSTANCE_HOST") // e.g. '127.0.0.1' ('172.17.0.1' if deployed to GAE Flex)
+		dbPort    = mustGetenv("DB_PORT")       // e.g. '5432'
+		dbName    = mustGetenv("DB_NAME")       // e.g. 'my-database'
+	)
+
+	dbURI := fmt.Sprintf("host=%s user=%s password=%s port=%s database=%s",
+		dbTCPHost, dbUser, dbPwd, dbPort, dbName)
+	if dbRootCert, ok := os.LookupEnv("DB_ROOT_CERT"); ok { // e.g., '/path/to/my/server-ca.pem'
+		var (
+			dbCert = mustGetenv("DB_CERT") // e.g. '/path/to/my/client-cert.pem'
+			dbKey  = mustGetenv("DB_KEY")  // e.g. '/path/to/my/client-key.pem'
+		)
+		dbURI += fmt.Sprintf(" sslmode=require sslrootcert=%s sslcert=%s sslkey=%s",
+			dbRootCert, dbCert, dbKey)
+	}
+	dbPool, err := sqlx.Open("postgres", dbURI)
+	if err != nil {
+		return nil, fmt.Errorf("sqlx.Open: %v", err)
+	}
+	configureConnectionPool(dbPool)
+	return dbPool, nil
 }

@@ -25,6 +25,9 @@ type AddressService interface {
 	AddressDelete(ctx context.Context, addressId int64) error
 }
 
+type SampleService interface {
+}
+
 type AuthRepository interface {
 	ForgotPassword(ctx context.Context, passwordReset *PasswordReset) error
 	ResetPassword(ctx context.Context, newPassword string, passwordReset *PasswordReset) error

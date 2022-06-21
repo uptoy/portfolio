@@ -46,10 +46,8 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
 # Copy the binary to the production image from the builder stage.
 COPY --from=builder /app/server /app/server
 
-ARG my_arch
-
-RUN openssl genpkey -algorithm RSA -out $(ACCTPATH)/rsa_private_$(ENV).pem -pkeyopt rsa_keygen_bits:2048
-RUN openssl rsa -in $(ACCTPATH)/rsa_private_$(ENV).pem -pubout -out $(ACCTPATH)/rsa_public_$(ENV).pem
-
 # Run the web service on container startup.
 CMD ["/app/server"]
+
+# [END run_helloworld_dockerfile]
+# [END cloudrun_helloworld_dockerfile]
