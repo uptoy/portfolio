@@ -18,8 +18,7 @@ import { Image } from 'src/@types'
 import NextImage from 'next/image'
 import ImageUploading from 'react-images-uploading'
 import CancelIcon from '@material-ui/icons/Cancel'
-
-const BaseURL = 'http://localhost:8080/api'
+import { BaseURL } from '@/common'
 
 const useStyles: any = makeStyles(() => ({
   upload: {

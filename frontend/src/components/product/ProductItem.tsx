@@ -9,7 +9,7 @@ import { Button, TableCell, TableRow } from '@material-ui/core'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { mutate } from 'swr'
-const BaseURL = 'http://localhost:8080/api'
+import { BaseURL } from '@/common'
 
 interface IProps {
   product: Product

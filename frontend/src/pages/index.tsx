@@ -19,7 +19,7 @@ import { useAuth } from 'src/context/AuthContext'
 import { Average } from 'src/utils/average'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
-const BaseURL = 'http://localhost:8080/api'
+import { BaseURL } from '@/common'
 
 const useStyles: any = makeStyles(() => ({
   cardGrid: {

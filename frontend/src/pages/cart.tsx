@@ -19,8 +19,8 @@ import { useAuth } from 'src/context/AuthContext'
 import AddBoxIcon from '@material-ui/icons/AddBox'
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox'
 import { CarouselContainer } from 'src/components'
+import { BaseURL } from '@/common'
 
-const BaseURL = 'http://localhost:8080/api'
 
 const useStyles: any = makeStyles(() => ({
   cardGrid: {

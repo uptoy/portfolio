@@ -12,6 +12,7 @@ import { CartItem, Product, Review } from 'src/@types'
 import { Average } from 'src/utils/average'
 import { useAuth } from 'src/context/AuthContext'
 import Link from 'next/link'
+import { BaseURL } from '@/common'
 
 const useStyles: any = makeStyles(() => ({
   button: {
@@ -28,7 +29,6 @@ const useStyles: any = makeStyles(() => ({
   }
 }))
 
-const BaseURL = 'http://localhost:8080/api'
 export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { id } = ctx.query
   const res = await fetch(`${BaseURL}/products/${id}`, {

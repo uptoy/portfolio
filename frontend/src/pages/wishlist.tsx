@@ -15,7 +15,7 @@ import useSWR from 'swr'
 import { Link } from 'src/components'
 import toast from 'react-hot-toast'
 import CancelIcon from '@material-ui/icons/Cancel'
-const BaseURL = 'http://localhost:8080/api'
+import { BaseURL } from '@/common'
 
 const useStyles: any = makeStyles(() => ({
   cardGrid: {

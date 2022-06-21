@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+require('dotenv').config({ path: `./.env.${process.env.ENVIRONMENT}` })
 const nextConfig = {
   reactStrictMode: true,
   eslint: {

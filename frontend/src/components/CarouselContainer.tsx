@@ -2,8 +2,7 @@ import { Carousel } from 'src/components'
 import useSWR from 'swr'
 import React from 'react'
 import { Circular } from './Circular'
-
-const BaseURL = 'http://localhost:8080/api'
+import { BaseURL } from '@/common'
 
 const CarouselContainer = () => {
   const { data, isLoading } = useProducts()

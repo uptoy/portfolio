@@ -11,7 +11,7 @@ import { fetcher } from './cart'
 import useSWR from 'swr'
 import { Circular } from 'src/components/Circular'
 import { CartItem } from 'src/@types'
-const BaseURL = 'http://localhost:8080/api'
+import { BaseURL } from '@/common'
 
 const useStyles: any = makeStyles(() => ({
   stepper: {

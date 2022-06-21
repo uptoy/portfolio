@@ -8,7 +8,7 @@ import { Category } from 'src/@types'
 import { Button, TableCell, TableRow } from '@material-ui/core'
 import { useRouter } from 'next/router'
 import getFormattedDate from 'src/utils/getFormattedDate'
-const BaseURL = 'http://localhost:8080/api'
+import { BaseURL } from '@/common'
 
 interface IProps {
   category: Category

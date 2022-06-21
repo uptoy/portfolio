@@ -2,6 +2,7 @@ import { createContext, ReactNode, useEffect, useState, useContext } from 'react
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import { SignUpCredentials, SignInCredentials, ForgotPasswordCredentials, ResetPasswordCredentials } from 'src/yup/type'
+import { BaseURL } from '@/common'
 
 export type User = {
   username: string
@@ -37,7 +38,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const isAuthenticated = !!user
 
-  const BaseURL = 'http://localhost:8080/api'
   useEffect(() => {
     me()
   }, [])

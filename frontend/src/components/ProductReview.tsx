@@ -9,7 +9,7 @@ import { Review } from 'src/@types'
 import { useAuth } from 'src/context/AuthContext'
 import toast from 'react-hot-toast'
 import getFormattedDate from 'src/utils/getFormattedDate'
-const BaseURL = 'http://localhost:8080/api'
+import { BaseURL } from '@/common'
 
 interface IProps {
   reviews: Review[]

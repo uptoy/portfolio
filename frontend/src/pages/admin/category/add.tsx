@@ -10,8 +10,8 @@ import { Button, Divider, TextField, Grid, Paper, CircularProgress } from '@mate
 import { makeStyles } from '@material-ui/styles'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import { useRouter } from 'next/router'
+import { BaseURL } from '@/common'
 
-const BaseURL = 'http://localhost:8080/api'
 
 const useStyles: any = makeStyles(() => ({
   upload: {

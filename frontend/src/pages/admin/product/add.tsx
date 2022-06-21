@@ -14,11 +14,8 @@ import { Button, MenuItem, Divider, TextField, Grid, Paper, Select, CircularProg
 import { makeStyles } from '@material-ui/styles'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import { useRouter } from 'next/router'
-import { red } from '@material-ui/core/colors'
 import CancelIcon from '@material-ui/icons/Cancel'
-
-const red500 = red['500']
-const BaseURL = 'http://localhost:8080/api'
+import { BaseURL,red500 } from '@/common'
 
 const useStyles: any = makeStyles(() => ({
   upload: {
@@ -127,10 +124,10 @@ const ProductAddForm = () => {
       category_id: 1
     }
   })
-  interface IFile {
-    data_url: string
-    file: File
-  }
+  // interface IFile {
+  //   data_url: string
+  //   file: File
+  // }
   const [files, setFiles] = React.useState<ImageListType>([])
   const maxNumber = 5
   const onChange = (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {
