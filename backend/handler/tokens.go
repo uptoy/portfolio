@@ -3,9 +3,10 @@ package handler
 import (
 	"log"
 	"net/http"
+	"os"
 
-	"github.com/gin-gonic/gin"
 	"backend/model/apperrors"
+	"github.com/gin-gonic/gin"
 )
 
 type tokensReq struct {
@@ -59,8 +60,28 @@ func (h *Handler) Tokens(c *gin.Context) {
 	//   maxAge: 60 * 60 * 24, // 1 day
 	//   maxAge: 60 * 60 * 24 * 30, // 1 Month
 	c.SetSameSite(http.SameSiteStrictMode)
-	c.SetCookie("token", accessTokenNew, 60*60*24, "/", "localhost", false, true)
-	c.SetCookie("refreshToken", refreshTokenNew, 60*60*24*30, "/", "localhost", false, true)
+
+	// ローカルの場合
+	if os.Getenv("ENV") == "local" {
+		log.Println("cookieをセットする")
+		c.SetCookie("token", accessTokenNew, 60*60*24, "/", "localhost", true, true)
+	}
+	// 本番環境の場合
+	if os.Getenv("ENV") == "production" {
+		log.Println("productionでcookieをセットする")
+		c.SetCookie("token", accessTokenNew, 60*60*24, "/", "https://frontend-kighwilmrq-an.a.run.app", true, true)
+	}
+
+	// ローカルの場合
+	if os.Getenv("ENV") == "local" {
+		log.Println("cookieをセットする")
+		c.SetCookie("refreshToken", refreshTokenNew, 60*60*24*30, "/", "localhost", true, true)
+	}
+	// 本番環境の場合
+	if os.Getenv("ENV") == "production" {
+		log.Println("productionでcookieをセットする")
+		c.SetCookie("refreshToken", refreshTokenNew, 60*60*24*30, "/", "https://frontend-kighwilmrq-an.a.run.app", true, true)
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"tokens": tokens,

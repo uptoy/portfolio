@@ -15,6 +15,7 @@ import (
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
+	// "io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -130,6 +131,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	})
 
 	// load rsa keys
+	/////////
 	privateName := os.Getenv("PRIVATE_NAME")
 	publicName := os.Getenv("PUBLIC_NAME")
 	pub := accessSecret(publicName)
@@ -144,6 +146,33 @@ func inject(d *dataSources) (*gin.Engine, error) {
 		return nil, fmt.Errorf("could not parse public key: %w", err)
 	}
 	// load refresh token secret from env variable
+	// load rsa keys
+	/////////
+	/////////
+	// privKeyFile := os.Getenv("PRIV_KEY_FILE")
+	// priv, err := ioutil.ReadFile(privKeyFile)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("could not read private key pem file: %w", err)
+	// }
+	// privKey, err := jwt.ParseRSAPrivateKeyFromPEM(priv)
+
+	// if err != nil {
+	// 	return nil, fmt.Errorf("could not parse private key: %w", err)
+	// }
+
+	// pubKeyFile := os.Getenv("PUB_KEY_FILE")
+	// pub, err := ioutil.ReadFile(pubKeyFile)
+
+	// if err != nil {
+	// 	return nil, fmt.Errorf("could not read public key pem file: %w", err)
+	// }
+
+	// pubKey, err := jwt.ParseRSAPublicKeyFromPEM(pub)
+
+	// if err != nil {
+	// 	return nil, fmt.Errorf("could not parse public key: %w", err)
+	// }
+	/////////
 	refreshSecret := os.Getenv("REFRESH_SECRET")
 	// load expiration lengths from env variables and parse as int
 	idTokenExp := os.Getenv("ID_TOKEN_EXP")
@@ -169,13 +198,13 @@ func inject(d *dataSources) (*gin.Engine, error) {
 
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000","https://frontend-kighwilmrq-an.a.run.app"},
+		AllowOrigins:     []string{"http://localhost:3000", "https://frontend-kighwilmrq-an.a.run.app"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type"},
-		ExposeHeaders:    []string{"Content-Length"},
+		AllowHeaders:     []string{"Origin", "Content-Type","X-Requested-With", "X-Csrftoken", "Accept","X-HTTP-Method-Override"},
+		ExposeHeaders:    []string{"*"},
 		AllowCredentials: true,
 		AllowOriginFunc: func(origin string) bool {
-			return origin == "*"
+			return origin == "https://frontend-kighwilmrq-an.a.run.app"
 		},
 		MaxAge: 12 * time.Hour,
 	}))
@@ -230,8 +259,26 @@ func initDS() (*dataSources, error) {
 		err error
 	)
 	log.Printf("Initializing data sources\n")
-	if os.Getenv("INSTANCE_HOST") != "" {
+	/////////
+	// pgHost := "localhost"
+	// pgPort := "5432"
+	// pgUser := "postgres"
+	// pgPassword := "password"
+	// pgDB := "portfolio_db"
+	// pgSSL := "disable"
+	// pgConnString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s", pgHost, pgPort, pgUser, pgPassword, pgDB, pgSSL)
+	// log.Printf("Connecting to Postgresql\n")
+	// db, err := sqlx.Open("postgres", pgConnString)
 
+	// if err != nil {
+	// 	return nil, fmt.Errorf("error opening db: %w", err)
+	// }
+
+	// if err := db.Ping(); err != nil {
+	// 	return nil, fmt.Errorf("error connecting to db: %w", err)
+	// }
+	/////////
+	if os.Getenv("INSTANCE_HOST") != "" {
 		db, err = connectTCPSocket()
 		if err != nil {
 			log.Fatalf("connectTCPSocket: unable to connect: %s", err)
@@ -248,6 +295,11 @@ func initDS() (*dataSources, error) {
 	}
 	redisHost := os.Getenv("REDIS_HOST")
 	redisPort := os.Getenv("REDIS_PORT")
+	/////////
+	// redisHost := "localhost"
+	// redisPort := "6379"
+	/////////
+
 	log.Printf("Connecting to Redis\n")
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", redisHost, redisPort),
