@@ -62,13 +62,24 @@ const useStyles: any = makeStyles(() => ({
 export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const res = await fetch(`${BaseURL}/products`, {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Credentials': 'true'
+    },
+    mode: 'cors',
     credentials: 'include'
   })
   const products = await res.json()
   const res1 = await fetch(`${BaseURL}/wishlist`, {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Access-Control-Allow-Origin': 'https://backend-kighwilmrq-an.a.run.app',
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Credentials': 'true'
+    },
+    mode: 'cors',
     credentials: 'include'
   })
   const wishlist = await res1.json()
