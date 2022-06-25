@@ -25,6 +25,13 @@ import (
 	"time"
 )
 
+func loadEnv() {
+	err := godotenv.Load(".env.dev")
+	if err != nil {
+		fmt.Printf("読み込み出来ませんでした: %v", err)
+	}
+}
+
 func main() {
 	loadEnv()
 	log.Println("Starting server...")
@@ -61,13 +68,6 @@ func main() {
 	// shutdown data sources
 	if err := ds.close(); err != nil {
 		log.Fatalf("A problem occurred gracefully shutting down data sources: %v\n", err)
-	}
-}
-
-func loadEnv() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		fmt.Printf("読み込み出来ませんでした: %v", err)
 	}
 }
 
@@ -132,6 +132,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 
 	// load rsa keys
 	/////////
+	// production
 	privateName := os.Getenv("PRIVATE_NAME")
 	publicName := os.Getenv("PUBLIC_NAME")
 	pub := accessSecret(publicName)
@@ -149,6 +150,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	// load rsa keys
 	/////////
 	/////////
+	//local
 	// privKeyFile := os.Getenv("PRIV_KEY_FILE")
 	// priv, err := ioutil.ReadFile(privKeyFile)
 	// if err != nil {
@@ -200,7 +202,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000", "https://frontend-kighwilmrq-an.a.run.app"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type","X-Requested-With", "X-Csrftoken", "Accept","X-HTTP-Method-Override"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "X-Requested-With", "X-Csrftoken", "Accept", "X-HTTP-Method-Override"},
 		ExposeHeaders:    []string{"*"},
 		AllowCredentials: true,
 		AllowOriginFunc: func(origin string) bool {
@@ -254,18 +256,22 @@ type dataSources struct {
 
 // InitDS establishes connections to fields in dataSources
 func initDS() (*dataSources, error) {
+	/////////
+	//production
 	var (
 		db  *sqlx.DB
 		err error
 	)
+	/////////
 	log.Printf("Initializing data sources\n")
 	/////////
-	// pgHost := "localhost"
-	// pgPort := "5432"
-	// pgUser := "postgres"
-	// pgPassword := "password"
-	// pgDB := "portfolio_db"
-	// pgSSL := "disable"
+	//local
+	// pgHost := os.Getenv("PG_HOST")
+	// pgPort := os.Getenv("DB_PORT")
+	// pgUser := os.Getenv("DB_USER")
+	// pgPassword := os.Getenv("DB_PASS")
+	// pgDB := os.Getenv("DB_NAME")
+	// pgSSL := os.Getenv("PG_SSL")
 	// pgConnString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s", pgHost, pgPort, pgUser, pgPassword, pgDB, pgSSL)
 	// log.Printf("Connecting to Postgresql\n")
 	// db, err := sqlx.Open("postgres", pgConnString)
@@ -278,6 +284,7 @@ func initDS() (*dataSources, error) {
 	// 	return nil, fmt.Errorf("error connecting to db: %w", err)
 	// }
 	/////////
+	//production
 	if os.Getenv("INSTANCE_HOST") != "" {
 		db, err = connectTCPSocket()
 		if err != nil {
@@ -296,8 +303,9 @@ func initDS() (*dataSources, error) {
 	redisHost := os.Getenv("REDIS_HOST")
 	redisPort := os.Getenv("REDIS_PORT")
 	/////////
-	// redisHost := "localhost"
-	// redisPort := "6379"
+	//local
+	// redisHost := os.Getenv("REDIS_HOST")
+	// redisPort := os.Getenv("REDIS_PORT")
 	/////////
 
 	log.Printf("Connecting to Redis\n")
@@ -327,6 +335,8 @@ func (d *dataSources) close() error {
 	return nil
 }
 
+/////////
+//production
 func accessSecret(name string) []byte {
 	ctx := context.Background()
 	client, err := secretmanager.NewClient(ctx)
@@ -344,6 +354,7 @@ func accessSecret(name string) []byte {
 	key := result.Payload.Data
 	return key
 }
+/////////
 
 func configureConnectionPool(db *sqlx.DB) {
 	db.SetMaxIdleConns(5)
@@ -410,3 +421,6 @@ func connectTCPSocket() (*sqlx.DB, error) {
 	configureConnectionPool(dbPool)
 	return dbPool, nil
 }
+
+
+
