@@ -1,5 +1,0 @@
-.env.dev
-.env
-.env.local
-*.pem
-.env.production
