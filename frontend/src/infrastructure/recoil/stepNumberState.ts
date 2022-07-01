@@ -5,7 +5,7 @@ import { atom, SetterOrUpdater, useRecoilValue, useSetRecoilState } from 'recoil
  * @description 現在のステップ数（何手目か）のstateのAtom
  */
 export const stepNumberState = atom<number>({
-  key: 'tic-tac-toe/stepNumberState',
+  key: 'test/stepNumberState',
   default: 0
 })
 

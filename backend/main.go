@@ -155,7 +155,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 	})
 
 	router := gin.Default()
-	if os.Getenv("ENV") != "local" {
+	if os.Getenv("ENV") == "local" {
 		router.Use(cors.New(cors.Config{
 			AllowOrigins:     []string{"http://localhost:3000"},
 			AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"},
@@ -168,7 +168,7 @@ func inject(d *dataSources) (*gin.Engine, error) {
 			MaxAge: 12 * time.Hour,
 		}))
 	}
-	if os.Getenv("ENV") != "production" {
+	if os.Getenv("ENV") == "production" {
 		router.Use(cors.New(cors.Config{
 			AllowOrigins:     []string{"https://frontend-kighwilmrq-an.a.run.app"},
 			AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"},
@@ -343,13 +343,17 @@ func connectTCPSocket() (*sqlx.DB, error) {
 }
 
 func connectDB() (*sqlx.DB, error) {
+	var (
+		db *sqlx.DB
+		// err error
+	)
 	//ローカル環境の場合
-	db, err := LocalConnectDB()
-	if err != nil {
-		log.Fatalf("connectTCPSocket: unable to connect: %s", err)
-	}
+	// db, err = LocalConnectDB()
+	// if err != nil {
+	// 	log.Fatalf("connectLocalHost: unable to connect: %s", err)
+	// }
 	//本番環境の場合
-	if os.Getenv("ENV") != "production" {
+	if os.Getenv("ENV") == "production" {
 		if os.Getenv("INSTANCE_HOST") != "" {
 			db, err := connectTCPSocket()
 			if err != nil {
@@ -369,7 +373,7 @@ func connectDB() (*sqlx.DB, error) {
 }
 
 func LocalConnectDB() (*sqlx.DB, error) {
-	pgHost := os.Getenv("PG_HOST")
+	pgHost := os.Getenv("DB_HOST")
 	pgPort := os.Getenv("DB_PORT")
 	pgUser := os.Getenv("DB_USER")
 	pgPassword := os.Getenv("DB_PASS")
@@ -389,11 +393,15 @@ func LocalConnectDB() (*sqlx.DB, error) {
 
 //Private Key
 func getPrivKey() (*rsa.PrivateKey, error) {
+	var (
+		pubKey *rsa.PrivateKey
+		// err    error
+	)
 	//ローカル環境の場合
-	pubKey, err := getLocalPrivKey()
-	if err != nil {
-		return nil, fmt.Errorf("could not parse public key: %w", err)
-	}
+	// pubKey, err = getLocalPrivKey()
+	// if err != nil {
+	// 	return nil, fmt.Errorf("could not parse public key: %w", err)
+	// }
 	//本番環境の場合
 	if os.Getenv("ENV") == "production" {
 		pubKey, err := getProdPrivKey()
@@ -432,14 +440,20 @@ func getProdPrivKey() (*rsa.PrivateKey, error) {
 
 //Public Key
 func getPubKey() (*rsa.PublicKey, error) {
+	var (
+		pubKey *rsa.PublicKey
+		err    error
+	)
 	//ローカル環境の場合
-	pubKey, err := getLocalPubKey()
-	if err != nil {
-		return nil, fmt.Errorf("could not parse public key: %w", err)
-	}
+	// pubKey, err = getLocalPubKey()
+	// log.Println("local")
+	// if err != nil {
+	// 	return nil, fmt.Errorf("could not parse public key: %w", err)
+	// }
 	//本番環境の場合
 	if os.Getenv("ENV") == "production" {
-		pubKey, err := getProdPubKey()
+		log.Println("production")
+		pubKey, err = getProdPubKey()
 		if err != nil {
 			return nil, fmt.Errorf("could not parse public key: %w", err)
 		}

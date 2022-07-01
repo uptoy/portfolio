@@ -42,6 +42,9 @@ func EnvCloudUploadFolder() string {
 func LoadEnv() {
 	err := godotenv.Load(".env.dev")
 	if err != nil {
-		fmt.Printf("読み込み出来ませんでした: %v", err)
+		if os.Getenv("ENV") == "local" {
+			fmt.Printf("読み込み出来ませんでした: %v", err)
+		}
+		fmt.Println("read env ok")
 	}
 }

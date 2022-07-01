@@ -1,91 +1,91 @@
 package handler
 
-// import (
-// 	// "encoding/json"
-// 	// "net/http"
-// 	// "net/http/httptest"
-// 	"testing"
+import (
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 
-// 	// "backend/model"
-// 	// "backend/model/apperrors"
-// 	// "backend/model/mocks"
-// 	// "github.com/stretchr/testify/mock"
+	"backend/model"
+	"backend/model/apperrors"
+	"backend/model/mocks"
+	"github.com/stretchr/testify/mock"
 
-// 	"github.com/gin-gonic/gin"
-// 	// "github.com/google/uuid"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 
-// 	// "github.com/stretchr/testify/assert"
-// )
+	"github.com/stretchr/testify/assert"
+)
 
-// func TestSignout(t *testing.T) {
-// 	gin.SetMode(gin.TestMode)
+func TestSignout(t *testing.T) {
+	gin.SetMode(gin.TestMode)
 
-// 	// t.Run("Success", func(t *testing.T) {
-// 	// 	uid, _ := uuid.NewRandom()
+	t.Run("Success", func(t *testing.T) {
+		uid, _ := uuid.NewRandom()
 
-// 	// 	ctxUser := &model.User{
-// 	// 		UserId: uid,
-// 	// 		Email:  "bob1@bob.com",
-// 	// 	}
+		ctxUser := &model.User{
+			UID:   uid,
+			Email: "bob1@bob.com",
+		}
 
-// 	// 	// a response recorder for getting written http response
-// 	// 	rr := httptest.NewRecorder()
+		// a response recorder for getting written http response
+		rr := httptest.NewRecorder()
 
-// 	// 	// creates a test context for setting a user
-// 	// 	router := gin.Default()
-// 	// 	router.Use(func(c *gin.Context) {
-// 	// 		c.Set("user", ctxUser)
-// 	// 	})
+		// creates a test context for setting a user
+		router := gin.Default()
+		router.Use(func(c *gin.Context) {
+			c.Set("user", ctxUser)
+		})
 
-// 	// 	mockTokenService := new(mocks.MockTokenService)
-// 	// 	mockTokenService.On("Signout", mock.AnythingOfType("*context.emptyCtx"), ctxUser.UserId).Return(nil)
+		mockTokenService := new(mocks.MockTokenService)
+		mockTokenService.On("Signout", mock.AnythingOfType("*context.emptyCtx"), ctxUser.UID).Return(nil)
 
-// 	// 	NewHandler(&Config{
-// 	// 		R:            router,
-// 	// 		TokenService: mockTokenService,
-// 	// 	})
+		NewHandler(&Config{
+			R:            router,
+			TokenService: mockTokenService,
+		})
 
-// 	// 	request, _ := http.NewRequest(http.MethodPost, "/signout", nil)
-// 	// 	router.ServeHTTP(rr, request)
+		request, _ := http.NewRequest(http.MethodPost, "/signout", nil)
+		router.ServeHTTP(rr, request)
 
-// 	// 	respBody, _ := json.Marshal(gin.H{
-// 	// 		"message": "user signed out successfully!",
-// 	// 	})
+		respBody, _ := json.Marshal(gin.H{
+			"message": "user signed out successfully!",
+		})
 
-// 	// 	assert.Equal(t, http.StatusOK, rr.Code)
-// 	// 	assert.Equal(t, respBody, rr.Body.Bytes())
-// 	// })
+		assert.Equal(t, http.StatusOK, rr.Code)
+		assert.Equal(t, respBody, rr.Body.Bytes())
+	})
 
-// 	// t.Run("Signout Error", func(t *testing.T) {
-// 	// 	uid, _ := uuid.NewRandom()
+	t.Run("Signout Error", func(t *testing.T) {
+		uid, _ := uuid.NewRandom()
 
-// 	// 	ctxUser := &model.User{
-// 	// 		UserId: uid,
-// 	// 		Email:  "bob2@bob.com",
-// 	// 	}
+		ctxUser := &model.User{
+			UID:   uid,
+			Email: "bob2@bob.com",
+		}
 
-// 	// 	// a response recorder for getting written http response
-// 	// 	rr := httptest.NewRecorder()
+		// a response recorder for getting written http response
+		rr := httptest.NewRecorder()
 
-// 	// 	// creates a test context for setting a user
-// 	// 	router := gin.Default()
-// 	// 	router.Use(func(c *gin.Context) {
-// 	// 		c.Set("user", ctxUser)
-// 	// 	})
+		// creates a test context for setting a user
+		router := gin.Default()
+		router.Use(func(c *gin.Context) {
+			c.Set("user", ctxUser)
+		})
 
-// 	// 	mockTokenService := new(mocks.MockTokenService)
-// 	// 	mockTokenService.
-// 	// 		On("Signout", mock.AnythingOfType("*context.emptyCtx"), ctxUser.UserId).
-// 	// 		Return(apperrors.NewInternal())
+		mockTokenService := new(mocks.MockTokenService)
+		mockTokenService.
+			On("Signout", mock.AnythingOfType("*context.emptyCtx"), ctxUser.UID).
+			Return(apperrors.NewInternal())
 
-// 	// 	NewHandler(&Config{
-// 	// 		R:            router,
-// 	// 		TokenService: mockTokenService,
-// 	// 	})
+		NewHandler(&Config{
+			R:            router,
+			TokenService: mockTokenService,
+		})
 
-// 	// 	request, _ := http.NewRequest(http.MethodPost, "/signout", nil)
-// 	// 	router.ServeHTTP(rr, request)
+		request, _ := http.NewRequest(http.MethodPost, "/signout", nil)
+		router.ServeHTTP(rr, request)
 
-// 	// 	assert.Equal(t, http.StatusInternalServerError, rr.Code)
-// 	// })
-// }
+		assert.Equal(t, http.StatusInternalServerError, rr.Code)
+	})
+}

@@ -1,15 +1,11 @@
 package handler
 
 import (
-	// "log"
-	"net/http"
-	"time"
-
 	"backend/handler/middleware"
 	"backend/model"
 	"backend/model/apperrors"
 	"github.com/gin-gonic/gin"
-	// "strconv"
+	"time"
 )
 
 // Handler struct holds required services for handler to function
@@ -19,7 +15,6 @@ type Handler struct {
 	CartService     model.CartService
 	CategoryService model.CategoryService
 	// ChatService     model.ChatService
-	// ImageService    model.ImageService
 	OrderService    model.OrderService
 	PaymentService  model.PaymentService
 	ProductService  model.ProductService
@@ -63,7 +58,6 @@ func NewHandler(c *Config) {
 		CartService:     c.CartService,
 		CategoryService: c.CategoryService,
 		// ChatService:     c.ChatService,
-		// ImageService:    c.ImageService,
 		OrderService:    c.OrderService,
 		PaymentService:  c.PaymentService,
 		ProductService:  c.ProductService,
@@ -86,23 +80,7 @@ func NewHandler(c *Config) {
 		auth.POST("/signout", middleware.AuthUser(h.TokenService), h.Signout)
 		auth.GET("/me", middleware.AuthUser(h.TokenService), h.Me)
 		auth.POST("/tokens", h.Tokens)
-		auth.POST("/forgot_password", h.Sample)
-		auth.POST("/reset_password", h.Sample)
 	}
-	// if gin.Mode() != gin.TestMode {
-	// 	//auth
-
-	// 	api.GET("/me", middleware.AuthUser/category/health(h.TokenService), h.Me)
-	// 	// api.POST("/signout", middleware.AuthUser(h.TokenService), h.Signout)
-	// 	api.PUT("/details", middleware.AuthUser(h.TokenService), h.Details)
-	// } else {
-	// 	//こちらがテスト実行される
-	// 	api.GET("/me", h.Me)
-	// 	// api.POST("/signout", h.Signout)
-	// 	api.PUT("/details", h.Details)
-	// 	// api.POST("/forgot", h.ForgotPassword)
-	// }
-	//こちらがテスト実行される
 	users := api.Group("/users")
 	{
 		users.GET("", h.UserList)
@@ -118,15 +96,13 @@ func NewHandler(c *Config) {
 		products.POST("/insert", h.ProductBulkInsert)
 		products.GET("/count", h.ProductCount)
 		products.GET("/search/:name", h.ProductFindByName)
-		products.GET("/:id/reviews/insert", h.ReviewBulkInsert)
 		products.DELETE("/:id/reviews/delete", h.ReviewBulkDelete)
 		products.POST("/:id/reviews", middleware.AuthUser(h.TokenService), h.ReviewCreate)
-		// products.GET("/:id/reviews", h.ReviewGetAll)
+		products.GET("/:id/reviews", h.ReviewGetAll)
 		products.GET("/:id/reviews/count", h.ReviewCount)
 		products.GET("/:id/reviews/:rid", h.ReviewGet)
 		products.PUT("/:id/reviews/:rid", h.ReviewUpdate)
 		products.DELETE("/:id/reviews/:rid", h.ReviewDelete)
-		// products.POST("/confirm", h.ConfirmCreateReviewFlow)
 	}
 	category := api.Group("/categories")
 	{
@@ -140,23 +116,11 @@ func NewHandler(c *Config) {
 		category.POST("/insert", h.CategoryBulkInsert)
 		category.GET("/count", h.CategoryCount)
 	}
-	sample := api.Group("/sample")
-	{
-		sample.GET("", h.SampleGetList)
-		sample.POST("", h.SamplePost)
-		sample.GET("/:id", h.SampleGetFindByID)
-		sample.PUT("/:id", h.SampleUpdate)
-		sample.DELETE("/:id", h.SampleDelete)
-		sample.GET("/search/:name", h.SampleGetFindByName)
-	}
 	wishlist := api.Group("/wishlist")
 	{
 		wishlist.POST("", middleware.AuthUser(h.TokenService), h.WishlistCreate)
 		wishlist.GET("", middleware.AuthUser(h.TokenService), h.WishlistGet)
 		wishlist.DELETE("/:id", middleware.AuthUser(h.TokenService), h.WishlistDelete)
-		// wishlist.POST("/:product_id", middleware.AuthUser(h.TokenService), h.WishlistAddItem)
-		// wishlist.DELETE("/:product_id", middleware.AuthUser(h.TokenService), h.WishlistDeleteItem)
-		// wishlist.DELETE("/clear", middleware.AuthUser(h.TokenService), h.WishlistClear)
 	}
 	cart := api.Group("/cart")
 	{
@@ -183,153 +147,4 @@ func NewHandler(c *Config) {
 		address.PUT("/:id", middleware.AuthUser(h.TokenService), h.AddressUserUpdate)
 		address.DELETE("/:id", middleware.AuthUser(h.TokenService), h.AddressUserDelete)
 	}
-	// // chat := api.Group("/chat")
-	// {
-	// 	// chat.GET("", h.ChatRoom)
-	// 	// chat.GET("/ws", h.WsEndpoint)
-	// 	// chat.GET("/room/:roomId",)
-	// 	//  router.GET("/ws/:roomId", func(c *gin.Context) {
-	// 	//     roomId := c.Param("roomId")
-	// 	//     serveWs(c.Writer, c.Request, roomId)
-	// 	//  })
-	// }
-	seed := api.Group("/seed")
-	{
-		seed.POST("/category", h.SeedCategory)
-		seed.POST("/product", h.SeedProduct)
-		seed.POST("/image", h.SeedProductImage)
-		seed.POST("/review", h.SeedReview)
-		seed.POST("/wishlist", h.SeedWishlist)
-
-	}
-	// image := api.Group("/image")
-	// {
-	// image.POST("", h.ImageLocalSaveMulti)
-	// image.POST("/upload/multi", h.WsEndpoint)
-	// image.POST("/upload", h.ImageUploadSingle)
-	// image.POST("", h.ImageBulkUpload)
-	//  router.GET("/ws/:roomId", func(c *gin.Context) {
-	//     roomId := c.Param("roomId")
-	//     serveWs(c.Writer, c.Request, roomId)
-	//  })
-	// }
-}
-
-// products.PUT("/:id/reviews", h.ReviewUpdate)
-// products.DELETE("/:id/reviews", h.ReviewUpdate)
-
-// admin := api.Group("/admin")
-// {
-// admin.POST("/signup", h.AdminSignup)
-// admin.POST("/signin", h.AdminSignin)
-// admin.POST("/signout", h.AdminSignout)
-// admin.PUT("/order/update", h.AdminOrderUpdate)
-// admin.GET("/order/orders", h.AdminOrderList)
-// }
-// }
-func (h *Handler) Sample(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"hello": "world",
-	})
-}
-
-func (h *Handler) SamplePost(c *gin.Context) {
-	type JsonRequest struct {
-		Int int    `json:"int"`
-		Str string `json:"str"`
-	}
-	var json JsonRequest
-	if err := c.ShouldBindJSON(&json); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	json = JsonRequest{
-		Int: json.Int,
-		Str: json.Str,
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"int": json.Int,
-		"str": json.Str,
-	})
-}
-
-func (h *Handler) SampleGetList(c *gin.Context) {
-	type JsonRequest struct {
-		Int int    `json:"int"`
-		Str string `json:"str"`
-	}
-	json1 := JsonRequest{Int: 1, Str: "str1"}
-	json2 := JsonRequest{Int: 2, Str: "str2"}
-	jsons := []JsonRequest{json1, json2}
-	// p, _ := h.ProductService.ProductCreate(ctx, p1)
-	c.JSON(http.StatusOK, gin.H{
-		"data": jsons,
-	})
-}
-
-func (h *Handler) SampleGetFindByID(c *gin.Context) {
-	// p := &model.Product{ProductId: 0, ProductName: "name1"}
-	type JsonRequest struct {
-		Int int    `json:"int"`
-		Str string `json:"str"`
-	}
-	json1 := JsonRequest{Int: 1, Str: "str1"}
-	// json2 := JsonRequest{Int: 2, Str: "str2"}
-	// jsons := []JsonRequest{json1, json2}
-	// p, _ := h.ProductService.ProductCreate(ctx, p1)
-	c.JSON(http.StatusOK, gin.H{
-		"data": json1,
-	})
-}
-
-func (h *Handler) SampleGetFindByName(c *gin.Context) {
-	// p := &model.Product{ProductId: 0, ProductName: "name1"}
-	// json1 := JsonRequest{Int: 1, Str: "str1"}
-	name := c.Param("name")
-	// json2 := JsonRequest{Int: 2, Str: "str2"}
-	// jsons := []JsonRequest{json1, json2}
-	// p, _ := h.ProductService.ProductCreate(ctx, p1)
-	c.JSON(http.StatusOK, gin.H{
-		"name": name,
-	})
-}
-
-func (h *Handler) SampleUpdate(c *gin.Context) {
-	type JsonRequest struct {
-		Int int    `json:"int"`
-		Str string `json:"str"`
-	}
-	var json JsonRequest
-	if err := c.ShouldBindJSON(&json); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	json = JsonRequest{
-		Int: json.Int,
-		Str: json.Str,
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"int": json.Int,
-		"str": json.Str,
-	})
-}
-func (h *Handler) SampleDelete(c *gin.Context) {
-	// id := c.Param("id")
-	type JsonRequest struct {
-		Int int    `json:"int"`
-		Str string `json:"str"`
-	}
-	json1 := JsonRequest{Str: "str1", Int: 1}
-	// type JsonRequest struct {
-	// 	Int int    `json:"int"`
-	// 	Str string `json:"str"`
-	// }
-	// json1 := JsonRequest{Int: 1, Str: "str1"}
-	// json2 := JsonRequest{Int: 2, Str: "str2"}
-	// jsons := []JsonRequest{json1, json2}
-	// p, _ := h.ProductService.ProductCreate(ctx, p1)
-	c.JSON(http.StatusOK, gin.H{
-		"int": json1.Int,
-		"str": json1.Str,
-	})
 }

@@ -5,9 +5,6 @@ import (
 
 	"backend/model/apperrors"
 	"net/http"
-
-	// // "fmt"
-
 	"github.com/gin-gonic/gin"
 )
 

@@ -6,7 +6,7 @@ import { atom, SetterOrUpdater, useRecoilValue, useSetRecoilState } from 'recoil
  * Atom。X（先手）の手番なら、true。
  */
 export const xIsNextState = atom<boolean>({
-  key: 'tic-tac-toe/xIsNextState',
+  key: 'test/xIsNextState',
   default: true
 })
 

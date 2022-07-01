@@ -14,7 +14,7 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "jest": "jest",
-    "ci:cy": "start-server-and-test 'yarn build && yarn start' http://localhost:3000 'cypress run --spec 'cypress/integration/tic-tac-toe/**''",
+    "ci:cy": "start-server-and-test 'yarn build && yarn start' http://localhost:3000 'cypress run --spec 'cypress/integration/test/**''",
     "test": "yarn jest && yarn ci:cy",
     "format": "yarn run prettier && yarn run lint:fix && yarn run lint:fixCypress",
     "storybook": "start-storybook -p 6006",

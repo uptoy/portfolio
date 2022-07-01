@@ -2,7 +2,6 @@ package handler
 
 import (
 	"backend/model"
-	"fmt"
 	"strconv"
 
 	"backend/model/apperrors"
@@ -110,6 +109,7 @@ func (h *Handler) ProductFindByID(c *gin.Context) {
 }
 
 func (h *Handler) ProductUpdate(c *gin.Context) {
+	ctx := c.Request.Context()
 	form, _ := c.MultipartForm()
 	files := form.File["files"]
 	value := form.Value
@@ -140,43 +140,40 @@ func (h *Handler) ProductUpdate(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("id", id)
-	fmt.Println("json", json)
-	fmt.Println("files", files)
-	// p, err := h.ProductService.ProductUpdate(ctx, id, &json, files)
-	// if err != nil {
-	// 	log.Printf("Unable to update product: %v", err)
-	// 	e := apperrors.NewNotFound("product", "err")
+	p, err := h.ProductService.ProductUpdate(ctx, id, &json, files)
+	if err != nil {
+		log.Printf("Unable to update product: %v", err)
+		e := apperrors.NewNotFound("product", "err")
 
-	// 	c.JSON(e.Status(), gin.H{
-	// 		"error": e,
-	// 	})
-	// 	return
-	// }
-	// categoryId := p.CategoryId
-	// category, err := h.CategoryService.CategoryFindByID(ctx, categoryId)
-	// if err != nil {
-	// 	log.Printf("Unable to get category: %v", err)
-	// 	e := apperrors.NewNotFound("product", "err")
+		c.JSON(e.Status(), gin.H{
+			"error": e,
+		})
+		return
+	}
+	categoryId := p.CategoryId
+	category, err := h.CategoryService.CategoryFindByID(ctx, categoryId)
+	if err != nil {
+		log.Printf("Unable to get category: %v", err)
+		e := apperrors.NewNotFound("product", "err")
 
-	// 	c.JSON(e.Status(), gin.H{
-	// 		"error": e,
-	// 	})
-	// 	return
-	// }
-	// p.Category = category
-	// if err != nil {
-	// 	log.Printf("Unable to update product: %v", err)
-	// 	e := apperrors.NewNotFound("product", "err")
+		c.JSON(e.Status(), gin.H{
+			"error": e,
+		})
+		return
+	}
+	p.Category = category
+	if err != nil {
+		log.Printf("Unable to update product: %v", err)
+		e := apperrors.NewNotFound("product", "err")
 
-	// 	c.JSON(e.Status(), gin.H{
-	// 		"error": e,
-	// 	})
-	// 	return
-	// }
-	// c.JSON(http.StatusOK, gin.H{
-	// 	"product": p,
-	// })
+		c.JSON(e.Status(), gin.H{
+			"error": e,
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"product": p,
+	})
 }
 
 func (h *Handler) ProductDelete(c *gin.Context) {
