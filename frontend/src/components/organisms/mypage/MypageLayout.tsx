@@ -1,30 +1,28 @@
 import React, { ReactNode } from 'react'
-import { Container } from '@material-ui/core'
+import { Container, Grid, ThemeProvider } from '@mui/material'
 import { CommonHeader } from 'src/components/organisms'
-import MypageFooter from './MypageFooter'
-import { makeStyles } from '@material-ui/styles'
-import theme from 'src/theme'
-import { Grid } from '@material-ui/core'
 import { MypageSidebar } from 'src/components/organisms/mypage'
+import MypageFooter from './MypageFooter'
+import theme from 'src/theme'
 
-const useStyles: any = makeStyles(() => ({
-  container: {
-    marginTop: theme.spacing(2)
-  }
-}))
 
 interface IProps {
   children: ReactNode
 }
 
 const DashboardLayout: React.FC<IProps> = ({ children }) => {
-  const classes = useStyles()
   return (
     <>
       <CommonHeader />
       <Container maxWidth="lg">
         <main>
-          <Grid container spacing={3} className={classes.container}>
+          <Grid
+            container
+            spacing={3}
+            sx={{
+              marginTop: theme.spacing(2)
+            }}
+          >
             <Grid item md={3} xs={12}>
               <MypageSidebar />
             </Grid>

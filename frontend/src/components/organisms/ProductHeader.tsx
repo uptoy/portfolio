@@ -1,9 +1,6 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/styles'
 import Link from 'src/components/Link'
-import { Toolbar } from '@material-ui/core'
-import theme from 'src/theme'
-import { common } from '@material-ui/core/colors'
+import { Toolbar } from '@mui/material'
 import { CommonHeader } from 'src/components/organisms'
 
 const sections = [
@@ -18,19 +15,6 @@ const sections = [
   { title: 'Style', url: '#' },
   { title: 'Travel', url: '#' }
 ]
-
-const useStyles: any = makeStyles(() => ({
-  grow: {
-    flexGrow: 1
-  },
-  title: {
-    color: common.white,
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block'
-    }
-  }
-}))
 
 export default function ProductHeader() {
   return (

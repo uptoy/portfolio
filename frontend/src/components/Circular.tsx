@@ -1,22 +1,18 @@
-import theme from "src/theme"
-import {makeStyles} from "@material-ui/styles"
-import CircularProgress from "@material-ui/core/CircularProgress"
-
-const useStyles: any = makeStyles(() => ({
-  root: {
-    display: "flex",
-    "& > * + *": {
-      marginLeft: theme.spacing(2),
-    },
-  },
-}))
+import theme from 'src/theme'
+import { CircularProgress } from '@mui/material'
+import { ThemeProvider } from '@emotion/react'
 
 export const Circular = () => {
-  const classes = useStyles()
-
   return (
-    <div className={classes.root}>
-      <CircularProgress color="secondary" />
-    </div>
+    <ThemeProvider theme={theme}>
+      <div
+        style={{
+          display: 'flex',
+          marginLeft: theme.spacing(2)
+        }}
+      >
+        <CircularProgress color="secondary" />
+      </div>
+    </ThemeProvider>
   )
 }

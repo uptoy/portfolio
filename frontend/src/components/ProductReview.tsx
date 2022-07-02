@@ -4,7 +4,7 @@ import Rating from 'src/components/Rating'
 import { ReviewType } from 'src/yup/type'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { reviewFormSchema } from 'src/yup/schema'
-import { Link, Button, MenuItem, TextField } from '@material-ui/core'
+import { Link, Button, MenuItem, TextField } from '@mui/material'
 import { Review } from 'src/@types'
 import { useAuth } from 'src/context/AuthContext'
 import toast from 'react-hot-toast'
@@ -115,10 +115,7 @@ export default ProductReview
 
 const ProductReviewForm: React.FC<ReviewFormIProps> = ({ productId }) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const {
-    register,
-    handleSubmit
-  } = useForm<ReviewType>({
+  const { register, handleSubmit } = useForm<ReviewType>({
     resolver: yupResolver(reviewFormSchema)
   })
   const onSubmit: SubmitHandler<ReviewType> = async (formData) => {

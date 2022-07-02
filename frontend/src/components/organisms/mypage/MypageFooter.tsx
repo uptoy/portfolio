@@ -1,19 +1,15 @@
-import { makeStyles } from '@material-ui/styles'
 import theme from 'src/theme'
 import { Copyright } from 'src/components'
-import { Box } from '@material-ui/core'
-
-const useStyles: any = makeStyles(() => ({
-  footer: {
-    padding: theme.spacing(6)
-  }
-}))
+import { Box } from '@mui/material'
 
 const MypageFooter = () => {
-  const classes = useStyles()
   return (
     <>
-      <footer className={classes.footer}>
+      <footer
+        style={{
+          padding: theme.spacing(6)
+        }}
+      >
         <Box component="footer" sx={{ bgcolor: 'background.paper', py: 6 }}>
           <Copyright />
         </Box>

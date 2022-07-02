@@ -1,7 +1,6 @@
-import { makeStyles } from '@material-ui/styles'
 import theme from 'src/theme'
 import { Copyright } from 'src/components'
-import { Box } from '@material-ui/core'
+import { Box } from '@mui/material'
 
 const Footer = () => {
   return (

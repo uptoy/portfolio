@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { Button, Grid, Typography, TextField } from '@material-ui/core'
+import { Button, Grid, Typography, TextField } from '@mui/material'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useAuth } from 'src/context/AuthContext'
 import { useRouter } from 'next/router'
 
@@ -133,7 +133,7 @@ const AddressForm: React.FC<IProps> = ({ handleNext, setAddress }) => {
           >
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <p style={{ margin: 5 }}>Save</p>
-              <ArrowForwardIos style={{ margin: 5 }} />
+              <ArrowForwardIosIcon style={{ margin: 5 }} />
             </div>
           </Button>
         </div>

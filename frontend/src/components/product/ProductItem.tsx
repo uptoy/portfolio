@@ -1,11 +1,11 @@
-import { makeStyles } from '@material-ui/styles'
-import CreateIcon from '@material-ui/icons/Create'
-import DeleteIcon from '@material-ui/icons/Delete'
+// import { makeStyles } from '@material-ui/styles'
+import CreateIcon from '@mui/icons-material/Create'
+import DeleteIcon from '@mui/icons-material/Delete'
 import DeleteModal from 'src/components/modal/DeleteModal'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { Product } from 'src/@types'
-import { Button, TableCell, TableRow } from '@material-ui/core'
+import { Button, TableCell, TableRow } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { mutate } from 'swr'
@@ -16,23 +16,10 @@ interface IProps {
   mutate(): void
 }
 
-const useStyles: any = makeStyles(() => ({
-  actionContainer: {
-    position: 'absolute',
-    right: 0
-  },
-  cell: {
-    padding: '10px'
-  },
-  button: {
-    margin: '0.25em'
-  }
-}))
 
 const ProductItem: React.FC<IProps> = (props) => {
   const { product, mutate } = props
   const router = useRouter()
-  const classes = useStyles()
   const [open, setOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const handleDeleteOpen = () => {
@@ -70,28 +57,28 @@ const ProductItem: React.FC<IProps> = (props) => {
   return (
     <>
       <TableRow key={product.id}>
-        <TableCell align="center" className={classes.cell} style={{ padding: 0 }}>
+        <TableCell align="center" style={{ padding: '10px' }}>
           {product.id}
         </TableCell>
-        <TableCell style={{ width: '10%' }} className={classes.cell}>
+        <TableCell style={{ width: '10%', padding: '10px' }}>
           <Image src="http://placehold.jp/100x100.png" width={100} height={100} alt="My avatar" />
         </TableCell>
-        <TableCell className={classes.cell}>{product.product_name}</TableCell>
-        <TableCell align="center" className={classes.cell}>
+        <TableCell style={{ padding: '10px' }}>{product.product_name}</TableCell>
+        <TableCell align="center" style={{ padding: '10px' }}>
           {product.category_id}
         </TableCell>
-        <TableCell align="center" className={classes.cell}>
+        <TableCell align="center" style={{ padding: '10px' }}>
           {product.price}
         </TableCell>
-        <TableCell className={classes.cell}>{product.brand}</TableCell>
-        <TableCell align="center" className={classes.cell}>
+        <TableCell style={{ padding: '10px' }}>{product.brand}</TableCell>
+        <TableCell align="center" style={{ padding: '10px' }}>
           {product.count_in_stock}
         </TableCell>
-        <TableCell align="center" className={classes.cell}>
-          <Button variant="contained" className={classes.button} onClick={() => handleEdit(productId)}>
+        <TableCell align="center" style={{ padding: '10px' }}>
+          <Button variant="contained" style={{ margin: '0.25em' }} onClick={() => handleEdit(productId)}>
             <CreateIcon />
           </Button>
-          <Button variant="contained" className={classes.button} onClick={handleDeleteOpen}>
+          <Button variant="contained" style={{ margin: '0.25em' }} onClick={handleDeleteOpen}>
             <DeleteIcon />
           </Button>
         </TableCell>

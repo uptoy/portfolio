@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -9,51 +9,63 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
-} from "recharts"
-import Paper from "@material-ui/core/Paper"
-import { makeStyles } from "@material-ui/styles"
-import createStyles from "@material-ui/styles/createStyles"
+  Legend
+} from 'recharts'
+import { Paper, Box, Typography } from '@mui/material'
 
 interface LineBarChartProps {
   data: any
 }
 
 const LineBarChart = (props: LineBarChartProps) => {
-  const useStyles: any = makeStyles(() =>
-    createStyles({
-      paper: {
-        minHeight: 344,
-        padding: 10,
-      },
-      legend: {
-        paddingTop: 20,
-      },
-      pieChartDiv: {
-        height: 290,
-        textAlign: "center" as any,
-      },
-      title: {
-        fontSize: 24,
-        fontWeight: 500, //  TypographyStyle.fontWeightLight,
-        marginBottom: 20,
-      },
-      clear: {
-        clear: "both" as any,
-      },
-    })
-  )
-  const classes = useStyles()
+  // const useStyles: any = makeStyles(() =>
+  //   createStyles({
+  //     paper: {
+  //       minHeight: 344,
+  //       padding: 10,
+  //     },
+  //     legend: {
+  //       paddingTop: 20,
+  //     },
+  //     pieChartDiv: {
+  //       height: 290,
+  //       textAlign: "center" as any,
+  //     },
+  //     title: {
+  //       fontSize: 24,
+  //       fontWeight: 500, //  TypographyStyle.fontWeightLight,
+  //       marginBottom: 20,
+  //     },
+  //     clear: {
+  //       clear: "both" as any,
+  //     },
+  //   })
+  // )
+  // const classes = useStyles()
 
   return (
-    <Paper className={classes.paper}>
-      <span className={classes.title}>Website Analysis</span>
+    <Paper
+      sx={{
+        minHeight: 344,
+        padding: 10
+      }}
+    >
+      <Typography component="span">Website Analysis</Typography>
 
-      <div className={classes.clear} />
+      <Box
+        sx={{
+          clear: 'both'
+        }}
+      />
 
       <div className="row">
         <div className="col-xs-12">
-          <div className={classes.pieChartDiv}>
+          <Box
+            sx={{
+              height: 290,
+              textAlign: 'center'
+            }}
+          >
             <ResponsiveContainer>
               <ComposedChart
                 layout="vertical"
@@ -72,7 +84,7 @@ const LineBarChart = (props: LineBarChartProps) => {
                 <Line dataKey="uv" stroke="#ff7300" />
               </ComposedChart>
             </ResponsiveContainer>
-          </div>
+          </Box>
         </div>
       </div>
     </Paper>

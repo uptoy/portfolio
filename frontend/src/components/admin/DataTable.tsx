@@ -1,57 +1,15 @@
-import React from "react"
-import Table from "@material-ui/core/Table"
-import TableBody from "@material-ui/core/TableBody"
-import TableHead from "@material-ui/core/TableHead"
-import TableCell from "@material-ui/core/TableCell"
-import Pagination from "@material-ui/lab/Pagination"
-import TableRow from "@material-ui/core/TableRow"
-import Fab from "@material-ui/core/Fab"
-import ContentCreate from "@material-ui/icons/Create"
-import ActionDelete from "@material-ui/icons/Delete"
-import CheckCircle from "@material-ui/icons/CheckCircle"
-import Cancel from "@material-ui/icons/Cancel"
-import { grey, green, common } from "@material-ui/core/colors"
-import { Container, Tooltip } from "@material-ui/core"
-import { makeStyles } from "@material-ui/styles"
-import createStyles from "@material-ui/styles/createStyles"
+import React from 'react'
+import { Container, Tooltip, Fab, TableRow, Pagination, TableCell, Table, TableBody, TableHead } from '@mui/material'
+import CreateIcon from '@mui/icons-material/Create'
+import DeleteIcon from '@mui/icons-material/Delete'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import CancelIcon from '@mui/icons-material/Cancel'
+import { grey, green, common } from '@mui/material/colors'
 
-const grey500 = grey["500"]
-const green400 = green["400"]
+const grey500 = grey['500']
+const green400 = green['400']
 const white = common.white
 
-const useStyles: any = makeStyles(() =>
-  createStyles({
-    searchButton: {
-      marginRight: 20,
-    },
-    editButton: {
-      marginRight: "1em",
-      color: white,
-      backgroundColor: green400,
-    },
-    editButtonIcon: {
-      fill: white,
-    },
-    deleteButton: {
-      color: "grey",
-      fill: grey500,
-    },
-    columns: {
-      width10: {
-        width: "10%",
-      },
-    },
-    row: {
-      margin: "1.5em",
-      width: "95%",
-    },
-    pagination: {
-      width: 350,
-      margin: "0 auto",
-      paddingTop: 10,
-    },
-  })
-)
 
 interface DataTableProps {
   model: string
@@ -63,52 +21,45 @@ interface DataTableProps {
   onPageChange: (_event: React.ChangeEvent<unknown>, page: number) => void
   onDelete: (_event: React.ChangeEvent<unknown>, id?: number) => void
 }
-const classes = useStyles()
 
-function DataTable({
-  model,
-  items,
-  dataKeys,
-  totalPages,
-  page,
-  headers,
-  onPageChange,
-  onDelete,
-}: DataTableProps) {
+function DataTable({ model, items, dataKeys, totalPages, page, headers, onPageChange, onDelete }: DataTableProps) {
   // =>
   const renderData = (dataKey: string, data: any) => {
-    if (dataKey === "avatar") {
+    if (dataKey === 'avatar') {
       return <img width={35} src={data[dataKey]} />
-    } else if (dataKey === "membership") {
-      return data[dataKey] ? <CheckCircle /> : <Cancel />
-    } else if (dataKey === "actions") {
+    } else if (dataKey === 'membership') {
+      return data[dataKey] ? <CheckCircleIcon /> : <CancelIcon />
+    } else if (dataKey === 'actions') {
       return (
         <>
           <Tooltip title="Edit" aria-label="edit">
             <Fab
               size="small"
-              className={classes.editButton}
-              // ?path=/story/ is used for storybook
-              href={model && model.includes("?path=/story/") ? `${model}` : `${model}/${data.id}`}
+              sx={{
+                marginRight: '1em',
+                color: white,
+                backgroundColor: green400
+              }}
+              href={model && model.includes('?path=/story/') ? `${model}` : `${model}/${data.id}`}
             >
-              <ContentCreate />
+              <CreateIcon />
             </Fab>
           </Tooltip>
           <Tooltip title="Delete" aria-label="delete">
             <Fab
               size="small"
-              className={classes.deleteButton}
+              sx={{ color: 'grey', fill: grey500 }}
               value={data.id}
               onClick={(e) => onDelete(e, data.id)}
             >
-              <ActionDelete />
+              <DeleteIcon />
             </Fab>
           </Tooltip>
         </>
       )
     } else {
-      if (dataKey.includes(".")) {
-        const keys = dataKey.split(".")
+      if (dataKey.includes('.')) {
+        const keys = dataKey.split('.')
 
         return <>{data[keys[0]][keys[1]]}</>
       } else return <>{data[dataKey]}</>
@@ -124,7 +75,7 @@ function DataTable({
           <TableRow>
             {headers.length > 0 &&
               headers.map((header) => (
-                <TableCell key={header} component="th" className={classes.columns.width10}>
+                <TableCell key={header} component="th">
                   {header}
                 </TableCell>
               ))}
@@ -136,7 +87,7 @@ function DataTable({
               <TableRow key={item.id}>
                 {headers &&
                   dataKeys.map((dataKey) => (
-                    <TableCell key={dataKey} component="th" className={classes.columns.width10}>
+                    <TableCell key={dataKey} component="th">
                       {renderData(dataKey, item)}
                     </TableCell>
                   ))}
@@ -153,7 +104,13 @@ function DataTable({
       </Table>
 
       {items.length > 0 && (
-        <Container className={classes.pagination}>
+        <Container
+          sx={{
+            width: 350,
+            margin: '0 auto',
+            paddingTop: 10
+          }}
+        >
           <Pagination
             // size="small"
             count={totalPages}

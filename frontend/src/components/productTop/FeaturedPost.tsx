@@ -6,7 +6,7 @@ import {
   Grid,
   Typography,
   Card,
-} from '@material-ui/core'
+} from '@mui/material'
 
 interface FeaturedPostProps {
   post: {

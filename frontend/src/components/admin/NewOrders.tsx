@@ -1,13 +1,11 @@
-import React from "react"
-import Paper from "@material-ui/core/Paper"
-
-import { LineChart, Line, ResponsiveContainer } from "recharts"
-
-import { common, purple } from "@material-ui/core/colors"
+import React from 'react'
+import { Paper } from '@mui/material'
+import { LineChart, Line, ResponsiveContainer } from 'recharts'
+import { common, purple } from '@mui/material/colors'
 
 const white = common.white
-const purple600 = purple["600"]
-const purple500 = purple["500"]
+const purple600 = purple['600']
+const purple500 = purple['500']
 
 interface NewOrdersProps {
   data: any
@@ -17,19 +15,19 @@ const NewOrders = (props: NewOrdersProps) => {
   const styles = {
     paper: {
       backgroundColor: purple500,
-      height: 150,
+      height: 150
     },
     div: {
       height: 95,
-      padding: "5px 15px 0 15px",
+      padding: '5px 15px 0 15px'
     },
     header: {
       fontSize: 24,
       fontWeight: 500, //typography.fontWeightLight,
       color: white,
       backgroundColor: purple600,
-      padding: 10,
-    },
+      padding: 10
+    }
   }
 
   return (

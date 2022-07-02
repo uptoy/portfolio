@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Box, Button, ListItemText, Grid, List, ListItem, Typography } from '@material-ui/core'
+import { Box, Button, ListItemText, Grid, List, ListItem, Typography } from '@mui/material'
 import { IAddress, IPayment } from 'src/pages/checkout'
 import { CartItem } from 'src/@types'
 

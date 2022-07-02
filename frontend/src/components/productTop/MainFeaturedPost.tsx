@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Link from 'src/components/Link'
-import { Grid, Typography, Box, Paper } from '@material-ui/core'
+import { Grid, Typography, Box, Paper } from '@mui/material'
 
 interface MainFeaturedPostProps {
   slug?: string | string[] | undefined

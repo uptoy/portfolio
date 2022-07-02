@@ -17,6 +17,8 @@ import toast from 'react-hot-toast'
 import { useRouter } from 'next/router'
 import { useAuth } from 'src/context/AuthContext'
 import Link from '@mui/material/Link'
+import { CircularProgress } from '@mui/material';
+
 // import Link from '@mui/material/Link'
 // import Link from 'src/components/Link'
 
@@ -64,7 +66,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign Up
           </Typography>
           <Box component="form" onSubmit={handleSubmit(handleSignUp)} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -89,23 +91,23 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              label="Password"
+              label="Password Confirm"
               type="password"
-              id="password"
-              {...register('password')}
+              id="password_confirm"
+              {...register('confirmPassword')}
             />
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-              Sign In
+              {loading ? <CircularProgress color="inherit" /> : <>Sign Up</>}
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="/auth/forgot_password" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link href="/auth/signin" variant="body2">
+                  {'Already have an account? Sign in'}
                 </Link>
               </Grid>
             </Grid>

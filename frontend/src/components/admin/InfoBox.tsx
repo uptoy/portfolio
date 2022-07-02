@@ -1,9 +1,9 @@
-import React from "react"
-import Paper from "@material-ui/core/Paper"
-import { common, grey } from "@material-ui/core/colors"
+import React from 'react'
+import Paper from '@mui/material/Paper'
+import { common, grey } from '@mui/material/colors'
 
 const white = common.white
-const grey800 = grey["800"]
+const grey800 = grey['800']
 
 interface InfoBoxProps {
   Icon?: any // eslint-disable-line
@@ -17,39 +17,39 @@ const InfoBox = (props: InfoBoxProps) => {
 
   const styles = {
     content: {
-      padding: "5px 10px",
+      padding: '5px 10px',
       marginLeft: 90,
-      height: 80,
+      height: 80
     },
     number: {
-      display: "block",
+      display: 'block',
       fontWeight: 500,
       fontSize: 18,
-      color: grey800,
+      color: grey800
     },
     text: {
       fontSize: 20,
       fontWeight: 500,
-      color: grey800,
+      color: grey800
     },
     icon: {
       height: 48,
       width: 48,
       marginTop: 20,
-      maxWidth: "100%",
-      color: white,
-    },
+      maxWidth: '100%',
+      color: white
+    }
   }
 
   return (
     <Paper>
       <div
         style={{
-          float: "left",
+          float: 'left',
           height: 80,
           width: 90,
-          textAlign: "center",
-          backgroundColor: spanBgColor,
+          textAlign: 'center',
+          backgroundColor: spanBgColor
         }}
       >
         <Icon style={styles.icon} />

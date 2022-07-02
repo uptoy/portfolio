@@ -1,17 +1,10 @@
 import * as React from "react"
-import {List, ListItem, Card, ListItemText} from "@material-ui/core"
-import {makeStyles} from "@material-ui/styles"
+import {List, ListItem, Card, ListItemText} from "@mui/material"
 import theme from "src/theme"
 import NextLink from "next/link"
 
-const useStyles: any = makeStyles(() => ({
-  container: {
-    marginTop: theme.spacing(2),
-  },
-}))
 
 const MypageSidebar: React.FC = () => {
-  const classes = useStyles()
   return (
     <Card>
       <List>

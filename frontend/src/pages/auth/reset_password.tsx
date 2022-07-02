@@ -1,50 +1,31 @@
+import * as React from 'react'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import React from 'react'
+import { yupResolver } from '@hookform/resolvers/yup'
+import toast from 'react-hot-toast'
+import { useRouter } from 'next/router'
+import { useAuth } from 'src/context/AuthContext'
+import Link from '@mui/material/Link'
 import { ResetPasswordCredentials } from 'src/yup/type'
 import { resetPasswordFormSchema } from 'src/yup/schema'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useAuth } from 'src/context/AuthContext'
-import {
-  Avatar,
-  Button,
-  TextField,
-  FormControlLabel,
-  Typography,
-  Container,
-  Box,
-  Grid,
-  Checkbox
-} from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import Link from 'src/components/Link'
-import { makeStyles } from '@material-ui/styles'
-import Copyright from 'src/components/Copyright'
-import theme from 'src/theme'
+import { CircularProgress } from '@mui/material';
 
-const useStyles = makeStyles(() => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
-}))
 
-export default function ResetPassword() {
-  const classes = useStyles()
+const theme = createTheme()
+
+export default function SignIn() {
+  const router = useRouter()
   const { resetPassword } = useAuth()
-  // const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = React.useState(false)
   const {
     register,
     formState: { errors },
@@ -53,51 +34,62 @@ export default function ResetPassword() {
     resolver: yupResolver(resetPasswordFormSchema)
   })
   const handleResetPassword: SubmitHandler<ResetPasswordCredentials> = async (formData) => {
-    // setLoading(true)
-    await resetPassword(formData)
-    // setLoading(false)
+    try {
+      setLoading(true)
+      await resetPassword(formData)
+      setLoading(false)
+      router.push('/')
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message)
+        console.log('Failed', err.message)
+      } else {
+        console.log('Unknown Failure', err)
+      }
+    }
   }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Reset Password
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSubmit(handleResetPassword)}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            // name="password"
-            label="New Password"
-            type="password"
-            id="new_password"
-            {...register('password')}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            // name="confirm_password"
-            label="Confirm Password"
-            type="password"
-            id="confirm_password"
-            {...register('confirmPassword')}
-          />
-          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-            Submit
-          </Button>
-        </form>
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Forgot Password
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit(handleResetPassword)} noValidate sx={{ mt: 1 }}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              autoComplete="email"
+              {...register('email')}
+            />
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+              {loading ? <CircularProgress color="inherit" /> : <>Submit</>}
+            </Button>
+            <Grid container>
+              <Grid item>
+                <Link href="/auth/signup" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
   )
 }

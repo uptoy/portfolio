@@ -1,7 +1,5 @@
-import { Typography } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
+import { Button, Typography, Box } from '@mui/material'
 import { Circular } from 'src/components/common/Circular'
-import { makeStyles } from '@material-ui/styles'
 
 import { Modal } from 'src/components/modal'
 
@@ -14,33 +12,44 @@ interface Props {
   isConfirming: boolean
 }
 
-const useStyles: any = makeStyles({
-  buttonsContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    marginTop: 10
-  },
-  message: {
-    marginTop: 20
-  }
-})
+// const useStyles: any = makeStyles({
+//   buttonsContainer: {
+//     display: 'flex',
+//     justifyContent: 'flex-end',
+//     marginTop: 10
+//   },
+//   message: {
+//     marginTop: 20
+//   }
+// })
 
 const ConfirmDialog: React.FC<Props> = ({ title, message, isVisible, onClose, onConfirm, isConfirming }) => {
-  const classes = useStyles()
+  // const classes = useStyles()
 
   return (
     <Modal title={title} isVisible={isVisible} onClose={onClose} withClose={false}>
-      <Typography variant="body1" className={classes.message}>
+      <Typography
+        variant="body1"
+        sx={{
+          marginTop: 20
+        }}
+      >
         {message}
       </Typography>
-      <div className={classes.buttonsContainer}>
-        <Button color="secondary" style={{ marginRight: 10 }} onClick={onClose}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          marginTop: 10
+        }}
+      >
+        <Button color="secondary" sx={{ marginRight: 10 }} onClick={onClose}>
           Cancel
         </Button>
         <Button color="primary" variant="contained" onClick={onConfirm} disableElevation disabled={isConfirming}>
           {isConfirming ? <Circular /> : 'Okay'}
         </Button>
-      </div>
+      </Box>
     </Modal>
   )
 }

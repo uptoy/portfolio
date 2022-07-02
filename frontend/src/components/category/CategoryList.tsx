@@ -1,41 +1,50 @@
-import { CircularProgress } from '@material-ui/core'
+import { CircularProgress } from '@mui/material'
+
 import React from 'react'
-import createStyles from '@material-ui/styles/createStyles'
-import { makeStyles } from '@material-ui/styles'
 import CategoryItem from './CategoryItem'
 import useSWR from 'swr'
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
-import { fetcher } from 'src/pages/admin/product/add'
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+// import { fetcher } from 'src/pages/admin/product/add'
 import { Category } from 'src/@types'
 import { BaseURL } from '@/common'
 
-const useStyles: any = makeStyles(() =>
-  createStyles({
-    container: {
-      height: '83%'
-    },
-    loadingContainer: {
-      textAlign: 'center',
-      margin: '100px 0'
-    }
-  })
-)
+// const useStyles: any = makeStyles(() =>
+//   createStyles({
+//     container: {
+//       height: '83%'
+//     },
+//     loadingContainer: {
+//       textAlign: 'center',
+//       margin: '100px 0'
+//     }
+//   })
+// )
 const CategoryList = () => {
-  const classes = useStyles()
-  const { data, error, mutate } = useSWR(`${BaseURL}/categories`, fetcher)
-  const categories = data?.data
-  if (error) return <div>failed to load</div>
-  if (!data) {
-    return (
-      <div className={classes.loadingContainer}>
-        <CircularProgress />
-      </div>
-    )
-  }
+  // const classes = useStyles()
+  // const { data, error, mutate } = useSWR(`${BaseURL}/categories`, fetcher)
+  // const categories = data?.data
+  // if (error) return <div>failed to load</div>
+  // if (!data) {
+  //   return (
+  //     <Box
+  //       sx={{
+  //         textAlign: 'center',
+  //         margin: '100px 0'
+  //       }}
+  //     >
+  //       <CircularProgress />
+  //     </Box>
+  //   )
+  // }
   return (
     <>
-      {categories && (
-        <TableContainer component={Paper} className={classes.container}>
+      {/* {categories && (
+        <TableContainer
+          component={Paper}
+          sx={{
+            height: '83%'
+          }}
+        >
           <Table aria-label="product table">
             <TableHead>
               <TableRow>
@@ -56,7 +65,7 @@ const CategoryList = () => {
           </Table>
         </TableContainer>
       )}
-      {error && <p>Oops, something went wrong</p>}
+      {error && <p>Oops, something went wrong</p>} */}
     </>
   )
 }

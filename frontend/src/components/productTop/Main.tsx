@@ -3,7 +3,7 @@ import {
   Divider,
   Grid,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import Markdown from './Markdown';
 
 interface MainProps {

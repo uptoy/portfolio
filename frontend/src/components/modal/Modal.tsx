@@ -1,41 +1,40 @@
-import { Typography } from '@material-ui/core'
-import Backdrop from '@material-ui/core/Backdrop'
-import Fade from '@material-ui/core/Fade'
-import IconButton from '@material-ui/core/IconButton'
-import MaterialModal from '@material-ui/core/Modal'
-import { makeStyles } from '@material-ui/styles'
-import CloseIcon from '@material-ui/icons/Close'
+import { Typography } from '@mui/material'
+import Backdrop from '@mui/material/Backdrop'
+import Fade from '@mui/material/Fade'
+import IconButton from '@mui/material/IconButton'
+import MaterialModal from '@mui/material/Modal'
+import CloseIcon from '@mui/icons-material/Close'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import theme from 'src/theme'
 
-const useStyles: any = makeStyles(() => ({
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  modalHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 10
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-    borderRadius: 6,
-    width: '90%',
-    [theme.breakpoints.up('md')]: {
-      width: 600
-    }
-  },
-  closeContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end'
-  }
-}))
+// const useStyles: any = makeStyles(() => ({
+//   modal: {
+//     display: 'flex',
+//     alignItems: 'center',
+//     justifyContent: 'center'
+//   },
+//   modalHeader: {
+//     display: 'flex',
+//     alignItems: 'center',
+//     justifyContent: 'space-between',
+//     marginBottom: 10
+//   },
+//   paper: {
+//     backgroundColor: theme.palette.background.paper,
+//     boxShadow: theme.shadows[5],
+//     padding: theme.spacing(2, 4, 3),
+//     borderRadius: 6,
+//     width: '90%',
+//     [theme.breakpoints.up('md')]: {
+//       width: 600
+//     }
+//   },
+//   closeContainer: {
+//     display: 'flex',
+//     justifyContent: 'flex-end'
+//   }
+// }))
 
 interface Props {
   isVisible: boolean
@@ -46,8 +45,6 @@ interface Props {
 }
 
 const Modal: React.FC<Props> = ({ title, isVisible, onClose, children, withClose = true }) => {
-  const classes = useStyles()
-
   return (
     <>
       {isVisible &&
@@ -56,19 +53,46 @@ const Modal: React.FC<Props> = ({ title, isVisible, onClose, children, withClose
             <MaterialModal
               open={isVisible}
               onClose={onClose}
-              className={classes.modal}
               closeAfterTransition
               BackdropComponent={Backdrop}
               BackdropProps={{
                 timeout: 500
               }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
             >
               <Fade in={isVisible}>
-                <div className={classes.paper}>
-                  <div className={classes.modalHeader}>
+                <div
+                  style={{
+                    backgroundColor: theme.palette.background.paper,
+                    boxShadow: theme.shadows[5],
+                    padding: theme.spacing(2, 4, 3),
+                    borderRadius: 6,
+                    width: '90%',
+                    [theme.breakpoints.up('md')]: {
+                      width: 600
+                    }
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      marginBottom: 10
+                    }}
+                  >
                     <Typography variant="h6">{title}</Typography>
                     {withClose && (
-                      <div className={classes.closeContainer}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'flex-end'
+                        }}
+                      >
                         <IconButton aria-label="close" onClick={onClose}>
                           <CloseIcon />
                         </IconButton>

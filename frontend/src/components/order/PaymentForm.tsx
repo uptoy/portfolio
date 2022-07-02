@@ -1,13 +1,9 @@
 import * as React from 'react'
-import { Grid, Typography, TextField } from '@material-ui/core'
-import { Button } from '@material-ui/core'
+import { Grid, Typography, TextField, Button } from '@mui/material'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { IPayment } from 'src/pages/checkout'
-import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import { InputLabel, FormControl, Select, MenuItem } from '@mui/material'
 
 interface IProps {
   handleNext: () => void
@@ -126,7 +122,7 @@ const PaymentForm: React.FC<IProps> = ({ setPayment, handleNext }) => {
           >
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <p style={{ margin: 5 }}>Save</p>
-              <ArrowForwardIos style={{ margin: 5 }} />
+              <ArrowForwardIosIcon style={{ margin: 5 }} />
             </div>
           </Button>
         </div>

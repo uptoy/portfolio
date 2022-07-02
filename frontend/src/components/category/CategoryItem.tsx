@@ -1,11 +1,10 @@
-import { makeStyles } from '@material-ui/styles'
-import CreateIcon from '@material-ui/icons/Create'
-import DeleteIcon from '@material-ui/icons/Delete'
+import CreateIcon from '@mui/icons-material/Create'
+import DeleteIcon from '@mui/icons-material/Delete'
 import DeleteModal from 'src/components/modal/DeleteModal'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { Category } from 'src/@types'
-import { Button, TableCell, TableRow } from '@material-ui/core'
+import { Button, TableCell, TableRow } from '@mui/material'
 import { useRouter } from 'next/router'
 import getFormattedDate from 'src/utils/getFormattedDate'
 import { BaseURL } from '@/common'
@@ -15,23 +14,10 @@ interface IProps {
   mutate(): void
 }
 
-const useStyles: any = makeStyles(() => ({
-  actionContainer: {
-    position: 'absolute',
-    right: 0
-  },
-  cell: {
-    padding: '10px'
-  },
-  button: {
-    margin: '0.25em'
-  }
-}))
-
 const CategoryItem: React.FC<IProps> = (props) => {
   const { category, mutate } = props
   const router = useRouter()
-  const classes = useStyles()
+  // const classes = useStyles()
   const [open, setOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const handleDeleteOpen = () => {
@@ -71,23 +57,23 @@ const CategoryItem: React.FC<IProps> = (props) => {
   return (
     <>
       <TableRow key={category.id}>
-        <TableCell align="center" className={classes.cell} style={{ padding: 0 }}>
+        <TableCell align="center" sx={{padding: '10px'}} style={{ padding: 0 }}>
           {category.id}
         </TableCell>
-        <TableCell style={{ width: '10%', paddingLeft: 35 }} className={classes.cell}>
+        <TableCell style={{ width: '10%', paddingLeft: 35 }} sx={{padding: '10px'}}>
           {category.category_name}
         </TableCell>
-        <TableCell align="center" className={classes.cell}>
+        <TableCell align="center" sx={{padding: '10px'}}>
           {getFormattedDate(category.created_at)}
         </TableCell>
-        <TableCell align="center" className={classes.cell}>
+        <TableCell align="center" sx={{padding: '10px'}}>
           {getFormattedDate(category.updated_at)}
         </TableCell>
-        <TableCell align="center" className={classes.cell}>
-          <Button variant="contained" className={classes.button} onClick={() => handleEdit(categoryId)}>
+        <TableCell align="center" sx={{padding: '10px'}}>
+          <Button variant="contained" sx={{m: '0.25em'}} onClick={() => handleEdit(categoryId)}>
             <CreateIcon />
           </Button>
-          <Button variant="contained" className={classes.button} onClick={handleDeleteOpen}>
+          <Button variant="contained" sx={{m: '0.25em'}} onClick={handleDeleteOpen}>
             <DeleteIcon />
           </Button>
         </TableCell>

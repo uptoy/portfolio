@@ -1,11 +1,11 @@
-import React from "react"
-import Paper from "@material-ui/core/Paper"
-import { BarChart, Bar, ResponsiveContainer, XAxis } from "recharts"
-import { common, pink } from "@material-ui/core/colors"
+import React from 'react'
+import { Paper } from '@mui/material'
+import { BarChart, Bar, ResponsiveContainer, XAxis } from 'recharts'
+import { common, pink } from '@mui/material/colors'
 
 const white = common.white
-const pink600 = pink["600"]
-const pink500 = pink["500"]
+const pink600 = pink['600']
+const pink500 = pink['500']
 
 interface MonthlySalesProps {
   data: any
@@ -15,24 +15,24 @@ const MonthlySales = (props: MonthlySalesProps) => {
   const styles = {
     paper: {
       backgroundColor: pink600,
-      height: 150,
+      height: 150
     },
     div: {
-      marginLeft: "auto",
-      marginRight: "auto",
-      width: "95%",
-      height: 85,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      width: '95%',
+      height: 85
     },
     header: {
       color: white,
       backgroundColor: pink500,
-      padding: 10,
+      padding: 10
     },
     title: {
       fontSize: 24,
       fontWeight: 500, //  TypographyStyle.fontWeightLight,
-      marginBottom: 20,
-    },
+      marginBottom: 20
+    }
   }
 
   return (
