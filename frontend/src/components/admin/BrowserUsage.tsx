@@ -1,6 +1,7 @@
 import React from "react"
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts"
-import {Paper,Avatar,List,ListItem,ListItemText, ListItemAvatar, Grid} from "@material-ui/core"
+import {Paper,Avatar,List,ListItem,ListItemText, ListItemAvatar, Grid} from "@mui/material"
+
 import { makeStyles } from "@material-ui/styles"
 
 interface BrowserUsageProps {

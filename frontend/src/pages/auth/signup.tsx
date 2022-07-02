@@ -1,43 +1,31 @@
-import React, { useState } from 'react'
+import * as React from 'react'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { SignUpCredentials } from 'src/yup/type'
 import { signUpFormSchema } from 'src/yup/schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import toast from 'react-hot-toast'
-import { Avatar, Button, TextField, Typography, Container, Box, Grid } from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import Link from 'src/components/Link'
-import { makeStyles } from '@material-ui/styles'
-import Copyright from 'src/components/Copyright'
-import theme from 'src/theme'
 import { useRouter } from 'next/router'
 import { useAuth } from 'src/context/AuthContext'
+import Link from '@mui/material/Link'
+// import Link from '@mui/material/Link'
+// import Link from 'src/components/Link'
 
-const useStyles: any = makeStyles(() => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
-}))
+const theme = createTheme()
 
-export default function SignUp() {
-  const classes = useStyles()
+export default function SignIn() {
   const router = useRouter()
   const { signUp } = useAuth()
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = React.useState(false)
   const {
     register,
     formState: { errors },
@@ -61,119 +49,69 @@ export default function SignUp() {
   }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form noValidate onSubmit={handleSubmit(handleSignUp)} style={{ marginTop: '1em' }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField variant="outlined" required fullWidth label="Username" {...register('username')} />
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit(handleSignUp)} noValidate sx={{ mt: 1 }}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              autoComplete="email"
+              {...register('email')}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="Password"
+              type="password"
+              id="password"
+              {...register('password')}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="Password"
+              type="password"
+              id="password"
+              {...register('password')}
+            />
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="#" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                autoComplete="email"
-                {...register('email')}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                label="Password"
-                type="password"
-                id="password"
-                {...register('password')}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                label="Password Confirm"
-                type="password"
-                id="password_confirm"
-                {...register('confirmPassword')}
-              />
-            </Grid>
-          </Grid>
-          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-            Sign Up
-          </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link href="/auth/signin" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
-    </Container>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
   )
 }
-
-// const SignupScreen = () => {
-//   const router = useRouter()
-//   const [name, setName] = useState('')
-//   const [email, setEmail] = useState('')
-//   const [password, setPassword] = useState('')
-
-//   const submitHandler = async (e: SyntheticEvent) => {}
-
-//   return (
-//     <FormContainer>
-//       <h1 className="my-3">Sign Up</h1>
-//       <Form onSubmit={submitHandler} className="py-3">
-//         <Form.Group controlId="name" className="my-3">
-//           <Form.Label>Name</Form.Label>
-//           <Form.Control
-//             type="name"
-//             placeholder="Enter your name"
-//             value={name}
-//             onChange={(e) => setName(e.target.value)}
-//           />
-//         </Form.Group>
-//         <Form.Group controlId="email" className="my-3">
-//           <Form.Label>Email address</Form.Label>
-//           <Form.Control
-//             type="email"
-//             placeholder="Enter your email address"
-//             value={email}
-//             onChange={(e) => setEmail(e.target.value)}
-//           />
-//         </Form.Group>
-
-//         <Form.Group controlId="password" className="my-3">
-//           <Form.Label>Password</Form.Label>
-//           <Form.Control
-//             type="password"
-//             placeholder="Enter your password"
-//             value={password}
-//             onChange={(e) => setPassword(e.target.value)}
-//           />
-//         </Form.Group>
-
-//         <Button variant="primary" type="submit" className="my-3">
-//           Sign Up
-//         </Button>
-//       </Form>
-//     </FormContainer>
-//   )
-// }
-
-// export default SignupScreen

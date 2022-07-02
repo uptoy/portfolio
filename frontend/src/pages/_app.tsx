@@ -1,51 +1,31 @@
-import React from 'react'
-import Head from 'next/head'
-import { AppProps } from 'next/app'
-import { ThemeProvider } from '@material-ui/core/styles'
-import theme from 'src/theme'
-import 'src/styles/globals.css'
-import { RecoilRoot } from 'recoil'
-import ContextProvider from 'src/context'
-import { Toaster } from 'react-hot-toast'
-import makeStyles from '@material-ui/styles/makeStyles'
+import * as React from 'react';
+import Head from 'next/head';
+import { AppProps } from 'next/app';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import theme from '../theme';
+import createEmotionCache from '../createEmotionCache';
 
-const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
+// Client-side cache, shared for the whole session of the user in the browser.
+const clientSideEmotionCache = createEmotionCache();
 
-  React.useEffect(() => {
-    const jssStyles = document.querySelector('#jss-server-side')
-    if (jssStyles) {
-      jssStyles.parentElement!.removeChild(jssStyles)
-    }
-  }, [])
-
-  const useGlobalStyles = makeStyles({
-    '@global': {
-      body: {
-        backgroundColor: '#f5f6f6'
-      }
-    }
-  })
-  function MyThemeProvider({ children }: any) {
-    useGlobalStyles()
-    return <ThemeProvider theme={theme}>{children}</ThemeProvider>
-  }
-
-  return (
-    <React.Fragment>
-      <Toaster />
-      <Head>
-        <title>My page</title>
-        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-      </Head>
-      <MyThemeProvider theme={theme}>
-        <ContextProvider>
-          <RecoilRoot>
-            <Component {...pageProps} />
-          </RecoilRoot>
-        </ContextProvider>
-      </MyThemeProvider>
-    </React.Fragment>
-  )
+interface MyAppProps extends AppProps {
+  emotionCache?: EmotionCache;
 }
 
-export default MyApp
+export default function MyApp(props: MyAppProps) {
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  return (
+    <CacheProvider value={emotionCache}>
+      <Head>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </Head>
+      <ThemeProvider theme={theme}>
+        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+        <CssBaseline />
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </CacheProvider>
+  );
+}
