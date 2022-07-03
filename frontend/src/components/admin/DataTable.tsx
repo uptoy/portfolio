@@ -1,5 +1,16 @@
 import React from 'react'
-import { Container, Tooltip, Fab, TableRow, Pagination, TableCell, Table, TableBody, TableHead } from '@mui/material'
+import {
+  Typography,
+  Container,
+  Tooltip,
+  Fab,
+  TableRow,
+  Pagination,
+  TableCell,
+  Table,
+  TableBody,
+  TableHead
+} from '@mui/material'
 import CreateIcon from '@mui/icons-material/Create'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
@@ -9,7 +20,6 @@ import { grey, green, common } from '@mui/material/colors'
 const grey500 = grey['500']
 const green400 = green['400']
 const white = common.white
-
 
 interface DataTableProps {
   model: string
@@ -96,7 +106,7 @@ function DataTable({ model, items, dataKeys, totalPages, page, headers, onPageCh
           ) : (
             <TableRow>
               <TableCell colSpan={headerCount}>
-                <p>No Data Found !</p>
+                <Typography variant="inherit">No Data Found !</Typography>
               </TableCell>
             </TableRow>
           )}

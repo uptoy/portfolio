@@ -1,18 +1,18 @@
 import theme from 'src/theme'
-import { CircularProgress } from '@mui/material'
+import { CircularProgress,Box } from '@mui/material'
 import { ThemeProvider } from '@emotion/react'
 
 export const Circular = () => {
   return (
     <ThemeProvider theme={theme}>
-      <div
-        style={{
+      <Box component="div"
+        sx={{
           display: 'flex',
           marginLeft: theme.spacing(2)
         }}
       >
         <CircularProgress color="secondary" />
-      </div>
+      </Box>
     </ThemeProvider>
   )
 }

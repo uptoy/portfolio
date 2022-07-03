@@ -1,6 +1,4 @@
-import { Typography } from '@mui/material'
-import Backdrop from '@mui/material/Backdrop'
-import Fade from '@mui/material/Fade'
+import { Fade, Backdrop, Box, Typography } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import MaterialModal from '@mui/material/Modal'
 import CloseIcon from '@mui/icons-material/Close'
@@ -65,8 +63,9 @@ const Modal: React.FC<Props> = ({ title, isVisible, onClose, children, withClose
               }}
             >
               <Fade in={isVisible}>
-                <div
-                  style={{
+                <Box
+                  component="div"
+                  sx={{
                     backgroundColor: theme.palette.background.paper,
                     boxShadow: theme.shadows[5],
                     padding: theme.spacing(2, 4, 3),
@@ -77,7 +76,8 @@ const Modal: React.FC<Props> = ({ title, isVisible, onClose, children, withClose
                     }
                   }}
                 >
-                  <div
+                  <Box
+                    component="div"
                     style={{
                       display: 'flex',
                       alignItems: 'center',
@@ -87,8 +87,9 @@ const Modal: React.FC<Props> = ({ title, isVisible, onClose, children, withClose
                   >
                     <Typography variant="h6">{title}</Typography>
                     {withClose && (
-                      <div
-                        style={{
+                      <Box
+                        component="div"
+                        sx={{
                           display: 'flex',
                           justifyContent: 'flex-end'
                         }}
@@ -96,11 +97,11 @@ const Modal: React.FC<Props> = ({ title, isVisible, onClose, children, withClose
                         <IconButton aria-label="close" onClick={onClose}>
                           <CloseIcon />
                         </IconButton>
-                      </div>
+                      </Box>
                     )}
-                  </div>
+                  </Box>
                   {children}
-                </div>
+                </Box>
               </Fade>
             </MaterialModal>
           </>,

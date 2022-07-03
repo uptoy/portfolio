@@ -1,3 +1,31 @@
+import { KeyedMutator } from 'swr'
+
+export interface IPayment {
+  card_number: number
+  holder_name: string
+  exp_month: number
+  exp_year: number
+  cvv: number
+}
+
+export interface IAddress {
+  first_name: string
+  last_name: string
+  address1: string
+  address2: string
+  city: string
+  state: string
+  zip: string
+  country: string
+}
+
+export interface IGetCart {
+  data: ICartItem[] | undefined
+  error: Error | undefined
+  isLoading: boolean
+  mutate: KeyedMutator<any>
+}
+
 export interface Category {
   id: number
   category_name: string
@@ -57,7 +85,7 @@ export interface Image {
   createdAt?: Date | null
   updatedAt?: Date | null
 }
-export type Status = "idle" | "loading" | "succeed" | "failed"
+export type Status = 'idle' | 'loading' | 'succeed' | 'failed'
 
 export interface DateRange {
   label: string
@@ -65,14 +93,14 @@ export interface DateRange {
   end_date: string
 }
 
-export interface CartItem {
-  id?: number
-  cart_id?: number
+export interface ICartItem {
+  id: number
+  cart_id: number
   product_id: number
   quantity: number
-  created_at?: Date
-  updated_at?: Date
-  product?: Product
+  created_at: Date
+  updated_at: Date
+  product: Product
 }
 
 export interface Order {

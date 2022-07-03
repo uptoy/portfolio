@@ -58,8 +58,8 @@ const LineBarChart = (props: LineBarChartProps) => {
         }}
       />
 
-      <div className="row">
-        <div className="col-xs-12">
+      <Box component="div" className="row">
+        <Box component="div" className="col-xs-12">
           <Box
             sx={{
               height: 290,
@@ -85,8 +85,8 @@ const LineBarChart = (props: LineBarChartProps) => {
               </ComposedChart>
             </ResponsiveContainer>
           </Box>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </Paper>
   )
 }

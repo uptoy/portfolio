@@ -1,4 +1,4 @@
-import { ListItemText, List, ListItem, ListItemIcon } from '@mui/material'
+import { ListItemText, List, ListItem, ListItemIcon, Box } from '@mui/material'
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
 import CategoryIcon from '@mui/icons-material/Category'
 import DashboardIcon from '@mui/icons-material/Dashboard'
@@ -9,15 +9,6 @@ import PersonIcon from '@mui/icons-material/Person'
 import { useRouter } from 'next/router'
 import React from 'react'
 import theme from 'src/theme'
-
-// const useStyles: any = makeStyles(() => ({
-//   list: {
-//     color: theme.palette.common.white
-//   },
-//   listItem: {
-//     color: '#fff'
-//   }
-// }))
 
 interface Links {
   href: string
@@ -64,25 +55,31 @@ const LINKS: Links[] = [
 ]
 
 const SidebarList = () => {
-  // const classes = useStyles()
-
   const router = useRouter()
-
   const getIsActive = (path: string) => {
     return path === router.pathname
   }
 
-  // return (
-  //   <List className={classes.list}>
-  //     {LINKS.map((link, index) => (
-  //       <ListItem key={index} selected={getIsActive(link.href)}>
-  //         <ListItemIcon className={classes.listItem}>{link.icon}</ListItemIcon>
-  //         <ListItemText primary={link.title} />
-  //       </ListItem>
-  //     ))}
-  //   </List>
-  // )
-  return <div>aaa</div>
+  return (
+    <List
+      sx={{
+        color: theme.palette.common.white
+      }}
+    >
+      {LINKS.map((link, index) => (
+        <ListItem key={index} selected={getIsActive(link.href)}>
+          <ListItemIcon
+            sx={{
+              color: '#fff'
+            }}
+          >
+            {link.icon}
+          </ListItemIcon>
+          <ListItemText primary={link.title} />
+        </ListItem>
+      ))}
+    </List>
+  )
 }
 
 export default SidebarList

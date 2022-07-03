@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Button, Grid, Typography, TextField } from '@mui/material'
+import { Button, Grid, Typography, TextField, Box } from '@mui/material'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useAuth } from 'src/context/AuthContext'
@@ -102,8 +102,9 @@ const AddressForm: React.FC<IProps> = ({ handleNext, setAddress }) => {
             <TextField required id="country" label="Country" fullWidth variant="outlined" {...register('country')} />
           </Grid>
         </Grid>
-        <div
-          style={{
+        <Box
+          component="div"
+          sx={{
             display: 'flex',
             justifyContent: 'right',
             alignItems: 'center',
@@ -131,12 +132,14 @@ const AddressForm: React.FC<IProps> = ({ handleNext, setAddress }) => {
                 dirtyFields.country) !== true
             }
           >
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <p style={{ margin: 5 }}>Save</p>
+            <Box component="div" sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="inherit" sx={{ margin: 5 }}>
+                Save
+              </Typography>
               <ArrowForwardIosIcon style={{ margin: 5 }} />
-            </div>
+            </Box>
           </Button>
-        </div>
+        </Box>
       </form>
     </>
   )

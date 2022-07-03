@@ -15,11 +15,11 @@ const Layout: React.FC<IProps> = ({ children }) => {
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <ProductHeader />
         <Container maxWidth="lg" style={{ padding: 10 }}>
+          <ProductHeader />
           <main>{children}</main>
+          <Footer />
         </Container>
-        <Footer />
       </ThemeProvider>
     </>
   )

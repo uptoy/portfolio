@@ -41,7 +41,7 @@ const BrowserUsage = (props: BrowserUsageProps) => {
       >
         Browser Usage
       </span>
-      <div style={{ clear: 'both' }} />
+      <Box component="div" sx={{ clear: 'both' }} />
 
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
@@ -61,8 +61,8 @@ const BrowserUsage = (props: BrowserUsageProps) => {
         </Grid>
         <Grid item xs={12} md={4}>
           {/* <div className="col-xs-12 col-sm-4 col-md-4 col-lg-4"> */}
-          <div style={{ paddingTop: 20 }}>
-            <div style={{ paddingTop: 20 }}>
+          <Box component="div" sx={{ paddingTop: 20 }}>
+            <Box component="div" sx={{ paddingTop: 20 }}>
               <List>
                 {props.data.map((item: any, index: any) => (
                   <ListItem key={item.name}>
@@ -73,8 +73,8 @@ const BrowserUsage = (props: BrowserUsageProps) => {
                   </ListItem>
                 ))}
               </List>
-            </div>
-          </div>
+            </Box>
+          </Box>
         </Grid>
       </Grid>
     </Paper>

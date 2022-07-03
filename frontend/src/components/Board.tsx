@@ -1,4 +1,5 @@
 import { Square } from './Square'
+import { Box } from '@mui/material'
 
 interface BoardPropsType {
   squares: SquareValueType[]
@@ -22,22 +23,22 @@ export const Board: React.FC<BoardPropsType> = (props) => {
   }
 
   return (
-    <div>
-      <div className="board-row">
+    <Box>
+      <Box>
         {renderSquare(0)}
         {renderSquare(1)}
         {renderSquare(2)}
-      </div>
-      <div className="board-row">
+      </Box>
+      <Box component="div">
         {renderSquare(3)}
         {renderSquare(4)}
         {renderSquare(5)}
-      </div>
-      <div className="board-row">
+      </Box>
+      <Box component="div">
         {renderSquare(6)}
         {renderSquare(7)}
         {renderSquare(8)}
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }

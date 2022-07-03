@@ -1,4 +1,4 @@
-import { CircularProgress } from '@mui/material'
+import { Box, CircularProgress, Typography } from '@mui/material'
 
 import SimpleModal from 'src/components/modal/SimpleModal'
 import Button from '@mui/material/Button'
@@ -40,16 +40,16 @@ const DeleteModal = (props: IProps) => {
   return (
     <>
       <SimpleModal open={props.open} handleClose={handleClose}>
-        <p>Don't you delete ?</p>
+        <Typography variant="inherit">Don't you delete ?</Typography>
         {/* <div className={classes.submit_container}> */}
-        <div>
+        <Box component="div">
           <Button variant="contained" style={{ marginRight: '1em' }} onClick={handleClose}>
             Back
           </Button>
           <Button variant="contained" disabled={isSubmitting} onClick={handleDelete}>
             {isSubmitting ? <CircularProgress size={25} /> : 'Submit'}
           </Button>
-        </div>
+        </Box>
       </SimpleModal>
     </>
   )

@@ -15,7 +15,7 @@ export const AspectRatioBox = ({ children, ratio = 1 }: any) => {
       >
         {children}
       </Box>
-      <div style={{ paddingBottom: (1 / ratio) * 100 + '%' }} />
+      <Box component="div" sx={{ paddingBottom: (1 / ratio) * 100 + '%' }} />
     </Box>
   )
 }

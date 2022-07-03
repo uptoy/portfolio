@@ -1,9 +1,16 @@
 import * as React from 'react'
-import { Grid, Typography, TextField, Button } from '@mui/material'
+import { Grid, Typography, TextField, Button, Box } from '@mui/material'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
-import { IPayment } from 'src/pages/checkout'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { InputLabel, FormControl, Select, MenuItem } from '@mui/material'
+
+export interface IPayment {
+  card_number: number
+  holder_name: string
+  exp_month: number
+  exp_year: number
+  cvv: number
+}
 
 interface IProps {
   handleNext: () => void
@@ -100,8 +107,9 @@ const PaymentForm: React.FC<IProps> = ({ setPayment, handleNext }) => {
             <TextField required id="cvv" label="CVV" fullWidth variant="outlined" {...register('cvv')} />
           </Grid>
         </Grid>
-        <div
-          style={{
+        <Box
+          component="div"
+          sx={{
             display: 'flex',
             justifyContent: 'right',
             alignItems: 'center',
@@ -120,12 +128,14 @@ const PaymentForm: React.FC<IProps> = ({ setPayment, handleNext }) => {
             }}
             disabled={(dirtyFields.card_number && dirtyFields.holder_name && dirtyFields.cvv) !== true}
           >
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <p style={{ margin: 5 }}>Save</p>
+            <Box component="div" sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="inherit" sx={{ margin: 5 }}>
+                Save
+              </Typography>
               <ArrowForwardIosIcon style={{ margin: 5 }} />
-            </div>
+            </Box>
           </Button>
-        </div>
+        </Box>
       </form>
     </React.Fragment>
   )

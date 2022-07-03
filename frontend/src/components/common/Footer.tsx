@@ -1,18 +1,18 @@
-import React from "react";
+import { Box } from '@mui/material'
+import React from 'react'
 
 const Footer = () => (
   <footer>
-    <div className="container">
+    <Box component="div" className="container">
       <a href="/" className="logo-font">
         conduit
       </a>
       <span className="attribution">
-        An interactive learning project from{" "}
-        <a href="https://thinkster.io">Thinkster</a>. Code &amp; design licensed
+        An interactive learning project from <a href="https://thinkster.io">Thinkster</a>. Code &amp; design licensed
         under MIT.
       </span>
-    </div>
+    </Box>
   </footer>
-);
+)
 
-export default Footer;
+export default Footer

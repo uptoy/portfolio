@@ -4,7 +4,7 @@ import Rating from 'src/components/Rating'
 import { ReviewType } from 'src/yup/type'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { reviewFormSchema } from 'src/yup/schema'
-import { Link, Button, MenuItem, TextField } from '@mui/material'
+import { Link, Button, MenuItem, TextField, Box, Typography } from '@mui/material'
 import { Review } from 'src/@types'
 import { useAuth } from 'src/context/AuthContext'
 import toast from 'react-hot-toast'
@@ -54,60 +54,64 @@ const ProductReview: React.FC<IProps> = ({ reviews, productId }) => {
     setState2(!state2)
   }
   return (
-    <div style={{ paddingTop: 15 }}>
-      <Button variant="contained" style={{ marginTop: '1em' }} onClick={handleClick2}>
-        {state2 ? <div>Close Review List</div> : <div>Open Review List</div>}
+    <Box component="div" sx={{ paddingTop: 15 }}>
+      <Button variant="contained" sx={{ marginTop: '1em' }} onClick={handleClick2}>
+        {state2 ? <Box component="div">Close Review List</Box> : <Box component="div">Open Review List</Box>}
       </Button>
       {state2 ? (
-        <div>
-          <div>
+        <Box component="div">
+          <Box component="div">
             {reviews ? (
-              <div>
+              <Box component="div">
                 <h2>Reviews({reviews.length})</h2>
                 {reviews.map((review) => (
-                  <div key={review.id} style={{ margin: 10, marginLeft: 0 }}>
+                  <Box component="div" key={review.id} sx={{ margin: 10, marginLeft: 0 }}>
                     <Rating value={review.rating} />
-                    <p style={{ margin: 0 }}>{getFormattedDate(review.updated_at)}</p>
-                    <div>
+                    <Typography variant="inherit" sx={{ margin: 0 }}>
+                      {getFormattedDate(review.updated_at)}
+                    </Typography>
+                    <Box component="div">
                       <strong>Title: </strong>
                       {review.title}
-                    </div>
-                    <div>
+                    </Box>
+                    <Box component="div">
                       <strong>Comment: </strong>
                       {review.comment}
-                    </div>
-                  </div>
+                    </Box>
+                  </Box>
                 ))}
-              </div>
+              </Box>
             ) : (
-              <div style={{ padding: '1em' }}>
+              <Box component="div" sx={{ padding: '1em' }}>
                 <h4>No Reviews</h4>
-              </div>
+              </Box>
             )}
-          </div>
-        </div>
+          </Box>
+        </Box>
       ) : (
-        <div style={{ marginTop: 10 }}>Do you want look review?</div>
+        <Box component="div" sx={{ marginTop: 10 }}>
+          Do you want look review?
+        </Box>
       )}
-      <Button variant="contained" style={{ marginTop: '1em' }} onClick={handleClick}>
-        {state ? <div>Review Form Close</div> : <div>Write Review</div>}
+      <Button variant="contained" sx={{ marginTop: '1em' }} onClick={handleClick}>
+        {state ? <Box component="div">Review Form Close</Box> : <Box component="div">Write Review</Box>}
       </Button>
       {state && (
-        <div>
+        <Box component="div">
           {isAuthenticated ? (
             <ProductReviewForm productId={productId} />
           ) : (
-            <div style={{ marginTop: 10 }}>
+            <Box component="div" sx={{ marginTop: 10 }}>
               <span>Please</span>
-              <Link href="/auth/signin" style={{ margin: 5 }}>
+              <Link href="/auth/signin" sx={{ margin: 5 }}>
                 sign in
               </Link>
               <span>to write a review</span>
-            </div>
+            </Box>
           )}
-        </div>
+        </Box>
       )}
-    </div>
+    </Box>
   )
 }
 
@@ -174,7 +178,7 @@ const ProductReviewForm: React.FC<ReviewFormIProps> = ({ productId }) => {
           label="Rating"
           id="rating"
           {...register('rating')}
-          style={{ width: '15vh' }}
+          sx={{ width: '15vh' }}
         >
           {ratings.map((option) => (
             <MenuItem key={option.value} value={option.value}>
@@ -182,11 +186,11 @@ const ProductReviewForm: React.FC<ReviewFormIProps> = ({ productId }) => {
             </MenuItem>
           ))}
         </TextField>
-        <div>
+        <Box component="div">
           <Button type="submit" variant="contained" disabled={isSubmitting} sx={{ mt: 3 }}>
             submit
           </Button>
-        </div>
+        </Box>
       </form>
     </>
   )

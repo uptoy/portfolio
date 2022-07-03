@@ -2,6 +2,7 @@ import React from 'react'
 import StarIcon from '@mui/icons-material/Star'
 import StarBorderIcon from '@mui/icons-material/StarBorder' //empty
 import StarHalfIcon from '@mui/icons-material/StarHalf'
+import { Box } from '@mui/material'
 
 interface IRating {
   value: number
@@ -10,7 +11,7 @@ interface IRating {
 
 const Rating = ({ value, text }: IRating) => {
   return (
-    <div className="rating">
+    <Box component="div" className="rating">
       <span>
         {value >= 1 ? (
           <StarIcon
@@ -132,7 +133,7 @@ const Rating = ({ value, text }: IRating) => {
         )}
       </span>
       <span>{text && text}</span>
-    </div>
+    </Box>
   )
 }
 

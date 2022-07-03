@@ -1,10 +1,9 @@
-import * as React from 'react';
-import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
-import Title from './Title';
+import * as React from 'react'
+import { Typography, Link, Box } from '@mui/material'
+import Title from './Title'
 
 function preventDefault(event: React.MouseEvent) {
-  event.preventDefault();
+  event.preventDefault()
 }
 
 export default function Deposits() {
@@ -17,11 +16,11 @@ export default function Deposits() {
       <Typography color="text.secondary" sx={{ flex: 1 }}>
         on 15 March, 2019
       </Typography>
-      <div>
+      <Box component="div">
         <Link color="primary" href="#" onClick={preventDefault}>
           View balance
         </Link>
-      </div>
+      </Box>
     </React.Fragment>
-  );
+  )
 }

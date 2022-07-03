@@ -198,7 +198,7 @@ export default function CommonHeader() {
             <MailIcon />
           </Badge>
         </IconButton>
-        <p>Messages</p>
+        <Typography variant="inherit">Messages</Typography>
       </MenuItem>
       <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="inherit">
@@ -206,7 +206,7 @@ export default function CommonHeader() {
             <NotificationsIcon />
           </Badge>
         </IconButton>
-        <p>Notifications</p>
+        <Typography variant="inherit">Notifications</Typography>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -217,7 +217,7 @@ export default function CommonHeader() {
         >
           <AccountCircleIcon />
         </IconButton>
-        <p>Profile</p>
+        <Typography variant="inherit">Profile</Typography>
       </MenuItem>
     </Menu>
   )
@@ -239,7 +239,7 @@ export default function CommonHeader() {
             <MailIcon />
           </Badge>
         </IconButton>
-        <p>Messages</p>
+        <Typography variant="inherit">Messages</Typography>
       </MenuItem>
       <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="inherit">
@@ -247,7 +247,7 @@ export default function CommonHeader() {
             <NotificationsIcon />
           </Badge>
         </IconButton>
-        <p>Notifications</p>
+        <Typography variant="inherit">Notifications</Typography>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen1}>
         <IconButton
@@ -258,7 +258,7 @@ export default function CommonHeader() {
         >
           <AccountCircleIcon />
         </IconButton>
-        <p>Profile</p>
+        <Typography variant="inherit">Profile</Typography>
       </MenuItem>
     </Menu>
   )

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Badge, AppBar, Toolbar } from '@mui/material'
+import { Typography, Badge, AppBar, Toolbar, Box } from '@mui/material'
 import { Circular } from 'src/components/common/Circular'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -69,7 +69,7 @@ const AdminHeader = (props: any) => {
     //     </IconButton>
     //   </Toolbar>
     // </AppBar>
-    <div>header</div>
+    <Box component="div">header</Box>
   )
 }
 

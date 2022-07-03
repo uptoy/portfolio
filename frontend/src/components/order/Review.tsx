@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { Box, Button, ListItemText, Grid, List, ListItem, Typography } from '@mui/material'
-import { IAddress, IPayment } from 'src/pages/checkout'
-import { CartItem } from 'src/@types'
+import { ICartItem } from 'src/@types'
+import { IAddress, IPayment } from 'src/@types'
 
 interface IProps {
   address: IAddress | undefined
   payment: IPayment | undefined
-  cartItems: CartItem[]
+  cartItems: ICartItem[]
   handleNext: () => void
 }
 
@@ -17,7 +17,7 @@ const Review: React.FC<IProps> = ({ address, payment, handleNext, cartItems }) =
     console.log('address', address)
     handleNext()
   }
-  const totalPrice: number = cartItems?.reduce((total: number, cartItem: any): number => {
+  const totalPrice = cartItems?.reduce((total: number, cartItem: ICartItem): number => {
     return total + cartItem.quantity * cartItem.product.price
   }, 0)
   return (
@@ -44,33 +44,61 @@ const Review: React.FC<IProps> = ({ address, payment, handleNext, cartItems }) =
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Shipping
           </Typography>
-          <div style={{ display: 'flex', paddingBottom: 5 }}>
-            <p style={{ margin: 0, paddingRight: 5 }}>{address?.first_name}</p>
-            <p style={{ margin: 0 }}>{address?.last_name}</p>
-          </div>
-          <div>
-            <p style={{ margin: 0, paddingRight: 5, paddingBottom: 5 }}>{address?.address1}</p>
-            <p style={{ margin: 0, paddingRight: 5, paddingBottom: 5 }}>{address?.address2}</p>
-            <p style={{ margin: 0, paddingRight: 5, paddingBottom: 5 }}>{address?.city}</p>
-            <p style={{ margin: 0, paddingRight: 5, paddingBottom: 5 }}>{address?.country}</p>
-            <p style={{ margin: 0, paddingRight: 5, paddingBottom: 5 }}>{address?.state}</p>
-            <p style={{ margin: 0, paddingRight: 5, paddingBottom: 5 }}>{address?.zip}</p>
-          </div>
+          <Box component="div" sx={{ display: 'flex', paddingBottom: 5 }}>
+            <Typography variant="inherit" sx={{ margin: 0, paddingRight: 5 }}>
+              {address?.first_name}
+            </Typography>
+            <Typography variant="inherit" sx={{ margin: 0 }}>
+              {address?.last_name}
+            </Typography>
+          </Box>
+          <Box component="div">
+            <Typography variant="inherit" sx={{ margin: 0, paddingRight: 5, paddingBottom: 5 }}>
+              {address?.address1}
+            </Typography>
+            <Typography variant="inherit" sx={{ margin: 0, paddingRight: 5, paddingBottom: 5 }}>
+              {address?.address2}
+            </Typography>
+            <Typography variant="inherit" sx={{ margin: 0, paddingRight: 5, paddingBottom: 5 }}>
+              {address?.city}
+            </Typography>
+            <Typography variant="inherit" sx={{ margin: 0, paddingRight: 5, paddingBottom: 5 }}>
+              {address?.country}
+            </Typography>
+            <Typography variant="inherit" sx={{ margin: 0, paddingRight: 5, paddingBottom: 5 }}>
+              {address?.state}
+            </Typography>
+            <Typography variant="inherit" sx={{ margin: 0, paddingRight: 5, paddingBottom: 5 }}>
+              {address?.zip}
+            </Typography>
+          </Box>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Payment details
           </Typography>
           <Grid container>
-            <div>
-              <p style={{ margin: 0, paddingBottom: 5 }}>{payment?.card_number}</p>
-              <p style={{ margin: 0, paddingBottom: 5 }}>{payment?.holder_name}</p>
-              <div style={{ display: 'flex' }}>
-                <p style={{ margin: 0, paddingBottom: 5 }}>{`${payment?.exp_month} 月`}</p>
-                <p style={{ margin: 0, paddingBottom: 5 }}>{`${payment?.exp_year} 年`}</p>
-              </div>
-              <p style={{ margin: 0, paddingBottom: 5 }}>{payment?.cvv}</p>
-            </div>
+            <Box component="div">
+              <Typography variant="inherit" sx={{ margin: 0, paddingBottom: 5 }}>
+                {payment?.card_number}
+              </Typography>
+              <Typography variant="inherit" sx={{ margin: 0, paddingBottom: 5 }}>
+                {payment?.holder_name}
+              </Typography>
+              <Box component="div" style={{ display: 'flex' }}>
+                <Typography
+                  variant="inherit"
+                  sx={{ margin: 0, paddingBottom: 5 }}
+                >{`${payment?.exp_month} 月`}</Typography>
+                <Typography
+                  variant="inherit"
+                  sx={{ margin: 0, paddingBottom: 5 }}
+                >{`${payment?.exp_year} 年`}</Typography>
+              </Box>
+              <Typography variant="inherit" sx={{ margin: 0, paddingBottom: 5 }}>
+                {payment?.cvv}
+              </Typography>
+            </Box>
           </Grid>
         </Grid>
       </Grid>

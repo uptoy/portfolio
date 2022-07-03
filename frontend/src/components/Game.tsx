@@ -10,6 +10,7 @@ import {
   useXIsNextState,
   useXIsNextStateMutator
 } from '@/infrastructure/recoil'
+import { Box } from '@mui/material'
 /**
  * @description [null, null, null, null, null, null, 'X', null, 'O']のような配列
  */
@@ -87,18 +88,18 @@ export const Game: React.FC = () => {
   const current: { squares: SquareValueType[] } = historyArr[stepNumber]
 
   return (
-    <div className="game">
-      <div className="game-board">
+    <Box component="div">
+      <Box component="div">
         <Board
           squares={current.squares}
           onClick={(i) => {
             handleClick(i)
           }}
         />
-      </div>
-      <div className="game-info">
+      </Box>
+      <Box component="div">
         <GameHistory />
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }

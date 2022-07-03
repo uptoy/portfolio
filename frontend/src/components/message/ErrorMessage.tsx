@@ -1,3 +1,5 @@
+import { Typography } from "@mui/material"
+
 interface IMessage {
   header: string
   message: boolean
@@ -6,8 +8,8 @@ interface IMessage {
 const ErrorMessage = ({ header, message }: IMessage) => {
   return (
     <>
-      <p>{header}</p>
-      <p>{message}</p>
+      <Typography variant="inherit">{header}</Typography>
+      <Typography variant="inherit">{message}</Typography>
     </>
   )
 }

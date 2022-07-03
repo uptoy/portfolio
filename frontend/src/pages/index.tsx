@@ -10,7 +10,7 @@ import { mainFeaturedPost } from 'src/utils/seed'
 import { red, common } from '@mui/material/colors'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
-
+import theme from '@/theme'
 import { Product, Review } from 'src/@types'
 import { useAuth } from 'src/context/AuthContext'
 import { Average } from 'src/utils/average'
@@ -29,25 +29,12 @@ import Stack from '@mui/material/Stack'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 
-// const theme = createTheme()
-
-// export default function Index() {
-//   return (
-//     <ThemeProvider theme={theme}>
-//       <Layout>
-//         <MainFeaturedPost />
-//         <CarouselContainer />
-//       </Layout>
-//     </ThemeProvider>
-//   )
-// }
-
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-export default function About() {
+export default function Index() {
   return (
-    <Container sx={{ py: 8 }} maxWidth="lg">
-      {/* End hero unit */}
+    <Layout>
+      <MainFeaturedPost />
       <Grid container spacing={4}>
         {cards.map((card) => (
           <Grid item key={card} xs={12} sm={6} md={4}>
@@ -74,6 +61,7 @@ export default function About() {
           </Grid>
         ))}
       </Grid>
-    </Container>
+      <CarouselContainer />
+    </Layout>
   )
 }

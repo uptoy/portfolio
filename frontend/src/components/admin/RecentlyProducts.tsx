@@ -1,5 +1,5 @@
 import React from 'react'
-import { ListItemText, Menu, MenuItem, Paper, List, ListSubheader } from '@mui/material'
+import { Box, ListItemText, Menu, MenuItem, Paper, List, ListSubheader } from '@mui/material'
 import { common, cyan } from '@mui/material/colors'
 
 const cyan600 = cyan['600']
@@ -37,9 +37,9 @@ const RecentlyProducts = (props: any) => {
           Recent Products
         </ListSubheader>
         {props.data.map((item: any) => (
-          <div key={item.title}>
+          <Box component="div" key={item.title}>
             <ListItemText primary={item.title} secondary={item.text} />
-          </div>
+          </Box>
         ))}
       </List>
     </Paper>

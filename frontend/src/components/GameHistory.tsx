@@ -1,3 +1,4 @@
+import { Box } from '@mui/material'
 import {
   useHistoryState,
   useStepNumberState,
@@ -89,9 +90,9 @@ export const GameHistory: React.FC = () => {
   const status: string = getStatus(winner)
 
   return (
-    <div className="game-info">
-      <div data-cy="winner_status">{status}</div>
+    <Box component="div" className="game-info">
+      <Box component="div" data-cy="winner_status">{status}</Box>
       <ol>{moves}</ol>
-    </div>
+    </Box>
   )
 }

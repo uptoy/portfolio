@@ -24,7 +24,7 @@ export default function Carousel(props: IProps) {
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ height: '26em', margin: 'auto' }}>
-        <p>{title}</p>
+        <Typography variant="inherit">{title}</Typography>
         <Swiper
           slidesPerView={1}
           spaceBetween={10}

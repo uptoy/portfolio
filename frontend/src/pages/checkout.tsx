@@ -1,37 +1,20 @@
-//address noting patern
-import { GetServerSidePropsContext, GetServerSideProps } from 'next'
+//library
 import * as React from 'react'
-import { Typography, Container, Box, Paper, Stepper, Step, StepLabel } from '@mui/material'
-import { AddressForm, PaymentForm, Review } from 'src/components/order'
-import { Layout } from 'src/components/organisms'
-import { Link } from 'src/components'
-import theme from 'src/theme'
-import { fetcher } from './cart'
 import useSWR from 'swr'
+import { GetServerSidePropsContext, GetServerSideProps } from 'next'
+import { Typography, Container, Box, Paper, Stepper, Step, StepLabel } from '@mui/material'
+//private
+import theme from 'src/theme'
+import { ICartItem, IAddress, IPayment } from 'src/@types'
+import { Link } from 'src/components'
+import { Layout } from 'src/components/organisms'
 import { Circular } from 'src/components/Circular'
-import { CartItem } from 'src/@types'
-import { BaseURL } from '@/common'
+import { AddressForm, PaymentForm, Review } from 'src/components/order'
+//custom hook
+import { useGetCart, useGetCartServer } from '@/hooks/fetcher'
+//common
 
 const steps = ['Shipping address', 'Payment details', 'Review your order']
-
-export interface IPayment {
-  card_number: number
-  holder_name: string
-  exp_month: number
-  exp_year: number
-  cvv: number
-}
-
-export interface IAddress {
-  first_name: string
-  last_name: string
-  address1: string
-  address2: string
-  city: string
-  state: string
-  zip: string
-  country: string
-}
 
 function getStepContent(
   step: number,
@@ -40,7 +23,7 @@ function getStepContent(
   setPayment: React.Dispatch<React.SetStateAction<IPayment | undefined>>,
   address: IAddress | undefined,
   payment: IPayment | undefined,
-  cartItems: CartItem[]
+  cartItems: ICartItem[]
 ) {
   switch (step) {
     case 0:
@@ -64,18 +47,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSideP
       }
     }
   }
-  const res = await fetch(`${BaseURL}/cart`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include'
-  })
-  const cart = await res.json()
+  const cart = useGetCartServer()
   return { props: { cart } }
 }
-export default function Order(cart: CartItem) {
-  // const classes = useStyles()
-  const { data, isLoading } = useCarts(cart)
-  const cartItems = data.data
+export default function Order(cart: ICartItem[]) {
+  const { data, isLoading } = useGetCart(cart)
+  const cartItems = data
   console.log(cartItems)
   const [activeStep, setActiveStep] = React.useState(0)
   const [address, setAddress] = React.useState<IAddress | undefined>()
@@ -130,7 +107,7 @@ export default function Order(cart: CartItem) {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {getStepContent(activeStep, handleNext, setAddress, setPayment, address, payment, cartItems)}
+                {getStepContent(activeStep, handleNext, setAddress, setPayment, address, payment, cartItems!)}
               </React.Fragment>
             )}
           </React.Fragment>
@@ -138,12 +115,4 @@ export default function Order(cart: CartItem) {
       </Container>
     </Layout>
   )
-}
-
-const useCarts = (cart: CartItem) => {
-  const { data, error } = useSWR(`${BaseURL}/cart`, fetcher, {
-    fallbackData: cart,
-    revalidateOnMount: true
-  })
-  return { data: data, isLoading: !error && !data }
 }

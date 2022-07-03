@@ -65,7 +65,7 @@ const CategoryList = () => {
           </Table>
         </TableContainer>
       )}
-      {error && <p>Oops, something went wrong</p>} */}
+      {error && <Typography variant="inherit">Oops, something went wrong</Typography>} */}
     </>
   )
 }

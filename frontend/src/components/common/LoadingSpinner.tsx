@@ -1,7 +1,8 @@
-import React from "react";
+import { Box } from '@mui/material'
+import React from 'react'
 
 const LoadingSpinner = () => (
-  <div className="loading-spinner">
+  <Box component="div" className="loading-spinner">
     <style>
       {`
         @keyframes spin {
@@ -24,7 +25,7 @@ const LoadingSpinner = () => (
         }
         `}
     </style>
-  </div>
-);
+  </Box>
+)
 
-export default LoadingSpinner;
+export default LoadingSpinner

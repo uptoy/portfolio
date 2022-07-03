@@ -1,6 +1,6 @@
 import theme from 'src/theme'
 import React from 'react'
-import { Button, Modal } from '@mui/material'
+import { Box, Button, Modal } from '@mui/material'
 
 // const useStyles: any = makeStyles(() => ({
 //   // modal: {
@@ -39,15 +39,15 @@ export default function SimpleModal(props: IProps) {
   // }
 
   return (
-    <div>
+    <Box component="div">
       <Modal
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
         open={props.open}
         onClose={props.handleClose}
       >
-        <div
-          style={{
+        <Box component="div"
+          sx={{
             position: 'absolute',
             width: 450,
             backgroundColor: theme.palette.background.paper,
@@ -59,13 +59,13 @@ export default function SimpleModal(props: IProps) {
           }}
         >
           {/* <h2>Simple React Modal</h2>
-          <p>
+          <Typography variant="inherit">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi accumsan odio enim, non
             pharetra est ultrices et.
-          </p> */}
+          </Typography> */}
           {props.children}
-        </div>
+        </Box>
       </Modal>
-    </div>
+    </Box>
   )
 }

@@ -1,10 +1,9 @@
-import { Typography, Button } from '@mui/material'
+import { Typography, Button, Box } from '@mui/material'
 import React from 'react'
 import { Modal } from '../modal'
 import { DateRange } from 'src/@types'
 import formatDate from 'src/utils/formatDate'
 import getDateRanges from 'src/utils/getDateRanges'
-
 
 interface Props {
   show: boolean
@@ -23,7 +22,7 @@ const SelectDateRangeModal: React.FC<Props> = ({ show, onClose, onSelectDateRang
 
   return (
     <Modal title="Select Date Range" isVisible={show} onClose={onClose}>
-      <div>
+      <Box component="div">
         {dateRanges.map((range, idx) => (
           <Button
             key={idx}
@@ -45,7 +44,7 @@ const SelectDateRangeModal: React.FC<Props> = ({ show, onClose, onSelectDateRang
             </Typography>
           </Button>
         ))}
-      </div>
+      </Box>
     </Modal>
   )
 }

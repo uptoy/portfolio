@@ -3,16 +3,17 @@ import useSWR from 'swr'
 import React from 'react'
 import { Circular } from './Circular'
 import { BaseURL } from '@/common'
+import { Box } from '@mui/material'
 
 const CarouselContainer = () => {
   const { data, isLoading } = useProducts()
   const products = data?.data
   if (isLoading) return <Circular />
   return (
-    <div style={{ marginTop: '3em' }}>
+    <Box component="div" sx={{ marginTop: '3em' }}>
       <Carousel title="Ralated Product" products={products} />
       <Carousel title="New Arrival Products" products={products} />
-    </div>
+    </Box>
   )
 }
 

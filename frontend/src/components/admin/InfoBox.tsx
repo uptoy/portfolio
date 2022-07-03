@@ -1,6 +1,7 @@
 import React from 'react'
 import Paper from '@mui/material/Paper'
 import { common, grey } from '@mui/material/colors'
+import { Box } from '@mui/material'
 
 const white = common.white
 const grey800 = grey['800']
@@ -43,8 +44,9 @@ const InfoBox = (props: InfoBoxProps) => {
 
   return (
     <Paper>
-      <div
-        style={{
+      <Box
+        component="div"
+        sx={{
           float: 'left',
           height: 80,
           width: 90,
@@ -53,12 +55,19 @@ const InfoBox = (props: InfoBoxProps) => {
         }}
       >
         <Icon style={styles.icon} />
-      </div>
+      </Box>
 
-      <div style={styles.content}>
+      <Box
+        component="div"
+        sx={{
+          padding: '5px 10px',
+          marginLeft: 90,
+          height: 80
+        }}
+      >
         <span style={styles.text}>{title}</span>
         <span style={styles.number}>{value}</span>
-      </div>
+      </Box>
     </Paper>
   )
   // }

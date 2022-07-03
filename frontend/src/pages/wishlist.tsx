@@ -4,7 +4,7 @@ import React from 'react'
 import theme from 'src/theme'
 import { CarouselContainer } from 'src/components'
 import { GetServerSidePropsContext, GetServerSideProps } from 'next'
-import { Box, Paper, Grid } from '@mui/material'
+import { Box, Paper, Grid, Typography } from '@mui/material'
 import { Layout } from 'src/components/organisms'
 import { red, common } from '@mui/material/colors'
 
@@ -118,7 +118,7 @@ const Wishlist: NextPage = ({ products, wishlist }: any) => {
   }
   return (
     <Layout>
-      <div style={{ marginTop: '2em', marginBottom: '2em' }}>
+      <Box component="div" sx={{ marginTop: '2em', marginBottom: '2em' }}>
         {fetchWishlist?.length === 0 ? (
           <Paper
             sx={{
@@ -126,12 +126,12 @@ const Wishlist: NextPage = ({ products, wishlist }: any) => {
               color: theme.palette.text.secondary
             }}
           >
-            <p>Wishlist is empty.</p>
+            <Typography variant="inherit">Wishlist is empty.</Typography>
             <Link href="/">Go shopping</Link>
           </Paper>
         ) : (
           <Box>
-            <p>Wishlist</p>
+            <Typography variant="inherit">Wishlist</Typography>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={12}>
                 {fetchWishlist?.map((item: Product, index: number) => (
@@ -144,8 +144,9 @@ const Wishlist: NextPage = ({ products, wishlist }: any) => {
                   >
                     <Grid container xs={12} sm={12}>
                       <Grid item xs={5} style={{ minWidth: '7em', maxWidth: '13em' }}>
-                        <div
-                          style={{
+                        <Box
+                          component="div"
+                          sx={{
                             width: '30vw',
                             height: '100%',
                             minHeight: '8em',
@@ -161,16 +162,20 @@ const Wishlist: NextPage = ({ products, wishlist }: any) => {
                             height={'100%'}
                             layout="responsive"
                           />
-                        </div>
+                        </Box>
                       </Grid>
                       <Grid item xs={7}>
-                        <div style={{ paddingTop: 10, paddingLeft: 20 }}>
+                        <Box component="div" sx={{ paddingTop: 10, paddingLeft: 20 }}>
                           <Link href={`/products/${item.id}`}>
-                            <p style={{ margin: 0 }}>name</p>
+                            <Typography variant="inherit" sx={{ margin: 0 }}>
+                              name
+                            </Typography>
                           </Link>
-                          <p>{item?.price}</p>
-                          <p style={{ color: '#007600' }}>In Stock</p>
-                        </div>
+                          <Typography variant="inherit">{item?.price}</Typography>
+                          <Typography variant="inherit" sx={{ color: '#007600' }}>
+                            In Stock
+                          </Typography>
+                        </Box>
                       </Grid>
                     </Grid>
                     <CancelIcon
@@ -184,7 +189,7 @@ const Wishlist: NextPage = ({ products, wishlist }: any) => {
           </Box>
         )}
         <CarouselContainer />
-      </div>
+      </Box>
     </Layout>
   )
 }

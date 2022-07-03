@@ -1,22 +1,33 @@
+//library
 import type { NextPage } from 'next'
 import Image from 'next/image'
 import React from 'react'
-import theme from 'src/theme'
 import { GetServerSidePropsContext, GetServerSideProps } from 'next'
 import toast from 'react-hot-toast'
-import { Box, Grid, Button, List, ListItem, Paper, Typography } from '@mui/material'
+//mui component
+import { Icon, Box, Grid, Button, List, ListItem, Paper, Typography } from '@mui/material'
 import { Layout } from 'src/components/organisms'
-import { CartItem } from 'src/@types'
+import { ICartItem } from 'src/@types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
-import { Link } from 'src/components'
-import { Icon } from '@mui/material'
-import DeleteIcon from '@mui/icons-material/Delete'
-import { useAuth } from 'src/context/AuthContext'
+import { CarouselContainer, Link } from 'src/components'
+//icon
 import AddBoxIcon from '@mui/icons-material/AddBox'
+import DeleteIcon from '@mui/icons-material/Delete'
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox'
-import { CarouselContainer } from 'src/components'
+//private
 import { BaseURL } from '@/common'
+import theme from 'src/theme'
+import { useAuth } from 'src/context/AuthContext'
+// custom hook
+import {
+  fetcher,
+  useGetCartServer,
+  useDeleteCartItem,
+  useIncCartItem,
+  useDecCartItem,
+  useGetCart
+} from '@/hooks/fetcher'
 
 export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { req } = ctx
@@ -28,50 +39,26 @@ export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSideP
       }
     }
   }
-  const res = await fetch(`${BaseURL}/cart`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include'
-  })
-  const cart = await res.json()
+  const cart = useGetCartServer()
   return { props: { cart } }
 }
 
-export const fetcher = (url: string) =>
-  fetch(url, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include'
-  }).then((r) => r.json())
-
-const Cart: NextPage = ({ cart }: any) => {
-  const { data, mutate } = useSWR(`${BaseURL}/cart`, fetcher, {
-    fallbackData: cart,
-    revalidateOnMount: true
-  })
+const Cart: NextPage = (cart: any) => {
+  const { data, mutate } = useGetCart(cart)
   const { data: data1 } = useSWR(`${BaseURL}/products`, fetcher)
   console.log('data1', data1?.data[0].product_name)
   console.log('data1', data1?.data[1].product_name)
   const router = useRouter()
-  // const classes = useStyles()
-  const fetchCartItems = data.data
-  const handleDecrement = async (cartItem: CartItem) => {
+  const fetchCartItems = data
+  const handleDecrement = async (cartItem: ICartItem) => {
     const quantity = cartItem.quantity
     const productId = cartItem.product_id
     try {
       if (quantity == 1) {
-        await fetch(`${BaseURL}/cart/${productId}`, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include'
-        })
+        await useDeleteCartItem(productId)
         await mutate({ ...data, cartItem })
       } else {
-        await fetch(`${BaseURL}/cart/dec/${productId}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include'
-        })
+        await useDecCartItem(productId)
         await mutate({ ...data, cartItem })
       }
     } catch (err) {
@@ -83,14 +70,10 @@ const Cart: NextPage = ({ cart }: any) => {
       }
     }
   }
-  const handleIncrement = async (cartItem: CartItem) => {
+  const handleIncrement = async (cartItem: ICartItem) => {
     try {
       const productId = cartItem.product_id
-      await fetch(`${BaseURL}/cart/inc/${productId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
-      })
+      await useIncCartItem(productId)
       await mutate({ ...data, cartItem })
     } catch (err) {
       if (err instanceof Error) {
@@ -101,14 +84,10 @@ const Cart: NextPage = ({ cart }: any) => {
       }
     }
   }
-  const handleDelete = async (cartItem: CartItem) => {
+  const handleDelete = async (cartItem: ICartItem) => {
     const productId = cartItem.product_id
     try {
-      await fetch(`${BaseURL}/cart/${productId}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
-      })
+      await useDeleteCartItem(productId)
       await mutate({ ...data, cartItem })
     } catch (err) {
       if (err instanceof Error) {
@@ -122,10 +101,10 @@ const Cart: NextPage = ({ cart }: any) => {
   const handleCheckOut = async () => {
     router.push('/checkout')
   }
-  const totalNum: number = fetchCartItems?.reduce((total: number, cartItem: CartItem): number => {
+  const totalNum = fetchCartItems?.reduce((total: number, cartItem: ICartItem): number => {
     return total + cartItem.quantity
   }, 0)
-  const totalPrice: number = fetchCartItems?.reduce((total: number, cartItem: any): number => {
+  const totalPrice = fetchCartItems?.reduce((total: number, cartItem: ICartItem): number => {
     return total + cartItem.quantity * cartItem.product.price
   }, 0)
 
@@ -134,7 +113,7 @@ const Cart: NextPage = ({ cart }: any) => {
       <Box component="div" sx={{ marginTop: '2em', marginBottom: '2em' }}>
         {fetchCartItems?.length === 0 ? (
           <Paper sx={{ padding: theme.spacing(5), color: theme.palette.text.secondary }}>
-            <p>Cart is empty.</p>
+            <Typography variant="inherit">Cart is empty.</Typography>
             <Link href="/">Go shopping</Link>
           </Paper>
         ) : (
@@ -146,7 +125,7 @@ const Cart: NextPage = ({ cart }: any) => {
           >
             <Grid container spacing={3}>
               <Grid item xs={12} sm={12} md={9}>
-                {fetchCartItems?.map((cartItem: CartItem, index: number) => (
+                {fetchCartItems?.map((cartItem: ICartItem, index: number) => (
                   <Paper
                     sx={{ padding: theme.spacing(2), color: theme.palette.text.secondary, marginBottom: '1em' }}
                     key={index}
