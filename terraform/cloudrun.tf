@@ -1,5 +1,5 @@
 resource "google_cloud_run_service" "frontend" {
-  name                       = "portfolio-frontend"
+  name                       = var.cloud_run_service_name_fe
   location                   = var.location
   autogenerate_revision_name = true
   template {
@@ -17,7 +17,7 @@ output "frontend_url" {
 }
 
 resource "google_cloud_run_service" "backend" {
-  name                       = "portfolio-backend"
+  name                       = var.cloud_run_service_name_be
   location                   = var.location
   autogenerate_revision_name = true
   template {
