@@ -1,46 +1,32 @@
 import React from 'react'
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
-import { Box, Paper, Avatar, List, ListItem, ListItemText, ListItemAvatar, Grid } from '@mui/material'
+import { Box, Paper, Avatar, List, ListItem, ListItemText, ListItemAvatar, Grid, SvgIconTypeMap } from '@mui/material'
+import { OverridableComponent } from '@mui/material/OverridableComponent'
 
 interface BrowserUsageProps {
-  data: any
+  data: IItem[]
+}
+
+type IItem = {
+  name: string
+  value: number
+  color: string
+  icon: any
 }
 
 const BrowserUsage = (props: BrowserUsageProps) => {
-  // const useStyles: any = makeStyles(() => ({
-  //   paper: {
-  //     minHeight: 344,
-  //     padding: 10
-  //   },
-  //   legend: {
-  //     paddingTop: 20
-  //   },
-  //   pieChartDiv: {
-  //     height: 290,
-  //     textAlign: 'center'
-  //   },
-  //   title: {
-  //     fontSize: 24,
-  //     fontWeight: 500, //  TypographyStyle.fontWeightLight,
-  //     marginBottom: 20
-  //   },
-  //   clear: {
-  //     clear: 'both'
-  //   }
-  // }))
-  // const classes = useStyles()
-
   return (
     <Paper sx={{ minHeight: 344, padding: 10 }}>
-      <span
+      <Box
+        component="span"
         style={{
           fontSize: 24,
-          fontWeight: 500, //  TypographyStyle.fontWeightLight,
+          fontWeight: 500,
           marginBottom: 20
         }}
       >
         Browser Usage
-      </span>
+      </Box>
       <Box component="div" sx={{ clear: 'both' }} />
 
       <Grid container spacing={2}>
@@ -49,22 +35,19 @@ const BrowserUsage = (props: BrowserUsageProps) => {
             <ResponsiveContainer>
               <PieChart>
                 <Pie innerRadius={80} outerRadius={130} data={props.data} dataKey="value" fill="#8884d8">
-                  {props.data.map((item: any) => (
+                  {props.data.map((item) => (
                     <Cell key={item.name} fill={item.color} />
                   ))}
                 </Pie>
               </PieChart>
             </ResponsiveContainer>
           </Box>
-          {/*
-        </div> */}
         </Grid>
         <Grid item xs={12} md={4}>
-          {/* <div className="col-xs-12 col-sm-4 col-md-4 col-lg-4"> */}
           <Box component="div" sx={{ paddingTop: 20 }}>
             <Box component="div" sx={{ paddingTop: 20 }}>
               <List>
-                {props.data.map((item: any, index: any) => (
+                {props.data.map((item, index: number) => (
                   <ListItem key={item.name}>
                     <ListItemAvatar>
                       <Avatar style={{ backgroundColor: item.color }}>{item.icon}</Avatar>

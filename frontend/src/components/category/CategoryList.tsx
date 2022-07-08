@@ -1,44 +1,30 @@
-import { CircularProgress } from '@mui/material'
+import { CircularProgress, Typography } from '@mui/material'
 
 import React from 'react'
 import CategoryItem from './CategoryItem'
 import useSWR from 'swr'
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
-// import { fetcher } from 'src/pages/admin/product/add'
-import { Category } from 'src/@types'
-import { BaseURL } from '@/common'
+import { ICategory } from 'src/@types'
+import { useGetCategories } from '@/hooks/fetcher'
 
-// const useStyles: any = makeStyles(() =>
-//   createStyles({
-//     container: {
-//       height: '83%'
-//     },
-//     loadingContainer: {
-//       textAlign: 'center',
-//       margin: '100px 0'
-//     }
-//   })
-// )
 const CategoryList = () => {
-  // const classes = useStyles()
-  // const { data, error, mutate } = useSWR(`${BaseURL}/categories`, fetcher)
-  // const categories = data?.data
-  // if (error) return <div>failed to load</div>
-  // if (!data) {
-  //   return (
-  //     <Box
-  //       sx={{
-  //         textAlign: 'center',
-  //         margin: '100px 0'
-  //       }}
-  //     >
-  //       <CircularProgress />
-  //     </Box>
-  //   )
-  // }
+  const { data: categories, error, mutate } = useGetCategories()
+  if (error) return <div>failed to load</div>
+  if (!categories) {
+    return (
+      <Box
+        sx={{
+          textAlign: 'center',
+          margin: '100px 0'
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    )
+  }
   return (
     <>
-      {/* {categories && (
+      {categories && (
         <TableContainer
           component={Paper}
           sx={{
@@ -58,14 +44,14 @@ const CategoryList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {categories.map((category: Category) => (
+              {categories.map((category: ICategory) => (
                 <CategoryItem key={category.id} category={category} mutate={mutate} />
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       )}
-      {error && <Typography variant="inherit">Oops, something went wrong</Typography>} */}
+      {error && <Typography variant="inherit">Oops, something went wrong</Typography>}
     </>
   )
 }

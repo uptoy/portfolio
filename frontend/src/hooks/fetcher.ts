@@ -1,6 +1,16 @@
 import { BaseURL } from '@/common'
-import useSWR, { KeyedMutator } from 'swr'
-import { ICartItem, IGetCart } from 'src/@types'
+import useSWR from 'swr'
+import {
+  ICartItem,
+  IGetCart,
+  IGetProduct,
+  IGetProducts,
+  IGetCategories,
+  IGetCategory,
+  IGetWishlist,
+  IWishlist,
+  IProduct
+} from 'src/@types'
 
 export const fetcher = (url: string) =>
   fetch(url, {
@@ -55,6 +65,89 @@ export const useGetCartServer = async () => {
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include'
   })
-  const cart = await res.json()
-  return cart
+  return await res.json()
+}
+
+//! product
+export const useGetProduct = (id: string): IGetProduct => {
+  const { data, error } = useSWR(`${BaseURL}/products/${id}`, fetcher)
+  return { data: data, error, isLoading: !error && !data }
+}
+
+export const useGetProducts = (): IGetProducts => {
+  const { data, error } = useSWR(`${BaseURL}/products`, fetcher)
+  return { data: data, error, isLoading: !error && !data }
+}
+
+export const useGetProductServer = async (id: string) => {
+  const res = await fetch(`${BaseURL}/products/${id}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include'
+  })
+  return await res.json()
+}
+
+//! category
+export const useGetCategories = (): IGetCategories => {
+  const { data, error, mutate } = useSWR(`${BaseURL}/categories`, fetcher)
+  return { data: data, error, mutate, isLoading: !error && !data }
+}
+
+export const useGetCategory = (categoryId: string): IGetCategory => {
+  const { data, error } = useSWR(`${BaseURL}/categories/${categoryId}`, fetcher)
+  return { data: data, error, isLoading: !error && !data }
+}
+
+export const useDeleteCategory = async (categoryId: number) => {
+  await fetch(`${BaseURL}/categories/${String(categoryId)}`, {
+    method: 'DELETE',
+    credentials: 'include'
+  })
+}
+
+export const useUpdateCategory = async (categoryId: string | undefined, formData: any) => {
+  await fetch(`${BaseURL}/categories/${categoryId}`, {
+    method: 'PUT',
+    credentials: 'include',
+    body: JSON.stringify(formData)
+  })
+}
+
+type IProps = {
+  data?: IWishlist
+}
+
+//! wishlist
+export const useGetWishlist = (props: IProps): IGetWishlist => {
+  const { data, error, mutate } = useSWR(`${BaseURL}/wishlist`, fetcher, {
+    fallbackData: props.data,
+    revalidateOnMount: true
+  })
+  return { data: data, error, mutate, isLoading: !error && !data }
+}
+
+export const useDeleteWishlist = async (product: IProduct) => {
+  try {
+    await fetch(`${BaseURL}/wishlist/${product.id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include'
+    })
+  } catch (err) {
+    if (err instanceof Error) {
+      console.log('Failed', err.message)
+    } else {
+      console.log('Unknown Failure', err)
+    }
+  }
+}
+
+export const useGetWishlistServer = async () => {
+  const res = await fetch(`${BaseURL}/wishlist`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include'
+  })
+  return await res.json()
 }

@@ -11,25 +11,6 @@ import { Typography, Card, CardContent, Box } from '@mui/material'
 
 const theme = createTheme()
 
-// const useStyles: any = makeStyles(() => ({
-//   swiperBox: {
-//     height: '30em',
-//     width: '100%',
-//     margin: 'auto'
-//   },
-//   mySwiper: {
-//     height: '6em'
-//   },
-//   mySwiper2: {
-//     height: '20em'
-//   },
-//   img: {
-//     width: '100%',
-//     height: '100%',
-//     objectFit: 'cover'
-//   }
-// }))
-
 interface IProps {
   images: Image[]
 }
@@ -56,8 +37,9 @@ const CarouselThumbs: React.FC<IProps> = ({ images }) => {
         >
           {images.map((image, index) => (
             <SwiperSlide key={index}>
-              <img
-                style={{
+              <Box
+                component="img"
+                sx={{
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover'
@@ -80,7 +62,7 @@ const CarouselThumbs: React.FC<IProps> = ({ images }) => {
         >
           {images.map((image, index) => (
             <SwiperSlide key={index}>
-              <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={image.url} />
+              <Box component="img" sx={{ width: '100%', height: '100%', objectFit: 'cover' }} src={image.url} />
             </SwiperSlide>
           ))}
         </Swiper>

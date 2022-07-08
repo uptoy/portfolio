@@ -51,8 +51,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSideP
   return { props: { cart } }
 }
 export default function Order(cart: ICartItem[]) {
-  const { data, isLoading } = useGetCart(cart)
-  const cartItems = data
+  const { data: cartItems, isLoading } = useGetCart(cart)
   console.log(cartItems)
   const [activeStep, setActiveStep] = React.useState(0)
   const [address, setAddress] = React.useState<IAddress | undefined>()

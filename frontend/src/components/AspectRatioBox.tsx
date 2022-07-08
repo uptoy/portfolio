@@ -1,6 +1,11 @@
 import { Box } from '@mui/material'
 
-export const AspectRatioBox = ({ children, ratio = 1 }: any) => {
+type Props = {
+  children: any
+  ratio: number
+}
+
+export const AspectRatioBox = ({ children, ratio = 1 }: Props) => {
   return (
     <Box sx={{ position: 'relative' }}>
       <Box

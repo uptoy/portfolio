@@ -5,14 +5,14 @@ import { ReviewType } from 'src/yup/type'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { reviewFormSchema } from 'src/yup/schema'
 import { Link, Button, MenuItem, TextField, Box, Typography } from '@mui/material'
-import { Review } from 'src/@types'
+import { IReview } from 'src/@types'
 import { useAuth } from 'src/context/AuthContext'
 import toast from 'react-hot-toast'
 import getFormattedDate from 'src/utils/getFormattedDate'
 import { BaseURL } from '@/common'
 
 interface IProps {
-  reviews: Review[]
+  reviews: IReview[]
   productId: string
 }
 

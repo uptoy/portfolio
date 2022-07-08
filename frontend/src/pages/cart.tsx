@@ -1,5 +1,4 @@
 //library
-import type { NextPage } from 'next'
 import Image from 'next/image'
 import React from 'react'
 import { GetServerSidePropsContext, GetServerSideProps } from 'next'
@@ -9,16 +8,13 @@ import { Icon, Box, Grid, Button, List, ListItem, Paper, Typography } from '@mui
 import { Layout } from 'src/components/organisms'
 import { ICartItem } from 'src/@types'
 import { useRouter } from 'next/router'
-import useSWR from 'swr'
 import { CarouselContainer, Link } from 'src/components'
 //icon
 import AddBoxIcon from '@mui/icons-material/AddBox'
 import DeleteIcon from '@mui/icons-material/Delete'
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox'
 //private
-import { BaseURL } from '@/common'
 import theme from 'src/theme'
-import { useAuth } from 'src/context/AuthContext'
 // custom hook
 import {
   fetcher,
@@ -26,7 +22,8 @@ import {
   useDeleteCartItem,
   useIncCartItem,
   useDecCartItem,
-  useGetCart
+  useGetCart,
+  useGetProducts
 } from '@/hooks/fetcher'
 
 export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {
@@ -43,23 +40,19 @@ export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSideP
   return { props: { cart } }
 }
 
-const Cart: NextPage = (cart: any) => {
-  const { data, mutate } = useGetCart(cart)
-  const { data: data1 } = useSWR(`${BaseURL}/products`, fetcher)
-  console.log('data1', data1?.data[0].product_name)
-  console.log('data1', data1?.data[1].product_name)
+const Cart = (cart: ICartItem[]) => {
+  const { data: fetchCartItems, mutate } = useGetCart(cart)
   const router = useRouter()
-  const fetchCartItems = data
   const handleDecrement = async (cartItem: ICartItem) => {
     const quantity = cartItem.quantity
     const productId = cartItem.product_id
     try {
       if (quantity == 1) {
         await useDeleteCartItem(productId)
-        await mutate({ ...data, cartItem })
+        await mutate({ ...fetchCartItems, cartItem })
       } else {
         await useDecCartItem(productId)
-        await mutate({ ...data, cartItem })
+        await mutate({ ...fetchCartItems, cartItem })
       }
     } catch (err) {
       if (err instanceof Error) {
@@ -74,7 +67,7 @@ const Cart: NextPage = (cart: any) => {
     try {
       const productId = cartItem.product_id
       await useIncCartItem(productId)
-      await mutate({ ...data, cartItem })
+      await mutate({ ...fetchCartItems, cartItem })
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message)
@@ -88,7 +81,7 @@ const Cart: NextPage = (cart: any) => {
     const productId = cartItem.product_id
     try {
       await useDeleteCartItem(productId)
-      await mutate({ ...data, cartItem })
+      await mutate({ ...fetchCartItems, cartItem })
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message)
@@ -105,7 +98,9 @@ const Cart: NextPage = (cart: any) => {
     return total + cartItem.quantity
   }, 0)
   const totalPrice = fetchCartItems?.reduce((total: number, cartItem: ICartItem): number => {
-    return total + cartItem.quantity * cartItem.product.price
+    const quantity = cartItem ? cartItem.quantity : 0
+    const price = cartItem && cartItem.product ? cartItem.product.price : 0
+    return total + quantity * price
   }, 0)
 
   return (
@@ -145,7 +140,11 @@ const Cart: NextPage = (cart: any) => {
                       >
                         <Image
                           alt={cartItem.product?.product_name}
-                          src={cartItem.product?.images[0].url as string}
+                          src={
+                            cartItem.product && cartItem.product.images && cartItem.product.images[0]
+                              ? cartItem.product.images[0].url
+                              : ''
+                          }
                           width={'100%'}
                           height={'100%'}
                           layout="responsive"

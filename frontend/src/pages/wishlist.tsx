@@ -1,4 +1,3 @@
-import type { NextPage } from 'next'
 import Image from 'next/image'
 import React from 'react'
 import theme from 'src/theme'
@@ -6,55 +5,15 @@ import { CarouselContainer } from 'src/components'
 import { GetServerSidePropsContext, GetServerSideProps } from 'next'
 import { Box, Paper, Grid, Typography } from '@mui/material'
 import { Layout } from 'src/components/organisms'
-import { red, common } from '@mui/material/colors'
-
-import { Product } from 'src/@types'
-import { useRouter } from 'next/router'
-import useSWR from 'swr'
+import { IProduct, IWishlist } from 'src/@types'
 import { Link } from 'src/components'
-import toast from 'react-hot-toast'
 import CancelIcon from '@mui/icons-material/Cancel'
-import { BaseURL } from '@/common'
+import { Circular } from 'src/components/Circular'
+import { useDeleteWishlist, useGetWishlist, useGetWishlistServer } from '@/hooks/fetcher'
 
-// const useStyles: any = makeStyles(() => ({
-//   cardGrid: {
-//     padding: theme.spacing(4, 0)
-//   },
-//   card: {
-//     height: '100%',
-//     display: 'flex',
-//     flexDirection: 'column'
-//   },
-//   cardMedia: {
-//     paddingTop: '80%'
-//   },
-//   cardContent: {
-//     flexGrow: 1,
-//     paddingTop: theme.spacing(2),
-//     paddingBottom: theme.spacing(0.25)
-//   },
-//   cardActions: {
-//     justifyContent: 'space-between'
-//   },
-//   numReviews: {
-//     marginLeft: theme.spacing(1),
-//     color: common.black
-//   },
-//   favorite: {
-//     minWidth: 30,
-//     color: red[500],
-//     marginRight: theme.spacing(1),
-//     fontSize: '2em'
-//   },
-//   paper: {
-//     marginBottom: '1em',
-//     position: 'relative'
-//   },
-//   emptyPaper: {
-//     padding: theme.spacing(5),
-//     color: theme.palette.text.secondary
-//   }
-// }))
+type IProps = {
+  data?: IWishlist
+}
 
 export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { req } = ctx
@@ -66,60 +25,25 @@ export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSideP
       }
     }
   }
-  const res = await fetch(`${BaseURL}/products`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include'
-  })
-  const products = await res.json()
-  const res1 = await fetch(`${BaseURL}/wishlist`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include'
-  })
-  const wishlist = await res1.json()
-  return { props: { products, wishlist } }
+  const wishlist = await useGetWishlistServer()
+  return { props: { wishlist } }
 }
-
-const Wishlist: NextPage = ({ products, wishlist }: any) => {
-  const fetcher = (url: any) =>
-    fetch(url, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include'
-    }).then((r) => r.json())
-  const { data, mutate } = useSWR(`${BaseURL}/wishlist`, fetcher, {
-    fallbackData: wishlist,
-    revalidateOnMount: true
-  })
-  const router = useRouter()
-  // const classes = useStyles()
-  const fetchWishlist = data.data
-  const WishlistDelete = async (product: Product) => {
-    try {
-      await fetch(`${BaseURL}/wishlist/${product.id}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
-      })
-    } catch (err) {
-      if (err instanceof Error) {
-        toast.error(err.message)
-        console.log('Failed', err.message)
-      } else {
-        console.log('Unknown Failure', err)
-      }
-    }
+const Wishlist = (props: IProps) => {
+  const { data: fetchWishlist, error, mutate } = useGetWishlist(props)
+  if (error) {
+    return <div>error</div>
   }
-
-  const handleDelete = async (product: Product) => {
-    await WishlistDelete(product)
-    await mutate({ ...data, product })
+  if (!fetchWishlist) {
+    return <Circular />
+  }
+  const handleDelete = async (product: IProduct) => {
+    await useDeleteWishlist(product)
+    await mutate({ ...fetchWishlist, product })
   }
   return (
     <Layout>
       <Box component="div" sx={{ marginTop: '2em', marginBottom: '2em' }}>
-        {fetchWishlist?.length === 0 ? (
+        {fetchWishlist.products.length === 0 ? (
           <Paper
             sx={{
               padding: theme.spacing(5),
@@ -134,7 +58,7 @@ const Wishlist: NextPage = ({ products, wishlist }: any) => {
             <Typography variant="inherit">Wishlist</Typography>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={12}>
-                {fetchWishlist?.map((item: Product, index: number) => (
+                {fetchWishlist.products?.map((item, index: number) => (
                   <Paper
                     sx={{
                       marginBottom: '1em',
@@ -156,8 +80,8 @@ const Wishlist: NextPage = ({ products, wishlist }: any) => {
                           }}
                         >
                           <Image
-                            alt={item?.product_name}
-                            src={item?.images[0].url as string}
+                            alt={item ? item.product_name : ''}
+                            src={item.images && item.images[0] ? item.images[0].url : ''}
                             width={'100%'}
                             height={'100%'}
                             layout="responsive"

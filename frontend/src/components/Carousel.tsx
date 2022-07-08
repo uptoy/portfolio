@@ -1,4 +1,4 @@
-import { Product, Review } from 'src/@types'
+import { IProduct, IReview } from 'src/@types'
 import { Typography, Card, CardContent, Box } from '@mui/material'
 import Link from 'next/link'
 import React from 'react'
@@ -16,11 +16,12 @@ const theme = createTheme()
 
 interface IProps {
   title: string
-  products: Product[]
+  products: IProduct[]
 }
 
 export default function Carousel(props: IProps) {
   const { title, products } = props
+  const imageTopUrl = products && products[0] ? products[0].images && products[0].images[0].url : ''
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ height: '26em', margin: 'auto' }}>
@@ -47,7 +48,7 @@ export default function Carousel(props: IProps) {
             }
           }}
         >
-          {products?.map((product: Product) => (
+          {products?.map((product) => (
             <SwiperSlide key={product.id}>
               <Link href={`/products/${String(product.id)}`}>
                 <Card
@@ -68,15 +69,15 @@ export default function Carousel(props: IProps) {
                       height: '17em'
                     }}
                   >
-                    <img
-                      src={`${product.images[0].url}?w=164&h=164&fit=crop&auto=format`}
-                      loading="lazy"
-                      alt={product.images[0].url}
-                    />
+                    <img src={`${imageTopUrl}?w=164&h=164&fit=crop&auto=format`} loading="lazy" alt={imageTopUrl} />
                   </Box>
                   <CardContent>
                     <Typography>{product.product_name}</Typography>
-                    <Rating value={Average(product?.reviews?.map((review: Review) => review?.rating))} />
+                    <Rating
+                      value={Average(
+                        product.reviews && product.reviews[0] ? product.reviews.map((review) => review.rating) : []
+                      )}
+                    />
                     <Typography>
                       {'$ '}
                       {product.price}

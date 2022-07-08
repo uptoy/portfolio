@@ -4,18 +4,16 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import DeleteModal from 'src/components/modal/DeleteModal'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { Product } from 'src/@types'
+import { IProduct } from 'src/@types'
 import { Button, TableCell, TableRow } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { mutate } from 'swr'
 import { BaseURL } from '@/common'
 
 interface IProps {
-  product: Product
+  product: IProduct
   mutate(): void
 }
-
 
 const ProductItem: React.FC<IProps> = (props) => {
   const { product, mutate } = props

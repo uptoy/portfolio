@@ -26,11 +26,43 @@ export interface IGetCart {
   mutate: KeyedMutator<any>
 }
 
-export interface Category {
+export interface IGetCategories {
+  data: ICategory[] | undefined
+  error: Error | undefined
+  isLoading: boolean
+  mutate: KeyedMutator<any>
+}
+
+export interface IGetCategory {
+  data: ICategory | undefined
+  error: Error | undefined
+  isLoading: boolean
+}
+
+export interface IGetWishlist {
+  data: IWishlist | undefined
+  error: Error | undefined
+  isLoading: boolean
+  mutate: KeyedMutator<any>
+}
+
+export interface ICategory {
   id: number
   category_name: string
   created_at: Date
   updated_at: Date
+}
+
+export interface IGetProduct {
+  data: IProduct | undefined
+  error: Error | undefined
+  isLoading: boolean
+}
+
+export interface IGetProducts {
+  data: ICategory[] | undefined
+  error: Error | undefined
+  isLoading: boolean
 }
 
 export interface User {
@@ -53,7 +85,7 @@ export interface Address {
   updated_at: Date
 }
 
-export interface Product {
+export interface IProduct {
   id?: number
   product_name: string
   slug: string
@@ -64,12 +96,12 @@ export interface Product {
   description: string
   createdAt?: Date | null
   updatedAt?: Date | null
-  images: Image[]
-  reviews: Review[]
-  category: Category
+  images?: Image[]
+  reviews?: IReview[]
+  category?: ICategory
 }
 
-export interface Review {
+export interface IReview {
   id: number
   title: string
   comment: string
@@ -94,13 +126,13 @@ export interface DateRange {
 }
 
 export interface ICartItem {
-  id: number
-  cart_id: number
+  id?: number
+  cart_id?: number
   product_id: number
   quantity: number
-  created_at: Date
-  updated_at: Date
-  product: Product
+  created_at?: Date
+  updated_at?: Date
+  product?: IProduct
 }
 
 export interface Order {
@@ -340,11 +372,10 @@ export interface OrderDetail {
 //   user_id: string
 // }
 
-// export interface Wishlist {
-//   id: number
-//   title: string
-//   user_id: string
-// }
+export interface IWishlist {
+  userId: string
+  products: IProduct[]
+}
 
 // export interface User {
 //   uid: string

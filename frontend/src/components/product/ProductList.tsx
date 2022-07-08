@@ -7,7 +7,7 @@ import ProductItem from './ProductItem'
 import useSWR from 'swr'
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 // import { fetcher } from 'src/pages/admin/product/add'
-import { Product } from 'src/@types'
+import { IProduct } from 'src/@types'
 import { BaseURL } from '@/common'
 
 // const useStyles: any = makeStyles(() =>
