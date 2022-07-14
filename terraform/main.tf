@@ -47,6 +47,12 @@ resource "google_project_service" "default" {
   service = "iamcredentials.googleapis.com"
 }
 
+resource "google_service_account" "default" {
+  project      = var.project
+  account_id   = "cloudsql-compute-engine"
+  display_name = "Service Account"
+}
+
 resource "google_service_account" "github_actions" {
   project      = var.project
   account_id   = "github-actions"
