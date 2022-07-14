@@ -1,46 +1,37 @@
-import React from "react"
-import {
-  MenuItem,
-  InputLabel,
-  Select,
-  FormControl,
-  Button,
-  Container,
-  TextField,
-  Typography,
-} from "@material-ui/core"
-import CssBaseline from "@material-ui/core/CssBaseline"
-import { makeStyles } from "@material-ui/styles"
-import theme from "src/theme"
+import React from 'react'
+import { MenuItem, InputLabel, Select, FormControl, Button, Container, TextField, Typography } from '@material-ui/core'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import { makeStyles } from '@material-ui/styles'
+import theme from 'src/theme'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1)
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(3, 0, 2)
   },
   category: {
-    width: "100%", // Fix IE 11 issue.
+    width: '100%' // Fix IE 11 issue.
   },
   description: {
-    height: 100, // Fix IE 11 issue.
-  },
+    height: 100 // Fix IE 11 issue.
+  }
 }))
 
 export default function EditProduct() {
   const classes = useStyles()
-  const [age, setAge] = React.useState("")
+  const [age, setAge] = React.useState('')
 
-  const handleChange = (event: any) => {
-    setAge(event.target.value as string)
+  const handleChange = (event: React.ChangeEvent<{ value: string }>) => {
+    setAge(event.target.value)
   }
 
   return (
@@ -104,24 +95,13 @@ export default function EditProduct() {
           />
           <FormControl className={classes.category}>
             <InputLabel id="demo-simple-select-label">Category</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={age}
-              onChange={handleChange}
-            >
+            <Select labelId="demo-simple-select-label" id="demo-simple-select" value={age} onChange={handleChange}>
               <MenuItem value={10}>Ten</MenuItem>
               <MenuItem value={20}>Twenty</MenuItem>
               <MenuItem value={30}>Thirty</MenuItem>
             </Select>
           </FormControl>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
+          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
             Edit
           </Button>
         </form>

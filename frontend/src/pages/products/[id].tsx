@@ -13,7 +13,7 @@ import { Average } from 'src/utils/average'
 import { useAuth } from 'src/context/AuthContext'
 import Link from 'next/link'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   button: {
     display: 'block',
     marginTop: theme.spacing(2)
@@ -40,10 +40,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSideP
   return { props: { product } }
 }
 
-const ProductDetail: NextPage = ({ product }: any) => {
+interface IProps {
+  product: Product
+}
+
+const ProductDetail = (props: IProps) => {
+  const { product } = props
   const router = useRouter()
   const classes = useStyles()
-  const fetchProduct = product.data
+  const fetchProduct = product
   const images = fetchProduct.images
   const reviews = fetchProduct.reviews
   const countInStock = fetchProduct.count_in_stock

@@ -1,31 +1,31 @@
-import {makeStyles} from "@material-ui/styles"
-import theme from "src/theme"
-import React from "react"
-import Button from "@material-ui/core/Button"
-import Modal from "@material-ui/core/Modal"
+import { makeStyles } from '@material-ui/styles'
+import theme from 'src/theme'
+import React, { ReactChild } from 'react'
+import Button from '@material-ui/core/Button'
+import Modal from '@material-ui/core/Modal'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   // modal: {
   //   display: "flex",
   //   alignItems: "center",
   //   justifyContent: "center",
   // },
   paper: {
-    position: "absolute",
+    position: 'absolute',
     width: 450,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-  },
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)'
+  }
 }))
 
 interface IProps {
   open: boolean
   handleClose(): void
-  children: any
+  children: ReactChild
 }
 
 export default function SimpleModal(props: IProps) {

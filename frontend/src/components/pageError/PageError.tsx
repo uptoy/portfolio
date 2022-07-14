@@ -2,7 +2,7 @@ import { Button, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useRouter } from 'next/router'
 
-const useStyles: any = makeStyles({
+const useStyles = makeStyles({
   root: {
     height: '100vh',
     display: 'flex',

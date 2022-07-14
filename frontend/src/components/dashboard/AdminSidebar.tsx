@@ -11,13 +11,13 @@ import { mainListItems, secondaryListItems } from 'src/components/dashboard/list
 
 const drawerWidth = 240
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   toolbarIcon: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: '0 8px',
-    ...(theme.mixins.toolbar as any)
+    ...theme.mixins.toolbar
   },
   drawerPaper: {
     position: 'relative',
@@ -41,7 +41,12 @@ const useStyles: any = makeStyles(() => ({
   }
 }))
 
-const AdminSidebar = (props: any) => {
+interface IProps {
+  open: boolean
+  onClick: () => void
+}
+
+const AdminSidebar = (props: IProps) => {
   const classes = useStyles()
   return (
     <Drawer

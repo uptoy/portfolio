@@ -8,7 +8,7 @@ interface IRating {
   value: number
   text?: string
 }
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   icon: {
     fontSize: "2em",
     color: "#ffa000",

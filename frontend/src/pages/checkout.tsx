@@ -13,7 +13,7 @@ import { Circular } from 'src/components/Circular'
 import { CartItem } from 'src/@types'
 const BaseURL = 'http://localhost:8080/api'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   stepper: {
     justifyContent: 'center',
     paddingBottom: '1em',

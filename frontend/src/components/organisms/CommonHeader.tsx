@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { SyntheticEvent } from 'react'
 import { alpha } from '@material-ui/core/styles'
 import { makeStyles } from '@material-ui/styles'
 import Link from 'src/components/Link'
@@ -15,7 +15,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import { useAuth } from 'src/context/AuthContext'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   grow: {
     flexGrow: 1
   },
@@ -100,11 +100,11 @@ export default function CommonHeader() {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
   const isMobileMenuOpen1 = Boolean(mobileMoreAnchorEl1)
 
-  const handleProfileMenuOpen = (event: any) => {
-    setAnchorEl(event.currentTarget)
+  const handleProfileMenuOpen = (e: SyntheticEvent<null, EventTarget>): void => {
+    setAnchorEl(e.currentTarget)
   }
-  const handleProfileMenuOpen1 = (event: any) => {
-    setAnchorEl1(event.currentTarget)
+  const handleProfileMenuOpen1 = (e: SyntheticEvent<null, EventTarget>): void => {
+    setAnchorEl1(e.currentTarget)
   }
 
   const handleMobileMenuClose = () => {
@@ -124,11 +124,11 @@ export default function CommonHeader() {
     handleMobileMenuClose1()
   }
 
-  const handleMobileMenuOpen = (event: any) => {
+  const handleMobileMenuOpen = (event: SyntheticEvent<null, EventTarget>): void => {
     setMobileMoreAnchorEl(event.currentTarget)
   }
 
-  const handleMobileMenuOpen1 = (event: any) => {
+  const handleMobileMenuOpen1 = (event: SyntheticEvent<null, EventTarget>) => {
     setMobileMoreAnchorEl1(event.currentTarget)
   }
 

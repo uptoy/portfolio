@@ -17,7 +17,7 @@ import toast from 'react-hot-toast'
 import CancelIcon from '@material-ui/icons/Cancel'
 const BaseURL = 'http://localhost:8080/api'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   cardGrid: {
     padding: theme.spacing(4, 0)
   },
@@ -82,8 +82,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSideP
   return { props: { products, wishlist } }
 }
 
-const Wishlist: NextPage = ({ products, wishlist }: any) => {
-  const fetcher = (url: any) =>
+export interface Wishlist {
+  userId: string
+  products: Product[]
+}
+
+const Wishlist = (wishlist: Wishlist) => {
+  const fetcher = (url: string) =>
     fetch(url, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },

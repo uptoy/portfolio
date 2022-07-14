@@ -7,7 +7,7 @@ import { DateRange } from 'src/@types'
 import formatDate from 'src/utils/formatDate'
 import getDateRanges from 'src/utils/getDateRanges'
 
-const useStyles: any = makeStyles(() =>
+const useStyles = makeStyles(() =>
   createStyles({
     listItem: {
       padding: '15px 10px',

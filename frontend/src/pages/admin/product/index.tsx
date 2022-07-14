@@ -8,7 +8,7 @@ import { pink } from '@material-ui/core/colors'
 import { ProductList } from 'src/components/product'
 import { useRouter } from 'next/router'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   fab: {
     top: 'auto',
     right: 20,
@@ -45,7 +45,7 @@ export default function AdminProductList() {
     right: false
   })
   const router = useRouter()
-  const toggleDrawer = (anchor: string, open: boolean) => (event: any) => {
+  const toggleDrawer = (anchor: string, open: boolean) => (event: { type: string; key: string }) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return
     }
@@ -63,7 +63,7 @@ export default function AdminProductList() {
         <SearchIcon />
       </Fab>
       <ProductList />
-      <ProductDraw open={state['right']} onClick={toggleDrawer('right', false)} />
+      <ProductDraw open={state['right']} onClick={() => toggleDrawer('right', false)} />
     </AdminLayout>
   )
 }

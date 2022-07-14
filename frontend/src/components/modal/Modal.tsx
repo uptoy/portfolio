@@ -9,7 +9,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import theme from 'src/theme'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   modal: {
     display: 'flex',
     alignItems: 'center',

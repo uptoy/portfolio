@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/styles'
 import theme from 'src/theme'
 import { red } from '@material-ui/core/colors'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   favorite: {
     minWidth: 30,
     color: red[500],

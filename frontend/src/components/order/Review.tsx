@@ -17,8 +17,9 @@ const Review: React.FC<IProps> = ({ address, payment, handleNext, cartItems }) =
     console.log('address', address)
     handleNext()
   }
-  const totalPrice: number = cartItems?.reduce((total: number, cartItem: any): number => {
-    return total + cartItem.quantity * cartItem.product.price
+  const totalPrice: number = cartItems?.reduce((total: number, cartItem: CartItem): number => {
+    const price = cartItem && cartItem.product ? cartItem.product.price : 0
+    return total + cartItem.quantity * price
   }, 0)
   return (
     <React.Fragment>

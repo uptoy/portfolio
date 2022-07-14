@@ -7,7 +7,7 @@ import theme from 'src/theme'
 import { Grid } from '@material-ui/core'
 import { MypageSidebar } from 'src/components/organisms/mypage'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   container: {
     marginTop: theme.spacing(2)
   }

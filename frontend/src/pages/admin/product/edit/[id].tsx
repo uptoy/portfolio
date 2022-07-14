@@ -14,14 +14,14 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import { useRouter } from 'next/router'
 import { fetcher } from '../add'
 import toast from 'react-hot-toast'
-import { Image } from 'src/@types'
+import { Image, Product, Category } from 'src/@types'
 import NextImage from 'next/image'
 import ImageUploading from 'react-images-uploading'
 import CancelIcon from '@material-ui/icons/Cancel'
 
 const BaseURL = 'http://localhost:8080/api'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   upload: {
     padding: '1em',
     borderWidth: 2,
@@ -140,7 +140,7 @@ export default function ProductEdit() {
   const { data, error } = useSWR(`${BaseURL}/products/${id}`, fetcher)
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
-  const product: any = data?.data
+  const product: Product = data?.data
   const product_name = product?.product_name
   const slug = product?.slug
   const brand = product?.brand
@@ -158,7 +158,7 @@ export default function ProductEdit() {
     category_id: category_id,
     count_in_stock: count_in_stock,
     description: description,
-    category: category as any,
+    category: category,
     images: images
   }
   return (
@@ -178,7 +178,7 @@ export default function ProductEdit() {
 const ProductEditForm = ({ id, fields }: ProductManageFormProps) => {
   const classes = useStyles()
   const router = useRouter()
-  const [files, setFiles] = useState<any>('')
+  const [files, setFiles] = useState<File[]>()
   const maxNumber = 5
   const {
     handleSubmit,
@@ -194,7 +194,7 @@ const ProductEditForm = ({ id, fields }: ProductManageFormProps) => {
   const images = fields?.images
   console.log('iamges', images)
   const { data, error } = useSWR(`${BaseURL}/category`, fetcher)
-  const categories: any = data?.data
+  const categories: Category = data?.data
   if (error) return <div>failed to load</div>
   if (!data) {
     return (
@@ -204,7 +204,7 @@ const ProductEditForm = ({ id, fields }: ProductManageFormProps) => {
     )
   }
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const onChange = (imageList: any, addUpdateIndex: any) => {
+  const onChange = (imageList: File[], addUpdateIndex: File[]) => {
     console.log(imageList, addUpdateIndex)
     setFiles(imageList)
   }
@@ -219,25 +219,24 @@ const ProductEditForm = ({ id, fields }: ProductManageFormProps) => {
       setValue('description', fields.description)
     }
   }, [fields, setValue])
-  const onSubmit = async (productData: any) => {
-    const product_name: any = productData.product_name
-    const str: any = productData.product_name
-    const slug = str.replace(/[^0-9a-z]/gi, '')
-    const brand: any = productData.brand
-    const price: any = productData.price
-    const count_in_stock: any = productData.count_in_stock
-    const description: any = productData.description
-    const category_id: any = productData.category_id
+  const onSubmit = async (productData: Product) => {
+    const product_name = productData.product_name
+    const slug = product_name.replace(/[^0-9a-z]/gi, '')
+    const brand = productData.brand
+    const price = productData.price
+    const count_in_stock = productData.count_in_stock
+    const description = productData.description
+    const category_id = productData.category_id
     try {
       setIsSubmitting(true)
-      const formData: any = new FormData()
+      const formData = new FormData()
       formData.append('product_name', product_name)
       formData.append('slug', slug)
       formData.append('brand', brand)
-      formData.append('price', price)
-      formData.append('count_in_stock', count_in_stock)
+      formData.append('price', price.toString())
+      formData.append('count_in_stock', count_in_stock.toString())
       formData.append('description', description)
-      formData.append('category_id', category_id)
+      formData.append('category_id', category_id.toString())
       for (let i = 0; i < files.length; i++) {
         formData.append(`files`, files[i])
       }

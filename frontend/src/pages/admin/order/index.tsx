@@ -36,7 +36,7 @@ const rows = [
   createData('product5', 'category5', 16.0, 49)
 ]
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   table: {
     minWidth: 650
   },
@@ -101,7 +101,7 @@ export default function AdminOrderList() {
   const [state, setState] = React.useState({
     right: false
   })
-  const toggleDrawer = (anchor: string, open: boolean) => (event: any) => {
+  const toggleDrawer = (anchor: string, open: boolean) => (event: { type: string; key: string }) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return
     }

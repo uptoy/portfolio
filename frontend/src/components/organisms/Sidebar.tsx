@@ -8,7 +8,7 @@ import SidebarList from "./SidebarList"
 
 const drawerWidth = 240
 
-const useStyles: any = makeStyles(() => ({}))
+const useStyles = makeStyles(() => ({}))
 
 interface Props {
   window?: () => Window

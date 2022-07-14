@@ -13,7 +13,7 @@ import CssBaseline from "@material-ui/core/CssBaseline"
 import {makeStyles} from "@material-ui/styles"
 import theme from "src/theme"
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",

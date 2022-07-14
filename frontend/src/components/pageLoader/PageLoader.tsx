@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/styles'
 
 import logo from 'http://placehold.jp/150x150.png'
 
-const useStyles: any = makeStyles(() =>
+const useStyles = makeStyles(() =>
   createStyles({
     container: {
       position: 'fixed',

@@ -8,7 +8,7 @@ import { pink } from '@material-ui/core/colors'
 import { CategoryList } from 'src/components/category'
 import { useRouter } from 'next/router'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   fab: {
     top: 'auto',
     right: 20,
@@ -45,7 +45,7 @@ export default function AdminCategoryList() {
     right: false
   })
   const router = useRouter()
-  const toggleDrawer = (anchor: string, open: boolean) => (event: any) => {
+  const toggleDrawer = (anchor: string, open: boolean) => (event: { type: string; key: string }) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return
     }
@@ -63,7 +63,7 @@ export default function AdminCategoryList() {
         <SearchIcon />
       </Fab>
       <CategoryList />
-      <CategoryDraw open={state['right']} onClick={toggleDrawer('right', false)} />
+      <CategoryDraw open={state['right']} onClick={() => toggleDrawer('right', false)} />
     </AdminLayout>
   )
 }

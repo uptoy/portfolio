@@ -14,7 +14,7 @@ import { Rating } from 'src/components'
 import { Average } from 'src/utils/average'
 
 const BaseURL = 'http://localhost:8080/api'
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   card: {
     height: '100%',
     display: 'flex',

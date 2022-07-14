@@ -13,7 +13,7 @@ interface IProps {
   isSubmitting: boolean
 }
 
-const useStyles: any = makeStyles(() =>
+const useStyles = makeStyles(() =>
   createStyles({
     submit_container: {
       marginLeft: 'auto',

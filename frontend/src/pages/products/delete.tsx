@@ -17,7 +17,7 @@ import Copyright from 'src/components/Copyright'
 import { makeStyles } from '@material-ui/styles'
 import theme from 'src/theme'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',

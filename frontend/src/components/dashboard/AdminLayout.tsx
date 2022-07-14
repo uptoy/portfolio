@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { ReactChild } from 'react'
 import { makeStyles } from '@material-ui/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { AdminSidebar, AdminHeader } from 'src/components/dashboard'
 import theme from 'src/theme'
 import Container from '@material-ui/core/Container'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: 'flex'
   },
@@ -16,10 +16,10 @@ const useStyles: any = makeStyles(() => ({
     flexGrow: 1,
     height: '100vh'
   },
-  appBarSpacer: theme.mixins.toolbar as any
+  appBarSpacer: theme.mixins.toolbar
 }))
 
-export default function AdminLayout({ children }: any) {
+export default function AdminLayout(children: ReactChild) {
   const classes = useStyles()
   const [open, setOpen] = React.useState(true)
   const handleDrawerOpen = () => {

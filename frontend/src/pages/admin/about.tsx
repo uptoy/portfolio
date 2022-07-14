@@ -2,7 +2,7 @@ import * as React from "react"
 import { makeStyles } from "@material-ui/styles"
 import theme from "src/theme"
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   about: {
     paddingTop: "3em",
     display: "grid",

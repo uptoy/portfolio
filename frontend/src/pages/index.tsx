@@ -21,7 +21,7 @@ import { useRouter } from 'next/router'
 import useSWR from 'swr'
 const BaseURL = 'http://localhost:8080/api'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   cardGrid: {
     padding: theme.spacing(4, 0)
   },
@@ -75,8 +75,18 @@ export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSideP
   return { props: { products, wishlist } }
 }
 
-const Index: NextPage = ({ products, wishlist }: any) => {
-  const fetcher = (url: any) =>
+interface IProps {
+  products: Product[]
+  wishlist: Wishlist
+}
+
+export interface Wishlist {
+  userId: string
+  products: Product[]
+}
+
+const Index = ({ products, wishlist }: IProps) => {
+  const fetcher = (url: string) =>
     fetch(url, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
@@ -88,8 +98,8 @@ const Index: NextPage = ({ products, wishlist }: any) => {
   })
   const router = useRouter()
   const classes = useStyles()
-  const fetchProducts = products.data
-  const fetchWishlist = data.data
+  const fetchProducts = products
+  const fetchWishlist: Wishlist = data
   const WishlistDelete = async (product: Product) => {
     try {
       await fetch(`${BaseURL}/wishlist/${product.id}`, {
@@ -124,7 +134,7 @@ const Index: NextPage = ({ products, wishlist }: any) => {
     }
   }
   const { isAuthenticated } = useAuth()
-  const wishlistIdList = fetchWishlist?.map((p: any) => p.id)
+  const wishlistIdList = fetchWishlist.products.map((p) => p.id)
   const handleClick = useCallback(
     (product: Product) => {
       ;(() => {
@@ -134,7 +144,7 @@ const Index: NextPage = ({ products, wishlist }: any) => {
           } else {
             await WishlistCreate(product)
           }
-          await mutate({ ...data, product })
+          await mutate({ ...product, product })
         }
         isAuthenticated ? wishlistHandler() : router.push('/auth/signup')
       })()
@@ -146,7 +156,7 @@ const Index: NextPage = ({ products, wishlist }: any) => {
       <MainFeaturedPost post={mainFeaturedPost} />
       <Container className={classes.cardGrid} maxWidth="xl">
         <Grid container spacing={4}>
-          {fetchProducts.map((product: any) => (
+          {fetchProducts.map((product) => (
             <Grid item key={product.id} xs={12} sm={6} md={4}>
               <Card className={classes.card}>
                 <Link href={`/products/${String(product.id)}`}>
@@ -161,7 +171,7 @@ const Index: NextPage = ({ products, wishlist }: any) => {
                   )}
                 </Link>
                 <CardContent className={classes.cardContent}>
-                  <Typography>{product.name}</Typography>
+                  <Typography>{product.product_name}</Typography>
                   <Typography>
                     {'$ '}
                     {product.price}
@@ -191,12 +201,3 @@ const Index: NextPage = ({ products, wishlist }: any) => {
 }
 
 export default Index
-
-//   return(
-//     <div>
-//       index16:38
-//     </div>
-//   )
-// }
-
-// export default Index

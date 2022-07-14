@@ -14,7 +14,7 @@ interface Props {
   isConfirming: boolean
 }
 
-const useStyles: any = makeStyles({
+const useStyles = makeStyles({
   buttonsContainer: {
     display: 'flex',
     justifyContent: 'flex-end',

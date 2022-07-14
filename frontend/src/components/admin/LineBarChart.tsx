@@ -20,7 +20,7 @@ interface LineBarChartProps {
 }
 
 const LineBarChart = (props: LineBarChartProps) => {
-  const useStyles: any = makeStyles(() =>
+  const useStyles = makeStyles(() =>
     createStyles({
       paper: {
         minHeight: 344,
@@ -31,7 +31,7 @@ const LineBarChart = (props: LineBarChartProps) => {
       },
       pieChartDiv: {
         height: 290,
-        textAlign: "center" as any,
+        textAlign: "center",
       },
       title: {
         fontSize: 24,
@@ -39,7 +39,7 @@ const LineBarChart = (props: LineBarChartProps) => {
         marginBottom: 20,
       },
       clear: {
-        clear: "both" as any,
+        clear: "both",
       },
     })
   )

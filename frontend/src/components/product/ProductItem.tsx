@@ -16,7 +16,7 @@ interface IProps {
   mutate(): void
 }
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   actionContainer: {
     position: 'absolute',
     right: 0

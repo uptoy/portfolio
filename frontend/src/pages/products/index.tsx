@@ -12,7 +12,7 @@ import Container from '@material-ui/core/Container'
 import { ProductHeader, Footer } from 'src/components/organisms'
 import theme from 'src/theme'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   icon: {
     marginRight: theme.spacing(2)
   },

@@ -15,7 +15,7 @@ function LightBulbIcon(props: SvgIconProps) {
   )
 }
 
-const useStyles: any = makeStyles(() =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       spacing: 6,

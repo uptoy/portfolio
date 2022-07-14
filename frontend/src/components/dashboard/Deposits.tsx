@@ -4,14 +4,14 @@ import { makeStyles } from '@material-ui/styles'
 import Typography from '@material-ui/core/Typography'
 import Title from './Title'
 
-function preventDefault(event: any) {
-  event.preventDefault()
+function preventDefault(e: React.MouseEvent<HTMLElement, MouseEvent>) {
+  e.preventDefault()
 }
 
-const useStyles: any = makeStyles({
+const useStyles = makeStyles({
   depositContext: {
-    flex: 1,
-  },
+    flex: 1
+  }
 })
 
 export default function Deposits() {

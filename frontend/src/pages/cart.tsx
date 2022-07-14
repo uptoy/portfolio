@@ -22,7 +22,7 @@ import { CarouselContainer } from 'src/components'
 
 const BaseURL = 'http://localhost:8080/api'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   cardGrid: {
     padding: theme.spacing(4, 0)
   },
@@ -102,22 +102,22 @@ export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSideP
   return { props: { cart } }
 }
 
-export const fetcher = (url: any) =>
+export const fetcher = (url: string) =>
   fetch(url, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include'
   }).then((r) => r.json())
 
-const Cart: NextPage = ({ cart }: any) => {
+const Cart = (cart: CartItem[]) => {
   const { data, mutate } = useSWR(`${BaseURL}/cart`, fetcher, {
     fallbackData: cart,
     revalidateOnMount: true
   })
 
-  const { data:data1 } = useSWR(`${BaseURL}/products`, fetcher)
-  console.log("data1",data1?.data[0].product_name)
-  console.log("data1",data1?.data[1].product_name)
+  const { data: data1 } = useSWR(`${BaseURL}/products`, fetcher)
+  console.log('data1', data1?.data[0].product_name)
+  console.log('data1', data1?.data[1].product_name)
   const router = useRouter()
   const classes = useStyles()
   const fetchCartItems = data.data
@@ -191,8 +191,9 @@ const Cart: NextPage = ({ cart }: any) => {
   const totalNum: number = fetchCartItems?.reduce((total: number, cartItem: CartItem): number => {
     return total + cartItem.quantity
   }, 0)
-  const totalPrice: number = fetchCartItems?.reduce((total: number, cartItem: any): number => {
-    return total + cartItem.quantity * cartItem.product.price
+  const totalPrice: number = fetchCartItems?.reduce((total: number, cartItem: CartItem): number => {
+    const price = cartItem.product ? cartItem.product.price : 0
+    return total + cartItem.quantity * price
   }, 0)
 
   return (
@@ -201,16 +202,13 @@ const Cart: NextPage = ({ cart }: any) => {
         {fetchCartItems?.length === 0 ? (
           <Paper className={classes.emptyPaper}>
             <p>Cart is empty.</p>
-            <Link href="/">
-              Go shopping
-            </Link>
+            <Link href="/">Go shopping</Link>
           </Paper>
         ) : (
           <div className={classes.root}>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={12} md={9}>
                 {fetchCartItems?.map((cartItem: CartItem, index: number) => (
-
                   <Paper className={classes.paper} key={index}>
                     <div style={{ display: 'flex' }}>
                       <div

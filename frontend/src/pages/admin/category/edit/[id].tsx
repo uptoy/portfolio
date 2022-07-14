@@ -16,7 +16,7 @@ import useSWR from 'swr'
 
 const BaseURL = 'http://localhost:8080/api'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   upload: {
     padding: '1em',
     borderWidth: 2,
@@ -152,7 +152,7 @@ const CategoryEditForm = ({ id, fields }: CategoryManageFormProps) => {
     }
   }, [fields, setValue])
 
-  const onSubmit = async (formData: any) => {
+  const onSubmit = async (formData: CategoryType) => {
     try {
       setIsSubmitting(true)
       await fetch(`${BaseURL}/categories/${id}`, {

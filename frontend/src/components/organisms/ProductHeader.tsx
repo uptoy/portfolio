@@ -19,7 +19,7 @@ const sections = [
   { title: 'Travel', url: '#' }
 ]
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   grow: {
     flexGrow: 1
   },

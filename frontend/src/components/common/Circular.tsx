@@ -4,7 +4,7 @@ import {makeStyles} from "@material-ui/styles"
 import theme from "src/theme"
 
 export const Circular = () => {
-  const useStyles: any = makeStyles(() => ({
+  const useStyles = makeStyles(() => ({
     root: {
       height: "10em",
       position: "relative",

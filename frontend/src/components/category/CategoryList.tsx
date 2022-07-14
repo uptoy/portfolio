@@ -9,7 +9,7 @@ import { fetcher } from 'src/pages/admin/product/add'
 import { Category } from 'src/@types'
 const BaseURL = 'http://localhost:8080/api'
 
-const useStyles: any = makeStyles(() =>
+const useStyles = makeStyles(() =>
   createStyles({
     container: {
       height: '83%'

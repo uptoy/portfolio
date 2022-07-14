@@ -1,33 +1,39 @@
-import React from "react"
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts"
-import {Paper,Avatar,List,ListItem,ListItemText, ListItemAvatar, Grid} from "@material-ui/core"
-import { makeStyles } from "@material-ui/styles"
+import React from 'react'
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
+import { Paper, Avatar, List, ListItem, ListItemText, ListItemAvatar, Grid } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
 
 interface BrowserUsageProps {
-  data: any
+  data: IData[]
+}
+
+interface IData {
+  name: string
+  color: string
+  icon: any
 }
 
 const BrowserUsage = (props: BrowserUsageProps) => {
-  const useStyles: any = makeStyles(() => ({
+  const useStyles = makeStyles(() => ({
     paper: {
       minHeight: 344,
-      padding: 10,
+      padding: 10
     },
     legend: {
-      paddingTop: 20,
+      paddingTop: 20
     },
     pieChartDiv: {
       height: 290,
-      textAlign: "center",
+      textAlign: 'center'
     },
     title: {
       fontSize: 24,
       fontWeight: 500, //  TypographyStyle.fontWeightLight,
-      marginBottom: 20,
+      marginBottom: 20
     },
     clear: {
-      clear: "both",
-    },
+      clear: 'both'
+    }
   }))
   const classes = useStyles()
 
@@ -41,14 +47,8 @@ const BrowserUsage = (props: BrowserUsageProps) => {
           <div className={classes.pieChartDiv}>
             <ResponsiveContainer>
               <PieChart>
-                <Pie
-                  innerRadius={80}
-                  outerRadius={130}
-                  data={props.data}
-                  dataKey="value"
-                  fill="#8884d8"
-                >
-                  {props.data.map((item: any) => (
+                <Pie innerRadius={80} outerRadius={130} data={props.data} dataKey="value" fill="#8884d8">
+                  {props.data.map((item) => (
                     <Cell key={item.name} fill={item.color} />
                   ))}
                 </Pie>
@@ -63,12 +63,12 @@ const BrowserUsage = (props: BrowserUsageProps) => {
           <div className={classes.legend}>
             <div className={classes.legend}>
               <List>
-                {props.data.map((item: any, index: any) => (
+                {props.data.map((item, index: number) => (
                   <ListItem key={item.name}>
                     <ListItemAvatar>
                       <Avatar style={{ backgroundColor: item.color }}>{item.icon}</Avatar>
                     </ListItemAvatar>
-                    <ListItemText id={"brower" + index} primary={item.name} />
+                    <ListItemText id={'brower' + index} primary={item.name} />
                   </ListItem>
                 ))}
               </List>

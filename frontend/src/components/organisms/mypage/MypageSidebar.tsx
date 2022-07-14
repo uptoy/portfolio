@@ -4,7 +4,7 @@ import {makeStyles} from "@material-ui/styles"
 import theme from "src/theme"
 import NextLink from "next/link"
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   container: {
     marginTop: theme.spacing(2),
   },

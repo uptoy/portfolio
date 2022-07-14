@@ -13,7 +13,7 @@ import theme from 'src/theme'
 import { useRouter } from 'next/router'
 import { useAuth } from 'src/context/AuthContext'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',

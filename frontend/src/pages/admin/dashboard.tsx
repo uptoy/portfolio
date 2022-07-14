@@ -9,7 +9,7 @@ import { Chart, Deposits, Orders, AdminLayout } from 'src/components/dashboard'
 import { Copyright } from 'src/components'
 import theme from 'src/theme'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   content: {
     flexGrow: 1,
     height: '100vh'

@@ -14,7 +14,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import theme from 'src/theme'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   list: {
     color: theme.palette.common.white,
   },

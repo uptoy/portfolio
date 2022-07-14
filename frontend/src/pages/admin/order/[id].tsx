@@ -6,7 +6,7 @@ import theme from 'src/theme'
 import { Button, TextField, Grid } from '@material-ui/core'
 import createStyles from '@material-ui/styles/createStyles'
 
-const useStyles: any = makeStyles(() =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       flexGrow: 1

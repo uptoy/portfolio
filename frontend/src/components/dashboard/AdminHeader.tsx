@@ -1,46 +1,51 @@
-import React from "react"
-import { AppBar, Toolbar } from "@material-ui/core"
-import { Typography, Badge } from "@material-ui/core"
-import NotificationsIcon from "@material-ui/icons/Notifications"
-import MenuIcon from "@material-ui/icons/Menu"
-import { makeStyles } from "@material-ui/styles"
-import IconButton from "@material-ui/core/IconButton"
-import theme from "src/theme"
-import clsx from "clsx"
+import React from 'react'
+import { AppBar, Toolbar } from '@material-ui/core'
+import { Typography, Badge } from '@material-ui/core'
+import NotificationsIcon from '@material-ui/icons/Notifications'
+import MenuIcon from '@material-ui/icons/Menu'
+import { makeStyles } from '@material-ui/styles'
+import IconButton from '@material-ui/core/IconButton'
+import theme from 'src/theme'
+import clsx from 'clsx'
 
 const drawerWidth = 240
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
+    paddingRight: 24 // keep right padding when drawer closed
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
+      duration: theme.transitions.duration.leavingScreen
+    })
   },
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+      duration: theme.transitions.duration.enteringScreen
+    })
   },
   menuButton: {
-    marginRight: 36,
+    marginRight: 36
   },
   menuButtonHidden: {
-    display: "none",
+    display: 'none'
   },
   title: {
-    flexGrow: 1,
-  },
+    flexGrow: 1
+  }
 }))
 
-const AdminHeader = (props: any) => {
+interface IProps {
+  open: boolean
+  onClick: () => void
+}
+
+const AdminHeader = (props: IProps) => {
   const classes = useStyles()
   return (
     <AppBar position="absolute" className={clsx(classes.appBar, props.open && classes.appBarShift)}>

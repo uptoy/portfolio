@@ -3,7 +3,7 @@ import theme from 'src/theme'
 import { Copyright } from 'src/components'
 import { Box } from '@material-ui/core'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   footer: {
     padding: theme.spacing(6)
   }

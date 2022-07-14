@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactChild } from 'react'
 import Head from 'next/head'
 import { AppProps } from 'next/app'
 import { ThemeProvider } from '@material-ui/core/styles'
@@ -8,9 +8,9 @@ import { RecoilRoot } from 'recoil'
 import ContextProvider from 'src/context'
 import { Toaster } from 'react-hot-toast'
 import makeStyles from '@material-ui/styles/makeStyles'
+import { Theme } from '@emotion/react'
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
-
   React.useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side')
     if (jssStyles) {
@@ -25,7 +25,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
       }
     }
   })
-  function MyThemeProvider({ children }: any) {
+  function MyThemeProvider({ children, theme }: { children: ReactChild; theme: Theme }) {
     useGlobalStyles()
     return <ThemeProvider theme={theme}>{children}</ThemeProvider>
   }

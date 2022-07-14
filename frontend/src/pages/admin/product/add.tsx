@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ImageUploading, { ImageListType } from 'react-images-uploading'
 import NextImage from 'next/image'
 import SaveIcon from '@material-ui/icons/Save'
-import { Category } from 'src/@types'
+import { Category, Product } from 'src/@types'
 import { AdminLayout } from 'src/components/dashboard'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -20,7 +20,7 @@ import CancelIcon from '@material-ui/icons/Cancel'
 const red500 = red['500']
 const BaseURL = 'http://localhost:8080/api'
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   upload: {
     padding: '1em',
     borderWidth: 2,
@@ -138,10 +138,9 @@ const ProductAddForm = () => {
     setFiles(imageList)
   }
 
-  const onSubmit = async (productData: any) => {
+  const onSubmit = async (productData: ProductType) => {
     const product_name = productData.product_name
-    const str = productData.product_name
-    const slug = str.replace(/[^0-9a-z]/gi, '')
+    const slug = product_name ? product_name.replace(/[^0-9a-z]/gi, '') : ''
     const brand = productData.brand
     const price = productData.price
     const count_in_stock = productData.count_in_stock
@@ -149,7 +148,7 @@ const ProductAddForm = () => {
     const category_id = productData.category_id
     try {
       setIsSubmitting(true)
-      const formData: any = new FormData()
+      const formData = new FormData()
       formData.append('product_name', product_name)
       formData.append('slug', slug)
       formData.append('brand', brand)

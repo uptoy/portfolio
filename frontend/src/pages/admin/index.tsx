@@ -15,7 +15,7 @@ const purple600 = purple['600']
 const orange600 = orange['600']
 const grey600 = grey['600']
 
-const useStyles: any = makeStyles(() => ({
+const useStyles= makeStyles(() => ({
   navigation: {
     fontSize: 15,
     fontWeight: 400,

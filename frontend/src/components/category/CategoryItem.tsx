@@ -15,7 +15,7 @@ interface IProps {
   mutate(): void
 }
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   actionContainer: {
     position: 'absolute',
     right: 0
@@ -65,7 +65,7 @@ const CategoryItem: React.FC<IProps> = (props) => {
       }
     }
   }
-  const data = getFormattedDate(category.updated_at as any)
+  const data = getFormattedDate(category.updated_at)
   console.log('data', data)
 
   return (
