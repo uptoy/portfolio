@@ -2,11 +2,11 @@ package service
 
 import (
 	"context"
-	// "fmt"
+	"fmt"
 	"log"
-	// "mime/multipart"
-	// "net/url"
-	// "path"
+	"mime/multipart"
+	"net/url"
+	"path"
 
 	"backend/model"
 	"backend/model/apperrors"
@@ -49,33 +49,33 @@ func (s *userService) Get(ctx context.Context, uid uuid.UUID) (*model.User, erro
 
 // Signup reaches our to a UserRepository to verify the
 // email address is available and signs up the user if this is the case
-// func (s *userService) Signup(ctx context.Context, u *model.User) (*model.User, error) {
-// 	pw, err := hashPassword(u.Password)
-// 	if err != nil {
-// 		log.Printf("Unable to signup user for email: %v\n", u.Email)
-// 		return nil, apperrors.NewInternal()
-// 	}
+func (s *userService) Signup(ctx context.Context, u *model.User) (*model.User, error) {
+	pw, err := hashPassword(u.Password)
+	if err != nil {
+		log.Printf("Unable to signup user for email: %v\n", u.Email)
+		return nil, apperrors.NewInternal()
+	}
 
-// 	// now I realize why I originally used Signup(ctx, email, password)
-// 	// then created a user. It's somewhat un-natural to mutate the user here
-// 	u.Password = pw
-// 	user, err := s.UserRepository.Create(ctx, u)
-// 	if err != nil {
-// 		log.Printf("Unable to signup user for email: %v\n", u.Email)
-// 		return nil, apperrors.NewInternal()
-// 	}
-// 	uid := user.UID
+	// now I realize why I originally used Signup(ctx, email, password)
+	// then created a user. It's somewhat un-natural to mutate the user here
+	u.Password = pw
+	user, err := s.UserRepository.Create(ctx, u)
+	if err != nil {
+		log.Printf("Unable to signup user for email: %v\n", u.Email)
+		return nil, apperrors.NewInternal()
+	}
+	uid := user.UID
 
-// 	// If we get around to adding events, we'd Publish it here
-// 	_, err1 := s.CartRepository.CartCreate(ctx, uid)
-// 	// fmt.Println(cart)
-// 	if err1 != nil {
-// 		log.Printf("Unable to create cart: %v\n", u.Username)
-// 		return nil, apperrors.NewInternal()
-// 	}
+	// If we get around to adding events, we'd Publish it here
+	_, err1 := s.CartRepository.CartCreate(ctx, uid)
+	// fmt.Println(cart)
+	if err1 != nil {
+		log.Printf("Unable to create cart: %v\n", u.Username)
+		return nil, apperrors.NewInternal()
+	}
 
-// 	return user, nil
-// }
+	return user, nil
+}
 func (s *userService) Signup(ctx context.Context, u *model.User) (*model.User, error) {
 	pw, err := hashPassword(u.Password)
 

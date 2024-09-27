@@ -11,18 +11,18 @@ import (
 )
 
 func (h *Handler) ReviewBulkInsert(c *gin.Context) {
-	// ctx := c.Request.Context()
-	// reviews := []model.ProductReview{}
-	// result, err := h.ReviewService.ReviewBulkInsert(ctx, reviews)
-	// if err != nil {
-	// 	log.Printf("Unable to find reviews: %v", err)
-	// 	e := apperrors.NewNotFound("reviews", "err")
+	ctx := c.Request.Context()
+	reviews := []model.ProductReview{}
+	result, err := h.ReviewService.ReviewBulkInsert(ctx, reviews)
+	if err != nil {
+		log.Printf("Unable to find reviews: %v", err)
+		e := apperrors.NewNotFound("reviews", "err")
 
-	// 	c.JSON(e.Status(), gin.H{
-	// 		"error": e,
-	// 	})
-	// 	return
-	// }
+		c.JSON(e.Status(), gin.H{
+			"error": e,
+		})
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{
 		"data": "review",
 	})

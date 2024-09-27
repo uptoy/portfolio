@@ -2,17 +2,17 @@ package service
 
 import (
 	"context"
-	// "fmt"
-	// "fmt"
-	// "fmt"
-	// "io/ioutil"
+	"fmt"
+	"fmt"
+	"fmt"
+	"io/ioutil"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
 	"backend/model"
-	// "backend/model/apperrors"
+	"backend/model/apperrors"
 	"backend/model/mocks"
 )
 
@@ -37,36 +37,36 @@ func TestForgotPassword(t *testing.T) {
 	})
 }
 
-// func TestResetPassword(t *testing.T) {
-// 	t.Run("Success", func(t *testing.T) {
-// 		email := "email@email.com"
-// 		newpassword := "newpassword"
-// 		hashPass, err := hashPassword(newpassword)
-// 		assert.NoError(t, err)
-// 		token := "token"
-// 		mockReset := &model.PasswordReset{
-// 			Email: email,
-// 			Token: token,
-// 		}
-// 		mockArgs := mock.Arguments{
-// 			mock.AnythingOfType("*context.emptyCtx"),
-// 			hashPass,
-// 			mockReset,
-// 		}
-// 		mockAuthRepository := new(mocks.MockAuthRepository)
-// 		as := NewAuthService(&AuthServiceConfig{
-// 			AuthRepository: mockAuthRepository,
-// 		})
-// 		mockAuthRepository.
-// 			On("ResetPassword", mockArgs...).
-// 			Run(func(args mock.Arguments) {
-// 				userArg := args.Get(1).(*model.User) // arg 0 is context, arg 1 is *User
-// 				userArg.Password = hashPass
-// 			}).Return(nil)
+func TestResetPassword(t *testing.T) {
+	t.Run("Success", func(t *testing.T) {
+		email := "email@email.com"
+		newpassword := "newpassword"
+		hashPass, err := hashPassword(newpassword)
+		assert.NoError(t, err)
+		token := "token"
+		mockReset := &model.PasswordReset{
+			Email: email,
+			Token: token,
+		}
+		mockArgs := mock.Arguments{
+			mock.AnythingOfType("*context.emptyCtx"),
+			hashPass,
+			mockReset,
+		}
+		mockAuthRepository := new(mocks.MockAuthRepository)
+		as := NewAuthService(&AuthServiceConfig{
+			AuthRepository: mockAuthRepository,
+		})
+		mockAuthRepository.
+			On("ResetPassword", mockArgs...).
+			Run(func(args mock.Arguments) {
+				userArg := args.Get(1).(*model.User) // arg 0 is context, arg 1 is *User
+				userArg.Password = hashPass
+			}).Return(nil)
 
-// 		ctx := context.TODO()
-// 		err1 := as.ResetPassword(ctx, newpassword, mockReset)
-// 		assert.NoError(t, err1)
-// 		mockAuthRepository.AssertCalled(t, "ResetPassword", mockArgs...)
-// 	})
-// }
+		ctx := context.TODO()
+		err1 := as.ResetPassword(ctx, newpassword, mockReset)
+		assert.NoError(t, err1)
+		mockAuthRepository.AssertCalled(t, "ResetPassword", mockArgs...)
+	})
+}
